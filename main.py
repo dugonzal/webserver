@@ -6,7 +6,7 @@ import  sys, os, time
 import http.server
 import socketserver
 
-def test():
+""" 
         Handler = http.server.SimpleHTTPRequestHandler
 
         with socketserver.TCPServer(("0.0.0.0", 8081), Handler) as httpd:
@@ -14,28 +14,22 @@ def test():
             httpd.serve_forever()
             print (http.HTTPStatus.OK)
             # create an [ipv4/tcp] INET AF_INET (IPv4), SOCK_STREAM (TCP) socket
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(("0.0.0.0", 8080))
-            s.listen(5)
-            pos = True 
-            while pos:
-                print ("Esperando conexion")
-                sleep(1)
-                clientSocket, adress =  s.accept() 
-                print ("Conexion desde ", adress)
-                print (f"Recibido {clientSocket.recv(1024)}")
-                clientSocket.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
-                pos = False
-# Echo client program
+   """  
+def test():
+       with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+           s.bind(("0.0.0.0", 3000))
+           s.listen(5)
+           pos = True 
+           while pos:
+              print ("Esperando conexion")
+              sleep(1)
+              clientSocket, adress =  s.accept() 
+              print ("Conexion desde \n\n", adress)
+              print (f"{clientSocket.recv(1024)}")
+              clientSocket.sendall(bytes("HTTP/1.3 401 OK; <h1> hello<\h1>\r\n\r\n", "utf-8"))
+              pos = False
+                
+def main():
+    test()
 
-HOST = 'www.google.com'    # The remote host
-PORT = 50007              # The same port as used by the server
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b'Hello, world')
-    data = s.recv(1024)
-    print('Received', repr(data))
-# hasta aqui solo creamoos el sockewt, ahora lo tenemos que conectar a un puerto
-
-# now connect to the web server on port 80 - the normal http port
-
+main()

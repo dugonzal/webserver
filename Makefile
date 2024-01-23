@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/01/18 12:36:02 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/01/22 12:44:27 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,24 +27,32 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 all: ${NAME}
 
 ${NAME}: ${OBJ}
+	
 	${C} $? -o $@
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp 
+	
 	mkdir -p ${OBJ_DIR}
 	${C} -c $^ -o $@
 
 clean:
-	rm -rf ${NAME}
+	
+		rm -rf ${NAME}
 
 fclean: clean
-	rm -rf	${OBJ_DIR}
+	
+		rm -rf	${OBJ_DIR}
+
 re: fclean all 
 
 serv:
-	sudo python3 -m http.client 
+	
+	sudo python3 -m http.server 80853
 
 init:
+	
 	sudo python main.py
 
 cleanPorts:
+	
 	sudo lsof -i   | grep 'python' | awk '{print }'  | sudo xargs kill -9

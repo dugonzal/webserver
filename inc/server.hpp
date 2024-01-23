@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   webserv.hpp                                        :+:      :+:    :+:   */
+/*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/18 02:51:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:32:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@
 #include <string>
 // hacer la class otrtodoxa romana
 
-class webserv {
+class server {
+    
     private:
         std::string   host;
         int           port;
     
     public:
-      webserv();
-      ~webserv();
-       webserv(const std::string &host, int &port);
-      webserv(const webserv &copy);
-      webserv &operator=(const webserv &copy);
+      server(void);
+      ~server(void);
+       server(const std::string &host, int &port);
+      server(const server &copy);
+      server &operator=(const server &copy);
 };
 
 
 // imprimir informacion relevante de la clase server que en este caso sera la  clase base
-std::ostream &operator<<(std::ostream &out, const webserv &webserv);
+std::ostream &operator<<(std::ostream &out, const server &webserv);
 

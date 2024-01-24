@@ -12,3 +12,17 @@ POST {{URL}}
 }
 
 DELETE {{URL}}
+
+OPTIONS{{URL}
+
+HEAD {{URL}}
+
+POST {{URL}}
+
+PUT {{URL}}
+
+DELETE {{URL}}
+
+TRAC {{URL}}
+
+CONNECT {{URL}}

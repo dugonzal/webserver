@@ -6,23 +6,28 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/22 11:32:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/24 15:44:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-#include <ostream>
+# include <ostream>
 # include <sys/socket.h>
 # include <iostream>
-#include <string>
+# include <string>
+# include <exception>
 // hacer la class otrtodoxa romana
+class Config;
 
 class server {
     
     private:
-        std::string   host;
-        int           port;
+        const   std::string  host;
+        int                  port;
+        int                 socket;
+        int                 fd;
+        typedef struct sockaddr_in  addr;
     
     public:
       server(void);

@@ -6,19 +6,19 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/01/22 12:44:27 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/01/24 12:37:18 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			:=	webServ
+NAME			:=	webserv
 
-C					:= c++ -Wall -Werror -Wextra --debug -fsanitize=address -std=c++98
+C					:= c++ -Wall -Werror -Wextra -g3 -fsanitize=address -std=c++98
 
 SRC_DIR		:= src/
 
 OBJ_DIR		:= obj/
 
-SRC_FILES	:=  webserv 
+SRC_FILES	:=  webserv server 
 
 SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 
@@ -33,7 +33,7 @@ ${NAME}: ${OBJ}
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp 
 	
 	mkdir -p ${OBJ_DIR}
-	${C} -c $^ -o $@
+	${C} -c $? -o $@
 
 clean:
 	

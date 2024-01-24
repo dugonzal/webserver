@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/24 15:44:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:51:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 // hacer la class otrtodoxa romana
 class Config;
 
+ 
 class server {
     
     private:
@@ -27,8 +28,8 @@ class server {
         int                  port;
         int                 socket;
         int                 fd;
-        typedef struct sockaddr_in  addr;
-    
+        typedef struct      sockaddr_in  addr;
+        Config              config; 
     public:
       server(void);
       ~server(void);

@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/01/24 12:37:18 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/01/24 16:50:39 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 
 all: ${NAME}
 
-${NAME}: ${OBJ}
+${NAME}: ${OBJ} | ./inc
 	
 	${C} $? -o $@
 

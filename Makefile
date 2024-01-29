@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/01/25 10:28:57 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/01/29 17:54:16 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR		:= src/
 
 OBJ_DIR		:= obj/
 
-SRC_FILES	:=  webserv server config 
+SRC_FILES	:=  parser webserv server config
 
 I					:= inc/*.hpp
 

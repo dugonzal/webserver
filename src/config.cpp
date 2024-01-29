@@ -6,13 +6,15 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/30 00:37:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:58:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/config.hpp"
 # include "../inc/server.hpp"
 #include <istream>
+#include <string>
+#include <vector>
 
 Config::Config(void) {
   std::cout << "" << std::endl;
@@ -38,8 +40,14 @@ Config::Config(std::string _filename): filename(_filename) {
       || buffer.find("{") ==  std::string::npos)
     throw std::logic_error("Error: no server found");
 
-  std::cout << buffer << std::endl;    
-  std::cout << "file open" << std::endl << filename << std::endl;
+  data.push_back(buffer);
+  while (getline(file, buffer, '\n'))
+    data.push_back(buffer);
+
+  file.close();
+  for (std::vector<std::string>::const_iterator it = data.begin(); it != data.end(); ++it)
+    std::cout << *it << std::endl;
+
 }
 
 Config::~Config(void){ std::cout << "" << std::endl; }

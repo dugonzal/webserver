@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/30 00:04:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:21:44 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ class Parser;
 class Config {
     
     private :
-        const std::string     filename ;
-        std::vector<Server*>  servers;
+        const std::string           filename;
+        std::vector<Server*>        servers;
+        std::vector<std::string>    data; 
+        // voy a usar un vector de string para guardar la informacion del archivo de configuracion 
     
     public:
-     Parser                parser; 
+        Parser                      parser; 
     
     public:
       Config(void);

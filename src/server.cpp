@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/29 17:44:39 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:45:53 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ Server::Server(void) {
   std::cout << "" << std::endl; 
   
 }
+
+Server::Server(const std::string &_host, int _port): host(_host), port(_port) { }
 
 Server::~Server(void) { std::cout << "" << std::endl; }
 

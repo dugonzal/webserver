@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/29 18:30:00 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:59:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ class Config {
     private :
         const std::string     filename ;
         std::vector<Server*>  servers;
-        Parser                parser;
+        Parser                parser; 
     
     public:
       Config(void);
       Config(std::string _filename);
       ~Config(void);
-      void  parseConfig(void);
 };

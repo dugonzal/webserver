@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/29 19:10:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:49:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,24 @@
 # include <cstring>
 # include <sys/un.h>
 # include "config.hpp"
+#include "parser.hpp"
 // hacer la class otrtodoxa romana
 //class Config;
 
 class Server {
     
     private:
-        struct sockaddr_in          addr;
-        const  std::string          host;
-        int                         port;
-        int                         s;
-        int                         fd;
-  
+        struct sockaddr_in                  addr;
+        const  std::string                  host;
+        int                                 port;
+        int                                 s;
+        int                                 fd;
+        std::map<std::string, std::string>  data;
+
     public:
         Server(void);
         ~Server(void);
-        Server(const std::string &host, int &port);
+        Server(const std::string &_host, int _port);
         Server(const Server &copy);
         Server &operator=(const Server &copy);
         void   setServer(void);

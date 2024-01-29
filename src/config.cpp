@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/29 19:10:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:53:34 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/config.hpp"
+# include "../inc/server.hpp"
 
 Config::Config(void) {
   std::cout << "" << std::endl;
@@ -21,8 +22,17 @@ Config::Config(void) {
 Config::Config(std::string _filename): filename(_filename) { }
 
 Config::~Config(void){ std::cout << "" << std::endl; }
-     
+    
+/*
 void  Config::parseConfig(void) {
+  
+  this->servers.push_back(new Server("localhost", 8080));
+
+  std::vector<Server*>  tmp;
+
+  tmp = this->servers;
+
+  exit(0);
   std::ifstream file(filename.data());
   std::string   buffer;
   
@@ -34,4 +44,4 @@ void  Config::parseConfig(void) {
       std::cout << buffer << std::endl;
     
     }
-}
+}*/

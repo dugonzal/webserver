@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/29 23:58:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:05:53 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ class Parser {
   public:
     Parser(void);
     ~Parser(void);
+    void  parser(void){ std::cout << "parser" << std::endl; };
 };

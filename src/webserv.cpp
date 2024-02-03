@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/30 00:26:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/03 23:51:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@
  * el argumento y voy a leer y parsear la data para server
  *
  * */
-int main(int ac, char const **av) {
+int main(int ac, char const **av, const char **) {
 
   if (ac != 2)
       av[1] = "nginx/conf/default.conf";
   
   try {
-    Config              config(*(++av));
-
-    (void)config;
+    Config              config;
+    
+    config.parser = Parser(av[1]);
     config.parser.parser();
   } catch (std::exception &e) 
       { std::cout << "Error: " << e.what() << std::endl; }
     
-    return (0);
+  return (0);
 }

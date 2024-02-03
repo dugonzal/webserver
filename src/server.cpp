@@ -6,15 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/29 23:45:53 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/03 23:40:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/server.hpp"
-#include <cstring>
-#include <netinet/in.h>
-#include <stdexcept>
-#include <sys/socket.h>
 
 Server::Server(void) { 
 
@@ -40,8 +36,11 @@ void Server::setServer(void) {
   // seteo la estructura addr a 0
   memset(&this->addr, 0, sizeof(addr));
 
-  
+
+  // AF_INET6 -> IPv6 no referimo a la familia de protocolos disponibles
   addr.sin_family = AF_INET6;
+ 
+  // htons -> host to network short (16 bits) cambiamos a bytes
   addr.sin_port = htons(8080);
   
   std::cout << "addr.sin_family: " << addr.sin_family << std::endl;

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/04 15:46:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:47:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Parser::Parser(void) {}
 Parser::~Parser(void) {}
     
 Parser::Parser(const std::string &_filename): filename(_filename) {
+  
   std::ifstream   file(filename.data());
   std::string     buffer;
 
@@ -56,10 +57,31 @@ void  Parser::handlerError(void) {
     
 std::vector<std::string>::iterator  &Parser::serverError(std::vector<std::string>::iterator &it) {
 
-  while (it != data.end()){
-      std::cout << *it << std::endl;
-      it++;
+  std::vector<std::string> tmp;
   
+  while (it != data.end()){
+    if (it->find_first_of("{") != std::string::npos) {
+        tmp.push_back(*it);
+        it++;
+      {
+        while (it->find_first_of("}") == std::string::npos) {
+          tmp.push_back(*it);
+          if (it->find("location") != std::string::npos \
+            && it->find_first_of("{") != std::string::npos) {
+              continue;
+          }
+          it++;
+        }
+      }
+    }
+  }
+  std::vector<std::string>::iterator  it2 = tmp.begin();
+  while (it2 != data.end()) {
+    if (it2->find("server") != std::string::npos \
+      && it2->find_first_of("{") != std::string::npos) {
+        break;
+    }
+    it2++;
   }
   return (it);
 }

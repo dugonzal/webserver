@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/30 17:44:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:29:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class Server {
         std::map<std::string, std::string>  data;
         std::string                         *error_page;
         std::string                         *buffers;
-
+        int                                 *options;
     // uso estos dos punteros uno para las paginas de error y otro para los buffers de enviar y recibir
     public:
         Server(void);

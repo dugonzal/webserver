@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/04 14:43:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:35:28 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main(int ac, const char **av, const char **) {
   
   try {
     Config              config;
-    
+ 
     config.parser = Parser(*(++av));
   } catch (std::exception &e) 
       { std::cout << "Error: " << e.what() << std::endl; }

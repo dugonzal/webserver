@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/03 23:40:37 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:34:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,19 @@ void Server::setServer(void) {
   std::cout << this->s << std::endl;
   // seteo la estructura addr a 0
   memset(&this->addr, 0, sizeof(addr));
-
-
+  
   // AF_INET6 -> IPv6 no referimo a la familia de protocolos disponibles
   addr.sin_family = AF_INET6;
- 
   // htons -> host to network short (16 bits) cambiamos a bytes
   addr.sin_port = htons(8080);
-  
+  addr.sin_addr.s_addr = INADDR_ANY; 
+
+  exit(0);
+  if (!(setsockopt(this->s, SOL_SOCKET, SO_REUSEADDR, &this->addr, sizeof(this->addr))))
+    throw std::logic_error("Error: setsockopt failed");
+  //set socket options
+  //int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
+  // con esta funcion seteamos el socket para que pueda ser reutilizado y no de errores en las conexiones
   std::cout << "addr.sin_family: " << addr.sin_family << std::endl;
+
 }

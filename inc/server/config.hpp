@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/03 23:43:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/12 12:24:36 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@
 # include <fstream>
 # include <cstdlib>
 # include <vector>
-# include "parser.hpp"
+# include "../parser/parser.hpp"
+# include "Server.hpp"
 
-class Server;
-class Parser;
+namespace ft {
+    class Config;
+}
 
 class Config {
     
@@ -35,3 +37,4 @@ class Config {
       Config(void);
       ~Config(void);
 };
+

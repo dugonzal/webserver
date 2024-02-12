@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
+/*   BaseServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/08 14:34:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/12 12:09:12 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/server.hpp"
+# include "../../inc/server/BaseServer.hpp"
 
-Server::Server(void) { 
+BaseServer::BaseServer(void) { 
 
   std::cout << "" << std::endl; 
   
 }
 
-Server::Server(const std::string &_host, int _port): host(_host), port(_port) { }
+BaseServer::BaseServer(const std::string &_host, int _port): host(_host), port(_port) { }
 
-Server::~Server(void) { std::cout << "" << std::endl; }
+BaseServer::~BaseServer(void) {
+  
+  close (s);
+}
 
 /*
  * el socket tiene 2 argumentos
  * 0 -> familia selecciona el tipo de comunicacion en este caso es, AF_INET or AF_INET6
  * * */
-void Server::setServer(void) {
+void BaseServer::setServer(void) {
 //  struct sockaddr_in addr;
   //socket(int domain, int type, int protocol)
   if ((this->s = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)) < 0)
@@ -42,7 +45,7 @@ void Server::setServer(void) {
   addr.sin_port = htons(8080);
   addr.sin_addr.s_addr = INADDR_ANY; 
 
-  exit(0);
+  // forzar la reutilizacion del socket
   if (!(setsockopt(this->s, SOL_SOCKET, SO_REUSEADDR, &this->addr, sizeof(this->addr))))
     throw std::logic_error("Error: setsockopt failed");
   //set socket options

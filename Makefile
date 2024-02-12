@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/01/29 17:54:16 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/12 12:02:57 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,18 @@ SRC_DIR		:= src/
 
 OBJ_DIR		:= obj/
 
-SRC_FILES	:=  parser webserv server config
+I					:= inc/*/*.hpp
 
-I					:= inc/*.hpp
+P_DIR			:= parser/
+parser		:= parser
+
+S_DIR			:= server/
+server		:= BaseServer Server config
+
+SRC_FILES += webserv
+
+SRC_FILES += $(addprefix $(P_DIR),$(parser))
+SRC_FILES += $(addprefix $(S_DIR),$(server))
 
 SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 
@@ -34,6 +43,9 @@ ${NAME}: ${OBJ} ${I}
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 
 	mkdir -p ${OBJ_DIR}
+	mkdir -p ${OBJ_DIR}${P_DIR}
+	mkdir -p ${OBJ_DIR}${S_DIR}
+
 	${C} -c $? -o $@ 
 
 clean:

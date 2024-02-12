@@ -6,11 +6,13 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/12 13:19:00 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/12 16:17:37 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			:=	webserv
+
+SHELL			:=	/bin/zsh
 
 CXX					:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++98
 
@@ -39,6 +41,9 @@ all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@ 
+# compile tests automatically
+	cp -r webserv tests/bin/
+	make  re -C  tests/
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 
@@ -52,13 +57,15 @@ clean:
 		rm -rf ${NAME}
 
 fclean: clean
+		make fclean -C  tests
 		rm -rf	${OBJ_DIR}
 
-re: fclean all 
+tests:
+	make re -C  ./tests/
 
-test:
-	make re -C  tests
+re: fclean all tests 
 
+	
 serv:
 	sudo python3 -m http.server 80853
 

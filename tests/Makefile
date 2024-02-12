@@ -6,18 +6,20 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/12 12:46:49 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/12 13:18:13 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/12 16:26:21 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := webserv_tests
 
-CXX := c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++11  -lcppunit
+SHELL			:=	/bin/zsh
+
+CXX := c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++11  -l cppunit
 
 SRC_DIR := src/
 OBJ_DIR := obj/
  
-SRC_FILES := main suma
+SRC_FILES := main  Test
 
 SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 
@@ -26,18 +28,18 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@ && ./$@ 
+	mkdir -p bin
+	cp -r ../obj/*/* obj/
+	$(CXX) $(OBJ_DIR)*.o -o $@ && ./$@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
 	mkdir -p $(OBJ_DIR)
-	echo $(OBJ)
-	exit
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJ_DIR)
+	rm -f $(NAME)
 
 fclean: clean
-	rm -f $(TEST_BIN)
-
+	rm -rf $(OBJ_DIR)
+#rm -rf bin
 re: fclean all

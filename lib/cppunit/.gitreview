@@ -1,7 +1,0 @@
-[gerrit]
-host=logerrit
-port=29418
-project=cppunit
-defaultremote=logerrit
-defaultbranch=master
-

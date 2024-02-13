@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/12 12:46:49 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/12 16:26:21 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/12 22:11:26 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,5 +41,5 @@ clean:
 
 fclean: clean
 	rm -rf $(OBJ_DIR)
-#rm -rf bin
+
 re: fclean all

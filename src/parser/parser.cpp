@@ -6,11 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/12 12:08:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/13 01:23:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/parser.hpp"
+# include <cassert>
+#include <string>
 
 Parser::Parser(void) {}
 
@@ -21,6 +23,7 @@ Parser::Parser(const std::string &_filename): filename(_filename) {
   std::ifstream   file(filename.data());
   std::string     buffer;
 
+  std::cout << "filename: ->:" << filename << std::endl;
   if (file.bad() || file.fail() || file.eof())
     throw std::logic_error("file no open");
 
@@ -28,15 +31,23 @@ Parser::Parser(const std::string &_filename): filename(_filename) {
   while (getline(file, buffer, '\n'))
     if (buffer.find("server") !=  std::string::npos \
       && buffer.find_first_of("{") != std::string::npos)
-      break;  
+        break;  
+
+  std::cout << "buffer: ->:" << buffer << std::endl;
 
   data.push_back(buffer);
   while (getline(file, buffer, '\n'))
     data.push_back(buffer);
 
   file.close();
+//  assert(file.is_open() == false);
+//  handlerError();
+}
 
-  handlerError();
+int Parser::getNS(void) {
+ 
+  NS = 0;
+  return NS;
 }
 
 // voy a parsear la data para buscar los errores

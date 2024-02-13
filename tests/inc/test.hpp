@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.hpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/12 21:56:31 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/12 21:56:32 by Dugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 # pragma once
 
@@ -10,17 +21,18 @@
 #include <cppunit/ui/text/TestRunner.h>
 # include "../../inc/server/config.hpp"
 
-class Test : public CppUnit::TestFixture {
-    CPPUNIT_TEST_SUITE(Test);
-    CPPUNIT_TEST(Example);
+class TestServer : public CppUnit::TestFixture {
+    CPPUNIT_TEST_SUITE(TestServer);
+    CPPUNIT_TEST(Example); // Agrega una prueba llamada Example
     CPPUNIT_TEST_SUITE_END();
 public:
-    void setUp() {}
-    void tearDown() {}
+    void setUp(); 
+    void tearDown();
     void Example() ;
 
 
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(Test);
+CPPUNIT_TEST_SUITE_REGISTRATION(TestServer);
+// registro de la suite de pruebas
 

@@ -1,13 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Test.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/13 01:34:29 by Dugonzal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "../inc/test.hpp"
+#include <cppunit/TestAssert.h>
+
+void TestServer::setUp() {}
     
-void Test::Example() {
-  Config config;
+void TestServer::tearDown() {}
+    
+void TestServer::Example() {
+  Server server;
 
-
-  std::string path = "../../conf/default.conf";
-  config.parser = Parser(path);
-  
-
-  CPPUNIT_ASSERT_EQUAL((2 + 3), 5);
-  }
+  std::cout << "TestServer::Example" << std::endl;
+  std::cout << server << std::endl;
+  CPPUNIT_ASSERT(server.setBind() == true);
+}
 

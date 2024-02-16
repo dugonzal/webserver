@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
+/*   Test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/25 09:56:04 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/13 09:58:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/server.hpp"
-# include "../inc/config.hpp"
+# include "../inc/test.hpp"
+#include <cppunit/TestAssert.h>
 
-Server::Server(void) { 
-  Config  config;
+void TestServer::setUp() {}
+    
+void TestServer::tearDown() {}
+    
+void TestServer::bind() {
+  Server server;
 
-
-  (void)config;
-  std::cout << "" << std::endl; 
+  std::cout << "TestServer::Example" << std::endl;
+  std::cout << server << std::endl;
+  CPPUNIT_ASSERT(server.setBind() == true);
+  
+}
+    
+void getNs() {
 }
 
-Server::~Server(void) { std::cout << "" << std::endl; }

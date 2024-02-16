@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   webserv.cpp                                        :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/25 09:59:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/15 19:42:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/server.hpp"
-# include "../inc/config.hpp"
+# include "../inc/server/BaseServer.hpp"
+# include "../inc/server/config.hpp"
 
 /* necesito extraer los datos de configuracion 
  * he creado una clase llamada config que le voy a pasar \
  * el argumento y voy a leer y parsear la data para server
  *
  * */
-int main(int ac, const char **av) {
-
+int main(int ac, const char **av, const char **) {
   if (ac != 2)
-    return (std::cout << "./webserv \"<fileConfig>\"" << std::endl, 0);
-  
+      av[1] = "conf/default.conf";
   try {
-       
-    Server webserv;
+ //   Config           config;
+    Server              server;
 
-    (void)webserv;
-    
-  } catch (std::exception &e) 
-      { std::cout << "Error " << e.what() << std::endl; }
-    
-    for (int i = 0; i < ac && ++av; i++)
-      std::cout << *av << std::endl;
-   
-    return (0);
+    assert(server.setBind() == true);
+    server.setBind();
+//    config.parser = Parser(*(++av));
+  } catch (std::exception &e)
+      { std::cout << "Error: " << e.what() << std::endl; }
+  return (0);
 }

@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/01/25 10:24:13 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/13 01:12:25 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include  <iostream>
-# include <string.h>
-class Server;
+# include "BaseServer.hpp"
 
-
-
-class Config {
-    
-    private :
-        const std::string filename ;
-
-    public:
-      Config(void);
-      ~Config(void);
-      void a(void) { }
+class Server: public BaseServer {
+  
+  protected:
+//    Server(const Server&);
+ //   Server &operator=(const Server&);
+  
+  public:
+    Server(void);
+    ~Server(void);
+    BaseServer *clone(void) const;
 };

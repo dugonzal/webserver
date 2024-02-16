@@ -1,0 +1,4 @@
+examples
+*.aout
+*.o
+bin

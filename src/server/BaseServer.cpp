@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/16 15:14:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:38:24 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,19 @@ BaseServer::BaseServer(const std::string &_host, int _port): \
 BaseServer::~BaseServer(void) { close(s); }
 
 int BaseServer::setBind(void) {
+  char buffer[1024] = { 0 };
+  std::string ip = "127.0.0.1";
   addrLen = sizeof(addr);
   opt = 1;
   if ((this->s = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
   assert((s > 2) && (s < 6553));
-  // AF_INET6 -> IPv6 no referimo a la familia de protocolos disponibles
   addr.sin_family = AF_INET;
-  // htons -> host to network short (16 bits) cambiamos a bytes
   addr.sin_port = htons(8000);
-  //addr.sin_port = htons(port);
-  std::cout << s << std::endl;
-  std::string ip = "127.0.0.1";
   addr.sin_addr.s_addr = inet_addr(ip.data());
-//    inet_addr(ip.c_str());
-    //gethostname((char *)(ip.data()), 100);
-  // forzar la reutilizacion del socket
-  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) < 0)
-    throw std::logic_error("setsockopt failed");
+  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, \
+    &opt, sizeof(opt)) < 0)
+      throw std::logic_error("setsockopt failed");
   if (bind(s, (struct sockaddr *)&addr, addrLen) < 0)
     throw std::logic_error("bind failed");
   if (listen(this->s, this->s) < 0)
@@ -51,14 +46,27 @@ int BaseServer::setBind(void) {
   int sN;
   if ((sN = accept(this->s, (struct sockaddr *)&addr, &addrLen)) < 0)
     throw std::logic_error("accept failed");
-  std::cout << sN << std::endl;
-  char buffer[1024] = { 0 };
+     struct timeval timeout;
+  timeout.tv_sec = 3; // 10 segundos
+  timeout.tv_usec = 0;
+  if (setsockopt(sN, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0) {
+      std::cerr << "Error al establecer el tiempo de espera para la recepción de datos" << std::endl;
+      return -1;
+  }
+  exit(0);
+  std::cout << "Connection accepted" << std::endl;
+  if (recv(sN, buffer, 1023, 0) < 0)
+    throw std::logic_error("recv failed");
+  //  en la resta del cliente entraria la parte de la peticion o request del cliente
   read(sN, buffer, 1023);
   std::cout << buffer << std::endl;
+
+  // en la respuesta del cliente entraria la parte de la respuesta del servidor
   std::string response = "HTTP/1.1 200  OK\r\n\r\n <h1 align=\"center\"> Hello, World! </h1>";
     //Content-Length: 13\r\nContent-Type: text/plain\r\n\r\nHello, World!";
   send(sN, response.data(), response.size(), 0);
-  close (sN);
+  close(sN);
+  exit(0);
   return (true);
 }
 

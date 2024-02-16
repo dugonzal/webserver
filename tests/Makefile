@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/12 12:46:49 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/12 22:11:26 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/13 04:08:09 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,10 @@ CXX := c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++11  -l
 
 SRC_DIR := src/
 OBJ_DIR := obj/
- 
+
+# deberia crear dos caarpetas de teeseo y meter los archivos de test en ellas
+#  parsetTest y serverTest
+
 SRC_FILES := main  Test
 
 SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))

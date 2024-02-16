@@ -6,20 +6,17 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/13 01:23:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:39:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/parser.hpp"
-# include <cassert>
-#include <string>
 
 Parser::Parser(void) {}
 
 Parser::~Parser(void) {}
-    
+
 Parser::Parser(const std::string &_filename): filename(_filename) {
-  
   std::ifstream   file(filename.data());
   std::string     buffer;
 
@@ -31,7 +28,7 @@ Parser::Parser(const std::string &_filename): filename(_filename) {
   while (getline(file, buffer, '\n'))
     if (buffer.find("server") !=  std::string::npos \
       && buffer.find_first_of("{") != std::string::npos)
-        break;  
+        break;
 
   std::cout << "buffer: ->:" << buffer << std::endl;
 
@@ -40,21 +37,19 @@ Parser::Parser(const std::string &_filename): filename(_filename) {
     data.push_back(buffer);
 
   file.close();
-//  assert(file.is_open() == false);
-//  handlerError();
-}
-
-int Parser::getNS(void) {
- 
-  NS = 0;
-  return NS;
+  assert(file.is_open() == false);
+  getNs();
 }
 
 // voy a parsear la data para buscar los errores
-void  Parser::handlerError(void) {
-
-  std::vector<std::string>::iterator  it = data.begin(); 
-
-  while (it != data.end()) 
+int  Parser::getNs(void)  {
+  std::vector<std::string>::iterator  it = data.begin();
+  while (it != data.end())  {
+    if  (((*it).find("server") != std::string::npos \
+      && (*it).find("{")  != std::string::npos))
+        NS++;
     std::cout << *it++ << std::endl;
+  }
+//  std::cout << "NS: " << NS << std::endl;
+  return (NS);
 }

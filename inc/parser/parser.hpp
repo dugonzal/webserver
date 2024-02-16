@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/13 00:47:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:42:11 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fstream>
 # include <unistd.h>
 # include <cstdlib>
+# include <cassert>
 
 class Parser {  
   
@@ -34,7 +35,7 @@ class Parser {
   public:
     Parser(void);
     Parser(const std::string&);
-    int  getNS(void);
+    int  getNs(void);
     ~Parser(void);
     void  parser(void);
 };

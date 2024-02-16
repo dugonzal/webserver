@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/13 01:34:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/13 09:58:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ void TestServer::setUp() {}
     
 void TestServer::tearDown() {}
     
-void TestServer::Example() {
+void TestServer::bind() {
   Server server;
 
   std::cout << "TestServer::Example" << std::endl;
   std::cout << server << std::endl;
   CPPUNIT_ASSERT(server.setBind() == true);
+  
+}
+    
+void getNs() {
 }
 

@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/13 01:19:01 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/13 03:59:35 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,10 +40,11 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
-	${CXX} ${OBJ} -o $@ 
+	${CXX} ${OBJ} -o $@ && ./$@ 
 # compile tests automatically
 	cp -r webserv tests/bin/
 	make  re -C  tests/
+	./webserv
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 

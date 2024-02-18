@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 16:13:22 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:26:13 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ namespace ft {
 }
 
 class BaseServer {
+  
   protected:
     struct sockaddr_in                  addr;
+    socklen_t                           addrLen; 
     const  std::string                  host;
     int                                 port;
     int                                 s;
-    socklen_t                           addrLen; 
+  
   protected:
     std::map<std::string, std::string>  data;
     std::vector<std::string>            error_page;

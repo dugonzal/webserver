@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: archlinux/base 
 
     steps:
     - name: Checkout Repository

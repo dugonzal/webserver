@@ -1,5 +1,5 @@
 
-name: Hello World
+name: Make && test
 
 on:
   push:
@@ -14,5 +14,5 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: make an test 
-      run: sudo pacman -Syu cppunit zsh  &&  make re
+    - name: make && test 
+      run: sudo apt install libcppunit-dev zsh &&  make re

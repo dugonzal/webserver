@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Test.cpp                                           :+:      :+:    :+:   */
+/*   Signals.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 16:13:52 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/18 15:37:20 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/18 19:45:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/test.hpp"
-#include <cppunit/TestAssert.h>
+# pragma once
 
-void TestServer::setUp() {}
-    
-void TestServer::tearDown() {}
-    
-void TestServer::bind() {
-  Server server;
+# include <csignal>
 
-  std::cout << "TestServer::Example" << std::endl;
-  std::cout << server << std::endl;
-  CPPUNIT_ASSERT(server.setSocket());
+class Signals {
   
-}
-    
-void getNs() {
-}
+  private:
+    struct sigaction sign;
 
+  public:
+    Signals(void);
+    ~Signals(void);
+    void setSignals(void);
+};

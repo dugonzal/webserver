@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/15 19:42:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:13:17 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int main(int ac, const char **av, const char **) {
  //   Config           config;
     Server              server;
 
-    assert(server.setBind() == true);
-    server.setBind();
+    server.setSocket();
 //    config.parser = Parser(*(++av));
   } catch (std::exception &e)
       { std::cout << "Error: " << e.what() << std::endl; }

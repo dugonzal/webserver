@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Test.cpp                                           :+:      :+:    :+:   */
+/*   Signals.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 16:13:52 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/18 19:03:54 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/18 19:44:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/test.hpp"
-#include <cppunit/TestAssert.h>
+# include "../inc/Signals.hpp"
 
-void TestServer::setUp() {}
-    
-void TestServer::tearDown() {}
-    
-void TestServer::bind() {
-  Server server;
+Signals::Signals(void) {}
 
-  std::cout << "TestServer::Example" << std::endl;
-  std::cout << server << std::endl;
-  CPPUNIT_ASSERT(server.setSocket());
-  
+Signals::~Signals(void) {} 
+
+void Signals::setSignals(void) {
 }
-    
-void getNs() {
-}
-

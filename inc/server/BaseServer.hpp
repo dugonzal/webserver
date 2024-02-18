@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/15 18:41:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:13:22 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ class BaseServer {
     virtual BaseServer *clone(void) const = 0;
     BaseServer(const std::string&, int);
     void  setServer(void);
-    int   setBind(void);
+    int   setSocket(void);
     int   getSocket(void) const;
 };

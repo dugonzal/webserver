@@ -6,12 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/16 15:38:24 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:02:28 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 #include <arpa/inet.h>
+#include <cerrno>
+#include <cstdio>
 #include <cstring>
 #include <sys/socket.h>
 
@@ -25,23 +27,25 @@ BaseServer::BaseServer(const std::string &_host, int _port): \
 
 BaseServer::~BaseServer(void) { close(s); }
 
-int BaseServer::setBind(void) {
-  char buffer[1024] = { 0 };
-  std::string ip = "127.0.0.1";
+int BaseServer::setSocket(void) {
   addrLen = sizeof(addr);
   opt = 1;
+
   if ((this->s = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
   assert((s > 2) && (s < 6553));
+  
   addr.sin_family = AF_INET;
   addr.sin_port = htons(8000);
-  addr.sin_addr.s_addr = inet_addr(ip.data());
-  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, \
+  addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+  
+  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error("setsockopt failed");
-  if (bind(s, (struct sockaddr *)&addr, addrLen) < 0)
-    throw std::logic_error("bind failed");
-  if (listen(this->s, this->s) < 0)
+      throw std::logic_error (strerror(errno)); 
+  if (bind(s, (struct sockaddr *)&addr, addrLen) <  0)
+    throw std::logic_error (strerror(errno)); 
+
+/*  if (listen(this->s, this->s) < 0)
     throw std::logic_error("listen failed");
   int sN;
   if ((sN = accept(this->s, (struct sockaddr *)&addr, &addrLen)) < 0)
@@ -53,7 +57,6 @@ int BaseServer::setBind(void) {
       std::cerr << "Error al establecer el tiempo de espera para la recepción de datos" << std::endl;
       return -1;
   }
-  exit(0);
   std::cout << "Connection accepted" << std::endl;
   if (recv(sN, buffer, 1023, 0) < 0)
     throw std::logic_error("recv failed");
@@ -66,8 +69,8 @@ int BaseServer::setBind(void) {
     //Content-Length: 13\r\nContent-Type: text/plain\r\n\r\nHello, World!";
   send(sN, response.data(), response.size(), 0);
   close(sN);
-  exit(0);
-  return (true);
+  */
+  return (s);
 }
 
 int   BaseServer::getSocket(void) const { return (s); }

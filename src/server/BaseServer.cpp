@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 20:25:23 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:17:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int BaseServer::setSocket(void) {
   if (bind(s, (struct sockaddr *)&addr, addrLen) <  0)
     throw std::logic_error (strerror(errno)); 
 
-/*  if (listen(this->s, this->s) < 0)
+  if (listen(this->s, 1024) < 0)
     throw std::logic_error("listen failed");
-  int sN;
+/*  int sN;
   if ((sN = accept(this->s, (struct sockaddr *)&addr, &addrLen)) < 0)
     throw std::logic_error("accept failed");
      struct timeval timeout;

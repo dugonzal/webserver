@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/18 19:23:15 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/20 16:52:15 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ parser		:= parser
 S_DIR			:= server/
 server		:= BaseServer Server config
 
-SRC_FILES += main Signals 
+SRC_FILES += main Signals utils 
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))

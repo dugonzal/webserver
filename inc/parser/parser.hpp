@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/20 16:40:07 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/20 18:33:54 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,5 @@ class Parser {
     ~Parser(void);
     void  readIncludeError(std::string);
     void  readInclude(std::string);
+    void  getInclude(void);
 };

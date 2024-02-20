@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/20 12:24:39 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:40:07 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ class Parser {
   public:
     Parser(void);
     Parser(const std::string&);
-    int  getParser(void);
     ~Parser(void);
-    void  parser(void);
+    void  readIncludeError(std::string);
+    void  readInclude(std::string);
 };

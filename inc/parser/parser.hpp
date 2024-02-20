@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/20 18:33:54 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:39:02 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <unistd.h>
 # include <cstdlib>
 # include <cassert>
+
+# include "../utils.hpp"
 
 class Parser {  
   
@@ -38,5 +40,5 @@ class Parser {
     ~Parser(void);
     void  readIncludeError(std::string);
     void  readInclude(std::string);
-    void  getInclude(void);
+    void  getData(void);
 };

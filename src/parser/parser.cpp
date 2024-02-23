@@ -6,18 +6,17 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/20 20:02:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:35:33 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/parser.hpp"
 
-Parser::Parser(void) {}
+Parser::Parser(void) { }
 
-Parser::~Parser(void) {}
+Parser::~Parser(void) { }
 
 Parser::Parser(const std::string &_filename): filename(_filename) {
-  
   std::ifstream   file(filename.data());
   std::string     buffer;
 
@@ -34,42 +33,39 @@ Parser::Parser(const std::string &_filename): filename(_filename) {
     else
       data.push_back(buffer);
   }
-  
+
   file.close();
-  getData();
+  printData();
   assert(file.is_open() == false);
 }
-    
-void  Parser::getData(void) {
-  for (unsigned int i = 0; i < data.size(); i++ ) {
+
+void  Parser::printData(void) {
+  for (unsigned int i = 0; i < data.size(); i++)
     std::cout << data[i] << std::endl;
-    if (data[i].find("include") != std::string::npos)
-      readIncludeError(data[i].substr(data[i].find_last_of(" ") + 1));
-  }
 }
-    
+
 void  Parser::readInclude(std::string fileName) {
-   
     std::ifstream file(fileName.data());
     std::string   buffer;
-    
+
     if (file.bad() || file.fail() || file.eof())
       throw std::logic_error("file no open");
- 
+
     while (getline(file, buffer, '\n')) {
       buffer = trim(buffer);
       if (buffer.empty() || buffer[0] == '#')
         continue;
-      data.push_back(buffer);
+      else
+        data.push_back(buffer);
     }
     file.close();
 }
-   
+
 void Parser::readIncludeError(std::string fileName) {
- 
   if (fileName[fileName.size() - 1] == ';')
     fileName[fileName.size() - 1] = '\0';
   else
     throw std::runtime_error("no termine en  \";\"");
+
   readInclude(fileName);
 }

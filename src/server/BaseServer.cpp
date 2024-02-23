@@ -6,46 +6,45 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/19 15:17:37 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:34:45 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 #include <arpa/inet.h>
+#include <sys/socket.h>
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
-#include <sys/socket.h>
 
 BaseServer::BaseServer(void) {
-  // seteo la estructura addr a 0
-  memset(&this->addr, 0, sizeof(addr));
+  addrLen = sizeof(addr);
+  opt = 1;
+  bzero(&addr, sizeof(addr));
 }
 
 BaseServer::BaseServer(const std::string &_host, int _port): \
-  host(_host), port(_port) {}
+  host(_host), port(_port) { }
 
 BaseServer::~BaseServer(void) { close(s); }
 
 int BaseServer::setSocket(void) {
-  addrLen = sizeof(addr);
-  opt = 1;
-
   if ((this->s = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
+
   assert((s > 2) && (s < 6553));
-  
   addr.sin_family = AF_INET;
   addr.sin_port = htons(8000);
   addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-  
+
   if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error (strerror(errno)); 
-  if (bind(s, (struct sockaddr *)&addr, addrLen) <  0)
-    throw std::logic_error (strerror(errno)); 
+      throw std::logic_error(strerror(errno));
 
-  if (listen(this->s, 1024) < 0)
+  if (bind(s, (struct sockaddr *)&addr, addrLen) <  0)
+    throw std::logic_error(strerror(errno));
+
+  if (listen(s, 1024) < 0)
     throw std::logic_error("listen failed");
 /*  int sN;
   if ((sN = accept(this->s, (struct sockaddr *)&addr, &addrLen)) < 0)
@@ -69,7 +68,7 @@ int BaseServer::setSocket(void) {
     //Content-Length: 13\r\nContent-Type: text/plain\r\n\r\nHello, World!";
   send(sN, response.data(), response.size(), 0);
   close(sN);
-  */
+*/
   return (s);
 }
 

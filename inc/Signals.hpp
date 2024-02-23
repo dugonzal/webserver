@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:37:20 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 19:45:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:58:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 # include <csignal>
 
 class Signals {
-  
-  private:
+ private:
     struct sigaction sign;
-
-  public:
+ public:
     Signals(void);
     ~Signals(void);
     void setSignals(void);

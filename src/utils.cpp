@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Test.cpp                                           :+:      :+:    :+:   */
+/*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 16:13:52 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/23 14:36:02 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/test.hpp"
-#include <cppunit/TestAssert.h>
+# include "../inc/utils.hpp"
 
-void TestServer::setUp() {}
-    
-void TestServer::tearDown() {}
-    
-void TestServer::bind() {
-  Server server;
+std::string trim(const std::string &line) {
+  std::size_t first = line.find_first_not_of(" \t\v\f\r");
 
-  std::cout << "TestServer::Example" << std::endl;
-  std::cout << server << std::endl;
-  CPPUNIT_ASSERT(server.setSocket());
-  
-}
-    
-void getNs() {
+  if (first == std::string::npos)
+    return ("");
+
+  std::size_t last = line.find_last_not_of(" \t\v\f\r");
+
+  return (line.substr(first, ((last - first) + 1)));
 }
 

@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/13 03:59:35 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/20 19:40:21 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ parser		:= parser
 S_DIR			:= server/
 server		:= BaseServer Server config
 
-SRC_FILES += main 
+SRC_FILES += main Signals utils 
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))
@@ -43,8 +43,8 @@ ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@ && ./$@ 
 # compile tests automatically
 	cp -r webserv tests/bin/
-	make  re -C  tests/
-	./webserv
+#	make  re -C  tests/
+	./webserv | cat -e > logs/parser_data.log 
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 

@@ -6,50 +6,66 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/15 18:39:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:35:33 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/parser.hpp"
 
-Parser::Parser(void) {}
+Parser::Parser(void) { }
 
-Parser::~Parser(void) {}
+Parser::~Parser(void) { }
 
 Parser::Parser(const std::string &_filename): filename(_filename) {
   std::ifstream   file(filename.data());
   std::string     buffer;
 
-  std::cout << "filename: ->:" << filename << std::endl;
+  assert(file.is_open() == true);
   if (file.bad() || file.fail() || file.eof())
     throw std::logic_error("file no open");
 
-  // avanzo hasta el primer server del archivo de configuracion
-  while (getline(file, buffer, '\n'))
-    if (buffer.find("server") !=  std::string::npos \
-      && buffer.find_first_of("{") != std::string::npos)
-        break;
-
-  std::cout << "buffer: ->:" << buffer << std::endl;
-
-  data.push_back(buffer);
-  while (getline(file, buffer, '\n'))
-    data.push_back(buffer);
+  while (getline(file, buffer, '\n')) {
+    buffer = trim(buffer); // clean line
+    if (buffer.empty() || buffer[0] == '#')
+       continue;
+    else if (buffer.find("include") != std::string::npos)
+      readIncludeError(buffer.substr(buffer.find_first_of(" ") + 1));
+    else
+      data.push_back(buffer);
+  }
 
   file.close();
+  printData();
   assert(file.is_open() == false);
-  getNs();
 }
 
-// voy a parsear la data para buscar los errores
-int  Parser::getNs(void)  {
-  std::vector<std::string>::iterator  it = data.begin();
-  while (it != data.end())  {
-    if  (((*it).find("server") != std::string::npos \
-      && (*it).find("{")  != std::string::npos))
-        NS++;
-    std::cout << *it++ << std::endl;
-  }
-//  std::cout << "NS: " << NS << std::endl;
-  return (NS);
+void  Parser::printData(void) {
+  for (unsigned int i = 0; i < data.size(); i++)
+    std::cout << data[i] << std::endl;
+}
+
+void  Parser::readInclude(std::string fileName) {
+    std::ifstream file(fileName.data());
+    std::string   buffer;
+
+    if (file.bad() || file.fail() || file.eof())
+      throw std::logic_error("file no open");
+
+    while (getline(file, buffer, '\n')) {
+      buffer = trim(buffer);
+      if (buffer.empty() || buffer[0] == '#')
+        continue;
+      else
+        data.push_back(buffer);
+    }
+    file.close();
+}
+
+void Parser::readIncludeError(std::string fileName) {
+  if (fileName[fileName.size() - 1] == ';')
+    fileName[fileName.size() - 1] = '\0';
+  else
+    throw std::runtime_error("no termine en  \";\"");
+
+  readInclude(fileName);
 }

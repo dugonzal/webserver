@@ -1,18 +1,18 @@
 
-name: Hello World
+name: Make && test
 
 on:
   push:
     branches:
-      - master
+      - D-0 
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: archlinux/base 
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Hello World
-      run: sudo apt install zsh && make re
+    - name: make && test 
+      run: sudo pacman -Syu cppunit zsh &&  make re

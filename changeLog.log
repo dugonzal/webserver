@@ -1,0 +1,7 @@
+#reporte de cambios
+
+
+-  23-02-24
+	-	empiezo con el parseo de la data de configuracion empezare con la
+	comprobacion de los posibles errores de la apertura y cierre de los
+	servidores, antes de empezar con la obtencion de la informacion

@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Test.cpp                                           :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 16:13:52 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/23 14:38:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/test.hpp"
-#include <cppunit/TestAssert.h>
+# pragma  once
 
-void TestServer::setUp() {}
-    
-void TestServer::tearDown() {}
-    
-void TestServer::bind() {
-  Server server;
+# include <fstream>
+# include <string>
 
-  std::cout << "TestServer::Example" << std::endl;
-  std::cout << server << std::endl;
-  CPPUNIT_ASSERT(server.setSocket());
-  
-}
-    
-void getNs() {
-}
+bool  errorFile(std::ifstream);
 
+std::string trim(const std::string &);

@@ -6,54 +6,40 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 20:26:13 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:42:33 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include <ostream>
-# include <sys/socket.h>
-# include <arpa/inet.h>
-# include <iostream>
-# include <string>
-# include <exception>
-# include <cstdlib>
-# include <cstring>
-# include <sys/un.h>
-# include <cassert>
-#include "../parser/parser.hpp"
-// hacer la class otrtodoxa romana
+# include "../parser/parser.hpp"
+# include "../utils.hpp"
+
+/*
 namespace ft {
-  class BaseServer;
-}
+    class BaseServer;
+}*/
 
 class BaseServer {
-  
-  protected:
+ protected:
     struct sockaddr_in                  addr;
-    socklen_t                           addrLen; 
-    const  std::string                  host;
+    socklen_t                           addrLen;
+    const  string                       host;
     int                                 port;
     int                                 s;
-  
-  protected:
-    std::map<std::string, std::string>  data;
-    std::vector<std::string>            error_page;
-    std::vector<std::string>            buffers;
+ protected:
+    std::map<string, string>            data;
+    std::vector<string>                 error_page;
+    std::vector<string>                 buffers;
     int                                 *options;
     int                                 opt;
-  //protected:
-  //   BaseServer(const BaseServer&);
-  //  BaseServer &operator=(const BaseServer&);
-  friend std::ostream &operator<<(std::ostream&, const BaseServer&);
-  
-  public:
+ public:
     BaseServer(void);
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
-    BaseServer(const std::string&, int);
+    BaseServer(const string&, int);
     void  setServer(void);
     int   setSocket(void);
     int   getSocket(void) const;
+  friend std::ostream &operator<<(std::ostream&, const BaseServer&);
 };

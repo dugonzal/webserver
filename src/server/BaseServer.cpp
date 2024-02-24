@@ -6,16 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 14:34:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:57:02 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <cerrno>
-#include <cstdio>
-#include <cstring>
 
 BaseServer::BaseServer(void) {
   addrLen = sizeof(addr);
@@ -24,7 +19,7 @@ BaseServer::BaseServer(void) {
 }
 
 BaseServer::BaseServer(const std::string &_host, int _port): \
-  host(_host), port(_port) { }
+  host(_host), port(_port) {}
 
 BaseServer::~BaseServer(void) { close(s); }
 

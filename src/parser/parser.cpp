@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 11:15:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:17:44 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/parser.hpp"
-#include <ostream>
 
 Parser::Parser(void) { }
 
@@ -22,7 +21,6 @@ Parser::Parser(const string &filename): fileName(filename) {
   string     buffer;
 
   file = openFile(fileName);
-  assert(file->is_open() == true);
 
   while (getline(*file, buffer, '\n')) {
     buffer = trim(buffer);
@@ -33,12 +31,9 @@ Parser::Parser(const string &filename): fileName(filename) {
     else
       data.push_back(buffer);
   }
-
-  file->close();
-  delete file;
+  delete file; // el destructor de ifstream cierra el file
   printData();
   setNservers();
-  assert(file->is_open() == false);
 }
 
 void  Parser::printData(void) {
@@ -70,9 +65,9 @@ void  Parser::readInclude(string fdFile) {
     else
       data.push_back(buffer);
   }
-  file->close();
   delete file;
 }
+
 
 void Parser::readIncludeError(string fileName) {
   if (fileName[fileName.size() - 1] == ';')
@@ -88,5 +83,4 @@ void  Parser::setNservers(void) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         nServers++;
-  std::cout << nServers << std::endl;
 }

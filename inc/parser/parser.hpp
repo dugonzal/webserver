@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 10:37:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 12:18:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ class Parser {
     std::size_t          nServers;
     std::vector<string>  data;
  private:
-    ifstream  *openFile(const string&);
     void      setNservers(void);
     void  handlerError(void);
     std::vector<string>::iterator \
       &serverError(std::vector<string>::iterator&);
  public:
     Parser(void);
+    ifstream  *openFile(const string&);
     Parser(const string &_filename);
     ~Parser(void);
     void  readIncludeError(string);

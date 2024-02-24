@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 11:34:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:10:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ int main() {
     // Crea una suite de pruebas vacía
     CppUnit::TestSuite *suite = new CppUnit::TestSuite();
     // Agrega las pruebas de la clase TestExample a la suite de pruebas
-    suite->addTest(new CppUnit::TestCaller<TestServer>("examplet", \
-          &TestServer::example));
-
+    suite->addTest(new CppUnit::TestCaller<TestServer>("openFile", \
+          &TestServer::openFile));
+   suite->addTest(new CppUnit::TestCaller<TestServer>("parser", \
+          &TestServer::parser));
     // Crea un corredor de pruebas de texto y ejecuta la suite de pruebas
-    CppUnit::TextUi::TestRunner runner;
+    CppUnit::TextTestRunner runner;
     runner.addTest(suite);
     bool wasSuccessful = runner.run();
     return wasSuccessful ? 0 : 1;

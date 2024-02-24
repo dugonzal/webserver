@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/24 11:31:56 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/24 12:29:49 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ ${NAME}: ${OBJ} ${I}
 	make  re -C  tests/
 	./webserv | cat -e > logs/parser_data.log 
 	printf "compile done ->: [$@]\n"	
+
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 
 	mkdir -p ${OBJ_DIR}
@@ -53,6 +54,7 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	mkdir -p ${OBJ_DIR}${S_DIR}
 	${CXX} -c $? -o $@ 
 	printf "compile ->: {$?}\n"
+
 clean:
 		rm -rf ${NAME}
 

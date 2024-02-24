@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:31 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 11:18:26 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 11:34:12 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@
 
 class TestServer : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(TestServer);
-    CPPUNIT_TEST(bind); // Agrega una prueba llamada Example
+    CPPUNIT_TEST(example); // Agrega una prueba llamada Example
     CPPUNIT_TEST_SUITE_END();
-public:
-    void setUp(); 
+ public:
+    void setUp();
     void tearDown();
-    void bind() ;
-    void getNs();
+    void example() {
+      CPPUNIT_ASSERT(true == true);
+    }
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TestServer);

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 10:55:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 11:15:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Parser::Parser(const string &filename): fileName(filename) {
   assert(file->is_open() == true);
 
   while (getline(*file, buffer, '\n')) {
-   // buffer = trim(buffer);
+    buffer = trim(buffer);
     if (buffer.empty() || buffer[0] == '#')
        continue;
     else if (buffer.find("include") != string::npos)
@@ -48,7 +48,7 @@ void  Parser::printData(void) {
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
 ifstream *Parser::openFile(const string &fdName) {
-  ifstream  *file = new std::ifstream(fdName.data());
+  ifstream  *file = new ifstream(fdName.data());
   string     buffer;
 
   if (file->bad() || file->fail() || file->eof()) {
@@ -59,19 +59,19 @@ ifstream *Parser::openFile(const string &fdName) {
 }
 
 void  Parser::readInclude(string fdFile) {
-    std::ifstream *file;
-    string   buffer;
+  ifstream *file;
+  string   buffer;
 
-    file = openFile(fdFile);
-    while (getline(*file, buffer, '\n')) {
-     // buffer = trim(buffer);
-      if (buffer.empty() || buffer[0] == '#')
-        continue;
-      else
-        data.push_back(buffer);
-    }
-    file->close();
-    delete file;
+  file = openFile(fdFile);
+  while (getline(*file, buffer, '\n')) {
+    buffer = trim(buffer);
+    if (buffer.empty() || buffer[0] == '#')
+      continue;
+    else
+      data.push_back(buffer);
+  }
+  file->close();
+  delete file;
 }
 
 void Parser::readIncludeError(string fileName) {

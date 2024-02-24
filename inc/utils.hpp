@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 10:42:02 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 11:04:00 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ using std::runtime_error;
 using std::logic_error;
 using std::ifstream;
 
-bool  errorFile(std::ifstream);
-
-std::string trim(const std::string &);
+bool  errorFile(ifstream);
+string trim(const string&);

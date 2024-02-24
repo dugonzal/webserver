@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/12 12:46:49 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/13 04:08:09 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/24 11:27:13 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,16 +28,18 @@ SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 
 OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 
+.SILENT:
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	mkdir -p bin
-	cp -r ../obj/*/* obj/
+	cp -r ../obj/*/*.o ../obj/*.o  obj/
 	$(CXX) $(OBJ_DIR)*.o -o $@ && ./$@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
 	mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) -c $< -o $@
 
 clean:
 	rm -f $(NAME)

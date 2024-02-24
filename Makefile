@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/24 10:57:11 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/24 11:26:44 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SHELL			:=	/bin/zsh
 
 CXX				:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++98
 
-I					:= inc/*/*.hpp
+I					:= inc/*.hpp inc/*/*.hpp
 
 SRC_DIR		:= src/
 
@@ -37,24 +37,22 @@ SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 
 OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 
+.SILENT:
+
 all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
-	echo ${I}
-	sleep 2
 	${CXX} ${OBJ} -o $@
-# compile tests automatically
-	cp -r webserv tests/bin/
-#	make  re -C  tests/
+	make  re -C  tests/
 	./webserv | cat -e > logs/parser_data.log 
-
+	printf "compile done ->: [$@]\n"	
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 
 	mkdir -p ${OBJ_DIR}
 	mkdir -p ${OBJ_DIR}${P_DIR}
 	mkdir -p ${OBJ_DIR}${S_DIR}
 	${CXX} -c $? -o $@ 
-
+	printf "compile ->: {$?}\n"
 clean:
 		rm -rf ${NAME}
 

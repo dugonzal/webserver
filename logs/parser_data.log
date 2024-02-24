@@ -25,4 +25,12 @@ autoindex     off;$
 allow_methods GET POST DELETE;$
 }$
 };$
+server {$
+};$
+server  {$
+};$
+server  {$
+};$
+server  {$
+};$
 $

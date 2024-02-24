@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 12:18:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 13:26:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ class Parser {
     void  readIncludeError(string);
     void  readInclude(string);
     void  printData(void);
+    int   getNservers(void) const;
 };

@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/24 10:50:08 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/24 10:57:11 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@
 # compile tests automatically
 	cp -r webserv tests/bin/
-	make  re -C  tests/
+#	make  re -C  tests/
 	./webserv | cat -e > logs/parser_data.log 
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp

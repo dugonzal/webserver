@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 10:35:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/24 10:55:52 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ Parser::Parser(const string &filename): fileName(filename) {
   assert(file->is_open() == true);
 
   while (getline(*file, buffer, '\n')) {
-    buffer = trim(buffer);
+   // buffer = trim(buffer);
     if (buffer.empty() || buffer[0] == '#')
        continue;
     else if (buffer.find("include") != string::npos)
@@ -64,7 +64,7 @@ void  Parser::readInclude(string fdFile) {
 
     file = openFile(fdFile);
     while (getline(*file, buffer, '\n')) {
-      buffer = trim(buffer);
+     // buffer = trim(buffer);
       if (buffer.empty() || buffer[0] == '#')
         continue;
       else

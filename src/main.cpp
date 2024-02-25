@@ -6,12 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 14:34:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/25 19:47:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/server/BaseServer.hpp"
 # include "../inc/server/config.hpp"
+#include <vector>
 
 /* necesito extraer los datos de configuracion 
  * he creado una clase llamada config que le voy a pasar \
@@ -23,9 +24,7 @@ int main(int ac, const char **av, const char **) {
       av[1] = "conf/default.conf";
   try {
     Config           config;
- //   Server              server;
 
-   // server.setSocket();
     config.parser = Parser(*(++av));
   } catch (std::exception &e)
       { std::cout << "Error: " << e.what() << std::endl; }

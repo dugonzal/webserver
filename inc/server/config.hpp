@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 19:53:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/25 19:27:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,14 @@ namespace ft {
 */
 //template<class T = class std::vector<Server*> >
 class Config {
-    
-  private:
+ private:
   //    T                          _servers;  // voy a usar un vector de punteros a Server para guardar la informacion del archivo de configuracion
         // voy a usar un vector de string para guardar la informacion del archivo de configuracion 
       std::vector<std::string>    _data;
-  public:
+ public:
  //      Signals                     signals;      
         Parser                      parser; 
-    
-  public:
+ public:
       Config(void);
       ~Config(void);
 };

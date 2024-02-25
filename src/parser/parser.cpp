@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/25 17:21:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/25 20:20:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ Parser::Parser(const string &filename): fileName(filename) {
   string     buffer;
 
   file = openFile(fileName);
-
   while (getline(*file, buffer, '\n')) {
     buffer = trim(buffer);
     if (buffer.empty() || buffer[0] == '#')
@@ -33,7 +32,7 @@ Parser::Parser(const string &filename): fileName(filename) {
   }
   delete file; // el destructor de ifstream cierra el file
   setNservers();
-//  printData();
+  printData();
 }
 
 void  Parser::printData(void) {
@@ -43,9 +42,10 @@ void  Parser::printData(void) {
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
 ifstream  *Parser::openFile(const string &fdName) {
-  ifstream  *file = new ifstream(fdName.data());
+  ifstream  *file;
   string    buffer;
 
+  file = new ifstream(fdName.data());
   if (file->bad() || file->fail() || file->eof()) {
     delete file;
     throw(logic_error("file no open"));
@@ -53,7 +53,7 @@ ifstream  *Parser::openFile(const string &fdName) {
   return (file);
 }
 
-void  Parser::readInclude(string fdFile) {
+void  Parser::readInclude(const string &fdFile) {
   ifstream *file;
   string   buffer;
 
@@ -73,13 +73,13 @@ void Parser::readIncludeError(string fileName) {
     fileName[fileName.size() - 1] = '\0';
   else
     throw(runtime_error("no termine en  \";\""));
-
   readInclude(fileName);
 }
 
 void  Parser::setNservers(void) {
-  std::size_t endServer = 0;
+  std::size_t endServer;
 
+  endServer = 0;
   for (unsigned int i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
@@ -89,25 +89,27 @@ void  Parser::setNservers(void) {
   }
   if (nServers != endServer)
     throw(runtime_error("scope server"));
-  handlerParserError();
+  else
+    handlerScopeError();
 }
 
-int  Parser::getNservers(void) const { return (nServers); }
+int  Parser::getNservers(void) const { return(nServers); }
 
-void  Parser::parserError(unsigned int *j) {
+void  Parser::serverError(unsigned int *j) {
   for (unsigned int i = *j; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         throw(runtime_error("server dentro de server"));
+    else if (data[i].find("include") != string::npos)
+        throw(runtime_error("include circular"));
     else if (data[i].find("};") != string::npos)
         break;
   }
 }
 
-void  Parser::handlerParserError(void) {
+void  Parser::handlerScopeError(void) {
   for (unsigned int i = 0; i < data.size(); i++)
     if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos)  
-        parserError(&++i);
+      && data[i].find("{") != string::npos)
+        serverError(&++i);
 }
-

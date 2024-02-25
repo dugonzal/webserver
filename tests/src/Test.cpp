@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 15:11:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/25 21:32:36 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 // usar rutas absolutas para los archivos de test
 void  TestServer::openFile() {
   Parser parser;
+  string  filename = "/home/ciclo/Documentos/42/webserver/conf/default.conf";
 
-  std::ifstream *file = parser.openFile("/home/ciclo/Documentos/42/webserver/conf/default.conf");
+  std::ifstream *file = parser.openFile(filename);
   try {
     CPPUNIT_ASSERT(file->is_open());
     delete file;
@@ -29,6 +30,7 @@ void  TestServer::openFile() {
 void TestServer::parser() {
   Config  config;
   string  filename;
+
   filename = "/home/ciclo/Documentos/42/webserver/conf/default.conf";
   config.parser = Parser(filename);
   CPPUNIT_ASSERT(config.parser.getNservers());

@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/25 17:06:17 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/25 21:29:37 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,12 +43,11 @@ all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@
-	./webserv | cat -e > logs/parser_data.log 
 	make -C tests
+	./webserv | cat -e > logs/parser_data.log 
 	printf "compile done ->: [$@]\n"	
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
-
 	mkdir -p ${OBJ_DIR}
 	mkdir -p ${OBJ_DIR}${P_DIR}
 	mkdir -p ${OBJ_DIR}${S_DIR}
@@ -56,10 +55,11 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	printf "compile ->: {$?}\n"
 
 clean:
+		make clean -C tests
 		rm -rf ${NAME}
 
 fclean: clean
-		make fclean -C  tests
+		make fclean -C tests
 		rm -rf	${OBJ_DIR}
 
 tests:

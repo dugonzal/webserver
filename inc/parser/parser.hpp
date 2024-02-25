@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 13:26:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/25 16:49:34 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ class Parser {
     std::vector<string>  data;
  private:
     void      setNservers(void);
-    void  handlerError(void);
+    void  parserError(unsigned int*);
+    void  handlerParserError(void);
     std::vector<string>::iterator \
       &serverError(std::vector<string>::iterator&);
  public:

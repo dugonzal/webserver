@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/24 12:29:49 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/25 17:06:17 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,14 +37,14 @@ SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 
 OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 
-#.SILENT:
+.SILENT:
 
 all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@
-	make  re -C  tests/
 	./webserv | cat -e > logs/parser_data.log 
+	make -C tests
 	printf "compile done ->: [$@]\n"	
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
@@ -63,9 +63,10 @@ fclean: clean
 		rm -rf	${OBJ_DIR}
 
 tests:
-	make re -C  ./tests/
+	make re -C tests
 
 re: fclean all tests 
+
 
 	
 serv:

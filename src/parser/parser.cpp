@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 15:45:44 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/25 17:21:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/parser.hpp"
-#include <cstddef>
 
 Parser::Parser(void) { }
 
@@ -34,7 +33,7 @@ Parser::Parser(const string &filename): fileName(filename) {
   }
   delete file; // el destructor de ifstream cierra el file
   setNservers();
-  printData();
+//  printData();
 }
 
 void  Parser::printData(void) {
@@ -90,6 +89,25 @@ void  Parser::setNservers(void) {
   }
   if (nServers != endServer)
     throw(runtime_error("scope server"));
+  handlerParserError();
 }
 
 int  Parser::getNservers(void) const { return (nServers); }
+
+void  Parser::parserError(unsigned int *j) {
+  for (unsigned int i = *j; i < data.size(); i++) {
+    if (data[i].find("server") != string::npos \
+      && data[i].find("{") != string::npos)
+        throw(runtime_error("server dentro de server"));
+    else if (data[i].find("};") != string::npos)
+        break;
+  }
+}
+
+void  Parser::handlerParserError(void) {
+  for (unsigned int i = 0; i < data.size(); i++)
+    if (data[i].find("server") != string::npos \
+      && data[i].find("{") != string::npos)  
+        parserError(&++i);
+}
+

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 20:35:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:40:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ Parser::Parser(const string &filename): fileName(filename) {
   handlerScopeLocation();
 }
 
-void  Parser::printData(std::vector<string> tmp) const {
+void  Parser::printData(const std::vector<string> &tmp) const {
   for (unsigned int i = 0; i < tmp.size(); i++)
     cout << tmp[i] << endl;
 }
@@ -97,8 +97,8 @@ int  Parser::getNservers(void) const { return(nServers); }
 
 std::vector<string> Parser::getData(void) const { return(data); }
 
-void  Parser::serverError(unsigned int *j) const {
-  for (unsigned int i = *j; i < data.size(); i++) {
+int Parser::serverError(unsigned int i) const {
+  while (i < data.size()) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         throw(runtime_error("server dentro de server"));
@@ -106,14 +106,18 @@ void  Parser::serverError(unsigned int *j) const {
       throw(runtime_error("include circular"));
     else if (data[i].find("};") != string::npos)
       break;
+    i++;
   }
+  return (i);
 }
 
 void  Parser::handlerScopeError(void) {
   for (unsigned int i = 0; i < data.size(); i++)
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
-        serverError(&++i);
+        i = serverError(++i);
+    else
+      throw(runtime_error("fuera del scope del server"));
 }
 
 int     Parser::parserScopeLocation(unsigned int j) const {

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 20:35:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:27:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ class BaseServer {
  protected:
     struct sockaddr_in                  addr;
     socklen_t                           addrLen;
-    const  string                       host;
-    int                                 port;
     int                                 s;
  protected:
     std::map<string, string>            data;

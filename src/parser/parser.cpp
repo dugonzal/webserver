@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 18:42:17 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:04:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Parser::Parser(const string &filename): fileName(filename) {
   file = openFile(fileName);
   while (getline(*file, buffer, '\n')) {
     buffer = trim(buffer);
-    if (buffer.empty() || buffer[0] == '#')
+    if (skipLine(buffer))
        continue;
     else if (buffer.find("include") != string::npos)
       readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1));
@@ -34,12 +34,11 @@ Parser::Parser(const string &filename): fileName(filename) {
   setNservers();
   checkSemicolon();
   handlerScopeLocation();
-  printData();
 }
 
-void  Parser::printData(void) const {
-  for (unsigned int i = 0; i < data.size(); i++)
-    cout << data[i] << endl;
+void  Parser::printData(std::vector<string> tmp) const {
+  for (unsigned int i = 0; i < tmp.size(); i++)
+    cout << tmp[i] << endl;
 }
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
@@ -62,7 +61,7 @@ void  Parser::readInclude(const string &fdFile) {
   file = openFile(fdFile);
   while (getline(*file, buffer, '\n')) {
     buffer = trim(buffer);
-    if (buffer.empty() || buffer[0] == '#')
+    if (skipLine(buffer))
       continue;
     else
       data.push_back(buffer);
@@ -79,15 +78,14 @@ void Parser::readIncludeError(string fileName) {
 }
 
 void  Parser::setNservers(void) {
-  std::size_t endServer;
+  std::size_t endServer = 0;
 
-  endServer = 0;
   for (unsigned int i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         nServers++;
     else if (data[i].find("};") != string::npos)
-          endServer++;
+      endServer++;
   }
   if (nServers != endServer)
     throw(runtime_error("scope server"));
@@ -105,9 +103,9 @@ void  Parser::serverError(unsigned int *j) const {
       && data[i].find("{") != string::npos)
         throw(runtime_error("server dentro de server"));
     else if (data[i].find("include") != string::npos)
-        throw(runtime_error("include circular"));
+      throw(runtime_error("include circular"));
     else if (data[i].find("};") != string::npos)
-        break;
+      break;
   }
 }
 
@@ -116,16 +114,6 @@ void  Parser::handlerScopeError(void) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         serverError(&++i);
-}
-
-void  Parser::checkSemicolon(void) const {
-  for (unsigned int i = 0; i < data.size(); i++) {
-    if (data[i].find("{") != string::npos \
-      || data[i].find("}") != string::npos)
-        continue;
-    else if (data[i][data[i].size() - 1] != ';')
-      throw(runtime_error("error no termina en semicolon"));
-  }
 }
 
 int     Parser::parserScopeLocation(unsigned int j) {
@@ -142,9 +130,26 @@ int     Parser::parserScopeLocation(unsigned int j) {
   return(j);
 }
 
-void  Parser::handlerScopeLocation(void) {
-  for (unsigned int i = 0; i < data.size(); i++)
-    if (data[i].find("location") != string::npos)
-      parserScopeLocation(i);
+void  Parser::checkSemicolon(void) const {
+  for (unsigned int i = 0; i < data.size(); i++) {
+    if (data[i].find("{") != string::npos \
+      || data[i].find("}") != string::npos)
+        continue;
+    else if (data[i][data[i].size() - 1] != ';')
+      throw(runtime_error("error no termina en semicolon"));
+  }
 }
 
+void  Parser::handlerScopeLocation(void) {
+    int lo = 0;
+    int end = 0;
+  for (unsigned int i = 0; i < data.size(); i++) {
+    if (data[i].find("location") != string::npos && ++lo)
+      parserScopeLocation(i);
+    else if ((data[i].find("}") != string::npos) \
+      && (data[i].size() == 1))
+        end++;
+  }
+  if (lo != end)
+    throw(runtime_error("error location"));
+}

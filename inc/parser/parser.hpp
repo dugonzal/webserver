@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 18:36:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:54:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ class Parser {
     ifstream  *openFile(const string&) const;
     void      handlerScopeLocation(void);
     int      parserScopeLocation(unsigned int);
+ private:
  public:
     Parser(void);
     Parser(const string&);
     ~Parser(void);
  public:
-    void  printData(void) const;
+    void  printData(std::vector<string>) const;
     int   getNservers(void) const;
     std::vector<string> getData(void) const;
 };

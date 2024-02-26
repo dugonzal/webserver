@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 14:41:34 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:03:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,4 @@ using std::ifstream;
 
 bool  errorFile(ifstream);
 string trim(const string&);
+bool  skipLine(const string&);

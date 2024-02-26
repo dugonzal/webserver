@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 16:25:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:53:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 # include "../parser/parser.hpp"
 # include "../utils.hpp"
-
-/*
-namespace ft {
-    class BaseServer;
-}*/
 
 class BaseServer {
  protected:
@@ -28,13 +23,13 @@ class BaseServer {
     int                                 port;
     int                                 s;
  protected:
-    BaseServer(std::vector<string>);
     std::map<string, string>            data;
     std::vector<string>                 error_page;
     std::vector<string>                 buffer;
     int                                 *options;
     int                                 opt;
  public:
+    BaseServer(std::vector<string>);
     BaseServer(void);
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;

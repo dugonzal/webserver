@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 16:26:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:51:14 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@
 # include "Server.hpp"
 # include "../Signals.hpp"
 /*
-namespace ft {
-    class Config;
-}
-*/
-
-/*
  * voy a usar el vector de servidores para obtener la data puedo crear una pequeña funcoion que parsee y comprueba 
  * la informcaion dentro del scope del servidor, cada server tendra un vector de string buffer 
  * que recibira el scope del buffer una vez que el scope este parceado
@@ -34,13 +28,14 @@ namespace ft {
 class Config {
  private:
   std::vector<Server*>  servers;
+  Parser                parser;
+  Signals               signals;
  private:
+  Config(void);
   void  setServers(void);
  public:
-        Signals                     signals;
-        Parser                      parser;
  public:
-      Config(void);
-      ~Config(void);
+  Config(const string&);
+  ~Config(void);
 };
 

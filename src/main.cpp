@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 08:51:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:10:45 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int main(int ac, const char **av, const char **) {
   if (ac != 2)
       av[1] = "conf/default.conf";
   try {
-    Config           config;
-
-    config.parser = Parser(*(++av));
+    Config           config(*(++av));
   } catch (std::exception &e)
       { std::cout << "Error: " << e.what() << std::endl; }
   return (0);

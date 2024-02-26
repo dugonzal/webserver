@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 16:30:44 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:26:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@
 }*/
 
 void TestServer::parser() {
-  Config  config;
-  string  filename;
+  string filename = "/home/ciclo/Documentos/42/webserver/conf/default.conf";
+  Parser  parser(filename);
 
-  filename = "/home/ciclo/Documentos/42/webserver/conf/default.conf";
-  config.parser = Parser(filename);
-  CPPUNIT_ASSERT(config.parser.getNservers());
+  CPPUNIT_ASSERT(parser.getNservers());
 }
 
 void TestServer::setUp() {}

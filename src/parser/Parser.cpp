@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.cpp                                         :+:      :+:    :+:   */
+/*   Parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 20:04:39 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:35:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/parser/parser.hpp"
+# include "../../inc/parser/Parser.hpp"
 
 Parser::Parser(void) { }
 
@@ -116,7 +116,7 @@ void  Parser::handlerScopeError(void) {
         serverError(&++i);
 }
 
-int     Parser::parserScopeLocation(unsigned int j) {
+int     Parser::parserScopeLocation(unsigned int j) const {
   if (data[j].find("{") == string::npos \
     || data[j].find_first_of("/") == string::npos)
       throw(runtime_error("error scope location"));

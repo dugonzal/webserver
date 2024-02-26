@@ -6,12 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 20:10:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:36:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/server/BaseServer.hpp"
-# include "../inc/server/config.hpp"
+# include "../inc/server/Config.hpp"
 
 /* necesito extraer los datos de configuracion 
  * he creado una clase llamada config que le voy a pasar \

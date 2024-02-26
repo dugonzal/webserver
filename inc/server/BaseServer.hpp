@@ -6,14 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 19:53:03 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:35:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include "../parser/parser.hpp"
-# include "../utils.hpp"
+# include "../parser/Parser.hpp"
+# include "../Utils.hpp"
 
 class BaseServer {
  protected:

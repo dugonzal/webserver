@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    runs-on: archlinux/base 
+    runs-on: ubuntu-lastest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
     - name: make && test 
-      run: sudo pacman -Syu cppunit zsh &&  make re
+      run: sudo apt install libcppunit-dev zsh &&  make re

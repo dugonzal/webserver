@@ -1,3 +1,5 @@
+/home/ciclo/Documentos/42/webserver/conf/location.conf;$
+/home/ciclo/Documentos/42/webserver/conf/err.conf;$
 server {$
 worker_connections 1024;$
 listen			80;$
@@ -10,14 +12,15 @@ server_name		_;$
 root			public/;$
 index			index.php;$
 location /home {$
-index index.html$
+index index.html;$
 }$
 location / {$
 autoindex on;$
 allow_methods GET POST DELETE;$
 }$
-location /index {$
-index         log.py$
+location / {$
+}$
+index         log.py;$
 cgi_path      /usr/bin/python;$
 cgi_ext       .py;$
 autoindex     off;$

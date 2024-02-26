@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/25 19:27:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:26:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,20 @@ namespace ft {
     class Config;
 }
 */
-//template<class T = class std::vector<Server*> >
+
+/*
+ * voy a usar el vector de servidores para obtener la data puedo crear una pequeña funcoion que parsee y comprueba 
+ * la informcaion dentro del scope del servidor, cada server tendra un vector de string buffer 
+ * que recibira el scope del buffer una vez que el scope este parceado
+ * */
 class Config {
  private:
-  //    T                          _servers;  // voy a usar un vector de punteros a Server para guardar la informacion del archivo de configuracion
-        // voy a usar un vector de string para guardar la informacion del archivo de configuracion 
-      std::vector<std::string>    _data;
+  std::vector<Server*>  servers;
+ private:
+  void  setServers(void);
  public:
- //      Signals                     signals;      
-        Parser                      parser; 
+        Signals                     signals;
+        Parser                      parser;
  public:
       Config(void);
       ~Config(void);

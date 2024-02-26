@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 10:42:33 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:25:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ class BaseServer {
     int                                 port;
     int                                 s;
  protected:
+    BaseServer(std::vector<string>);
     std::map<string, string>            data;
     std::vector<string>                 error_page;
-    std::vector<string>                 buffers;
+    std::vector<string>                 buffer;
     int                                 *options;
     int                                 opt;
  public:
     BaseServer(void);
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
-    BaseServer(const string&, int);
     void  setServer(void);
     int   setSocket(void);
     int   getSocket(void) const;

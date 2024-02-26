@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/25 20:20:47 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:42:17 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,24 @@ Parser::Parser(const string &filename): fileName(filename) {
     if (buffer.empty() || buffer[0] == '#')
        continue;
     else if (buffer.find("include") != string::npos)
-      readIncludeError(buffer.substr(buffer.find_first_of(" ") + 1));
+      readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1));
     else
       data.push_back(buffer);
   }
   delete file; // el destructor de ifstream cierra el file
   setNservers();
+  checkSemicolon();
+  handlerScopeLocation();
   printData();
 }
 
-void  Parser::printData(void) {
+void  Parser::printData(void) const {
   for (unsigned int i = 0; i < data.size(); i++)
     cout << data[i] << endl;
 }
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
-ifstream  *Parser::openFile(const string &fdName) {
+ifstream  *Parser::openFile(const string &fdName) const {
   ifstream  *file;
   string    buffer;
 
@@ -95,7 +97,9 @@ void  Parser::setNservers(void) {
 
 int  Parser::getNservers(void) const { return(nServers); }
 
-void  Parser::serverError(unsigned int *j) {
+std::vector<string> Parser::getData(void) const { return(data); }
+
+void  Parser::serverError(unsigned int *j) const {
   for (unsigned int i = *j; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
@@ -113,3 +117,34 @@ void  Parser::handlerScopeError(void) {
       && data[i].find("{") != string::npos)
         serverError(&++i);
 }
+
+void  Parser::checkSemicolon(void) const {
+  for (unsigned int i = 0; i < data.size(); i++) {
+    if (data[i].find("{") != string::npos \
+      || data[i].find("}") != string::npos)
+        continue;
+    else if (data[i][data[i].size() - 1] != ';')
+      throw(runtime_error("error no termina en semicolon"));
+  }
+}
+
+int     Parser::parserScopeLocation(unsigned int j) {
+  if (data[j].find("{") == string::npos \
+    || data[j].find_first_of("/") == string::npos)
+      throw(runtime_error("error scope location"));
+
+  while (++j < data.size()) {
+    if (data[j].find("}") != string::npos)
+      break;
+    else if (data[j].find("location") != string::npos)
+      throw(runtime_error("error parser location"));
+  }
+  return(j);
+}
+
+void  Parser::handlerScopeLocation(void) {
+  for (unsigned int i = 0; i < data.size(); i++)
+    if (data[i].find("location") != string::npos)
+      parserScopeLocation(i);
+}
+

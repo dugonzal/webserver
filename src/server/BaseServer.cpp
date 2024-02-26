@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 16:57:02 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:47:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ BaseServer::BaseServer(void) {
   bzero(&addr, sizeof(addr));
 }
 
-BaseServer::BaseServer(const std::string &_host, int _port): \
-  host(_host), port(_port) {}
+BaseServer::BaseServer(std::vector<string> tmp): buffer(tmp) {
+  for (unsigned int i = 0; i < buffer.size(); i++)
+    cout << buffer[i] << endl;
+}
 
 BaseServer::~BaseServer(void) { close(s); }
 

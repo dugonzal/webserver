@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 21:40:39 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:57:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,13 +123,13 @@ void  Parser::handlerScopeError(void) {
 int     Parser::parserScopeLocation(unsigned int j) const {
   if (data[j].find("{") == string::npos \
     || data[j].find_first_of("/") == string::npos)
-      throw(runtime_error("error scope location"));
+      throw(runtime_error("scope location"));
 
   while (++j < data.size()) {
     if (data[j].find("}") != string::npos)
       break;
     else if (data[j].find("location") != string::npos)
-      throw(runtime_error("error parser location"));
+      throw(runtime_error("parser location"));
   }
   return(j);
 }
@@ -140,7 +140,7 @@ void  Parser::checkSemicolon(void) const {
       || data[i].find("}") != string::npos)
         continue;
     else if (data[i][data[i].size() - 1] != ';')
-      throw(runtime_error("error no termina en semicolon"));
+      throw(runtime_error("no termina en semicolon"));
   }
 }
 
@@ -155,5 +155,5 @@ void  Parser::handlerScopeLocation(void) {
         end++;
   }
   if (lo != end)
-    throw(runtime_error("error location"));
+    throw(runtime_error("location"));
 }

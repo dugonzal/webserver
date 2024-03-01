@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/26 20:33:45 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/02/29 17:38:06 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SHELL			:=	/bin/zsh
 
 CXX				:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++98
 
-I					:= inc/*.hpp inc/*/*.hpp
+I					:= inc/
 
 SRC_DIR		:= src/
 
@@ -42,7 +42,7 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
-	${CXX} ${OBJ} -o $@
+	${CXX} -I ${I}  ${OBJ} -o $@
 	make -C tests
 	./webserv | cat -e > logs/parser_data.log 
 	printf "compile done ->: [$@]\n"	

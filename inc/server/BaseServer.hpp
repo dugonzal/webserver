@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 21:27:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:31:55 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma once
+# ifndef  BASESERVER_HPP
+# define  BASESERVER_HPP
 
 # include "../parser/Parser.hpp"
 # include "../Utils.hpp"
@@ -36,3 +37,5 @@ class BaseServer {
     int   getSocket(void) const;
   friend std::ostream &operator<<(std::ostream&, const BaseServer&);
 };
+
+# endif

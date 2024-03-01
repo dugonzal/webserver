@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:37:20 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 13:58:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:31:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma once
+# ifndef  SIGNALS_HPP
+# define  SIGNALS_HPP
 
 # include <csignal>
 
@@ -22,3 +23,5 @@ class Signals {
     ~Signals(void);
     void setSignals(void);
 };
+
+# endif

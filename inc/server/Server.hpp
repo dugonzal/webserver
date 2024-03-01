@@ -6,20 +6,25 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/24 10:53:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:37:14 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma once
+# ifndef  SERVER_HPP
+# define  SERVER_HPP
 
 # include "BaseServer.hpp"
+# include "Config.hpp"
 
 class Server: public BaseServer {
- protected:
+ private:
 //    Server(const Server&);
  //   Server &operator=(const Server&);
  public:
     Server(void);
     ~Server(void);
-    BaseServer *clone(void) const;
+    void  getServer(void) const;
+  BaseServer *clone(void) const;
 };
+
+#endif

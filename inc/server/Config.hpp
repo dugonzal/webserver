@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 20:35:53 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:32:26 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma once
+# ifndef CONFIG_HPP
+# define CONFIG_HPP
 
 # include  <iostream>
 # include <string>
@@ -27,15 +28,15 @@
  * */
 class Config {
  private:
-  std::vector<Server*>  servers;
   Parser                parser;
   Signals               signals;
  private:
-  Config(void);
   void  setServers(void);
  public:
+  Config(void);
  public:
   Config(const string&);
   ~Config(void);
 };
 
+# endif

@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/29 17:38:06 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/03 09:17:50 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
-	${CXX} -I ${I}  ${OBJ} -o $@
+	${CXX} ${OBJ} -o $@ && ./$@
 	make -C tests
 	./webserv | cat -e > logs/parser_data.log 
 	printf "compile done ->: [$@]\n"	

@@ -6,15 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 13:47:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:06:53 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 
-BaseServer::BaseServer(void) {
-  addrLen = sizeof(addr);
-  opt = 1;
+BaseServer::BaseServer(void): addrLen(sizeof(addr)), opt(1) {
   bzero(&addr, sizeof(addr));
 }
 

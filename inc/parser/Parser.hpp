@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 17:38:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/02 19:39:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef  PARSER_HPP
-# define  PARSER_HPP
+# pragma once
 
 # include "../Utils.hpp"
 
@@ -39,5 +38,3 @@ class Parser {
     std::vector<string> getData(void) const;
     int   getNservers(void) const;
 };
-
-# endif

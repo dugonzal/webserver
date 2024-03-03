@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 17:30:54 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 09:28:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef UTILS_HPP
-# define UTILS_HPP 
+# pragma once
 
 # include <sys/un.h>
 # include <sys/socket.h>
@@ -21,10 +20,12 @@
 # include <map>
 # include <string>
 # include <iostream>
+# include <ostream>
 # include <vector>
 # include <fstream>
 # include <cstdlib>
 # include <cassert>
+
 
 using std::cout;
 using std::endl;
@@ -36,5 +37,3 @@ using std::ifstream;
 bool  errorFile(ifstream);
 string trim(const string&);
 bool  skipLine(const string&);
-
-# endif

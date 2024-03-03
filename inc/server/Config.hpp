@@ -6,21 +6,17 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 17:32:26 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 09:27:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef CONFIG_HPP
-# define CONFIG_HPP
+# pragma once
 
-# include  <iostream>
-# include <string>
-# include <fstream>
-# include <cstdlib>
-# include <vector>
 # include "../parser/Parser.hpp"
-# include "Server.hpp"
 # include "../Signals.hpp"
+# include "Server.hpp"
+# include "../Utils.hpp"
+
 /*
  * voy a usar el vector de servidores para obtener la data puedo crear una pequeña funcoion que parsee y comprueba 
  * la informcaion dentro del scope del servidor, cada server tendra un vector de string buffer 
@@ -28,8 +24,9 @@
  * */
 class Config {
  private:
-  Parser                parser;
-  Signals               signals;
+  Parser  parser;
+  Signals signals;
+  Server  s;
  private:
   void  setServers(void);
  public:
@@ -38,5 +35,3 @@ class Config {
   Config(const string&);
   ~Config(void);
 };
-
-# endif

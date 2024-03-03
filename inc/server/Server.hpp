@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/29 17:37:14 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 09:23:45 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define  SERVER_HPP
 
 # include "BaseServer.hpp"
-# include "Config.hpp"
+
 
 class Server: public BaseServer {
  private:
@@ -24,7 +24,7 @@ class Server: public BaseServer {
     Server(void);
     ~Server(void);
     void  getServer(void) const;
-  BaseServer *clone(void) const;
+    BaseServer *clone(void) const;
 };
 
 #endif

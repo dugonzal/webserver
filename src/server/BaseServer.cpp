@@ -6,22 +6,33 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/02 20:06:53 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 11:02:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 
-BaseServer::BaseServer(void): addrLen(sizeof(addr)), opt(1) {
-  bzero(&addr, sizeof(addr));
+BaseServer::BaseServer(void): addrLen(sizeof(addr)), s(-1), opt(1) {
+  ::bzero(&addr, sizeof(addr));
 }
 
-BaseServer::BaseServer(std::vector<string> tmp): buffer(tmp) {
-  for (unsigned int i = 0; i < buffer.size(); i++)
-    cout << buffer[i] << endl;
+BaseServer::BaseServer(const BaseServer &copy): \
+  addrLen(copy.addrLen), s(copy.s), opt(copy.opt) { }
+
+BaseServer &BaseServer::operator=(const BaseServer &copy) {
+  if (this != &copy) {
+    addr = copy.addr;
+    addrLen = copy.addrLen;
+    s = copy.s;
+    data = copy.data;
+    error_page = copy.error_page;
+    buffer = copy.buffer;
+    options = copy.options;
+  }
+  return (*this);
 }
 
-BaseServer::~BaseServer(void) { close(s); }
+BaseServer::~BaseServer(void) { ::close(s); }
 
 int BaseServer::setSocket(void) {
   if ((this->s = socket(AF_INET, SOCK_STREAM, 0)) < 0)

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/26 21:57:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 10:08:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 Parser::Parser(void) { }
 
 Parser::~Parser(void) { }
+
+Parser::Parser(const Parser &copy): \
+  fileName(copy.fileName), nServers(copy.nServers), data(copy.data) { }
+
+Parser &Parser::operator=(const Parser &copy) {
+  if (this != &copy) {
+    fileName = copy.fileName;
+    nServers = copy.nServers;
+    data = copy.data;
+  }
+  return (*this);
+}
 
 Parser::Parser(const string &filename): fileName(filename) {
   ifstream   *file;

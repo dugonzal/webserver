@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/02 19:39:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 10:25:46 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ class Parser {
     int       parserScopeLocation(unsigned int) const;
  public:
     Parser(void);
+    Parser(const Parser&);
+    Parser &operator=(const Parser&);
     Parser(const string&);
     ~Parser(void);
  public:

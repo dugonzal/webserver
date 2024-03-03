@@ -1,3 +1,6 @@
+$
+host: 3$
+$
 server {$
 worker_connections 1024;$
 listen			80;$
@@ -23,52 +26,9 @@ cgi_ext       .py;$
 autoindex     off;$
 allow_methods GET POST DELETE;$
 }$
-location / {$
-autoindex on;$
-allow_methods GET POST DELETE;$
-}$
-location / {$
-index         log.py;$
-cgi_path      /usr/bin/python;$
-cgi_ext       .py;$
-autoindex     off;$
-allow_methods GET POST DELETE;$
-}$
-location / {$
-autoindex on;$
-allow_methods GET POST DELETE;$
-}$
-location / {$
-index         log.py;$
-cgi_path      /usr/bin/python;$
-cgi_ext       .py;$
-autoindex     off;$
-allow_methods GET POST DELETE;$
-}$
-location / {$
-autoindex on;$
-allow_methods GET POST DELETE;$
-}$
-location / {$
-index         log.py;$
-cgi_path      /usr/bin/python;$
-cgi_ext       .py;$
-autoindex     off;$
-allow_methods GET POST DELETE;$
-}$
-location / {$
-autoindex on;$
-allow_methods GET POST DELETE;$
-}$
-location / {$
-index         log.py;$
-cgi_path      /usr/bin/python;$
-cgi_ext       .py;$
-autoindex     off;$
-allow_methods GET POST DELETE;$
-}$
 };$
 server {$
 };$
 server  {$
 };$
+$

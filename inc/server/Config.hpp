@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 09:27:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 10:04:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@
 class Config {
  private:
   Parser  parser;
-  Signals signals;
   Server  s;
+  Signals signals;
  private:
+  Config(void);
   void  setServers(void);
  public:
-  Config(void);
  public:
   Config(const string&);
   ~Config(void);

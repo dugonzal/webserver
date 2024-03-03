@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Parser.hpp                                         :+:      :+:    :+:   */
+/*   BaseParser.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 10:25:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:23:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # include "../Utils.hpp"
 
-class Parser {
+class BaseParser {
  private:
     string               fileName;
     std::size_t          nServers;
@@ -30,11 +30,11 @@ class Parser {
     void      handlerScopeLocation(void);
     int       parserScopeLocation(unsigned int) const;
  public:
-    Parser(void);
-    Parser(const Parser&);
-    Parser &operator=(const Parser&);
-    Parser(const string&);
-    ~Parser(void);
+    BaseParser(void);
+    BaseParser(const BaseParser&);
+    BaseParser &operator=(const BaseParser&);
+    BaseParser(const string&);
+    ~BaseParser(void);
  public:
     void  printData(const std::vector<string>&) const;
     std::vector<string> getData(void) const;

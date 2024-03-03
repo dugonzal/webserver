@@ -11,9 +11,10 @@ server {$
 listen			default_server;$
 server_name		_;$
 root			public/;$
-index			index.php;$
+index			index.html;$
 location /home {$
 index index.html;$
+autoindex on;$
 }$
 location / {$
 autoindex on;$

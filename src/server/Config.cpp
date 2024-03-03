@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 11:05:57 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:26:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Config::Config(void) { }
 Config::~Config(void) { }
 
 Config::Config(const string &filename) {
-  parser = Parser(filename);
+  parser = BaseParser(filename);
   s.setSocket();
   setServers();
 }

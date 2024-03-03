@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Parser.cpp                                         :+:      :+:    :+:   */
+/*   BaseParser.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 10:08:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:25:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/parser/Parser.hpp"
+# include "../../inc/parser/BaseParser.hpp"
 
-Parser::Parser(void) { }
+BaseParser::BaseParser(void) { }
 
-Parser::~Parser(void) { }
+BaseParser::~BaseParser(void) { }
 
-Parser::Parser(const Parser &copy): \
+BaseParser::BaseParser(const BaseParser &copy): \
   fileName(copy.fileName), nServers(copy.nServers), data(copy.data) { }
 
-Parser &Parser::operator=(const Parser &copy) {
+BaseParser &BaseParser::operator=(const BaseParser &copy) {
   if (this != &copy) {
     fileName = copy.fileName;
     nServers = copy.nServers;
@@ -28,7 +28,7 @@ Parser &Parser::operator=(const Parser &copy) {
   return (*this);
 }
 
-Parser::Parser(const string &filename): fileName(filename) {
+BaseParser::BaseParser(const string &filename): fileName(filename) {
   ifstream   *file;
   string     buffer;
 
@@ -48,13 +48,13 @@ Parser::Parser(const string &filename): fileName(filename) {
   handlerScopeLocation();
 }
 
-void  Parser::printData(const std::vector<string> &tmp) const {
+void  BaseParser::printData(const std::vector<string> &tmp) const {
   for (unsigned int i = 0; i < tmp.size(); i++)
     cout << tmp[i] << endl;
 }
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
-ifstream  *Parser::openFile(const string &fdName) const {
+ifstream  *BaseParser::openFile(const string &fdName) const {
   ifstream  *file;
   string    buffer;
 
@@ -66,7 +66,7 @@ ifstream  *Parser::openFile(const string &fdName) const {
   return (file);
 }
 
-void  Parser::readInclude(const string &fdFile) {
+void  BaseParser::readInclude(const string &fdFile) {
   ifstream *file;
   string   buffer;
 
@@ -81,7 +81,7 @@ void  Parser::readInclude(const string &fdFile) {
   delete file;
 }
 
-void Parser::readIncludeError(string fileName) {
+void BaseParser::readIncludeError(string fileName) {
   if (fileName[fileName.size() - 1] == ';')
     fileName[fileName.size() - 1] = '\0';
   else
@@ -89,7 +89,7 @@ void Parser::readIncludeError(string fileName) {
   readInclude(fileName);
 }
 
-void  Parser::setNservers(void) {
+void  BaseParser::setNservers(void) {
   std::size_t endServer = 0;
 
   for (unsigned int i = 0; i < data.size(); i++) {
@@ -105,11 +105,11 @@ void  Parser::setNservers(void) {
     handlerScopeError();
 }
 
-int  Parser::getNservers(void) const { return(nServers); }
+int  BaseParser::getNservers(void) const { return(nServers); }
 
-std::vector<string> Parser::getData(void) const { return(data); }
+std::vector<string> BaseParser::getData(void) const { return(data); }
 
-int Parser::serverError(unsigned int i) const {
+int BaseParser::serverError(unsigned int i) const {
   while (i < data.size()) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
@@ -123,7 +123,7 @@ int Parser::serverError(unsigned int i) const {
   return (i);
 }
 
-void  Parser::handlerScopeError(void) {
+void  BaseParser::handlerScopeError(void) {
   for (unsigned int i = 0; i < data.size(); i++)
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
@@ -132,7 +132,7 @@ void  Parser::handlerScopeError(void) {
       throw(runtime_error("fuera del scope del server"));
 }
 
-int     Parser::parserScopeLocation(unsigned int j) const {
+int     BaseParser::parserScopeLocation(unsigned int j) const {
   if (data[j].find("{") == string::npos \
     || data[j].find_first_of("/") == string::npos)
       throw(runtime_error("scope location"));
@@ -146,7 +146,7 @@ int     Parser::parserScopeLocation(unsigned int j) const {
   return(j);
 }
 
-void  Parser::checkSemicolon(void) const {
+void  BaseParser::checkSemicolon(void) const {
   for (unsigned int i = 0; i < data.size(); i++) {
     if (data[i].find("{") != string::npos \
       || data[i].find("}") != string::npos)
@@ -156,7 +156,7 @@ void  Parser::checkSemicolon(void) const {
   }
 }
 
-void  Parser::handlerScopeLocation(void) {
+void  BaseParser::handlerScopeLocation(void) {
     int lo = 0;
     int end = 0;
   for (unsigned int i = 0; i < data.size(); i++) {

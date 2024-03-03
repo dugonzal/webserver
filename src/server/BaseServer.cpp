@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 11:02:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:13:55 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ int BaseServer::setSocket(void) {
 
   if (listen(s, 1024) < 0)
     throw std::logic_error("listen failed");
+  return (s);
+}
+
 /*  int sN;
   if ((sN = accept(this->s, (struct sockaddr *)&addr, &addrLen)) < 0)
     throw std::logic_error("accept failed");
@@ -75,16 +78,13 @@ int BaseServer::setSocket(void) {
   send(sN, response.data(), response.size(), 0);
   close(sN);
 */
-  return (s);
-}
 
 int   BaseServer::getSocket(void) const { return (s); }
 /*
  * el socket tiene 2 argumentos
  * 0 -> familia selecciona el tipo de comunicacion en este caso es, AF_INET or AF_INET6
  * * */
-void BaseServer::setServer(void) {
-}
+void BaseServer::setServer(void) {}
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {
   os << "host: " << copy.getSocket() << std::endl;

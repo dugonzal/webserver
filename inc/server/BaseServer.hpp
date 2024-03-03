@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 10:41:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:24:46 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include "../parser/Parser.hpp"
+# include "../parser/BaseParser.hpp"
 # include "../Utils.hpp"
 
 class BaseServer {

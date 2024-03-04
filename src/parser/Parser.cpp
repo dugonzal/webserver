@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
+/*   Parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:31:44 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/03 13:45:34 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/server/Server.hpp"
+# include "../../inc/parser/Parser.hpp"
 
-Server::Server(void) {
-  std::cout << "" << std::endl;
-}
+Parser::Parser(void) { }
 
-Server::~Server(void) {
-  std::cout << "" << std::endl;
-}
+Parser::~Parser(void) {}
 
-Server::Server(const Server &copy): BaseServer(copy) { }
+Parser::Parser(const string &filename): \
+  BaseParser(filename) { }
 
-Server &Server::operator=(const Server &copy) {
+Parser::Parser(const Parser &copy): BaseParser(copy) {}
+
+Parser &Parser::operator=(const Parser &copy) {
   if (this != &copy)
-    BaseServer::operator=(copy);
+    BaseParser::operator=(copy);
   return (*this);
 }
 
-
-BaseServer *Server::clone(void) const {
-  return (new Server(*this));
-}

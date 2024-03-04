@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 09:23:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:31:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 class Server: public BaseServer {
  private:
-//    Server(const Server&);
- //   Server &operator=(const Server&);
+    Server(const Server&);
+    Server &operator=(const Server&);
  public:
     Server(void);
     ~Server(void);

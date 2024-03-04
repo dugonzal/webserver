@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/03 13:24:30 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/03 13:38:27 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC_DIR		:= src/
 OBJ_DIR		:= obj/
 
 P_DIR			:= parser/
-parser		:= BaseParser
+parser		:= BaseParser Parser
 
 S_DIR			:= server/
 server		:= BaseServer Server Config

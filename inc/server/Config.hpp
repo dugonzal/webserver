@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:26:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:38:48 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include "../parser/BaseParser.hpp"
+# include "../parser/Parser.hpp"
 # include "../Signals.hpp"
 # include "Server.hpp"
 # include "../Utils.hpp"
@@ -24,7 +24,7 @@
  * */
 class Config {
  private:
-  BaseParser  parser;
+  Parser  parser;
   Server  s;
   Signals signals;
  private:

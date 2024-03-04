@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
+/*   Parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:31:44 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/03/03 13:33:53 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/03 13:46:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/server/Server.hpp"
+# pragma once
 
-Server::Server(void) {
-  std::cout << "" << std::endl;
-}
+# include "BaseParser.hpp"
+# include "../Utils.hpp"
 
-Server::~Server(void) {
-  std::cout << "" << std::endl;
-}
+class Parser: public BaseParser {
+// private:
 
-Server::Server(const Server &copy): BaseServer(copy) { }
-
-Server &Server::operator=(const Server &copy) {
-  if (this != &copy)
-    BaseServer::operator=(copy);
-  return (*this);
-}
-
-
-BaseServer *Server::clone(void) const {
-  return (new Server(*this));
-}
+  public:
+    Parser(void);
+    Parser(const string&);
+    ~Parser(void);
+    Parser(const Parser&);
+    Parser &operator=(const Parser&);
+};

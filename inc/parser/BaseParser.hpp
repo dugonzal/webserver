@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:23:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/03 13:41:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "../Utils.hpp"
 
 class BaseParser {
- private:
+ protected:
     string               fileName;
     std::size_t          nServers;
     std::vector<string>  data;
@@ -34,7 +34,8 @@ class BaseParser {
     BaseParser(const BaseParser&);
     BaseParser &operator=(const BaseParser&);
     BaseParser(const string&);
-    ~BaseParser(void);
+    ~BaseParser(void); // esta clase termina siendo abstracta
+    //virtual ~BaseParser(void) = 0;
  public:
     void  printData(const std::vector<string>&) const;
     std::vector<string> getData(void) const;

@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/03 13:38:27 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/04 12:53:55 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,18 +55,14 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	printf "compile ->: {$?}\n"
 
 clean:
-		make clean -C tests
+		make clean -C ./tests
 		rm -rf ${NAME}
 
 fclean: clean
-		make fclean -C tests
+		make fclean -C ./tests
 		rm -rf	${OBJ_DIR}
 
-tests:
-	make re -C tests
-
-re: fclean all tests 
-
+re: fclean all
 
 	
 serv:

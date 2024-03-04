@@ -5,9 +5,7 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-
-      - run:   ls ${{ github.workspace }}
-      - run: sudo apt update && sudo apt install libcppunit-dev
+      - run: sudo apt update && sudo apt install zsh libcppunit-dev
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -15,5 +13,5 @@ jobs:
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }} && make re
       - run: echo "🍏 This job's status is ${{ job.status }}."

@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.hpp                                          :+:      :+:    :+:   */
+/*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 14:38:56 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/02/29 17:38:57 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma  once
+# include "../inc/Utils.hpp"
 
-# include <fstream>
-# include <string>
+bool  skipLine(const string &line) {
+  if (line.empty() || line[0] == '#')
+      return(true);
+  return(false);
+}
+string trim(const string &line) {
+  std::size_t first = line.find_first_not_of(" \t\v\f\r");
 
-bool  errorFile(std::ifstream);
+  if (first == string::npos)
+    return ("");
 
-std::string trim(const std::string &);
+  std::size_t last = line.find_last_not_of(" \t\v\f\r");
+
+  return (line.substr(first, ((last - first) + 1)));
+}

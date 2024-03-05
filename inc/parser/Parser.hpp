@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.cpp                                          :+:      :+:    :+:   */
+/*   Parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 14:36:02 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/03/03 13:33:53 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/05 12:27:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/utils.hpp"
+# pragma once
 
-std::string trim(const std::string &line) {
-  std::size_t first = line.find_first_not_of(" \t\v\f\r");
+# include "BaseParser.hpp"
+# include "../Utils.hpp"
 
-  if (first == std::string::npos)
-    return ("");
-
-  std::size_t last = line.find_last_not_of(" \t\v\f\r");
-
-  return (line.substr(first, ((last - first) + 1)));
-}
-
+class Parser: public BaseParser {
+ private:
+  vector<string>  **dataServers;
+ public:
+  Parser(void);
+  ~Parser(void);
+  Parser(const Parser&);
+  Parser(const string&);
+  Parser &operator=(const Parser&);
+};

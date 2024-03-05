@@ -1,42 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.hpp                                         :+:      :+:    :+:   */
+/*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 13:58:05 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/05 10:56:57 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
+# include <sys/un.h>
+# include <sys/socket.h>
+# include <arpa/inet.h>
 # include <unistd.h>
+# include <stdexcept>
 # include <map>
 # include <string>
 # include <iostream>
+# include <ostream>
 # include <vector>
 # include <fstream>
 # include <cstdlib>
+# include <cstddef>
 # include <cassert>
 
-# include "../utils.hpp"
+using std::cout;
+using std::endl;
+using std::string;
+using std::runtime_error;
+using std::logic_error;
+using std::ifstream;
+using std::vector;
+using std::size_t;
+using std::map;
+using std::ostream;
 
-class Parser {
- private:
-    std::string               filename;
-    std::size_t               nServers;
-    std::vector<std::string>  data;
- private:
-    void  handlerError(void);
-    std::vector<std::string>::iterator  \
-      &serverError(std::vector<std::string>::iterator &);
- public:
-    Parser(void);
-    Parser(const std::string &);
-    ~Parser(void);
-    void  readIncludeError(std::string);
-    void  readInclude(std::string);
-    void  printData(void);
-};
+bool    errorFile(ifstream);
+string  trim(const string&);
+bool    skipLine(const string&);

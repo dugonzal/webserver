@@ -2,3 +2,5 @@ examples
 *.aout
 *.o
 bin
+.vscode
+webserv

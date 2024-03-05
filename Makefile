@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/04 12:53:55 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/05 11:26:45 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ P_DIR			:= parser/
 parser		:= BaseParser Parser
 
 S_DIR			:= server/
-server		:= BaseServer Server Config
+server		:= VirtualServer BaseServer Server Config
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))
@@ -45,7 +45,7 @@ ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@ && ./$@
 	make -C tests
 	./webserv | cat -e > logs/parser_data.log 
-	printf "compile done ->: [$@]\n"	
+	printf "compile done ->: [$@]\n"
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	mkdir -p ${OBJ_DIR}

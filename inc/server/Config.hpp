@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:38:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:03:53 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../Signals.hpp"
 # include "Server.hpp"
 # include "../Utils.hpp"
+# include "../server/VirtualServer.hpp"
 
 /*
  * voy a usar el vector de servidores para obtener la data puedo crear una pequeña funcoion que parsee y comprueba 
@@ -24,14 +25,19 @@
  * */
 class Config {
  private:
-  Parser  parser;
-  Server  s;
-  Signals signals;
+  VirtualServer servers;
+  Parser        parser;
+  Signals       signals;
+
  private:
   Config(void);
+
+ private:
   void  setServers(void);
- public:
+
  public:
   Config(const string&);
+  Config(const Config&);
+  Config &operator=(const Config&);
   ~Config(void);
 };

@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 14:31:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:26:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/BaseParser.hpp"
+#include <string>
 
 BaseParser::BaseParser(void) { }
 

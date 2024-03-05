@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 09:28:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:56:57 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <vector>
 # include <fstream>
 # include <cstdlib>
+# include <cstddef>
 # include <cassert>
-
 
 using std::cout;
 using std::endl;
@@ -33,7 +33,11 @@ using std::string;
 using std::runtime_error;
 using std::logic_error;
 using std::ifstream;
+using std::vector;
+using std::size_t;
+using std::map;
+using std::ostream;
 
-bool  errorFile(ifstream);
-string trim(const string&);
-bool  skipLine(const string&);
+bool    errorFile(ifstream);
+string  trim(const string&);
+bool    skipLine(const string&);

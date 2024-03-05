@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:24:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:42:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@
 
 class BaseServer {
  protected:
-    struct sockaddr_in                  addr;
-    socklen_t                           addrLen;
-    int                                 s;
-    int                                 opt;
+    struct sockaddr_in             addr;
+    socklen_t                      addrLen;
+    int                            s;
+    int                            opt;
+
  protected:
-    std::map<string, string>            data;
-    std::vector<string>                 error_page;
-    std::vector<string>                 buffer;
-    int                                 *options;
+    map<string, string>            data;
+    vector<string>                 error_page;
+    vector<string>                 buffer;
+    int                            *options;
+
  public:
     BaseServer(void);
     BaseServer(const BaseServer&);
@@ -33,7 +35,8 @@ class BaseServer {
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
     void  setServer(void);
-    int   setSocket(void);
+    int   createSocket(void);
     int   getSocket(void) const;
- friend std::ostream &operator<<(std::ostream&, const BaseServer&);
+
+  friend ostream &operator<<(ostream&, const BaseServer&);
 };

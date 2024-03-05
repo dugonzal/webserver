@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:13:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:48:52 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 
-BaseServer::BaseServer(void): addrLen(sizeof(addr)), s(-1), opt(1) {
+BaseServer::BaseServer(void): addrLen(sizeof(addr)), s(-42), opt(1) {
   ::bzero(&addr, sizeof(addr));
 }
 
@@ -34,7 +34,7 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
 
 BaseServer::~BaseServer(void) { ::close(s); }
 
-int BaseServer::setSocket(void) {
+int BaseServer::createSocket(void) {
   if ((this->s = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
 
@@ -80,10 +80,7 @@ int BaseServer::setSocket(void) {
 */
 
 int   BaseServer::getSocket(void) const { return (s); }
-/*
- * el socket tiene 2 argumentos
- * 0 -> familia selecciona el tipo de comunicacion en este caso es, AF_INET or AF_INET6
- * * */
+
 void BaseServer::setServer(void) {}
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:31 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:26:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:01:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <cppunit/TextOutputter.h>
 #include <cppunit/ui/text/TestRunner.h>
 # include "../../inc/server/Config.hpp"
-# include "../../inc/parser/BaseParser.hpp"
+# include "../../inc/parser/Parser.hpp"
 
 class TestServer : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE(TestServer);

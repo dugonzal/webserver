@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:27:17 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:02:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // usar rutas absolutas para los archivos de test
 
-/*void  TestServer::openFile() {
+void  TestServer::openFile() {
   Parser parser;
   string  filename = "/home/ciclo/Documentos/42/webserver/conf/default.conf";
 
@@ -26,11 +26,11 @@
     delete file;
     CPPUNIT_ASSERT(false);
   }
-}*/
+}
 
 void TestServer::parser() {
   string filename = "/home/ciclo/Documentos/42/webserver/conf/default.conf";
-  BaseParser  parser(filename);
+  Parser  parser(filename);
 
   CPPUNIT_ASSERT(parser.getNservers());
 }

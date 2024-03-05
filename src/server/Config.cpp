@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/03 13:39:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:47:07 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,22 @@ Config::Config(void) { }
 
 Config::~Config(void) { }
 
-Config::Config(const string &filename) {
-  parser = Parser(filename);
-  s.setSocket();
-  setServers();
+Config::Config(const string &filename): parser(filename) {
+//  setServers();
 }
 
+Config::Config(const Config &copy): \
+  servers(copy.servers), parser(copy.parser), signals(copy.signals) { }
+
+Config &Config::operator=(const Config &copy) {
+  if (this != &copy) {
+    servers = copy.servers;
+    parser = copy.parser;
+    signals = copy.signals;
+  }
+  return (*this);
+}
 
 void  Config::setServers(void) {
- // std::vector<string> tmp = );
-
-  cout << s << endl;
   parser.printData(parser.getData());
 }

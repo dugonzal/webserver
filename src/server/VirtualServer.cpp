@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
+/*   VirtualServer.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:51:17 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/05 12:09:19 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/server/Server.hpp"
+# include "../../inc/server/VirtualServer.hpp"
 
-Server::Server(void) { }
+VirtualServer::VirtualServer(void) { }
 
-Server::~Server(void) { }
+VirtualServer::~VirtualServer(void) { }
 
-Server::Server(const Server &copy): BaseServer(copy) { }
+VirtualServer::VirtualServer(const VirtualServer &copy): \
+  vServers(copy.vServers) { }
 
-Server &Server::operator=(const Server &copy) {
+VirtualServer &VirtualServer::operator=(const VirtualServer &copy) {
   if (this != &copy)
-    BaseServer::operator=(copy);
+    vServers = copy.vServers;
+
   return (*this);
 }
 
-
-Server *Server::clone(void) const {
-  return (new Server(*this));
+void  VirtualServer::addServer(Server server) {
+  vServers.push_back(server.clone());
 }

@@ -6,29 +6,35 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/23 14:34:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:48:52 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <cerrno>
-#include <cstdio>
-#include <cstring>
 
-BaseServer::BaseServer(void) {
-  addrLen = sizeof(addr);
-  opt = 1;
-  bzero(&addr, sizeof(addr));
+BaseServer::BaseServer(void): addrLen(sizeof(addr)), s(-42), opt(1) {
+  ::bzero(&addr, sizeof(addr));
 }
 
-BaseServer::BaseServer(const std::string &_host, int _port): \
-  host(_host), port(_port) { }
+BaseServer::BaseServer(const BaseServer &copy): \
+  addrLen(copy.addrLen), s(copy.s), opt(copy.opt) { }
 
-BaseServer::~BaseServer(void) { close(s); }
+BaseServer &BaseServer::operator=(const BaseServer &copy) {
+  if (this != &copy) {
+    addr = copy.addr;
+    addrLen = copy.addrLen;
+    s = copy.s;
+    data = copy.data;
+    error_page = copy.error_page;
+    buffer = copy.buffer;
+    options = copy.options;
+  }
+  return (*this);
+}
 
-int BaseServer::setSocket(void) {
+BaseServer::~BaseServer(void) { ::close(s); }
+
+int BaseServer::createSocket(void) {
   if ((this->s = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
 
@@ -46,6 +52,9 @@ int BaseServer::setSocket(void) {
 
   if (listen(s, 1024) < 0)
     throw std::logic_error("listen failed");
+  return (s);
+}
+
 /*  int sN;
   if ((sN = accept(this->s, (struct sockaddr *)&addr, &addrLen)) < 0)
     throw std::logic_error("accept failed");
@@ -69,16 +78,10 @@ int BaseServer::setSocket(void) {
   send(sN, response.data(), response.size(), 0);
   close(sN);
 */
-  return (s);
-}
 
 int   BaseServer::getSocket(void) const { return (s); }
-/*
- * el socket tiene 2 argumentos
- * 0 -> familia selecciona el tipo de comunicacion en este caso es, AF_INET or AF_INET6
- * * */
-void BaseServer::setServer(void) {
-}
+
+void BaseServer::setServer(void) {}
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {
   os << "host: " << copy.getSocket() << std::endl;

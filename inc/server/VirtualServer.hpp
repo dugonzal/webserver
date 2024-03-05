@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config.cpp                                         :+:      :+:    :+:   */
+/*   VirtualServer.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/02/18 19:45:52 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/05 12:09:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/server/config.hpp"
+# pragma once
 
-Config::Config(void) {
-  std::cout << "" << std::endl;
-  
-}
+# include "Server.hpp"
+# include "../Utils.hpp"
 
-Config::~Config(void){ 
-  std::cout << "" << std::endl; 
-}
+class VirtualServer {
+ private:
+  vector<Server*>  vServers;
+
+ public:
+  VirtualServer(void);
+  ~VirtualServer(void);
+  VirtualServer(const VirtualServer&);
+  VirtualServer &operator=(const VirtualServer&);
+ public:
+  void  addServer(Server);
+};

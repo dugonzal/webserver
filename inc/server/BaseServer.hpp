@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:42:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:57:29 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class BaseServer {
     socklen_t                      addrLen;
     int                            s;
     int                            opt;
+    int                            wConnections;
 
  protected:
     map<string, string>            data;
@@ -35,6 +36,7 @@ class BaseServer {
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
     void  setServer(void);
+    void setWConnections( int _amount );
     int   createSocket(void);
     int   getSocket(void) const;
 

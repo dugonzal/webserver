@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 12:47:07 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 23:35:01 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Config::Config(void) { }
 Config::~Config(void) { }
 
 Config::Config(const string &filename): parser(filename) {
-//  setServers();
+  setServers();
 }
 
 Config::Config(const Config &copy): \
@@ -33,5 +33,20 @@ Config &Config::operator=(const Config &copy) {
 }
 
 void  Config::setServers(void) {
-  parser.printData(parser.getData());
+  // Prints the configuration parsed data
+  // parser.printData(parser.getData());
+  servers.setServers(parser.getNservers());
+  setWorkerConnections();
+}
+
+void  Config::setWorkerConnections( void ) {
+  int i = 0;
+  std::vector<string> ptrData = parser.getData();
+  std::vector<string>::iterator ptrBegin = ptrData.begin();
+  std::vector<string>::iterator ptrEnd = ptrData.end();
+  for (ptrBegin = ptrData.begin(); (ptrBegin != ptrEnd); ptrBegin++) {
+    if (!ptrData[i].find("worker_connections", 0))
+      servers.setWorkerConnections(getNumberFromLine(ptrData[i]));
+    i++;
+  }
 }

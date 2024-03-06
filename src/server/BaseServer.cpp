@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:48:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 23:12:47 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     addrLen = copy.addrLen;
     s = copy.s;
     data = copy.data;
+    opt = copy.opt;
+    wConnections = copy.wConnections;
     error_page = copy.error_page;
     buffer = copy.buffer;
-    options = copy.options;
+    if (options && copy.options) // Only if the two have data inside
+        *options = *(copy.options);
+    else // Depending on copy.options, NULL or copy.options.
+        options = copy.options ? new int(*copy.options) : nullptr;
   }
   return (*this);
 }
@@ -82,6 +87,10 @@ int BaseServer::createSocket(void) {
 int   BaseServer::getSocket(void) const { return (s); }
 
 void BaseServer::setServer(void) {}
+
+void BaseServer::setWConnections( int _amount ) {
+  this->wConnections = _amount;
+}
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {
   os << "host: " << copy.getSocket() << std::endl;

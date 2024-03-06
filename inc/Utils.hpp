@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 10:56:57 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:19:58 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <cstdlib>
 # include <cstddef>
 # include <cassert>
+# include <sstream>
 
 using std::cout;
 using std::endl;
@@ -41,3 +42,4 @@ using std::ostream;
 bool    errorFile(ifstream);
 string  trim(const string&);
 bool    skipLine(const string&);
+int  getNumberFromLine( const std::string& line );

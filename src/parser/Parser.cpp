@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 13:02:34 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:18:10 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ Parser::~Parser(void) {
 Parser::Parser(const string &filename): BaseParser(filename) {
   dataServers = new vector<string>*[nServers];
 
-  for (unsigned int i = 0; i < nServers; i++)
+  for (unsigned int i = 0; i < nServers; i++) {
     dataServers[i] = new vector<string>;
+  }
 }
 
 Parser::Parser(const Parser &copy): BaseParser(copy), \

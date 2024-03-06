@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseParser.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 12:26:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:47:33 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
   setNservers();
   checkSemicolon();
   handlerScopeLocation();
+  // printData(data);
 }
 
 void  BaseParser::printData(const std::vector<string> &tmp) const {

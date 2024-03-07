@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 22:37:22 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/07 19:15:50 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,92 @@ int  getNumberFromLine( const std::string& line ) {
     c = *itBegin;
     if (std::isdigit(c))
       ss << c;
+    else if(c == '#' || c == ';')
+      break ;
   }
-  int ret;
-  ss >> ret;
+  int ret = 80;
+  if (line.find("default_server", 0) != std::string::npos)
+    std::cout << "warning: (default_server) directive was set" << std::endl;
+  else if (ss.str().empty())
+    std::cout << "warning: Port was not set, default set to 80" << std::endl;
+  else
+    ss >> ret;
   return ret;
+}
+
+std::string	getNameFromLine( const std::string& line, const std::string& strBefore ) {
+  char c = 0;
+  std::stringstream ss;
+  std::string::const_iterator itBegin = line.begin();
+  std::string::const_iterator itEnd = line.end();
+  for (; itBegin != itEnd; ++itBegin) {
+    c = *itBegin;
+    ss << c;
+    if (!ss.str().compare(strBefore)) {
+      itBegin++;
+      break ;
+    }
+    else if(c == '#' || c == ';')
+      break ;
+  }
+  for (; itBegin != itEnd; ++itBegin) {
+    c = *itBegin;
+    if (c != ' ')
+      break ;
+  }
+  std::stringstream ret;
+  ss.clear();
+  for (; itBegin != itEnd; ++itBegin) {
+    c = *itBegin;
+    if(c == '#' || c == ';')
+      break ;
+    else if (std::isalpha(c) || c == '_')
+      ret << c;
+  }
+  if (ss.str().empty())
+    std::cout << "warning: Name was not set" << std::endl;
+  return ret.str();
+}
+
+std::string  findStrInLog( const std::string& line, const std::string& toFind ) {
+  std::stringstream ss;
+  char c = 0;
+  bool exitLoop = false;
+  std::string::const_iterator itBegin = line.begin();
+  std::string::const_iterator itBegin2;
+  std::string::const_iterator itEnd = line.end();
+  for (; itBegin != itEnd && !exitLoop; itBegin++) { // skip spaces & get after toFind
+    if (*itBegin != ' ') {
+        itBegin2 = itBegin;
+        for (; itBegin2 != itEnd; itBegin2++) {
+          c = *itBegin2;
+          if ((std::isalnum(c) || c == '_') && c != ';' && c != '#') {
+            ss << c;
+            if (!ss.str().compare(toFind)) {
+              itBegin2++;
+              exitLoop = true;
+              break ;
+            }
+          }
+          else
+            return "";
+        }
+    }
+  }
+  int len = 0;
+  std::stringstream ret;
+  for (; itBegin2 != itEnd; itBegin2++) {
+    c = *itBegin2;
+    if (c != ' ' && !std::isspace(c)) {
+      if (c == ';' || c == '#') {
+        if (!len)
+          return ("");
+        else
+          break ;
+      }
+      ret << c;
+      len++;
+    }
+  }
+  return ret.str();
 }

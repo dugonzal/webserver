@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 23:31:29 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:52:38 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 
 class VirtualServer {
  private:
-  size_t          nServers;
-  int             wConnections;
+  size_t                 nServers;
+  int                    *portsServers;
+  int                    *nameServers;
+  int                    wConnections;
   std::vector<Server*>*  vServers;
 
  public:
@@ -30,4 +32,6 @@ class VirtualServer {
   void  addServer(Server);
   void  setServers( size_t _amount );
   void  setWorkerConnections( int _amount );
+  int   setPort( int _nServer, int _port );
+  int   setName( int _nServer, const std::string& _name );
 };

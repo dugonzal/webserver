@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 22:57:29 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:58:09 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 
 class BaseServer {
  protected:
-    struct sockaddr_in             addr;
-    socklen_t                      addrLen;
-    int                            s;
-    int                            opt;
-    int                            wConnections;
+    struct sockaddr_in             addr; // Socket base object
+    socklen_t                      addrLen; // Length of socket
+    int                            s; // serverSocket fd
+    int                            opt; // Special options set for server socket
+    int                            port;
+    std::string                    server_name;
+    int                            wConnections; // Number of working connections (maybe not neccessary)
 
  protected:
     map<string, string>            data;
@@ -37,6 +39,8 @@ class BaseServer {
     virtual BaseServer *clone(void) const = 0;
     void  setServer(void);
     void setWConnections( int _amount );
+    void setPort( int _port );
+    void setServerName( const std::string& _sName );
     int   createSocket(void);
     int   getSocket(void) const;
 

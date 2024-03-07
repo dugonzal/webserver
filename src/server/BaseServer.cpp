@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 23:12:47 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:57:58 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,14 @@ void BaseServer::setServer(void) {}
 
 void BaseServer::setWConnections( int _amount ) {
   this->wConnections = _amount;
+}
+
+void BaseServer::setPort( int _port ) {
+  this->port = _port;
+}
+
+void  BaseServer::setServerName( const std::string& _sName ) {
+  this->server_name = _sName;
 }
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {

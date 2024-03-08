@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 10:56:57 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/07 06:38:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@
 # include <cstdlib>
 # include <cstddef>
 # include <cassert>
+# include <list>
 
+using std::list;
 using std::cout;
 using std::endl;
 using std::string;

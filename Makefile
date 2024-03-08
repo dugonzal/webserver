@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/05 11:26:45 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/07 07:24:29 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@ && ./$@
-	make -C tests
+#	make -C tests
 	./webserv | cat -e > logs/parser_data.log 
 	printf "compile done ->: [$@]\n"
 

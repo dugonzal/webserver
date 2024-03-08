@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:42:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/07 06:32:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class BaseServer {
     socklen_t                      addrLen;
     int                            s;
     int                            opt;
-
+    std::list<int>                 client;
  protected:
     map<string, string>            data;
     vector<string>                 error_page;

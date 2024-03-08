@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 12:47:07 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/07 06:48:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ Config::Config(void) { }
 
 Config::~Config(void) { }
 
-Config::Config(const string &filename): parser(filename) {
-//  setServers();
+Config::Config(const string &filename): servers(), parser(filename), signals() {
+
 }
 
 Config::Config(const Config &copy): \

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:48:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/07 06:47:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 BaseServer::BaseServer(void): addrLen(sizeof(addr)), s(-42), opt(1) {
   ::bzero(&addr, sizeof(addr));
+  createSocket();
+  cout << "create socket" << endl;
 }
 
 BaseServer::BaseServer(const BaseServer &copy): \
@@ -35,22 +37,22 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
 BaseServer::~BaseServer(void) { ::close(s); }
 
 int BaseServer::createSocket(void) {
-  if ((this->s = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  if ((this->s = ::socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
 
   assert((s > 2) && (s < 6553));
   addr.sin_family = AF_INET;
-  addr.sin_port = htons(8000);
-  addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+  addr.sin_port = ::htons(8000);
+  addr.sin_addr.s_addr = ::inet_addr("127.0.0.1");
 
-  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+  if (::setsockopt(s, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error(strerror(errno));
 
-  if (bind(s, (struct sockaddr *)&addr, addrLen) <  0)
+  if (::bind(s, (struct sockaddr *)&addr, addrLen) <  0)
     throw std::logic_error(strerror(errno));
 
-  if (listen(s, 1024) < 0)
+  if (::listen(s, 1024) < 0)
     throw std::logic_error("listen failed");
   return (s);
 }

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 19:00:19 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 13:06:28 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Config::Config(void) { }
 Config::~Config(void) { }
 
 Config::Config(const string &filename): parser(filename) {
-  setServers();
+  setServer();
 }
 
 Config::Config(const Config &copy): \
@@ -32,15 +32,16 @@ Config &Config::operator=(const Config &copy) {
   return (*this);
 }
 
-void  Config::setServers(void) {
+void  Config::setServer(void) {
   // Prints the configuration parsed data
   // parser.printData(parser.getData());
 
   servers.setServers(parser.getNservers());
-  setWorkerConnections();
+  setServerConfig();
+  servers.startServers();
 }
 
-void  Config::setWorkerConnections( void ) {
+void  Config::setServerConfig( void ) {
   int i = 0;
   int sCount = 1;
   std::vector<string> ptrData = parser.getData();

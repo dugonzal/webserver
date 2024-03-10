@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 18:14:22 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 13:50:12 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ void  VirtualServer::setServers( size_t _amount ) {
     vServers->push_back(new Server());
   }
   std::cout << "Succesfully created " << _amount << " 'Server' objects !" << std::endl;
+}
+
+void  VirtualServer::startServers( void ) {
+  for (size_t i = 0; i < nServers; i++) {
+    if (vServers->at(i)->checkServer() == true)
+      (vServers->at(i))->createSocket();
+    else
+      nServers--;
+  }
+  std::cout << "Succesfully started " << nServers << " 'Server' objects !" << std::endl;
 }
 
 void  VirtualServer::setWorkerConnections( int _amount ) {

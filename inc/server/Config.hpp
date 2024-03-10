@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 22:10:56 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 13:00:59 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ class Config {
   Config(void);
 
  private:
-  void  setServers(void);
-  void  setWorkerConnections( void );
+  void  setServer(void);
+  void  setServerConfig( void );
 
  public:
   Config(const string&);

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 19:15:50 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 12:49:10 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int  getNumberFromLine( const std::string& line ) {
   }
   int ret = 80;
   if (line.find("default_server", 0) != std::string::npos)
-    std::cout << "warning: (default_server) directive was set" << std::endl;
+    std::cout << "warning: port: (default_server) directive was set" << std::endl;
   else if (ss.str().empty())
     std::cout << "warning: Port was not set, default set to 80" << std::endl;
   else

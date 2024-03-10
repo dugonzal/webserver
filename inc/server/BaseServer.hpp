@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 17:58:09 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 13:47:33 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@
 
 class BaseServer {
  protected:
-    struct sockaddr_in             addr; // Socket base object
+    struct sockaddr_in             addr; // Server
     socklen_t                      addrLen; // Length of socket
+    
+    struct sockaddr_in             clientAddr; // Client
+    socklen_t                      addrClientLen;
+    std::string                    clientMsg[4096];
+    
     int                            s; // serverSocket fd
     int                            opt; // Special options set for server socket
     int                            port;
@@ -37,12 +42,14 @@ class BaseServer {
     BaseServer &operator=(const BaseServer&);
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
-    void  setServer(void);
-    void setWConnections( int _amount );
-    void setPort( int _port );
-    void setServerName( const std::string& _sName );
-    int   createSocket(void);
-    int   getSocket(void) const;
+    int     createSocket(void);
+    bool    checkServer( void ) const;
+
+    int     getSocket(void) const;
+    void    setServer(void);
+    void    setWConnections( int _amount );
+    void    setPort( int _port );
+    void    setServerName( const std::string& _sName );
 
   friend ostream &operator<<(ostream&, const BaseServer&);
 };

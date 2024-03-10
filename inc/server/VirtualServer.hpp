@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 17:52:38 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 13:03:54 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class VirtualServer {
  public:
   void  addServer(Server);
   void  setServers( size_t _amount );
+  void  startServers( void );
   void  setWorkerConnections( int _amount );
   int   setPort( int _nServer, int _port );
   int   setName( int _nServer, const std::string& _name );

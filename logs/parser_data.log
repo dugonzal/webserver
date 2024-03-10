@@ -1,1 +1,26 @@
-Error: location$
+worker_connections 1024;$
+listen			80;$
+server_name		_;$
+return			301 https://$server_name$request_uri;$
+$
+server_name		_;$
+root			public/;$
+autoindex off;$
+index			index.html;$
+location /home {$
+index index.html;$
+autoindex on;$
+}$
+location / {$
+autoindex on;$
+allow_methods GET POST DELETE;$
+}$
+location / {$
+index         log.py;$
+cgi_path      /usr/bin/python;$
+cgi_ext       .py;$
+autoindex     off;$
+allow_methods GET POST DELETE;$
+}$
+$
+$

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/08 09:26:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/10 17:20:54 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,30 @@ Parser &Parser::operator=(const Parser &copy) {
   return (*this);
 }
 
-unsigned int  Parser::getServer(int nServer, unsigned int j) {
+unsigned int  Parser::getServer(int n, unsigned int j) {
+  if (data[j].find("server") != string::npos)
+    j++;
   while (j < data.size()) {
-    dataServers[nServer]->push_back(data[j]);
-    // delete the first line of the server
-    data.erase(data.begin() + j);
-    if (data[j].find("};") != string::npos)
+    if (data[j].find("};") != string::npos) {
+      data.erase(data.begin() + j);
       break;
-
-    cout << dataServers[nServer]->at(dataServers[nServer]->size() - 1) << endl;
+    }
+    dataServers[n]->push_back(data[j]);
     j++;
   }
-  return (j - 1);
+  return (j);
 }
 
 void  Parser::splitServers(void) {
-  unsigned int n = 0;
+  unsigned int n = 1;
   for (unsigned int i = 0; i < data.size(); i++) {
-    cout << endl;
     if (n == nServers)
       break;
-    i = getServer(++n, i);
-  }/*
-  for (unsigned int j = 0; j < nServers; j++) {
-    cout << "Server " << j << endl;
-    for (unsigned int i = 0; i < dataServers[j]->size(); i++) 
-    cout << dataServers[j]->at(i) << endl << endl;
-  }*/
+    i = getServer(n++, i);
+  }
+  for (unsigned int j = 1; j < nServers; j++) {
+    for (unsigned int i = 0; i < dataServers[j]->size(); i++)
+      cout << dataServers[j]->at(i) << endl;
+    cout << endl;
+  }
 }

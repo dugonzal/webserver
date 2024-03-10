@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 18:56:59 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 21:23:45 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <cstddef>
 # include <cassert>
 # include <sstream>
+# include <fcntl.h>
 
 using std::cout;
 using std::endl;

@@ -6,14 +6,15 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 13:50:48 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 21:25:20 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 
-BaseServer::BaseServer(void): addrLen(sizeof(addr)), s(-42), opt(1), port(-1) {
+BaseServer::BaseServer(void): addrLen(sizeof(addr)), s(-42), opt(1), port(-1)  {
   ::bzero(&addr, sizeof(addr));
+  memset(clientMsg, 0, sizeof(clientMsg));
 }
 
 BaseServer::BaseServer(const BaseServer &copy): \
@@ -48,7 +49,7 @@ int BaseServer::createSocket(void) {
   addr.sin_port = htons(this->port);
   addr.sin_addr.s_addr = inet_addr("0.0.0.0");
 
-  if (setsockopt(s, SOL_SOCKET, SO_REUSEPORT,
+  if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error(strerror(errno));
 
@@ -61,7 +62,7 @@ int BaseServer::createSocket(void) {
   int sN; // client file descriptor
   if ((sN = accept(this->s, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
     throw std::logic_error("accept failed");
-      struct timeval timeout;
+  struct timeval timeout;
   timeout.tv_sec = 3; // 10 segundos
   timeout.tv_usec = 0;
 
@@ -69,21 +70,26 @@ int BaseServer::createSocket(void) {
       std::cerr << "Error al establecer el tiempo de espera para la recepción de datos" << std::endl;
       return -1;
   }
-  std::cout << "Connection accepted" << std::endl;
-  if (recv(sN, clientMsg, 4096, 0) < 0)
+  int ret = recv(sN, clientMsg, sizeof(clientMsg) - 1, 0);
+  if (ret == 0 || ret == -1) {
+    close(s);
+    close(sN);
     throw std::logic_error("recv failed");
+  }
+
   //  en la resta del cliente entraria la parte de la peticion o request del cliente
   // read(sN, &buffer, 1023);
 
   // en la respuesta del cliente entraria la parte de la respuesta del servidor
-  std::string response = "HTTP/1.1 200  OK\r\n\r\n <h1 align=\"center\"> Hello, World! </h1>";
+  std::string response = "HTTP/1.1 200  OK\r\n\r\n <html><head></head><body><h1 text-family=\"Roboto\" align=\"center\"> Hello, Inception42! </h1></body></html>";
     //Content-Length: 13\r\nContent-Type: text/plain\r\n\r\nHello, World!";
   send(sN, response.data(), response.size(), 0);
-  close(sN);
+  
+  close(sN); // Second, client fd is closed
   close(s);
-  for (int i = 0; i < 1024; i++)
-    std::cout << clientMsg[i];
-  clientMsg->clear();
+
+  std::cout << clientMsg << std::endl;
+  // memset(clientMsg, 0, sizeof(clientMsg));
   return (s);
 }
 

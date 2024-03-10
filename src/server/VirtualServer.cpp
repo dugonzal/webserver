@@ -6,15 +6,13 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 13:50:12 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 21:11:31 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/VirtualServer.hpp"
 
-VirtualServer::VirtualServer(void) {
-  std::cout << "VirtualServer object was created!" << std::endl;
-}
+VirtualServer::VirtualServer(void) { }
 
 VirtualServer::~VirtualServer(void) { }
 
@@ -40,7 +38,6 @@ void  VirtualServer::setServers( size_t _amount ) {
   for (size_t i = 0; i < _amount; i++) {
     vServers->push_back(new Server());
   }
-  std::cout << "Succesfully created " << _amount << " 'Server' objects !" << std::endl;
 }
 
 void  VirtualServer::startServers( void ) {
@@ -48,9 +45,8 @@ void  VirtualServer::startServers( void ) {
     if (vServers->at(i)->checkServer() == true)
       (vServers->at(i))->createSocket();
     else
-      nServers--;
+      ;
   }
-  std::cout << "Succesfully started " << nServers << " 'Server' objects !" << std::endl;
 }
 
 void  VirtualServer::setWorkerConnections( int _amount ) {
@@ -84,6 +80,6 @@ int   VirtualServer::setName( int _nServer, const std::string& _name ) {
     return 1;
   Server* ptr = (vServers->at(_nServer - 1)); // will work starting from one '1'
   ptr->setServerName(_name);
-  std::cout << "Name: " << _name << std::endl;
+  std::cout << "Name: " << _name << std::endl << std::endl;
   return 0;
 }

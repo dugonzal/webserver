@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 13:47:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:45:29 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class BaseServer {
     
     struct sockaddr_in             clientAddr; // Client
     socklen_t                      addrClientLen;
-    std::string                    clientMsg[4096];
+    char                           clientMsg[1028];
     
     int                            s; // serverSocket fd
     int                            opt; // Special options set for server socket

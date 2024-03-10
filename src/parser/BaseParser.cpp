@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 12:26:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/10 17:44:48 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void  BaseParser::setNservers(void) {
     throw(runtime_error("scope server"));
   else
     handlerScopeError();
+  nServers += 1; // por alguna razon no puedo inciar en 0 y tengo que hacerlo en 1
 }
 
 int  BaseParser::getNservers(void) const { return(nServers); }

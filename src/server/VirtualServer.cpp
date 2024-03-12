@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 21:11:31 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/12 11:50:33 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void  VirtualServer::setServers( size_t _amount ) {
 void  VirtualServer::startServers( void ) {
   for (size_t i = 0; i < nServers; i++) {
     if (vServers->at(i)->checkServer() == true)
-      (vServers->at(i))->createSocket();
+      (vServers->at(i))->setServer();
     else
       ;
   }

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 20:45:29 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/12 12:10:37 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,26 @@
 
 class BaseServer {
  protected:
-    struct sockaddr_in             addr; // Server
+    /* Server Side */
+    int                            serverFd; // File Descriptor
+    int                            opt; // Special options set for server socket
+    struct sockaddr_in             addr; // Structure to hold addresses
     socklen_t                      addrLen; // Length of socket
+    std::string                    serverResponse; // Header for Client
     
+   /* Select */
+   fd_set	cSockets;
+   fd_set   rSockets;
+   fd_set   wSockets;
+
+    /* Client Side */
+    int                            clientFd;
     struct sockaddr_in             clientAddr; // Client
     socklen_t                      addrClientLen;
     char                           clientMsg[1028];
+    struct  timeval                timeout;
     
-    int                            s; // serverSocket fd
-    int                            opt; // Special options set for server socket
+    /* Configuration from input */
     int                            port;
     std::string                    server_name;
     int                            wConnections; // Number of working connections (maybe not neccessary)
@@ -42,11 +53,13 @@ class BaseServer {
     BaseServer &operator=(const BaseServer&);
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
-    int     createSocket(void);
-    bool    checkServer( void ) const;
+    int     setServer( void );
+    void    setServerSide( void );
+    void    setClientSide( void );
+    void    setSelect( void );
 
+    bool    checkServer( void ) const;
     int     getSocket(void) const;
-    void    setServer(void);
     void    setWConnections( int _amount );
     void    setPort( int _port );
     void    setServerName( const std::string& _sName );

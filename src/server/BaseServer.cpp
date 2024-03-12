@@ -6,15 +6,14 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/12 15:49:31 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/12 23:21:07 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 
-BaseServer::BaseServer(void): serverFd(-42), opt(1), addrLen(sizeof(addr)), port(-1)  {
+BaseServer::BaseServer(void): opt(1) {
   ::bzero(&addr, sizeof(addr));
-  memset(clientMsg, 0, sizeof(clientMsg));
 }
 
 BaseServer::BaseServer(const BaseServer &copy): \
@@ -38,49 +37,60 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
   return (*this);
 }
 
-BaseServer::~BaseServer(void) { ::close(serverFd); }
-
-int BaseServer::setServer(void) {
-  setServerSide();
-  setSelect();
-  setClientSide();
-  close(serverFd);
-
-  // memset(clientMsg, 0, sizeof(clientMsg));
-  return (serverFd);
+BaseServer::~BaseServer(void) {
+  for (int i = 0; i < nServers; i++)
+    close(serverFd[i]);
 }
 
-void   BaseServer::setServerSide( void ) {
-  if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+int BaseServer::setServer(void) {
+  serverFd = new int[nServers];
+  addr = new sockaddr_in[nServers];
+  addrLen = new socklen_t[nServers];
+
+  for (int i = 0; i < nServers; i++)
+    setServerSide(i);
+  setSelect();
+  for (int i = 0; i < nServers; i++)
+    close(serverFd[i]);
+
+  // memset(clientMsg, 0, sizeof(clientMsg));
+  return (0);
+}
+
+void   BaseServer::setServerSide( int _pos ) {
+  if ((serverFd[_pos] = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
 
-  assert((serverFd > 2) && (serverFd < 6553));
-  addr.sin_family = AF_INET;
-  addr.sin_port = htons(this->port);
-  addr.sin_addr.s_addr = inet_addr("0.0.0.0");
+  assert((serverFd[_pos] > 2) && (serverFd[_pos] < 6553));
+  addr[_pos].sin_family = AF_INET;
+  addr[_pos].sin_port = htons(portAr[_pos]);
+  addr[_pos].sin_addr.s_addr = inet_addr("0.0.0.0");
+  addrLen[_pos] = sizeof(addr[_pos]);
 
-  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
+  if (setsockopt(serverFd[_pos], SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error(strerror(errno));
 
-  if (bind(serverFd, (sockaddr *)&addr, addrLen) <  0)
+  if (bind(serverFd[_pos], (sockaddr *)&addr[_pos], addrLen[_pos]) <  0)
     throw std::logic_error(strerror(errno));
 
-/*   int rc = ioctl(serverFd, FIONBIO, (char *)&opt);
+/*   int rc = ioctl(serverFd[_pos], FIONBIO, (char *)&opt);
   if (rc < 0)
   {
     perror("ioctl() failed");
-    close(serverFd);
+    close(serverFd[_pos]);
     exit(-1);
   } */
 
-  if (listen(serverFd, this->wConnections) < 0)
+  if (listen(serverFd[_pos], this->wConnections) < 0)
     throw std::logic_error("listen failed");
 }
 
 void  BaseServer::setSelect( void ) {
+  
   FD_ZERO(&cSockets);
-	FD_SET(serverFd, &cSockets);
+  for (int i = 0; i < nServers; i++)
+    FD_SET(serverFd[i], &cSockets);
 	while (true) {
 		rSockets = cSockets;
 
@@ -90,23 +100,16 @@ void  BaseServer::setSelect( void ) {
 			exit(EXIT_FAILURE);
 		}
 
-		for (int i = 0; i < FD_SETSIZE; i++) { // Check every file descriptor
-			if (FD_ISSET(i, &rSockets)) { // True if 'i' has the same file descriptor as 'rSockets'
-				if (i == serverFd) {
-					setClientSide();
-					FD_SET(clientFd, &cSockets);
-          std::cout << clientMsg << std::endl;
-				}
-			}
-			else {
-				FD_CLR(i, &cSockets);
-			}
-		}
+    for (int i = 0; i < nServers; i++) {
+      if (FD_ISSET(serverFd[i], &rSockets) != 0)
+        setClientSide(serverFd[i]);
+    }
+    std::cout << clientMsg << std::endl;
 	}
 }
 
-void  BaseServer::setClientSide( void ) {
-  if ((clientFd = accept(serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
+void  BaseServer::setClientSide( int socket ) {
+  if ((clientFd = accept(socket, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
     throw std::logic_error("error: accept");
   timeout.tv_sec = 3; // 10 segundos
   timeout.tv_usec = 0;
@@ -114,7 +117,7 @@ void  BaseServer::setClientSide( void ) {
   if (setsockopt(clientFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0)
       throw(std::runtime_error("error: setsockopt()"));
   if (recv(clientFd, clientMsg, sizeof(clientMsg) - 1, 0) <= 0) {
-    close(serverFd);
+    close(socket);
     close(clientFd);
     throw std::logic_error("recv failed");
   }
@@ -125,27 +128,37 @@ void  BaseServer::setClientSide( void ) {
   close(clientFd); // After server has replied, close connection
 }
 
-int   BaseServer::getSocket(void) const { return (serverFd); }
+int   *BaseServer::getSockets(void) const { return (serverFd); }
 
-bool   BaseServer::checkServer( void ) const {
-  if (this->port <= 0 || this->server_name.empty())
+int   BaseServer::getNServers( void ) const { return (nServers); }
+
+bool   BaseServer::checkServer( int _nServer ) const {
+  if (portAr[_nServer] <= 0 || server_nameAr[_nServer].empty())
     return false;
   return true;
+}
+
+void   BaseServer::setServerNumber( int _amount ) {
+  this->nServers = _amount;
 }
 
 void BaseServer::setWConnections( int _amount ) {
   this->wConnections = _amount;
 }
 
-void BaseServer::setPort( int _port ) {
-  this->port = _port;
+void BaseServer::setPortAr( int *_portAr ) {
+  portAr = new int[nServers];
+  for (int i = 0; i < nServers; i++)
+    portAr[i] = _portAr[i];
 }
 
-void  BaseServer::setServerName( const std::string& _sName ) {
-  this->server_name = _sName;
+void  BaseServer::setServerNameAr( const std::vector<string>& _sNameAr ) {
+  this->server_nameAr = _sNameAr;
 }
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {
-  os << "host: " << copy.getSocket() << std::endl;
+  int *ret = copy.getSockets();
+  for (int i = 0; i < copy.getNServers(); i++)
+    os << "host: " << ret[i] << std::endl;
   return (os);
 }

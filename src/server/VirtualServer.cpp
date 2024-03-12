@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/12 11:50:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/12 23:10:29 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,26 @@ VirtualServer::VirtualServer(void) { }
 VirtualServer::~VirtualServer(void) { }
 
 VirtualServer::VirtualServer(const VirtualServer &copy): \
-  vServers(copy.vServers) { }
+  server(copy.server) { }
 
 VirtualServer &VirtualServer::operator=(const VirtualServer &copy) {
   if (this != &copy) {
-    vServers = copy.vServers;
+    server = copy.server;
     nServers = copy.nServers;
     wConnections = copy.wConnections;
   }
   return (*this);
 }
 
-void VirtualServer::addServer(Server server) {
-    vServers->push_back(server.clone());
-}
-
 void  VirtualServer::setServers( size_t _amount ) {
   this->nServers = _amount;
-  vServers = new vector<Server *>[_amount];
-  for (size_t i = 0; i < _amount; i++) {
-    vServers->push_back(new Server());
-  }
 }
 
 void  VirtualServer::startServers( void ) {
-  for (size_t i = 0; i < nServers; i++) {
-    if (vServers->at(i)->checkServer() == true)
-      (vServers->at(i))->setServer();
-    else
-      ;
-  }
+  this->server.setServerNumber(nServers);
+  this->server.setServerNameAr(nameServers);
+  this->server.setPortAr(portsServers);
+  this->server.setServer();
 }
 
 void  VirtualServer::setWorkerConnections( int _amount ) {
@@ -55,31 +45,15 @@ void  VirtualServer::setWorkerConnections( int _amount ) {
 }
 
 int   VirtualServer::setPort( int _nServer, int _port ) {
-  if (portsServers == NULL) {
-    if ( nServers <= 0 ) {
-      return 1;
-    }
-    portsServers = new int[nServers];
-  }
-  if (_nServer <= 0 || _nServer > static_cast<int>(nServers))
-    return 1;
-  Server* ptr = (vServers->at(_nServer - 1)); // will work starting from one '1'
-  ptr->setPort(_port);
+  //this->server.setPort(_port);
+  this->portsServers[_nServer - 1] = _port;
   std::cout << "Port: " << _port << std::endl;
   return 0;
 }
 
-int   VirtualServer::setName( int _nServer, const std::string& _name ) {
-  if (nameServers == NULL) {
-    if ( nServers <= 0 ) {
-      return 1;
-    }
-    nameServers = new int[nServers];
-  }
-  if (_nServer <= 0 || _nServer > static_cast<int>(nServers))
-    return 1;
-  Server* ptr = (vServers->at(_nServer - 1)); // will work starting from one '1'
-  ptr->setServerName(_name);
+int   VirtualServer::setName( const std::string& _name ) {
+  //this->server.setServerName(_name);
+  this->nameServers.push_back(_name);
   std::cout << "Name: " << _name << std::endl << std::endl;
   return 0;
 }

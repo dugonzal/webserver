@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 17:46:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:26:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,7 @@ void  Parser::splitServers(void) {
   unsigned int n = 1;
   for (unsigned int i = 0; i < data.size(); i++) {
     i = getServer(n++, i);
-    if (n >= nServers)
+    if (n == nServers)
       break;
   }
-  for (unsigned int j = 1; j < nServers; j++) {
-    cout << endl  << endl;
-    for (unsigned int i = 0; i < dataServers[j]->size(); i++)
-      cout << dataServers[j]->at(i) << endl;
-    cout << endl << endl;
-  }
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-  printData(data);
 }

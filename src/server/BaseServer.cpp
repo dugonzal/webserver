@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/12 23:21:07 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 00:28:11 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,23 @@ void  BaseServer::setSelect( void ) {
 		rSockets = cSockets;
 
 		std::cout << "Arrived before-select" << std::endl;
-		if (select(FD_SETSIZE, &rSockets, NULL, NULL, NULL) < 0) { // Waits until file descriptor has info
+    int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, NULL);
+		if (retSelect < 0) { // Waits until file descriptor has info
 			perror("error: select");
 			exit(EXIT_FAILURE);
 		}
+    std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
 
-    for (int i = 0; i < nServers; i++) {
-      if (FD_ISSET(serverFd[i], &rSockets) != 0)
-        setClientSide(serverFd[i]);
+    for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
+      if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
+        for (int j = 0; j < nServers; j++) {
+          if (serverFd[j] == i) // check if it forms part of our descriptors
+            setClientSide(serverFd[j]);
+        }
+      }
     }
     std::cout << clientMsg << std::endl;
+    bzero(clientMsg, sizeof(clientMsg));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 11:18:06 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:21:19 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,10 @@ void   BaseServer::setServerSide( int _pos ) {
   addrLen[_pos] = sizeof(addr[_pos]);
 
   if (setsockopt(serverFd[_pos], SOL_SOCKET, SO_REUSEADDR,
+    &opt, sizeof(opt)) < 0)
+      throw std::logic_error(strerror(errno));
+
+  if (setsockopt(serverFd[_pos], SOL_SOCKET, SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error(strerror(errno));
 

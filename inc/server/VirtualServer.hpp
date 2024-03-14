@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/12 22:27:37 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:43:23 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ class VirtualServer {
   size_t                 nServers;
   int                    *portsServers;
   std::vector<string>    nameServers;
-  int                    wConnections;
   Server                 server;
 
  public:

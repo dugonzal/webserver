@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/12 23:10:29 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:43:42 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ VirtualServer &VirtualServer::operator=(const VirtualServer &copy) {
   if (this != &copy) {
     server = copy.server;
     nServers = copy.nServers;
-    wConnections = copy.wConnections;
   }
   return (*this);
 }
@@ -37,11 +36,6 @@ void  VirtualServer::startServers( void ) {
   this->server.setServerNameAr(nameServers);
   this->server.setPortAr(portsServers);
   this->server.setServer();
-}
-
-void  VirtualServer::setWorkerConnections( int _amount ) {
-  std::cout << "Worker_Connections: " << _amount << std::endl;
-  this->wConnections = _amount;
 }
 
 int   VirtualServer::setPort( int _nServer, int _port ) {

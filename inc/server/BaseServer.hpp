@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/12 23:02:54 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:43:16 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ class BaseServer {
     int                            nServers;
     int                            *portAr;
     std::vector<string>            server_nameAr;
-    int                            wConnections; // Number of working connections (maybe not neccessary)
 
  protected:
     map<string, string>            data;
@@ -64,7 +63,6 @@ class BaseServer {
     int     getNServers( void ) const;
 
     void    setServerNumber( int _amount );
-    void    setWConnections( int _amount );
     void    setPortAr( int *_port );
     void    setServerNameAr( const std::vector<string> &_sName );
 

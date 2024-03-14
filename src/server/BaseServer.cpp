@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 11:40:49 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:10:22 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     serverFd = copy.serverFd;
     data = copy.data;
     opt = copy.opt;
-    wConnections = copy.wConnections;
     error_page = copy.error_page;
     buffer = copy.buffer;
     if (options && copy.options) // Only if the two have data inside
@@ -78,20 +77,20 @@ void   BaseServer::setServerSide( int _pos ) {
   if (bind(serverFd[_pos], (sockaddr *)&addr[_pos], addrLen[_pos]) <  0)
     throw std::logic_error(strerror(errno));
 
-/*   int rc = ioctl(serverFd[_pos], FIONBIO, (char *)&opt);
+  int rc = fcntl(serverFd[_pos], O_NONBLOCK, (char *)&opt);
   if (rc < 0)
   {
     perror("ioctl() failed");
     close(serverFd[_pos]);
     exit(-1);
-  } */
+  }
 
-  if (listen(serverFd[_pos], this->wConnections) < 0)
+  if (listen(serverFd[_pos], 1024) < 0)
     throw std::logic_error("listen failed");
 }
 
 void  BaseServer::setSelect( void ) {
-  timeout.tv_sec = 30; // 30 seconds for select()
+  timeout.tv_sec = 240; // 30 seconds for select()
   timeout.tv_usec = 0;
 
   FD_ZERO(&cSockets);
@@ -173,10 +172,6 @@ bool   BaseServer::checkServer( int _nServer ) const {
 
 void   BaseServer::setServerNumber( int _amount ) {
   this->nServers = _amount;
-}
-
-void BaseServer::setWConnections( int _amount ) {
-  this->wConnections = _amount;
 }
 
 void BaseServer::setPortAr( int *_portAr ) {

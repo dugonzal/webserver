@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 00:28:11 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:18:06 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,13 @@ void  BaseServer::setSelect( void ) {
     for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
       if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
         for (int j = 0; j < nServers; j++) {
-          if (serverFd[j] == i) // check if it forms part of our descriptors
+          if (serverFd[j] == i) { // check if it forms part of our descriptors
+            std::cout << " Descriptor : " << i << std::endl;
             setClientSide(serverFd[j]);
+          }
         }
       }
     }
-    std::cout << clientMsg << std::endl;
     bzero(clientMsg, sizeof(clientMsg));
 	}
 }
@@ -130,9 +131,21 @@ void  BaseServer::setClientSide( int socket ) {
   }
 
   serverResponse = "HTTP/1.1 200  OK\r\n\r\n <html><head></head><body><h1 text-family=\"Roboto\" align=\"center\"> Hello, Inception42! </h1></body></html>";
-  send(clientFd, serverResponse.data(), serverResponse.size(), 0);
+  std::string msgRet = clientMsg;
+  if (msgRet.find("favicon.ico", 0) != std::string::npos) {
+    msgRet = readFaviconFile("resources/favicon.ico");
+    std::string httpResponse = "HTTP/1.1 200 OK\r\n";
+    httpResponse += "Content-Type: image/x-icon\r\n";
+    httpResponse += "Content-Length: " + std::to_string(msgRet.size()) + "\r\n";
+    httpResponse += "\r\n";
+    httpResponse += msgRet;
+    send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+  }
+  else
+    send(clientFd, serverResponse.data(), serverResponse.size(), 0);
   
   close(clientFd); // After server has replied, close connection
+  std::cout << clientMsg << std::endl;
 }
 
 int   *BaseServer::getSockets(void) const { return (serverFd); }

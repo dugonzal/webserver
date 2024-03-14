@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/12 12:17:41 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:16:07 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,3 +47,4 @@ bool    skipLine(const string&);
 int  getNumberFromLine( const std::string& line );
 std::string	getNameFromLine( const std::string& line, const std::string& strBefore );
 std::string  findStrInLog( const std::string& line, const std::string& toFind );
+std::string readFaviconFile(const std::string& filename);

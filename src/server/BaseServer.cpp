@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 11:21:19 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/14 11:40:49 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,19 +91,26 @@ void   BaseServer::setServerSide( int _pos ) {
 }
 
 void  BaseServer::setSelect( void ) {
-  
+  timeout.tv_sec = 30; // 30 seconds for select()
+  timeout.tv_usec = 0;
+
   FD_ZERO(&cSockets);
   for (int i = 0; i < nServers; i++)
     FD_SET(serverFd[i], &cSockets);
 	while (true) {
 		rSockets = cSockets;
+    wSockets = cSockets;
 
 		std::cout << "Arrived before-select" << std::endl;
-    int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, NULL);
+    int retSelect = select(FD_SETSIZE, &rSockets, &wSockets, NULL, &timeout);
 		if (retSelect < 0) { // Waits until file descriptor has info
 			perror("error: select");
 			exit(EXIT_FAILURE);
 		}
+    else if (retSelect == 0) { // Timeout for select()
+      perror("select() timeout\n");
+      exit(EXIT_FAILURE);
+    }
     std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
 
     for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
@@ -115,16 +122,17 @@ void  BaseServer::setSelect( void ) {
           }
         }
       }
+      if (FD_ISSET(i, &wSockets))
+        std::cout << i << " can be used to write!" << std::endl;
     }
     bzero(clientMsg, sizeof(clientMsg));
 	}
 }
 
 void  BaseServer::setClientSide( int socket ) {
+  timeout.tv_sec = 5; // 5 seconds for Client
   if ((clientFd = accept(socket, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
     throw std::logic_error("error: accept");
-  timeout.tv_sec = 3; // 10 segundos
-  timeout.tv_usec = 0;
 
   if (setsockopt(clientFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0)
       throw(std::runtime_error("error: setsockopt()"));
@@ -135,7 +143,7 @@ void  BaseServer::setClientSide( int socket ) {
   }
 
   serverResponse = "HTTP/1.1 200  OK\r\n\r\n <html><head></head><body><h1 text-family=\"Roboto\" align=\"center\"> Hello, Inception42! </h1></body></html>";
-  std::string msgRet = clientMsg;
+  std::string msgRet;
   if (msgRet.find("favicon.ico", 0) != std::string::npos) {
     msgRet = readFaviconFile("resources/favicon.ico");
     std::string httpResponse = "HTTP/1.1 200 OK\r\n";
@@ -150,6 +158,7 @@ void  BaseServer::setClientSide( int socket ) {
   
   close(clientFd); // After server has replied, close connection
   std::cout << clientMsg << std::endl;
+  timeout.tv_sec = 30; // 30 seconds for select()
 }
 
 int   *BaseServer::getSockets(void) const { return (serverFd); }

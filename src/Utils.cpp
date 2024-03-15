@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 11:15:37 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:46:36 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,29 @@ string trim(const string &line) {
 
 int  getNumberFromLine( const std::string& line ) {
   char c = 0;
+  int flag = 0;
   std::stringstream ss;
   std::string::const_iterator itBegin = line.begin();
   std::string::const_iterator itEnd = line.end();
+
+  if (line.find(':', 0) != std::string::npos)
+    flag = 1;
+  else
+    flag = 2;
+  for (; itBegin != itEnd; ++itBegin) {
+    if (flag == 1) {
+      if (*itBegin == ':')
+        break ;
+    }
+    else if (flag == 2) {
+      if (std::isspace(*itBegin))
+        break ;
+    }
+  }
+
   for (; itBegin != itEnd; ++itBegin) {
     c = *itBegin;
-    if (std::isdigit(c))
+    if (std::isdigit(c) || c == '.')
       ss << c;
     else if(c == '#' || c == ';')
       break ;
@@ -143,4 +160,43 @@ std::string readFaviconFile(const std::string& filename) {
     std::ostringstream oss;
     oss << file.rdbuf();
     return oss.str();
+}
+
+std::string  getHostFromLine( const std::string& line ) {
+  char c = 0;
+  int flag = 0;
+  std::string ret;
+  std::stringstream ss;
+  std::string::const_iterator itBegin = line.begin();
+  std::string::const_iterator itEnd = line.end();
+
+  if (line.find(':', 0) != std::string::npos)
+    flag = 1;
+  else
+    flag = 2;
+  for (; itBegin != itEnd; ++itBegin) {
+    if (flag == 1) {
+      if (isspace(*itBegin))
+        break ;
+    }
+    else if (flag == 2)
+      return ("0.0.0.0");
+  }
+
+  for (; itBegin != itEnd; ++itBegin) {
+    c = *itBegin;
+    if (std::isalpha(c) || std::isalnum(c) || c == '.')
+      ss << c;
+    else if(c == '#' || c == ';' || c == ':')
+      break ;
+  }
+  if (ss.str().empty()) {
+    std::cout << "warning: Host was not set, default set to 0.0.0.0" << std::endl;
+    return ("0.0.0.0");
+  }
+  else if (!ss.str().compare("defaultserver") || !ss.str().compare("localhost"))
+    return ("0.0.0.0");
+  else
+    ss >> ret;
+  return ret;
 }

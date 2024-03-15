@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 21:43:16 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:29:48 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,31 @@ class BaseServer {
     /* Server Side */
     int                            *serverFd; // File Descriptor
     int                            opt; // Special options set for server socket
-    struct sockaddr_in             *addr; // Structure to hold addresses
+    struct sockaddr_in             *addr; // IP socket address
     socklen_t                      *addrLen; // Length of socket
     std::string                    serverResponse; // Header for Client
-    
-   /* Select */
+
+   /* File Descriptor Sets, blocks made to store FDs */
    fd_set	cSockets;
    fd_set   rSockets;
    fd_set   wSockets;
 
     /* Client Side */
     int                            clientFd;
-    struct sockaddr_in             clientAddr; // Client
+    struct sockaddr_in             clientAddr; // IP socket address
     socklen_t                      addrClientLen;
     char                           clientMsg[1028];
     struct  timeval                timeout;
     
     /* Configuration from input */
     int                            nServers;
-    int                            *portAr;
-    std::vector<string>            server_nameAr;
+    std::deque<int>                 port;
+    std::deque<string>                 host;
+    std::vector<std::string>            server_name;
+    std::map<int, std::string>          errorPageAr;
+    std::vector<int>               clientMaxBodySize;
+
+    
 
  protected:
     map<string, string>            data;
@@ -63,8 +68,9 @@ class BaseServer {
     int     getNServers( void ) const;
 
     void    setServerNumber( int _amount );
-    void    setPortAr( int *_port );
-    void    setServerNameAr( const std::vector<string> &_sName );
+    void    setPort( std::deque<int> &_portAr );
+    void    setHost( std::deque<string> &_host );
+    void    setServerName( const std::vector<string> &_sName );
 
   friend ostream &operator<<(ostream&, const BaseServer&);
 };

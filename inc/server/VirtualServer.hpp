@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 21:43:23 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:29:08 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@
 
 class VirtualServer {
  private:
-  size_t                 nServers;
-  int                    *portsServers;
-  std::vector<string>    nameServers;
+  size_t                         nServers;
+  std::deque<int>          portsServers;
+  std::deque<string>                 hostServers;
+  std::vector<string>            nameServers;
+  std::map<int, string>          errorPage;
+  std::vector<int>               clientMaxBodySize;
   Server                 server;
 
  public:
@@ -30,7 +33,8 @@ class VirtualServer {
  public:
   void  setServers( size_t _amount );
   void  startServers( void );
-  void  setWorkerConnections( int _amount );
-  int   setPort( int _nServer, int _port );
+  int   setPort( int _nServer, const std::string& _host, int _port );
   int   setName( const std::string& _name );
+  int   setErrorPage( const std::string& _errorPages );
+  int   setClientBodySize( const std::string& _clientBodySize );
 };

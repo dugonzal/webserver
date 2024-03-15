@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 21:44:01 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:21:13 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,21 @@ void  Config::setServerConfig( void ) {
   for (ptrBegin = ptrData.begin(); (ptrBegin != ptrEnd); ptrBegin++) {
     // std::cout << ptrData[i] << std::endl;
     if (ptrData[i].find("listen", 0) != std::string::npos) {
-      if (servers.setPort(sCount++, getNumberFromLine(ptrData[i])))
+      if (servers.setPort(sCount, getHostFromLine(ptrData[i]), getNumberFromLine(ptrData[i])))
         throw(std::runtime_error("error: setPort failed, bad values."));
+      
     }
     if (findStrInLog(ptrData[i], "server_name") != "")
       servers.setName(findStrInLog(ptrData[i], "server_name"));
+    if (findStrInLog(ptrData[i], "error_page") != "")
+      servers.setErrorPage(findStrInLog(ptrData[i], "error_page"));
+    if (findStrInLog(ptrData[i], "client_max_body_size") != "")
+      servers.setClientBodySize(findStrInLog(ptrData[i], "client_max_body_size"));
+    if (!ptrData[i].compare("};")) {
+      std::cout << std::endl;
+      sCount++;
+    }
     i++;
   }
+  std::cout << std::endl;
 }

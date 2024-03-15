@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 11:16:07 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:21:03 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 # include <unistd.h>
 # include <stdexcept>
 # include <map>
+# include <list>
 # include <string>
 # include <iostream>
 # include <ostream>
 # include <vector>
+# include <deque>
 # include <fstream>
 # include <cstdlib>
 # include <cstddef>
@@ -48,3 +50,4 @@ int  getNumberFromLine( const std::string& line );
 std::string	getNameFromLine( const std::string& line, const std::string& strBefore );
 std::string  findStrInLog( const std::string& line, const std::string& toFind );
 std::string readFaviconFile(const std::string& filename);
+std::string  getHostFromLine( const std::string& line );

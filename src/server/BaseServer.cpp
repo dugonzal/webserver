@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/14 22:10:22 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:36:41 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ void   BaseServer::setServerSide( int _pos ) {
 
   assert((serverFd[_pos] > 2) && (serverFd[_pos] < 6553));
   addr[_pos].sin_family = AF_INET;
-  addr[_pos].sin_port = htons(portAr[_pos]);
-  addr[_pos].sin_addr.s_addr = inet_addr("0.0.0.0");
+  addr[_pos].sin_port = htons(port[_pos]);
+  std::cout << host[_pos].c_str() << std::endl;
+  addr[_pos].sin_addr.s_addr = inet_addr(host[_pos].c_str());
   addrLen[_pos] = sizeof(addr[_pos]);
 
   if (setsockopt(serverFd[_pos], SOL_SOCKET, SO_REUSEADDR,
@@ -90,7 +91,7 @@ void   BaseServer::setServerSide( int _pos ) {
 }
 
 void  BaseServer::setSelect( void ) {
-  timeout.tv_sec = 240; // 30 seconds for select()
+  timeout.tv_sec = 900; // timeout for select()
   timeout.tv_usec = 0;
 
   FD_ZERO(&cSockets);
@@ -165,7 +166,7 @@ int   *BaseServer::getSockets(void) const { return (serverFd); }
 int   BaseServer::getNServers( void ) const { return (nServers); }
 
 bool   BaseServer::checkServer( int _nServer ) const {
-  if (portAr[_nServer] <= 0 || server_nameAr[_nServer].empty())
+  if (port[_nServer] <= 0 || server_name[_nServer].empty())
     return false;
   return true;
 }
@@ -174,14 +175,16 @@ void   BaseServer::setServerNumber( int _amount ) {
   this->nServers = _amount;
 }
 
-void BaseServer::setPortAr( int *_portAr ) {
-  portAr = new int[nServers];
-  for (int i = 0; i < nServers; i++)
-    portAr[i] = _portAr[i];
+void BaseServer::setPort( std::deque<int> &_port ) {
+  port = _port;
 }
 
-void  BaseServer::setServerNameAr( const std::vector<string>& _sNameAr ) {
-  this->server_nameAr = _sNameAr;
+void BaseServer::setHost( std::deque<string> &_host ) {
+  host = _host;
+}
+
+void  BaseServer::setServerName( const std::vector<string>& _sName ) {
+  this->server_name = _sName;
 }
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {

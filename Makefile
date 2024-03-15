@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
+#    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/05 11:26:45 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/06 15:57:26 by jaizpuru         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,11 @@ SHELL			:=	/bin/zsh
 
 CXX				:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++98
 
-I					:= inc/
+INC_DIR					:= inc/
+INC_FILES += $(addprefix $(P_DIR),$(parser))
+INC_FILES += $(addprefix $(S_DIR),$(server ))
+INC_FILES += Signals Utils
+INC = $(addprefix $(I), $(INC_FILES))
 
 SRC_DIR		:= src/
 
@@ -43,8 +47,9 @@ all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@ && ./$@
-	make -C tests
-	./webserv | cat -e > logs/parser_data.log 
+#   I do not have CPPUnit installed nor know what it is
+#	make -C tests
+	./webserv | cat -e > logs/parser_data.log
 	printf "compile done ->: [$@]\n"
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
@@ -55,11 +60,11 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	printf "compile ->: {$?}\n"
 
 clean:
-		make clean -C ./tests
+#		make clean -C ./tests
 		rm -rf ${NAME}
 
 fclean: clean
-		make fclean -C ./tests
+#		make fclean -C ./tests
 		rm -rf	${OBJ_DIR}
 
 re: fclean all

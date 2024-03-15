@@ -1,6 +1,10 @@
-examples
-*.aout
-*.o
-bin
-.vscode
+# Executables & created by program
 webserv
+a.out
+bin
+logs/parser_data.log
+*.o
+
+# Configuration
+examples
+.vscode

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseParser.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 12:26:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:47:38 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

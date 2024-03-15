@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Signals.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:37:20 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 10:56:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/05 17:39:42 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 class Signals {
  private:
-    struct sigaction sign;
+    __unused struct sigaction sign;
 
  public:
     Signals(void);

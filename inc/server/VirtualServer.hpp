@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   VirtualServer.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 12:09:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:29:08 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,13 @@
 
 class VirtualServer {
  private:
-  vector<Server*>  vServers;
+  size_t                         nServers;
+  std::deque<int>          portsServers;
+  std::deque<string>                 hostServers;
+  std::vector<string>            nameServers;
+  std::map<int, string>          errorPage;
+  std::vector<int>               clientMaxBodySize;
+  Server                 server;
 
  public:
   VirtualServer(void);
@@ -25,5 +31,10 @@ class VirtualServer {
   VirtualServer(const VirtualServer&);
   VirtualServer &operator=(const VirtualServer&);
  public:
-  void  addServer(Server);
+  void  setServers( size_t _amount );
+  void  startServers( void );
+  int   setPort( int _nServer, const std::string& _host, int _port );
+  int   setName( const std::string& _name );
+  int   setErrorPage( const std::string& _errorPages );
+  int   setClientBodySize( const std::string& _clientBodySize );
 };

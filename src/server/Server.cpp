@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:51:17 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/06 23:34:16 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Server.hpp"
 
-Server::Server(void) { }
+Server::Server(void) : BaseServer() { }
 
 Server::~Server(void) { }
 

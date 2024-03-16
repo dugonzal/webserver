@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:29:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/16 18:41:11 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,59 @@ void  VirtualServer::setServers( size_t _amount ) {
 }
 
 void  VirtualServer::startServers( void ) {
-  this->server.setServerNumber(nServers);
-  this->server.setServerName(nameServers);
-  this->server.setPort(portsServers);
-  this->server.setHost(hostServers);
-  this->server.setServer();
+  Server *ptr = new Server;
+  for (size_t it = 0; it < nServers; it++) {
+    Server *ptr = new Server;
+    ptr->setServerNumber(nServers);
+    ptr->setPort(portsServers[it]);
+    ptr->setHost(hostServers[it]);
+    ptr->setServerName(nameServers[it]);
+    ptr->setServerSide();
+    vServers.push_back(ptr);
+  }
+  setSelect();
+  delete ptr;
+}
+
+void  VirtualServer::setSelect( void ) {
+  timeout.tv_sec = 900; // timeout for select()
+  timeout.tv_usec = 0;
+
+  FD_ZERO(&cSockets);
+  for (size_t i = 0; i < nServers; i++) {
+    Server* ptr1 = vServers[i];
+    FD_SET(ptr1->getSocket(), &cSockets);
+  }
+	while (true) {
+		rSockets = cSockets;
+
+		std::cout << "Arrived before-select" << std::endl;
+    int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout);
+		if (retSelect < 0) { // Waits until file descriptor has info
+			perror("error: select");
+			exit(EXIT_FAILURE);
+		}
+    else if (retSelect == 0) { // Timeout for select()
+      perror("select() timeout\n");
+      exit(EXIT_FAILURE);
+    }
+    std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
+      if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
+        for (size_t j = 0; j < nServers; j++) {
+          Server* ptr2 = vServers[j];
+          if (ptr2->getSocket() == i) { // check if it forms part of our descriptors
+            ptr2->setClientSide();
+          }
+        }
+      }
+      if (FD_ISSET(i, &wSockets))
+        std::cout << i << " can be used to write!" << std::endl;
+    }
+    // bzero(clientMsg, sizeof(clientMsg));
+	}
 }
 
 int   VirtualServer::setName( const std::string& _name ) {

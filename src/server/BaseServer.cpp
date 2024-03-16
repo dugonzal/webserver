@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:36:41 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/16 18:45:46 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,113 +37,68 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
 }
 
 BaseServer::~BaseServer(void) {
-  for (int i = 0; i < nServers; i++)
-    close(serverFd[i]);
+  close(serverFd);
 }
 
-int BaseServer::setServer(void) {
-  serverFd = new int[nServers];
-  addr = new sockaddr_in[nServers];
-  addrLen = new socklen_t[nServers];
-
-  for (int i = 0; i < nServers; i++)
-    setServerSide(i);
-  setSelect();
-  for (int i = 0; i < nServers; i++)
-    close(serverFd[i]);
-
-  // memset(clientMsg, 0, sizeof(clientMsg));
-  return (0);
-}
-
-void   BaseServer::setServerSide( int _pos ) {
-  if ((serverFd[_pos] = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+void   BaseServer::setServerSide( void ) {
+  opt = 1;
+  if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
 
-  assert((serverFd[_pos] > 2) && (serverFd[_pos] < 6553));
-  addr[_pos].sin_family = AF_INET;
-  addr[_pos].sin_port = htons(port[_pos]);
-  std::cout << host[_pos].c_str() << std::endl;
-  addr[_pos].sin_addr.s_addr = inet_addr(host[_pos].c_str());
-  addrLen[_pos] = sizeof(addr[_pos]);
+  assert((serverFd > 2) && (serverFd < 6553));
+  addr.sin_family = AF_INET;
+  addr.sin_port = htons(port);
+  addr.sin_addr.s_addr = inet_addr(host.c_str());
+  addrLen = sizeof(addr);
 
-  if (setsockopt(serverFd[_pos], SOL_SOCKET, SO_REUSEADDR,
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error(strerror(errno));
-
-  if (setsockopt(serverFd[_pos], SOL_SOCKET, SO_REUSEPORT,
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error(strerror(errno));
-
-  if (bind(serverFd[_pos], (sockaddr *)&addr[_pos], addrLen[_pos]) <  0)
-    throw std::logic_error(strerror(errno));
-
-  int rc = fcntl(serverFd[_pos], O_NONBLOCK, (char *)&opt);
+  int rc = fcntl(serverFd, O_NONBLOCK, (char *)&opt);
   if (rc < 0)
   {
     perror("ioctl() failed");
-    close(serverFd[_pos]);
+    close(serverFd);
     exit(-1);
   }
-
-  if (listen(serverFd[_pos], 1024) < 0)
+  if (bind(serverFd, (sockaddr *)&addr, addrLen) <  0)
+    throw std::logic_error(strerror(errno));
+  if (listen(serverFd, 1024) < 0)
     throw std::logic_error("listen failed");
 }
 
-void  BaseServer::setSelect( void ) {
-  timeout.tv_sec = 900; // timeout for select()
-  timeout.tv_usec = 0;
-
-  FD_ZERO(&cSockets);
-  for (int i = 0; i < nServers; i++)
-    FD_SET(serverFd[i], &cSockets);
-	while (true) {
-		rSockets = cSockets;
-    wSockets = cSockets;
-
-		std::cout << "Arrived before-select" << std::endl;
-    int retSelect = select(FD_SETSIZE, &rSockets, &wSockets, NULL, &timeout);
-		if (retSelect < 0) { // Waits until file descriptor has info
-			perror("error: select");
-			exit(EXIT_FAILURE);
-		}
-    else if (retSelect == 0) { // Timeout for select()
-      perror("select() timeout\n");
-      exit(EXIT_FAILURE);
-    }
-    std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
-
-    for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
-      if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
-        for (int j = 0; j < nServers; j++) {
-          if (serverFd[j] == i) { // check if it forms part of our descriptors
-            std::cout << " Descriptor : " << i << std::endl;
-            setClientSide(serverFd[j]);
-          }
-        }
-      }
-      if (FD_ISSET(i, &wSockets))
-        std::cout << i << " can be used to write!" << std::endl;
-    }
-    bzero(clientMsg, sizeof(clientMsg));
-	}
-}
-
-void  BaseServer::setClientSide( int socket ) {
+void  BaseServer::setClientSide( void ) {
   timeout.tv_sec = 5; // 5 seconds for Client
-  if ((clientFd = accept(socket, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
+  timeout.tv_usec = 0;
+  bzero(clientMsg, sizeof(clientMsg));
+  if ((clientFd = accept(serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
     throw std::logic_error("error: accept");
 
   if (setsockopt(clientFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0)
       throw(std::runtime_error("error: setsockopt()"));
-  if (recv(clientFd, clientMsg, sizeof(clientMsg) - 1, 0) <= 0) {
-    close(socket);
-    close(clientFd);
-    throw std::logic_error("recv failed");
-  }
+  
+  int returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
+  if (returnedBytes < 0) {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) { // No data available, handle accordingly (e.g., retry later)
+          std::this_thread::sleep_for(std::chrono::milliseconds(100));
+          std::cout << "No data available, retry later." << std::endl;
+      } else { // Other error occurred
+          close(serverFd);
+          close(clientFd);
+          throw std::logic_error("recv error");
+      }
+  } else if (returnedBytes == 0) { // Connection closed by the client
+      close(serverFd);
+      close(clientFd);
+      throw std::runtime_error("client closed connection");
+  } else // Data received, process it
+      std::cout << "Bytes received: " << returnedBytes << std::endl;
 
   serverResponse = "HTTP/1.1 200  OK\r\n\r\n <html><head></head><body><h1 text-family=\"Roboto\" align=\"center\"> Hello, Inception42! </h1></body></html>";
-  std::string msgRet;
+  std::string msgRet(clientMsg);
   if (msgRet.find("favicon.ico", 0) != std::string::npos) {
     msgRet = readFaviconFile("resources/favicon.ico");
     std::string httpResponse = "HTTP/1.1 200 OK\r\n";
@@ -161,12 +116,12 @@ void  BaseServer::setClientSide( int socket ) {
   timeout.tv_sec = 30; // 30 seconds for select()
 }
 
-int   *BaseServer::getSockets(void) const { return (serverFd); }
+int   BaseServer::getSocket(void) const { return (serverFd); }
 
 int   BaseServer::getNServers( void ) const { return (nServers); }
 
-bool   BaseServer::checkServer( int _nServer ) const {
-  if (port[_nServer] <= 0 || server_name[_nServer].empty())
+bool   BaseServer::checkServer( void ) const {
+  if (port <= 0 || server_name.empty())
     return false;
   return true;
 }
@@ -175,21 +130,20 @@ void   BaseServer::setServerNumber( int _amount ) {
   this->nServers = _amount;
 }
 
-void BaseServer::setPort( std::deque<int> &_port ) {
+void BaseServer::setPort( int _port ) {
   port = _port;
 }
 
-void BaseServer::setHost( std::deque<string> &_host ) {
+void BaseServer::setHost( std::string& _host ) {
   host = _host;
 }
 
-void  BaseServer::setServerName( const std::vector<string>& _sName ) {
-  this->server_name = _sName;
+void  BaseServer::setServerName( std::string& _name ) {
+  this->server_name = _name;
 }
 
 std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {
-  int *ret = copy.getSockets();
-  for (int i = 0; i < copy.getNServers(); i++)
-    os << "host: " << ret[i] << std::endl;
+  int ret = copy.getSocket();
+  os << "host: " << ret << std::endl;
   return (os);
 }

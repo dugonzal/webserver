@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 17:44:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/16 15:01:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/BaseParser.hpp"
-#include <string>
 
 BaseParser::BaseParser(void) { }
 
@@ -47,11 +46,6 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
   setNservers();
   checkSemicolon();
   handlerScopeLocation();
-}
-
-void  BaseParser::printData(const std::vector<string> &tmp) const {
-  for (unsigned int i = 0; i < tmp.size(); i++)
-    cout << tmp[i] << endl;
 }
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
@@ -104,10 +98,9 @@ void  BaseParser::setNservers(void) {
     throw(runtime_error("scope server"));
   else
     handlerScopeError();
-  nServers += 1; // por alguna razon no puedo inciar en 0 y tengo que hacerlo en 1
 }
 
-int  BaseParser::getNservers(void) const { return(nServers); }
+int BaseParser::getNservers(void) const { return(nServers); }
 
 std::vector<string> BaseParser::getData(void) const { return(data); }
 
@@ -134,7 +127,7 @@ void  BaseParser::handlerScopeError(void) {
       throw(runtime_error("fuera del scope del server"));
 }
 
-int     BaseParser::parserScopeLocation(unsigned int j) const {
+int BaseParser::parserScopeLocation(unsigned int j) const {
   if (data[j].find("{") == string::npos \
     || data[j].find_first_of("/") == string::npos)
       throw(runtime_error("scope location"));

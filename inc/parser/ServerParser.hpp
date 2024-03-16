@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   ServerParser.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 14:57:20 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/03/16 14:41:32 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/16 14:52:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma once
-# include "BaseServer.hpp"
+# pragma  once
 
-class Server: public BaseServer {
+# include "../Utils.hpp"
+
+class ServerParser {
  private:
-  list<int>     clients;
+  vector<string>  buffer;
  public:
-    Server(void);
-    Server(const vector<string>&);
-    ~Server(void);
-    Server(const Server&);
-    Server &operator=(const Server&);
-    void  getServer(void) const;
-    Server *clone(void) const;
+  ServerParser(void);
+  ~ServerParser(void);
+  ServerParser(const vector<string>&);
+  ServerParser &operator=(const ServerParser&);
 };

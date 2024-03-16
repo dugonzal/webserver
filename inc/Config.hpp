@@ -6,17 +6,17 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 06:53:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/16 09:35:25 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include "../parser/Parser.hpp"
-# include "../Signals.hpp"
-# include "Server.hpp"
-# include "../Utils.hpp"
-# include "../server/VirtualServer.hpp"
+# include "parser/Parser.hpp"
+# include "Signals.hpp"
+# include "server/Server.hpp"
+# include "Utils.hpp"
+# include "server/VirtualServer.hpp"
 
 /*
  * voy a usar el vector de servidores para obtener la data puedo crear una pequeña funcoion que parsee y comprueba 
@@ -31,9 +31,6 @@ class Config {
 
  private:
   Config(void);
-
- private:
-  void  setServers(void);
 
  public:
   Config(const string&);

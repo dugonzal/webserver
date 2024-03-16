@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 20:26:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/16 13:13:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 Parser::Parser(void) { }
 
-Parser::~Parser(void) {
-  for (unsigned int i = 0; i < nServers; i++)
-    delete dataServers[i];
-  delete [] dataServers;
-}
+Parser::~Parser(void) { }
 
 Parser::Parser(const string &filename): BaseParser(filename) {
   dataServers = new vector<string>*[nServers];
@@ -43,16 +39,18 @@ unsigned int  Parser::getServer(int n, unsigned int j) {
   while (++j < data.size()) {
     if (data[j].find("};") != string::npos)
       break;
-    dataServers[n]->push_back(data[j]);
+    dataServers[n]->push_back(cleanSemiColon(data[j]));
   }
   return (j);
 }
 
 void  Parser::splitServers(void) {
-  unsigned int n = 1;
+  unsigned int n = 0;
   for (unsigned int i = 0; i < data.size(); i++) {
     i = getServer(n++, i);
     if (n == nServers)
       break;
   }
 }
+
+vector<string> **Parser::getDataServers(void) const { return(dataServers); }

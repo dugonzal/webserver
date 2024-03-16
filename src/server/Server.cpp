@@ -6,13 +6,16 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:51:17 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/16 14:56:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Server.hpp"
 
 Server::Server(void) { }
+
+Server::Server(const vector<string> &tmp): BaseServer(tmp) {
+}
 
 Server::~Server(void) { }
 
@@ -23,7 +26,6 @@ Server &Server::operator=(const Server &copy) {
     BaseServer::operator=(copy);
   return (*this);
 }
-
 
 Server *Server::clone(void) const {
   return (new Server(*this));

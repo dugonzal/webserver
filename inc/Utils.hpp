@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 06:38:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/16 14:17:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,5 @@ using std::ostream;
 bool    errorFile(ifstream);
 string  trim(const string&);
 bool    skipLine(const string&);
+string  cleanSemiColon(string);
+void  printData(const std::vector<string>&);

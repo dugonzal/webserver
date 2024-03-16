@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 06:45:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/16 14:17:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ class BaseParser {
 
  public:
     int   getNservers(void) const;
-    void  printData(const vector<string>&) const;
     ifstream  *openFile(const string&) const;
     vector<string> getData(void) const;
 };

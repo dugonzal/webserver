@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/07 07:24:29 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/16 14:51:26 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,15 +23,15 @@ SRC_DIR		:= src/
 OBJ_DIR		:= obj/
 
 P_DIR			:= parser/
-parser		:= BaseParser Parser
+parser		:= BaseParser Parser ServerParser
 
 S_DIR			:= server/
-server		:= VirtualServer BaseServer Server Config
+server		:= VirtualServer BaseServer Server
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))
 
-SRC_FILES += main Signals Utils 
+SRC_FILES += main Signals Utils Config 
 
 SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 

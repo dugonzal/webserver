@@ -6,30 +6,31 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/07 06:32:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/16 15:03:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include "../parser/BaseParser.hpp"
+# include "../parser/ServerParser.hpp"
 # include "../Utils.hpp"
 
 class BaseServer {
  protected:
-    struct sockaddr_in             addr;
-    socklen_t                      addrLen;
-    int                            s;
-    int                            opt;
-    std::list<int>                 client;
+    ServerParser         sParser;
+    struct sockaddr_in   addr;
+    socklen_t            addrLen;
+    int                  s;
+    int                  opt;
+    std::list<int>       client;
  protected:
-    map<string, string>            data;
-    vector<string>                 error_page;
-    vector<string>                 buffer;
-    int                            *options;
+    map<string, string>  data;
+    vector<string>       error_page;
+    int                  *options;
 
  public:
     BaseServer(void);
+    BaseServer(const vector<string>&);
     BaseServer(const BaseServer&);
     BaseServer &operator=(const BaseServer&);
     virtual ~BaseServer(void) = 0;

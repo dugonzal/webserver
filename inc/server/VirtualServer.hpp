@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 12:52:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/17 11:59:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ class VirtualServer {
   VirtualServer(const VirtualServer&);
   VirtualServer &operator=(const VirtualServer&);
  public:
+  void  run(void);
 };

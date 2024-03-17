@@ -1,44 +1,19 @@
-$
-entra al server parser de un server$
-$
-listen			80^@$
-server_name		_^@$
-return			301 https://$server_name$request_uri^@$
-$
-sale de un parser server$
-$
-$
-entra al server parser de un server$
-$
-listen			default_server^@$
-server_name		_^@$
-root			public/^@$
-autoindex off^@$
-index			index.html^@$
-location /home {$
-index index.html^@$
-autoindex on^@$
-}$
-location / {$
-autoindex on^@$
-allow_methods GET POST DELETE^@$
-}$
-location / {$
-index         log.py^@$
-cgi_path      /usr/bin/python^@$
-cgi_ext       .py^@$
-autoindex     off^@$
-allow_methods GET POST DELETE^@$
-}$
-$
-sale de un parser server$
-$
-$
-entra al server parser de un server$
-$
-location / {$
-proxy_pass http://^@$
-}$
-$
-sale de un parser server$
-$
+entra  a config$
+entro a ServerParser$
+BaseParser constructor$
+salgo de ServerParser$
+entro a ServerParser$
+BaseParser constructor$
+salgo de ServerParser$
+entro a ServerParser$
+BaseParser constructor$
+salgo de ServerParser$
+3$
+4$
+5$
+destructor de vistual server$
+salgo de ServerParser$
+salgo de ServerParser$
+salgo de ServerParser$
+sale de config$
+destructor de vistual server$

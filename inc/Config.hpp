@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 09:35:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/17 12:03:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ class Config {
   Config(const Config&);
   Config &operator=(const Config&);
   ~Config(void);
+  void  run(void);
 };

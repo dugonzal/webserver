@@ -6,19 +6,19 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 20:52:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/17 12:17:25 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
 
 BaseServer::BaseServer(const vector<string> &tmp): sParser(tmp), addrLen(sizeof(addr)), s(-42), opt(1) {
+  cout << "BaseParser constructor" << endl;
   ::bzero(&addr, sizeof(addr));
-  //createSocket();
 }
 
 
-BaseServer::BaseServer(void) { }
+BaseServer::BaseServer(void) { cout << "BaseParser destructor" << endl;}
 
 BaseServer::BaseServer(const BaseServer &copy): \
   addrLen(copy.addrLen), s(copy.s), opt(copy.opt) { }

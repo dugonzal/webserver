@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ClientSide.hpp                                     :+:      :+:    :+:   */
+/*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/19 16:30:45 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:48:40 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Utils.hpp"
 
-class ClientSide {
+class Request {
 	private:
     /* Client Server Side */
     int							clientFd;
     struct sockaddr_in			clientAddr; // IP socket address
     socklen_t					addrClientLen;
 
-	/* Client Message Side */
+	/* Server Input Side */
     int							returnedBytes;
     char						clientMsg[1028];
-	std::string					serverResponse; // Header for Client
+	bool						fileIsGood;
+
+	/* Server Output Side */
+	std::string					_route;
+	std::string					fileResponse;
+	std::string					httpResponse; // Header for Client
     struct  timeval				timeout;
 
 	public:
-		ClientSide( void );
-		ClientSide( int _serverFd );
-		~ClientSide( void );
+		Request( void );
+		Request( int _serverFd );
+		~Request( void );
 
-		int 	openFile( std::string _route );
 		std::string	getRoute( void );
 };

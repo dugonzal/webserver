@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 12:09:40 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:52:59 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # include "../parser/BaseParser.hpp"
 # include "../server/ServerParser.hpp"
-# include "../server/ClientSide.hpp"
+# include "../server/Request.hpp"
 # include "../Utils.hpp"
 
 class BaseServer {
@@ -49,7 +49,7 @@ class BaseServer {
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
     void    setServerSide( void );
-    void    setClientSide( void );
+    void    setRequest( void );
 
     bool    checkServer( void ) const;
     int     getSocket(void) const;

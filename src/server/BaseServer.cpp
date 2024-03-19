@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 15:41:47 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:45:29 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     if (options && copy.options) // Only if the two have data inside
         *options = *(copy.options);
     else // Depending on copy.options, NULL or copy.options.
-        options = copy.options ? new int(*copy.options) : nullptr;
+        options = copy.options ? new int(*copy.options) : NULL;
   }
   return (*this);
 }
@@ -47,7 +47,10 @@ void   BaseServer::setServerSide( void ) {
 
   assert((serverFd > 2) && (serverFd < 6553));
   addr.sin_family = AF_INET;
+  std::cout << "Port : " << port << std::endl;
   addr.sin_port = htons(port);
+  std::cout << "Host : " << host << std::endl;
+  std::cout << "Server name : " << server_name << std::endl << std::endl;
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
 
@@ -70,8 +73,8 @@ void   BaseServer::setServerSide( void ) {
     throw std::logic_error("listen failed");
 }
 
-void  BaseServer::setClientSide( void ) {
-  ClientSide client(serverFd);
+void  BaseServer::setRequest( void ) {
+  Request client(serverFd);
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }

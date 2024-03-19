@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ClientSide.cpp                                     :+:      :+:    :+:   */
+/*   Request.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/server/ClientSide.hpp"
+#include "../../inc/server/Request.hpp"
 
-ClientSide::ClientSide( void ) {}
+Request::Request( void ) {}
 
-ClientSide::ClientSide( int _serverFd ) {
+Request::Request( int _serverFd ) {
 	timeout.tv_sec = 5; // 5 seconds for Client
 	timeout.tv_usec = 0;
 	bzero(clientMsg, sizeof(clientMsg));
@@ -37,31 +37,31 @@ ClientSide::ClientSide( int _serverFd ) {
 	} else // Data received, process it
 		std::cout << "Bytes received: " << returnedBytes << std::endl;
 
-	openFile(getRoute());
+	_route = getRoute();
+	std::cout << std::endl << "--------------INPUT--------------" << std::endl;
 	std::cout << std::endl << clientMsg << std::endl;
 
 	//! Response
-	serverResponse = "HTTP/1.1 200  OK\r\n\r\n <html><head></head><body><h1 text-family=\"Roboto\" align=\"center\"> Hello, Inception42! </h1></body></html>";
-		std::string msgRet(clientMsg);
-	if (msgRet.find("favicon.ico", 0) != std::string::npos) {
-		msgRet = readFaviconFile("resources/favicon.ico");
-		std::string httpResponse = "HTTP/1.1 200 OK\r\n";
-		httpResponse += "Content-Type: image/x-icon\r\n";
-		httpResponse += "Content-Length: " + std::to_string(msgRet.size()) + "\r\n";
-		httpResponse += "\r\n";
-		httpResponse += msgRet;
-		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	if (fileIsGood == true) {
+		httpResponse = "HTTP/1.1 200  OK\r\n\r\n";
+		fileResponse = readFile(_route);
 	}
 	else
-	send(clientFd, serverResponse.data(), serverResponse.size(), 0);
+		httpResponse = "HTTP/1.1 404 Not found\r\n\r\n";
+	httpResponse += "Content-Type: image/x-icon\r\n";
+	httpResponse += "Content-Length: " + std::to_string(fileResponse.size()) + "\r\n";
+	httpResponse += "\r\n";
+	httpResponse += fileResponse;
+	std::cout << "--------------OUTPUT--------------" << std::endl << httpResponse << std::endl << "---------------------------------" << std::endl;
+	send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 
 
 	close(clientFd); // After server has replied, close connection
 }
 
-ClientSide::~ClientSide( void ) {}
+Request::~Request( void ) {}
 
-std::string	ClientSide::getRoute( void ) {
+std::string	Request::getRoute( void ) {
 	std::string str(clientMsg);
 	std::stringstream ss;
 
@@ -73,30 +73,13 @@ std::string	ClientSide::getRoute( void ) {
 			ss << str[start];
 		}
 	}
-	if (ss.str().empty()) // abort open, since user did not ask for any file
-		ss << "none";
+	if (!ss.str().empty()) {// abort open, since user did not ask for any file
+		fileIsGood = false; 
+		std::cout << "EMPTY" << std::endl; }
+	else {
+		fileIsGood = true;
+		std::cout << "CONTENT" << std::endl; }
 	std::cout << "Route : " << ss.str() << std::endl;
 	std::string ret(ss.str());
 	return (ret);
-}
-
-int ClientSide::openFile( std::string _route ) {
-	if (!_route.compare("none"))
-		return 1;
-	std::ifstream file;
-	file.open(_route.c_str());
-	if (file.is_open() > 0 )
-		;
-	else { // return 404 page
-		_route = "resources/404.html";
-		file.open(_route.c_str());
-	}	
-	char ret[1028];
-	while (file.getline(ret, 1028)) {
-		std::cout << "Size to read : " << file.gcount() << " : ";
-		std::cout << ret << std::endl;
-	}
-	std::cout << ret << std::endl;
-	file.close();
-	return 0;
 }

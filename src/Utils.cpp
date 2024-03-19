@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 22:36:42 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:34:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ std::string  findStrInLog( const std::string& line, const std::string& toFind ) 
 
 // Function to read the contents of the favicon.ico file
 std::string readFaviconFile(const std::string& filename) {
-    std::ifstream file(filename, std::ios::binary);
+    std::ifstream file (filename.data(), std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "Failed to open favicon file: " << filename << std::endl;
         return "";

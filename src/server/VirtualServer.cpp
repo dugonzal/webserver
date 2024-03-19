@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   VirtualServer.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 18:41:11 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:41:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ void  VirtualServer::setSelect( void ) {
 		if (retSelect < 0) { // Waits until file descriptor has info
 			perror("error: select");
 			exit(EXIT_FAILURE);
-		}
-    else if (retSelect == 0) { // Timeout for select()
+    }
+    else if (retSelect == 0) {
       perror("select() timeout\n");
       exit(EXIT_FAILURE);
     }
     std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
     for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
       if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
         for (size_t j = 0; j < nServers; j++) {
@@ -130,7 +130,6 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
     std::cout << "[ " << ret << " , " << error_page << " ]" << std::endl;
     this->errorPage.insert(content);
     ss.str(std::string()); // clear std::stringstream
-
   }
   return 0;
 }

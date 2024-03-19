@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 18:45:46 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:44:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     if (options && copy.options) // Only if the two have data inside
         *options = *(copy.options);
     else // Depending on copy.options, NULL or copy.options.
-        options = copy.options ? new int(*copy.options) : nullptr;
+        options = copy.options ? new int(*copy.options) : NULL;
   }
   return (*this);
 }
@@ -51,6 +51,7 @@ void   BaseServer::setServerSide( void ) {
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
 
+  cout << "Server created with port: " << port << " and host: " << host << endl;
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error(strerror(errno));
@@ -83,7 +84,7 @@ void  BaseServer::setClientSide( void ) {
   int returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
   if (returnedBytes < 0) {
       if (errno == EAGAIN || errno == EWOULDBLOCK) { // No data available, handle accordingly (e.g., retry later)
-          std::this_thread::sleep_for(std::chrono::milliseconds(100));
+          //std::this_thread::sleep_for(std::chrono::milliseconds(100));
           std::cout << "No data available, retry later." << std::endl;
       } else { // Other error occurred
           close(serverFd);
@@ -103,7 +104,7 @@ void  BaseServer::setClientSide( void ) {
     msgRet = readFaviconFile("resources/favicon.ico");
     std::string httpResponse = "HTTP/1.1 200 OK\r\n";
     httpResponse += "Content-Type: image/x-icon\r\n";
-    httpResponse += "Content-Length: " + std::to_string(msgRet.size()) + "\r\n";
+    httpResponse += "Content-Length:  \r\n";
     httpResponse += "\r\n";
     httpResponse += msgRet;
     send(clientFd, httpResponse.data(), httpResponse.size(), 0);

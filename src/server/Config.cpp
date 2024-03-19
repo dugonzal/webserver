@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 17:34:32 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:45:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void  Config::setServer(void) {
   // Prints the configuration parsed data
   // parser.printData(parser.getData());
 
-  servers.setServers(parser.getNservers() - 1); // manually set -1, remove ASAP
+  servers.setServers(parser.getNservers()); // manually set -1, remove ASAP
   setServerConfig();
   servers.startServers();
 }

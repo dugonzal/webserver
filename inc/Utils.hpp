@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 18:36:10 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:31:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # include <sstream>
 # include <fcntl.h>
 # include <sys/ioctl.h>
-# include <chrono>
-# include <thread>
+//# include <chrono>
+//# include <thread>
 
 using std::cout;
 using std::endl;

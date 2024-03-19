@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/19 12:26:44 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:30:45 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ class ClientSide {
 
 	/* Client Message Side */
     int							returnedBytes;
-	std::string					askedRoute;
     char						clientMsg[1028];
 	std::string					serverResponse; // Header for Client
     struct  timeval				timeout;
@@ -31,6 +30,6 @@ class ClientSide {
 		ClientSide( int _serverFd );
 		~ClientSide( void );
 
-		int 	openFile( const std::string& _route );
-		void	setRoute( void );
+		int 	openFile( std::string _route );
+		std::string	getRoute( void );
 };

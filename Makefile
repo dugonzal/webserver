@@ -6,7 +6,7 @@
 #    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/19 12:33:26 by jaizpuru         ###   ########.fr        #
+#    Updated: 2024/03/19 16:43:51 by jaizpuru         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,6 @@ all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o $@ && ./$@
-#   I do not have CPPUnit installed nor know what it is
 #	make -C tests
 	./webserv | cat -e > logs/parser_data.log
 	printf "compile done ->: [$@]\n"

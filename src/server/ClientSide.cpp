@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/19 15:42:14 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:55:34 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ ClientSide::ClientSide( int _serverFd ) {
 	} else // Data received, process it
 		std::cout << "Bytes received: " << returnedBytes << std::endl;
 
-	setRoute();
+	openFile(getRoute());
 	std::cout << std::endl << clientMsg << std::endl;
 
 	//! Response
@@ -61,21 +61,42 @@ ClientSide::ClientSide( int _serverFd ) {
 
 ClientSide::~ClientSide( void ) {}
 
-void	ClientSide::setRoute( void ) {
+std::string	ClientSide::getRoute( void ) {
 	std::string str(clientMsg);
 	std::stringstream ss;
 
 	size_t start = str.find("/", 0);
-	for (start = str.find("/", 0); clientMsg[start] != ' '; start++)
-		ss << clientMsg[start];
-	askedRoute = ss.str();
-	std::cout << "Route : " << askedRoute << std::endl;
+	if (str[start] == '/' && str[start + 1] == ' ')
+		;
+	else {
+		for (start = start + 1; str[start] != ' '; start++) {
+			ss << str[start];
+		}
+	}
+	if (ss.str().empty()) // abort open, since user did not ask for any file
+		ss << "none";
+	std::cout << "Route : " << ss.str() << std::endl;
+	std::string ret(ss.str());
+	return (ret);
 }
 
-int ClientSide::openFile( const std::string& _route ) {
-	if ( open(_route.c_str(), O_RDONLY) == -1 ) {
-		// return 404 page
-		throw ("error: could not open file : " + _route + "\n");
+int ClientSide::openFile( std::string _route ) {
+	if (!_route.compare("none"))
+		return 1;
+	std::ifstream file;
+	file.open(_route.c_str());
+	if (file.is_open() > 0 )
+		;
+	else { // return 404 page
+		_route = "resources/404.html";
+		file.open(_route.c_str());
+	}	
+	char ret[1028];
+	while (file.getline(ret, 1028)) {
+		std::cout << "Size to read : " << file.gcount() << " : ";
+		std::cout << ret << std::endl;
 	}
+	std::cout << ret << std::endl;
+	file.close();
 	return 0;
 }

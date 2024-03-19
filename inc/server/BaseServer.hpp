@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 09:43:35 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 12:09:40 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 # include "../parser/BaseParser.hpp"
 # include "../server/ServerParser.hpp"
+# include "../server/ClientSide.hpp"
 # include "../Utils.hpp"
 
 class BaseServer {
@@ -24,14 +25,6 @@ class BaseServer {
     int                            opt; // Special options set for server socket
     struct sockaddr_in             addr; // IP socket address
     socklen_t                      addrLen; // Length of socket
-    std::string                    serverResponse; // Header for Client
-
-    /* Client Side */
-    int                            clientFd;
-    struct sockaddr_in             clientAddr; // IP socket address
-    socklen_t                      addrClientLen;
-    char                           clientMsg[1028];
-    struct  timeval                timeout;
     
     /* Configuration from input */
     int                                 nServers;

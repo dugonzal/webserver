@@ -6,7 +6,7 @@
 #    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/06 15:57:26 by jaizpuru         ###   ########.fr        #
+#    Updated: 2024/03/19 09:43:16 by jaizpuru         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ P_DIR			:= parser/
 parser		:= BaseParser Parser
 
 S_DIR			:= server/
-server		:= VirtualServer BaseServer Server Config
+server		:= VirtualServer BaseServer Server Config ServerParser
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 12:14:52 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:41:47 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void   BaseServer::setServerSide( void ) {
 
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error(strerror(errno));
+      throw std::logic_error("error: socket SO_REUSEADDR.");
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error(strerror(errno));
+      throw std::logic_error("error: socket SO_REUSEPORT.");
   int rc = fcntl(serverFd, O_NONBLOCK, (char *)&opt);
   if (rc < 0)
   {
@@ -65,7 +65,7 @@ void   BaseServer::setServerSide( void ) {
     exit(-1);
   }
   if (bind(serverFd, (sockaddr *)&addr, addrLen) <  0)
-    throw std::logic_error(strerror(errno));
+    throw std::logic_error("error: socket bind().");
   if (listen(serverFd, 1024) < 0)
     throw std::logic_error("listen failed");
 }

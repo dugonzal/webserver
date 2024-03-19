@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/19 12:30:54 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:42:14 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,9 @@ ClientSide::ClientSide( int _serverFd ) {
 	//! Recieve message
 	returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
 	if (returnedBytes < 0) {
-		if (errno == EAGAIN || errno == EWOULDBLOCK) { // No data available, handle accordingly (e.g., retry later)
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			std::cout << "No data available, retry later." << std::endl;
-		} else { // Other error occurred
-			close(_serverFd);
-			close(clientFd);
-			throw std::logic_error("recv error");
-		}
+		close(_serverFd);
+		close(clientFd);
+		throw std::logic_error("recv error");
 	} else if (returnedBytes == 0) { // Connection closed by the client
 		close(_serverFd);
 		close(clientFd);
@@ -80,7 +75,7 @@ void	ClientSide::setRoute( void ) {
 int ClientSide::openFile( const std::string& _route ) {
 	if ( open(_route.c_str(), O_RDONLY) == -1 ) {
 		// return 404 page
-		throw (errno);
+		throw ("error: could not open file : " + _route + "\n");
 	}
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:21:03 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/16 18:36:10 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include <sstream>
 # include <fcntl.h>
 # include <sys/ioctl.h>
+# include <chrono>
+# include <thread>
 
 using std::cout;
 using std::endl;

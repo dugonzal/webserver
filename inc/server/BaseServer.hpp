@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/15 17:29:48 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/16 18:45:48 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,11 @@
 class BaseServer {
  protected:
     /* Server Side */
-    int                            *serverFd; // File Descriptor
+    int                            serverFd; // File Descriptor
     int                            opt; // Special options set for server socket
-    struct sockaddr_in             *addr; // IP socket address
-    socklen_t                      *addrLen; // Length of socket
+    struct sockaddr_in             addr; // IP socket address
+    socklen_t                      addrLen; // Length of socket
     std::string                    serverResponse; // Header for Client
-
-   /* File Descriptor Sets, blocks made to store FDs */
-   fd_set	cSockets;
-   fd_set   rSockets;
-   fd_set   wSockets;
 
     /* Client Side */
     int                            clientFd;
@@ -37,12 +32,12 @@ class BaseServer {
     struct  timeval                timeout;
     
     /* Configuration from input */
-    int                            nServers;
-    std::deque<int>                 port;
-    std::deque<string>                 host;
-    std::vector<std::string>            server_name;
+    int                                 nServers;
+    int                                 port;
+    std::string                         host;
+    std::string                         server_name;
     std::map<int, std::string>          errorPageAr;
-    std::vector<int>               clientMaxBodySize;
+    int                                 clientMaxBodySize;
 
     
 
@@ -58,19 +53,17 @@ class BaseServer {
     BaseServer &operator=(const BaseServer&);
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
-    int     setServer( void );
-    void    setServerSide( int _port );
-    void    setClientSide( int socket );
-    void    setSelect( void );
+    void    setServerSide( void );
+    void    setClientSide( void );
 
-    bool    checkServer( int _nServer ) const;
-    int     *getSockets(void) const;
+    bool    checkServer( void ) const;
+    int     getSocket(void) const;
     int     getNServers( void ) const;
 
     void    setServerNumber( int _amount );
-    void    setPort( std::deque<int> &_portAr );
-    void    setHost( std::deque<string> &_host );
-    void    setServerName( const std::vector<string> &_sName );
+    void    setPort( int _port );
+    void    setHost( std::string& _host );
+    void    setServerName( std::string& _name );
 
   friend ostream &operator<<(ostream&, const BaseServer&);
 };

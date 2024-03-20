@@ -30,9 +30,11 @@ Request::Request( int _serverFd ) {
 	if (returnedBytes < 0) {
 		close(clientFd);
 		perror("recv error");
+		return ;
 	} else if (returnedBytes == 0) { // Connection closed by the client
 		close(clientFd);
 		perror("client closed connection");
+		return ;
 	} else // Data received, process it
 		std::cout << "Bytes received: " << returnedBytes << std::endl;
 

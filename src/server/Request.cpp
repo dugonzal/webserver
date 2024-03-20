@@ -37,6 +37,7 @@ Request::Request( int _serverFd ) {
 	} else // Data received, process it
 		std::cout << "Bytes received: " << returnedBytes << std::endl;
 
+	method = getMethod();
 	_route = getRoute();
 	std::cout << std::endl << "--------------INPUT--------------" << std::endl;
 	std::cout << std::endl << clientMsg << std::endl;
@@ -72,19 +73,29 @@ std::string	Request::getRoute( void ) {
 
 	size_t start = str.find("/", 0);
 	if (str[start] == '/' && str[start + 1] == ' ')
-		;
+		return ("");
 	else {
 		for (start = start + 1; str[start] != ' '; start++) {
 			ss << str[start];
 		}
 	}
-	if (start == str.find("/", 0)) {// abort open, since user did not ask for any file
-		fileIsGood = false; 
-		std::cout << "EMPTY" << std::endl; }
-	else {
-		fileIsGood = true;
-		std::cout << "CONTENT" << std::endl; }
 	std::cout << "Route : " << ss.str() << std::endl;
 	std::string ret(ss.str());
 	return (ret);
+}
+
+int		Request::getMethod( void ) {
+	std::stringstream ss;
+
+	for ( int i = 0; !isspace(clientMsg[i]); i++)
+		ss << clientMsg[i];
+
+	std::cout << "Method : " << ss.str() << std::endl;
+	if (!ss.str().compare("GET"))
+		return GET;
+	else if (!ss.str().compare("DELETE"))
+		return DELETE;
+	else if (!ss.str().compare("POST"))
+		return POST;
+	return 0;
 }

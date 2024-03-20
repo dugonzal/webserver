@@ -17,6 +17,7 @@ Request::Request( void ) {}
 Request::Request( int _serverFd ) {
 	timeout.tv_sec = 5; // 5 seconds for Client
 	timeout.tv_usec = 0;
+	serverFd = _serverFd;
 	bzero(clientMsg, sizeof(clientMsg));
 	if ((clientFd = accept(_serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
 	throw std::logic_error("error: accept");
@@ -37,29 +38,30 @@ Request::Request( int _serverFd ) {
 	} else // Data received, process it
 		std::cout << "Bytes received: " << returnedBytes << std::endl;
 
-	method = getMethod();
-	_route = getRoute();
+	inputMethod = getMethod();
+	inputRoute = getRoute();
+	checkHttpVersion();
 	std::cout << std::endl << "--------------INPUT--------------" << std::endl;
 	std::cout << std::endl << clientMsg << std::endl;
 
 	//! Response
-	if (_route.empty()) // No file is asked
-		fileResponse = readFile("resources/default.html");
+	if (inputRoute.empty()) // No file is asked
+		responseFile = readFile("resources/default.html");
 	else // Any file is asked
-		fileResponse = readFile(_route);
+		responseFile = readFile(inputRoute);
 
-	if (fileResponse == "") { // File is not found
-		httpResponse = "HTTP/1.1 404 Not found\r\n";
-		fileResponse = readFile("resources/404.html");
+	if (responseFile == "") { // File is not found
+		responseHeader = "HTTP/1.1 404 Not found\r\n";
+		responseFile = readFile("resources/404.html");
 	}
 	else // File is found
-		httpResponse = "HTTP/1.1 200  OK\r\n";
-	httpResponse += "Content-Type: text/html\r\n";
-	httpResponse += "Content-Length: " + std::to_string(fileResponse.size()) + "\r\n";
-	httpResponse += "\r\n";
-	httpResponse += fileResponse;
-	std::cout << "--------------OUTPUT--------------" << std::endl << httpResponse << std::endl << "---------------------------------" << std::endl;
-	send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		responseHeader = "HTTP/1.1 200  OK\r\n";
+	responseHeader += "Content-Type: text/html\r\n";
+	responseHeader += "Content-Length: " + std::to_string(responseFile.size()) + "\r\n";
+	responseHeader += "\r\n";
+	responseHeader += responseFile;
+	std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl;
+	send(clientFd, responseHeader.data(), responseHeader.size(), 0);
 
 
 	close(clientFd); // After server has replied, close connection
@@ -97,5 +99,29 @@ int		Request::getMethod( void ) {
 		return DELETE;
 	else if (!ss.str().compare("POST"))
 		return POST;
-	return 0;
+	else {
+		close(serverFd);
+		close(clientFd);
+		throw(std::runtime_error("error: Method is erroneus OR non-handled"));
+	}
+}
+
+void	Request::checkHttpVersion( void ) {
+	std::string str(clientMsg);
+	std::stringstream ss;
+
+	size_t pos;
+	for (pos = str.find("HTTP", 0); !isnumber(str[pos]); pos++)
+		;
+	while (!isspace(str[pos]))
+		ss << str[pos++];
+	
+	if (!ss.str().compare("1.1"))
+		std::cout << "Version : " << ss.str() << std::endl;
+	else {
+		close(serverFd);
+		close(clientFd);
+		throw(std::runtime_error("error: HTTP version is erroneus"));
+	}
+	std::cout << std::endl;
 }

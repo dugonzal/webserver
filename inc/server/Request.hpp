@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/20 10:09:00 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/20 10:26:42 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 class Request {
 	private:
     /* Client Server Side */
+	int							serverFd;
     int							clientFd;
     struct sockaddr_in			clientAddr; // IP socket address
     socklen_t					addrClientLen;
@@ -26,12 +27,12 @@ class Request {
 	/* Server Input Side */
     int							returnedBytes;
     char						clientMsg[1028];
+	int							inputMethod;
+	std::string					inputRoute;
 
 	/* Server Output Side */
-	int							method;
-	std::string					_route;
-	std::string					fileResponse;
-	std::string					httpResponse; // Header for Client
+	std::string					responseFile;
+	std::string					responseHeader; // Header for Client
     struct  timeval				timeout;
 
 	public:
@@ -41,4 +42,5 @@ class Request {
 
 		std::string	getRoute( void );
 		int		getMethod( void );
+		void	checkHttpVersion( void );
 };

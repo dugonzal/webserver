@@ -42,13 +42,18 @@ Request::Request( int _serverFd ) {
 	std::cout << std::endl << clientMsg << std::endl;
 
 	//! Response
-	if (fileIsGood == true) {
-		httpResponse = "HTTP/1.1 200  OK\r\n\r\n";
+	if (_route.empty()) // No file is asked
+		fileResponse = readFile("resources/default.html");
+	else // Any file is asked
 		fileResponse = readFile(_route);
+
+	if (fileResponse == "") { // File is not found
+		httpResponse = "HTTP/1.1 404 Not found\r\n";
+		fileResponse = readFile("resources/404.html");
 	}
-	else
-		httpResponse = "HTTP/1.1 404 Not found\r\n\r\n";
-	httpResponse += "Content-Type: image/x-icon\r\n";
+	else // File is found
+		httpResponse = "HTTP/1.1 200  OK\r\n";
+	httpResponse += "Content-Type: text/html\r\n";
 	httpResponse += "Content-Length: " + std::to_string(fileResponse.size()) + "\r\n";
 	httpResponse += "\r\n";
 	httpResponse += fileResponse;
@@ -73,7 +78,7 @@ std::string	Request::getRoute( void ) {
 			ss << str[start];
 		}
 	}
-	if (!ss.str().empty()) {// abort open, since user did not ask for any file
+	if (start == str.find("/", 0)) {// abort open, since user did not ask for any file
 		fileIsGood = false; 
 		std::cout << "EMPTY" << std::endl; }
 	else {

@@ -26,8 +26,10 @@ def test():
               clientSocket, adress =  s.accept() 
               print ("Conexion desde \n\n", adress)
               print (f"{clientSocket.recv(1024)}")
-              clientSocket.sendall(bytes("HTTP/1.3 401 OK; <h1> hello<\h1>\r\n\r\n", "utf-8"))
+              clientSocket.sendall(bytes("HTTP/1.3 200 OK; <h1> hello<\h1>\r\n\r\n", "utf-8"))
+              print("HECHO\n")
               pos = False
+           sleep(10)
                 
 def main():
     test()

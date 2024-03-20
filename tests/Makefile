@@ -1,20 +1,8 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/02/12 12:46:49 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/02/24 13:19:36 by Dugonzal         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME 			:= webserv_tests
 
 SHELL			:=	/bin/zsh
 
-CXX 			:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++11  -l cppunit
+CXX 			:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++11  -lcppunit
 
 SRC_DIR 	:= src/
 OBJ_DIR 	:= obj/

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 16:27:41 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/20 10:31:51 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int main(int ac, const char **av, const char **) {
   try {
     /* Config is the base object for the project */
     Config  config(*(++av));
-  } catch (std::exception &e)
-      { std::cout << "Error: " << e.what() << std::endl; }
+  } catch (std::exception &e) {
+      std::cout << "Error: " << e.what() << std::endl;
+    }
   return (0);
 }

@@ -20,24 +20,23 @@ Request::Request( int _serverFd ) {
 	serverFd = _serverFd;
 	bzero(clientMsg, sizeof(clientMsg));
 	if ((clientFd = accept(_serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
-	throw std::logic_error("error: accept");
+		perror("error: accept");
 
 	if (setsockopt(clientFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0)
-		throw(std::runtime_error("error: setsockopt()"));
+		perror("error: setsockopt()");
 
 	//! Recieve message
 	returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
 	if (returnedBytes < 0) {
-		close(_serverFd);
 		close(clientFd);
-		throw std::logic_error("recv error");
+		perror("recv error");
 	} else if (returnedBytes == 0) { // Connection closed by the client
-		close(_serverFd);
 		close(clientFd);
-		throw std::runtime_error("client closed connection");
+		perror("client closed connection");
 	} else // Data received, process it
 		std::cout << "Bytes received: " << returnedBytes << std::endl;
 
+	inputIsGood = true;
 	inputMethod = getMethod();
 	inputRoute = getRoute();
 	checkHttpVersion();
@@ -50,7 +49,7 @@ Request::Request( int _serverFd ) {
 	else // Any file is asked
 		responseFile = readFile(inputRoute);
 
-	if (responseFile == "") { // File is not found
+	if (responseFile == "" || inputIsGood == false) { // File is not found
 		responseHeader = "HTTP/1.1 404 Not found\r\n";
 		responseFile = readFile("resources/404.html");
 	}
@@ -100,9 +99,9 @@ int		Request::getMethod( void ) {
 	else if (!ss.str().compare("POST"))
 		return POST;
 	else {
-		close(serverFd);
-		close(clientFd);
-		throw(std::runtime_error("error: Method is erroneus OR non-handled"));
+		inputIsGood = false;
+		perror("error: Method is erroneus OR non-handled");
+		return 0;
 	}
 }
 
@@ -119,9 +118,8 @@ void	Request::checkHttpVersion( void ) {
 	if (!ss.str().compare("1.1"))
 		std::cout << "Version : " << ss.str() << std::endl;
 	else {
-		close(serverFd);
-		close(clientFd);
-		throw(std::runtime_error("error: HTTP version is erroneus"));
+		inputIsGood = false;
+		perror("error: HTTP version is erroneus");
 	}
 	std::cout << std::endl;
 }

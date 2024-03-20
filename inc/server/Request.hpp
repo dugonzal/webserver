@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/20 10:26:42 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/20 10:35:21 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Request {
     char						clientMsg[1028];
 	int							inputMethod;
 	std::string					inputRoute;
+	bool						inputIsGood;
 
 	/* Server Output Side */
 	std::string					responseFile;

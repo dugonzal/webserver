@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 20:31:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 22:49:09 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
+
+#define RED "\033[1;31m"
+#define END "\033[0m\n"
 
 # include <sys/un.h>
 # include <sys/socket.h>

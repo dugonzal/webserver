@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 22:01:29 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 22:50:51 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void  VirtualServer::setSelect( void ) {
 	while (true) {
 		rSockets = cSockets;
 
-		std::cout << "!----SELECT ON POINT----!" << std::endl;
+		std::cout << RED << "!----SELECT ON POINT----!" << END << std::endl;
     int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout);
 		if (retSelect < 0) { // Waits until file descriptor has info
 			perror("error: select");

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/20 10:35:21 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 22:43:01 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,14 @@ class Request {
 		Request( int _serverFd );
 		~Request( void );
 
+		// Parsing input
+		int		getMethodType( void );
 		std::string	getRoute( void );
-<<<<<<< HEAD:inc/server/ClientSide.hpp
+		void	checkHttpVersion( void );
 
 		// Funciones Iker
-		void getMethod( void );
-		void postMethod( void );
-		void deleteMethod( void );
-		void response2client( void );
-=======
-		int		getMethod( void );
-		void	checkHttpVersion( void );
->>>>>>> 97d3457dd8d2674b73061f7526e75e5a30ee412b:inc/server/Request.hpp
+		void methodGet( void );
+		void methodPost( void );
+		void methodDelete( void );
+
 };

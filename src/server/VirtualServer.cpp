@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   VirtualServer.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/20 16:16:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 22:01:29 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void  VirtualServer::startServers( void ) {
     ptr->setPort(portsServers[it]);
     ptr->setHost(hostServers[it]);
     ptr->setServerName(nameServers[it]);
+    std::cout << "------Server n.ª" << it << "----" << std::endl;
     ptr->setServerSide();
     vServers.push_back(ptr);
   }
@@ -62,7 +63,7 @@ void  VirtualServer::setSelect( void ) {
 	while (true) {
 		rSockets = cSockets;
 
-		std::cout << "Arrived before-select" << std::endl;
+		std::cout << "!----SELECT ON POINT----!" << std::endl;
     int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout);
 		if (retSelect < 0) { // Waits until file descriptor has info
 			perror("error: select");

@@ -36,12 +36,24 @@ class Request {
 	std::string					responseHeader; // Header for Client
     struct  timeval				timeout;
 
+	// Variables Iker
+	std::string method, file;
+
 	public:
 		Request( void );
 		Request( int _serverFd );
 		~Request( void );
 
 		std::string	getRoute( void );
+<<<<<<< HEAD:inc/server/ClientSide.hpp
+
+		// Funciones Iker
+		void getMethod( void );
+		void postMethod( void );
+		void deleteMethod( void );
+		void response2client( void );
+=======
 		int		getMethod( void );
 		void	checkHttpVersion( void );
+>>>>>>> 97d3457dd8d2674b73061f7526e75e5a30ee412b:inc/server/Request.hpp
 };

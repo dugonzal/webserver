@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.cpp                                     :+:      :+:    :+:   */
+/*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/19 16:55:34 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:54:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ Request::Request( int _serverFd ) {
 	else // File is found
 		responseHeader = "HTTP/1.1 200  OK\r\n";
 	responseHeader += "Content-Type: text/html\r\n";
-	responseHeader += "Content-Length: " + std::to_string(responseFile.size()) + "\r\n";
+	responseHeader += "Content-Length:  \r\n";
 	responseHeader += "\r\n";
 	responseHeader += responseFile;
 	std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl;
@@ -144,7 +144,7 @@ void	Request::checkHttpVersion( void ) {
 		perror("error: HTTP version is erroneus");
 		return ;
 	}
-	while (firstLine[pos] && !isnumber(firstLine[pos])) {
+	while (firstLine[pos] && firstLine[pos] < '0' && firstLine[pos] > '9') {
 		if (!firstLine[pos + 1] || isspace(firstLine[pos + 1])) {
 			inputIsGood = false;
 			perror("error: HTTP version: bad format");

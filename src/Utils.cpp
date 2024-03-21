@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 20:34:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:54:33 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ std::string  findStrInLog( const std::string& line, const std::string& toFind ) 
 
 // Function to read the contents of the favicon.ico file
 std::string readFile(const std::string& filename) {
-    std::ifstream file(filename, std::ios::binary);
+    std::ifstream file(filename.data(), std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << filename << std::endl;
         return "";

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/20 16:16:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:52:07 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,10 @@ int   VirtualServer::setName( const std::string& _name ) {
   return 0;
 }
 
-int   VirtualServer::setPort( __unused int _nServer, const std::string& _host, int _port ) {
+int   VirtualServer::setPort( int _nServer, const std::string& _host, int _port ) {
   portsServers.push_back(_port);
   hostServers.push_back(_host);
+  (void)_nServer;
   //std::cout << "Port: " << _port << " (" << _nServer << ")." << std::endl;
   //std::cout << "Host: " << _host << " (" << _nServer << ")." << std::endl;
   return 0;
@@ -141,7 +142,7 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
 int   VirtualServer::setClientBodySize( const std::string& _clientBodySize ) {
   std::stringstream num;
   std::stringstream size;
-  __unused int ret;
+  int ret;
 
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
     if (isdigit(_clientBodySize.c_str()[i]))

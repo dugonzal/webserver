@@ -45,8 +45,9 @@ Request::Request( int _serverFd ) {
 		if (inputIsGood == true)
 			checkHttpVersion();
 	}
-	std::cout << std::endl << "--------------INPUT--------------" << std::endl;
-	std::cout << std::endl << clientMsg << std::endl;
+	// Message from the client
+	/* std::cout << std::endl << "--------------INPUT--------------" << std::endl;
+	std::cout << std::endl << clientMsg << std::endl; */
 
 	//! Response
 	if (inputRoute.empty()) // No file is asked
@@ -64,7 +65,8 @@ Request::Request( int _serverFd ) {
 	responseHeader += "Content-Length: " + std::to_string(responseFile.size()) + "\r\n";
 	responseHeader += "\r\n";
 	responseHeader += responseFile;
-	std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl;
+	// Message for the client
+	/* std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl; */
 	send(clientFd, responseHeader.data(), responseHeader.size(), 0);
 
 

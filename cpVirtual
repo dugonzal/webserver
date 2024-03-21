@@ -6,20 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:14:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:12:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/VirtualServer.hpp"
+#include <vector>
 
-VirtualServer::VirtualServer(void) {
-  timeout.tv_sec = 0;
-  timeout.tv_usec = 100;
-  FD_ZERO(&cSockets);
-  FD_ZERO(&rSockets);
-  FD_ZERO(&wSockets);
-  nServers = 0;
-}
+VirtualServer::VirtualServer(void) { }
 
 VirtualServer::~VirtualServer(void) {
   /// delete temporal vServers
@@ -38,7 +32,7 @@ VirtualServer &VirtualServer::operator=(const VirtualServer &copy) {
 }
 
 void  VirtualServer::setServers( size_t _amount ) {
-  nServers = _amount;
+  this->nServers = _amount;
 }
 
 void  VirtualServer::startServers( void ) {
@@ -48,59 +42,66 @@ void  VirtualServer::startServers( void ) {
     ptr.setPort(portsServers[it]);
     ptr.setHost(hostServers[it]);
     ptr.setServerName(nameServers[it]);
-    cout << "Server " << it << " started." << endl;
     ptr.setServerSide();
     vServers.push_back(ptr);
   }
   setSelect();
 }
 
-void  VirtualServer::setSelect(void) {
+void  VirtualServer::setSelect( void ) {
+  timeout.tv_sec = 900; // timeout for select()
+  timeout.tv_usec = 0;
+
   FD_ZERO(&cSockets);
-  for (size_t i = 0; i < nServers ; i++) {
-    cout << "Socket: " << vServers[i].getSocket() << endl;
-    FD_SET(vServers[i].getSocket(), &cSockets);
+  for (vector<Server>::const_iterator it = vServers.begin(); it != vServers.end(); it++){
+    FD_SET(it->getSocket(), &cSockets);
   }
-  cout << "Arrived before-select" << endl;
 	while (true) {
 		rSockets = cSockets;
-    sleep(4);
+
 		std::cout << "Arrived before-select" << std::endl;
     int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout);
-		cout << retSelect << endl;
-    if (retSelect < 0) { // Waits until file descriptor has info
-			cout << "Select error" << endl;
-      perror("error: select");
+		if (retSelect < 0) { // Waits until file descriptor has info
+			perror("error: select");
 			exit(EXIT_FAILURE);
     }
+    else if (retSelect == 0) {
+      perror("select() timeout\n");
+      exit(EXIT_FAILURE);
+    }
     std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
+
+    usleep(100000);
     for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
       if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
-        for (vector<Server>::iterator it = vServers.begin(); it != vServers.end(); it++) {
-          if (i == it->getSocket()) {
-            it->setRequest();
+        for (vector<Server>::const_iterator it = vServers.begin(); it != vServers.end(); it++) {
+          if (it->getSocket() == i) { // check if it forms part of our descriptors
+            std::cout << i << " can be used to read!" << std::endl;
+            cout << "Server: " << it->getSocket() << endl;
+            break;
           }
         }
-    }
+      }
       if (FD_ISSET(i, &wSockets))
         std::cout << i << " can be used to write!" << std::endl;
     }
     // bzero(clientMsg, sizeof(clientMsg));
-    }
+	}
 }
 
 int   VirtualServer::setName( const std::string& _name ) {
   //this->server.setServerName(_name);
   this->nameServers.push_back(_name);
-  std::cout << "Name: " << _name << std::endl;
+  //std::cout << "Name: " << _name << std::endl;
   return 0;
 }
 
 int   VirtualServer::setPort( int _nServer, const std::string& _host, int _port ) {
   portsServers.push_back(_port);
   hostServers.push_back(_host);
-  std::cout << "Port: " << _port << " (" << _nServer << ")." << std::endl;
-  std::cout << "Host: " << _host << " (" << _nServer << ")." << std::endl;
+  (void)_nServer;
+  //std::cout << "Port: " << _port << " (" << _nServer << ")." << std::endl;
+  //std::cout << "Host: " << _host << " (" << _nServer << ")." << std::endl;
   return 0;
 }
 
@@ -119,7 +120,7 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
 
   std::string error_page = ss.str();
   ss.str(std::string()); // clear std::stringstream
-  std::cout << "Error_page: " << std::endl;
+  //std::cout << "Error_page: " << std::endl;
 
   for (size_t i = 0; i < _errorPages.size() && isdigit(errorPages[i]); i++) { // get numbers
     for (size_t j = 0; j < 3; j++) {
@@ -129,7 +130,7 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
     i--;
     ret = atoi(ss.str().c_str());
     std::pair<int, std::string> content(ret, error_page);
-    std::cout << "[ " << ret << " , " << error_page << " ]" << std::endl;
+    //std::cout << "[ " << ret << " , " << error_page << " ]" << std::endl;
     this->errorPage.insert(content);
     ss.str(std::string()); // clear std::stringstream
   }
@@ -152,6 +153,6 @@ int   VirtualServer::setClientBodySize( const std::string& _clientBodySize ) {
     ret *= 1000000;
   else if (!size.str().compare("k"))
     ret *= 1000;
-  std::cout << "Body Size : " << ret << std::endl;
+  //std::cout << "Body Size : " << ret << std::endl;
   return 0;
 }

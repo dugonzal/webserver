@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 12:59:12 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:19:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ Config::Config(void) { }
 
 Config::~Config(void) { }
 
-Config::Config(const string &filename): parser(filename) {
-  setServer();
-}
+Config::Config(const string &filename): parser(filename) { }
 
 Config::Config(const Config &copy): \
   servers(copy.servers), parser(copy.parser), signals(copy.signals) { }

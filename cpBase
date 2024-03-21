@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:28:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:08:00 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
 }
 
 BaseServer::~BaseServer(void) {
-//  close(serverFd);
+  close(serverFd);
 }
 
 void   BaseServer::setServerSide( void ) {
+  opt = 1;
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
 
-  cout << "socketFd: " << serverFd << endl;
   assert((serverFd > 2) && (serverFd < 6553));
   addr.sin_family = AF_INET;
   std::cout << "Port : " << port << std::endl;
@@ -55,14 +55,20 @@ void   BaseServer::setServerSide( void ) {
   addrLen = sizeof(addr);
 
   cout << "Server created with port: " << port << " and host: " << host << endl;
-  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error("error: socket SO_REUSEADDR.");
-/*  if (fcntl(serverFd, O_NONBLOCK, (char *)&opt) < 0) {
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,
+    &opt, sizeof(opt)) < 0)
+      throw std::logic_error("error: socket SO_REUSEPORT.");
+  int rc = fcntl(serverFd, O_NONBLOCK, (char *)&opt);
+  if (rc < 0)
+  {
+    perror("ioctl() failed");
     close(serverFd);
-    throw std::logic_error("error: socket bind().");
-  }*/
-  if (bind(serverFd, (sockaddr *)&addr, addrLen) < 0)
+    exit(-1);
+  }
+  if (bind(serverFd, (sockaddr *)&addr, addrLen) <  0)
     throw std::logic_error("error: socket bind().");
   if (listen(serverFd, 1024) < 0)
     throw std::logic_error("listen failed");
@@ -82,15 +88,15 @@ bool   BaseServer::checkServer( void ) const {
   return true;
 }
 
-void   BaseServer::setServerNumber(int _amount) {
+void   BaseServer::setServerNumber( int _amount ) {
   this->nServers = _amount;
 }
 
-void BaseServer::setPort(int _port) {
+void BaseServer::setPort( int _port ) {
   port = _port;
 }
 
-void BaseServer::setHost(std::string& _host) {
+void BaseServer::setHost( std::string& _host ) {
   host = _host;
 }
 

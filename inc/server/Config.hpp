@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/10 13:00:59 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:20:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ class Config {
   Config(void);
 
  private:
-  void  setServer(void);
   void  setServerConfig( void );
 
  public:
@@ -41,4 +40,5 @@ class Config {
   Config(const Config&);
   Config &operator=(const Config&);
   ~Config(void);
+  void  setServer(void);
 };

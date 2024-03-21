@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   VirtualServer.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 18:22:17 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 19:05:44 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class VirtualServer {
   std::map<int, string>          errorPage;
   std::vector<int>               clientMaxBodySize;
   Server                 server;
-  std::vector<Server *>  vServers;
+  std::vector<Server>  vServers;
 
   struct timeval timeout;
   fd_set cSockets, rSockets, wSockets;

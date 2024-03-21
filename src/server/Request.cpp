@@ -57,20 +57,19 @@ Request::Request( int _serverFd ) {
 		responseFile = readFile(inputRoute);
 
 	//! Differing method types should divide here!
-
-	// Insert first line
-	if (responseFile == "" || inputIsGood == false) { // File is not found
-		responseHeader = "HTTP/1.1 404 Not found\r\n";
-		responseFile = readFile("resources/404.html");
+	switch (inputMethod) {
+		case GET:
+			methodGet();
+			break ;
+		case POST:
+			methodPost();
+			break ;
+		case DELETE:
+			methodDelete();
+			break ;
+		default:
+			return ;
 	}
-	else // File is found
-		responseHeader = "HTTP/1.1 200  OK\r\n";
-	// Insert content
-	responseHeader += "Content-Type: text/html\r\n";
-	responseHeader += "Content-Length: " + std::to_string(responseFile.size()) + "\r\n";
-	responseHeader += "\r\n";
-	responseHeader += responseFile;
-	send(clientFd, responseHeader.data(), responseHeader.size(), 0);
 
 	// Message for the client
 	/* std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl; */
@@ -174,33 +173,21 @@ void	Request::checkHttpVersion( void ) {
 
 void Request::methodGet( void )
 {
-	std::cout << "GETMETHOD" << std::endl;
-	std::ifstream archivo("resources/GET/" + file);
-	std::ostringstream oss;
-	if (archivo.is_open())
-	{
-    	oss << archivo.rdbuf();
-		std::string httpResponse = "HTTP/1.1 200 OK\r\n";
-		httpResponse += "Content-Type: text/html\r\n";
-		httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
-		httpResponse += "\r\n";
-		httpResponse += oss.str();
-		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	// Insert first line
+	if (responseFile == "" || inputIsGood == false) { // File is not found
+		responseHeader = "HTTP/1.1 404 Not found\r\n";
+		responseFile = readFile("resources/404.html");
 	}
-	else
-	{
-		std::ifstream archivo("resources/GET/404.html");
-    	oss << archivo.rdbuf();
-		std::string httpResponse = "HTTP/1.1 404 Not Found\r\n";
-		httpResponse += "Content-Type: text/html\r\n";
-		httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
-		httpResponse += "\r\n";
-		httpResponse += oss.str();
-		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-	}
-	std::cout << "TERMINO" << std::endl;
-	close(clientFd);
+	else // File is found
+		responseHeader = "HTTP/1.1 200  OK\r\n";
+	// Insert content
+	responseHeader += "Content-Type: text/html\r\n";
+	responseHeader += "Content-Length: " + std::to_string(responseFile.size()) + "\r\n";
+	responseHeader += "\r\n";
+	responseHeader += responseFile;
+	send(clientFd, responseHeader.data(), responseHeader.size(), 0);
 }
+
 
 void Request::methodPost( void )
 {

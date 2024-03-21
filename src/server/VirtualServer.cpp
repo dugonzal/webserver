@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   VirtualServer.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:14:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 23:19:17 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/VirtualServer.hpp"
 
 VirtualServer::VirtualServer(void) {
-  timeout.tv_sec = 0;
-  timeout.tv_usec = 100;
   FD_ZERO(&cSockets);
   FD_ZERO(&rSockets);
   FD_ZERO(&wSockets);
@@ -48,7 +46,7 @@ void  VirtualServer::startServers( void ) {
     ptr.setPort(portsServers[it]);
     ptr.setHost(hostServers[it]);
     ptr.setServerName(nameServers[it]);
-    cout << "Server " << it << " started." << endl;
+    std::cout << "------Server n.ª" << it << "----" << std::endl;
     ptr.setServerSide();
     vServers.push_back(ptr);
   }
@@ -57,17 +55,16 @@ void  VirtualServer::startServers( void ) {
 
 void  VirtualServer::setSelect(void) {
   FD_ZERO(&cSockets);
-  for (size_t i = 0; i < nServers ; i++) {
-    cout << "Socket: " << vServers[i].getSocket() << endl;
+  for (size_t i = 0; i < nServers ; i++)
     FD_SET(vServers[i].getSocket(), &cSockets);
-  }
-  cout << "Arrived before-select" << endl;
 	while (true) {
 		rSockets = cSockets;
-    sleep(4);
-		std::cout << "Arrived before-select" << std::endl;
+
+    timeout.tv_sec = 900; // 900 timer for select()
+    timeout.tv_usec = 0;
+		std::cout << RED << "!----SELECT ON POINT----!" << END << std::endl;
     int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout);
-		cout << retSelect << endl;
+    usleep(100000);
     if (retSelect < 0) { // Waits until file descriptor has info
 			cout << "Select error" << endl;
       perror("error: select");

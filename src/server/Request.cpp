@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/21 17:54:03 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/21 23:20:14 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ Request::Request( void ) {}
 Request::Request( int _serverFd ) {
 	timeout.tv_sec = 5; // 5 seconds for Client
 	timeout.tv_usec = 0;
+	addrClientLen = sizeof(clientAddr);
 	serverFd = _serverFd;
 	bzero(clientMsg, sizeof(clientMsg));
 	std::cout << std::endl << "------------INPUT_DATA----------------" << std::endl;
@@ -39,34 +40,40 @@ Request::Request( int _serverFd ) {
 	} else // Data received, process it
 		std::cout << "Bytes received: " << returnedBytes << std::endl;
 	inputIsGood = true;
-	inputMethod = getMethod();
+	inputMethod = getMethodType();
 	if (inputIsGood == true) {
 		inputRoute = getRoute();
 		if (inputIsGood == true)
 			checkHttpVersion();
 	}
-	std::cout << std::endl << "--------------INPUT--------------" << std::endl;
-	std::cout << std::endl << clientMsg << std::endl;
+	//! Message from the client
+	/* std::cout << std::endl << "--------------INPUT--------------" << std::endl;
+	std::cout << std::endl << clientMsg << std::endl; */
 
 	//! Response
+	// Manage file
 	if (inputRoute.empty()) // No file is asked
 		responseFile = readFile("resources/default.html");
 	else // Any file is asked
 		responseFile = readFile(inputRoute);
 
-	if (responseFile == "" || inputIsGood == false) { // File is not found
-		responseHeader = "HTTP/1.1 404 Not found\r\n";
-		responseFile = readFile("resources/404.html");
+	//! Differing method types should divide here!
+	switch (inputMethod) {
+		case GET:
+			methodGet();
+			break ;
+		case POST:
+			methodPost();
+			break ;
+		case DELETE:
+			methodDelete();
+			break ;
+		default:
+			return ;
 	}
-	else // File is found
-		responseHeader = "HTTP/1.1 200  OK\r\n";
-	responseHeader += "Content-Type: text/html\r\n";
-	responseHeader += "Content-Length:  \r\n";
-	responseHeader += "\r\n";
-	responseHeader += responseFile;
-	std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl;
-	send(clientFd, responseHeader.data(), responseHeader.size(), 0);
 
+	//! Message for the client
+	/* std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl; */
 
 	close(clientFd); // After server has replied, close connection
 }
@@ -112,7 +119,7 @@ std::string	Request::getRoute( void ) {
 	return (ret);
 }
 
-int		Request::getMethod( void ) {
+int		Request::getMethodType( void ) {
 	std::stringstream ss;
 
 	for ( int i = 0; !isspace(clientMsg[i]) && clientMsg[i]; i++)
@@ -144,7 +151,7 @@ void	Request::checkHttpVersion( void ) {
 		perror("error: HTTP version is erroneus");
 		return ;
 	}
-	while (firstLine[pos] && firstLine[pos] < '0' && firstLine[pos] > '9') {
+	while (firstLine[pos] && !isnumber(firstLine[pos])) {
 		if (!firstLine[pos + 1] || isspace(firstLine[pos + 1])) {
 			inputIsGood = false;
 			perror("error: HTTP version: bad format");
@@ -163,4 +170,50 @@ void	Request::checkHttpVersion( void ) {
 	}
 	ss.clear();
 	std::cout << std::endl;
+}
+
+void Request::methodGet( void )
+{
+	// Insert first line
+	if (responseFile == "" || inputIsGood == false) { // File is not found
+		responseHeader = "HTTP/1.1 404 Not found\r\n";
+		responseFile = readFile("resources/404.html");
+	}
+	else // File is found
+		responseHeader = "HTTP/1.1 200  OK\r\n";
+	// Insert content
+	responseHeader += "Content-Type: text/html\r\n";
+	responseHeader += "Content-Length: " + std::to_string(responseFile.size()) + "\r\n";
+	responseHeader += "\r\n";
+	responseHeader += responseFile;
+	send(clientFd, responseHeader.data(), responseHeader.size(), 0);
+}
+
+
+void Request::methodPost( void )
+{
+	/*std::string msgRet(clientMsg);
+	if (msgRet.find("favicon.ico", 0) != std::string::npos) {
+		//msgRet = readFaviconFile("resources/favicon.ico");
+		std::string httpResponse = "HTTP/1.1 200 OK\r\n";
+		httpResponse += "Content-Type: text/html\r\n";
+		httpResponse += "Content-Length: " + std::to_string(msgRet.size()) + "\r\n";
+		httpResponse += "\r\n";
+		httpResponse += msgRet;
+		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	}*/
+}
+
+void Request::methodDelete( void )
+{
+	std::cout << "DELETEMETHOD" << std::endl;
+	std::string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+    // Intentar eliminar el archivo
+    if (std::remove(("resources/GET/" + file).c_str()) != 0)
+		httpResponse = "HTTP/1.1 404 Not Found\r\n";
+	else
+		httpResponse = "HTTP/1.1 200 OK\r\n";
+	send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	std::cout << "TERMINO" << std::endl;
+	close(clientFd);
 }

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 18:52:59 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 12:21:46 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void  VirtualServer::setSelect( void ) {
     }
     std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    usleep(100000);
     for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
       if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
         for (size_t j = 0; j < nServers; j++) {

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 17:34:32 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:49:57 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void  Config::setServerConfig( void ) {
   std::vector<string>::iterator ptrBegin = ptrData.begin();
   std::vector<string>::iterator ptrEnd = ptrData.end();
   for (ptrBegin = ptrData.begin(); (ptrBegin != ptrEnd); ptrBegin++) {
-    // std::cout << ptrData[i] << std::endl;
+    std::cout << ptrData[i] << std::endl;
     if (ptrData[i].find("listen", 0) != std::string::npos) {
       if (servers.setPort(sCount, getHostFromLine(ptrData[i]), getNumberFromLine(ptrData[i])))
         throw(std::runtime_error("error: setPort failed, bad values."));

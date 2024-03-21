@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 18:41:11 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:52:59 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void  VirtualServer::setSelect( void ) {
         for (size_t j = 0; j < nServers; j++) {
           Server* ptr2 = vServers[j];
           if (ptr2->getSocket() == i) { // check if it forms part of our descriptors
-            ptr2->setClientSide();
+            ptr2->setRequest();
           }
         }
       }
@@ -90,15 +90,15 @@ void  VirtualServer::setSelect( void ) {
 int   VirtualServer::setName( const std::string& _name ) {
   //this->server.setServerName(_name);
   this->nameServers.push_back(_name);
-  std::cout << "Name: " << _name << std::endl;
+  //std::cout << "Name: " << _name << std::endl;
   return 0;
 }
 
-int   VirtualServer::setPort( int _nServer, const std::string& _host, int _port ) {
+int   VirtualServer::setPort( __unused int _nServer, const std::string& _host, int _port ) {
   portsServers.push_back(_port);
   hostServers.push_back(_host);
-  std::cout << "Port: " << _port << " (" << _nServer << ")." << std::endl;
-  std::cout << "Host: " << _host << " (" << _nServer << ")." << std::endl;
+  //std::cout << "Port: " << _port << " (" << _nServer << ")." << std::endl;
+  //std::cout << "Host: " << _host << " (" << _nServer << ")." << std::endl;
   return 0;
 }
 
@@ -117,7 +117,7 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
 
   std::string error_page = ss.str();
   ss.str(std::string()); // clear std::stringstream
-  std::cout << "Error_page: " << std::endl;
+  //std::cout << "Error_page: " << std::endl;
 
   for (size_t i = 0; i < _errorPages.size() && isdigit(errorPages[i]); i++) { // get numbers
     for (size_t j = 0; j < 3; j++) {
@@ -127,7 +127,7 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
     i--;
     ret = atoi(ss.str().c_str());
     std::pair<int, std::string> content(ret, error_page);
-    std::cout << "[ " << ret << " , " << error_page << " ]" << std::endl;
+    //std::cout << "[ " << ret << " , " << error_page << " ]" << std::endl;
     this->errorPage.insert(content);
     ss.str(std::string()); // clear std::stringstream
 
@@ -138,7 +138,7 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
 int   VirtualServer::setClientBodySize( const std::string& _clientBodySize ) {
   std::stringstream num;
   std::stringstream size;
-  int ret;
+  __unused int ret;
 
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
     if (isdigit(_clientBodySize.c_str()[i]))
@@ -151,6 +151,6 @@ int   VirtualServer::setClientBodySize( const std::string& _clientBodySize ) {
     ret *= 1000000;
   else if (!size.str().compare("k"))
     ret *= 1000;
-  std::cout << "Body Size : " << ret << std::endl;
+  //std::cout << "Body Size : " << ret << std::endl;
   return 0;
 }

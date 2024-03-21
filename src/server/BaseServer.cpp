@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 18:45:46 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:45:29 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     if (options && copy.options) // Only if the two have data inside
         *options = *(copy.options);
     else // Depending on copy.options, NULL or copy.options.
-        options = copy.options ? new int(*copy.options) : nullptr;
+        options = copy.options ? new int(*copy.options) : NULL;
   }
   return (*this);
 }
@@ -47,16 +47,19 @@ void   BaseServer::setServerSide( void ) {
 
   assert((serverFd > 2) && (serverFd < 6553));
   addr.sin_family = AF_INET;
+  std::cout << "Port : " << port << std::endl;
   addr.sin_port = htons(port);
+  std::cout << "Host : " << host << std::endl;
+  std::cout << "Server name : " << server_name << std::endl << std::endl;
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
 
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error(strerror(errno));
+      throw std::logic_error("error: socket SO_REUSEADDR.");
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error(strerror(errno));
+      throw std::logic_error("error: socket SO_REUSEPORT.");
   int rc = fcntl(serverFd, O_NONBLOCK, (char *)&opt);
   if (rc < 0)
   {
@@ -65,55 +68,13 @@ void   BaseServer::setServerSide( void ) {
     exit(-1);
   }
   if (bind(serverFd, (sockaddr *)&addr, addrLen) <  0)
-    throw std::logic_error(strerror(errno));
+    throw std::logic_error("error: socket bind().");
   if (listen(serverFd, 1024) < 0)
     throw std::logic_error("listen failed");
 }
 
-void  BaseServer::setClientSide( void ) {
-  timeout.tv_sec = 5; // 5 seconds for Client
-  timeout.tv_usec = 0;
-  bzero(clientMsg, sizeof(clientMsg));
-  if ((clientFd = accept(serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
-    throw std::logic_error("error: accept");
-
-  if (setsockopt(clientFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0)
-      throw(std::runtime_error("error: setsockopt()"));
-  
-  int returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
-  if (returnedBytes < 0) {
-      if (errno == EAGAIN || errno == EWOULDBLOCK) { // No data available, handle accordingly (e.g., retry later)
-          std::this_thread::sleep_for(std::chrono::milliseconds(100));
-          std::cout << "No data available, retry later." << std::endl;
-      } else { // Other error occurred
-          close(serverFd);
-          close(clientFd);
-          throw std::logic_error("recv error");
-      }
-  } else if (returnedBytes == 0) { // Connection closed by the client
-      close(serverFd);
-      close(clientFd);
-      throw std::runtime_error("client closed connection");
-  } else // Data received, process it
-      std::cout << "Bytes received: " << returnedBytes << std::endl;
-
-  serverResponse = "HTTP/1.1 200  OK\r\n\r\n <html><head></head><body><h1 text-family=\"Roboto\" align=\"center\"> Hello, Inception42! </h1></body></html>";
-  std::string msgRet(clientMsg);
-  if (msgRet.find("favicon.ico", 0) != std::string::npos) {
-    msgRet = readFaviconFile("resources/favicon.ico");
-    std::string httpResponse = "HTTP/1.1 200 OK\r\n";
-    httpResponse += "Content-Type: image/x-icon\r\n";
-    httpResponse += "Content-Length: " + std::to_string(msgRet.size()) + "\r\n";
-    httpResponse += "\r\n";
-    httpResponse += msgRet;
-    send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-  }
-  else
-    send(clientFd, serverResponse.data(), serverResponse.size(), 0);
-  
-  close(clientFd); // After server has replied, close connection
-  std::cout << clientMsg << std::endl;
-  timeout.tv_sec = 30; // 30 seconds for select()
+void  BaseServer::setRequest( void ) {
+  Request client(serverFd);
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }

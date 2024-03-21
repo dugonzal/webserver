@@ -6,30 +6,25 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/16 18:45:48 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:52:59 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../parser/BaseParser.hpp"
+# include "../server/ServerParser.hpp"
+# include "../server/Request.hpp"
 # include "../Utils.hpp"
 
 class BaseServer {
  protected:
+   ServerParser                    *parser;
     /* Server Side */
     int                            serverFd; // File Descriptor
     int                            opt; // Special options set for server socket
     struct sockaddr_in             addr; // IP socket address
     socklen_t                      addrLen; // Length of socket
-    std::string                    serverResponse; // Header for Client
-
-    /* Client Side */
-    int                            clientFd;
-    struct sockaddr_in             clientAddr; // IP socket address
-    socklen_t                      addrClientLen;
-    char                           clientMsg[1028];
-    struct  timeval                timeout;
     
     /* Configuration from input */
     int                                 nServers;
@@ -54,7 +49,7 @@ class BaseServer {
     virtual ~BaseServer(void) = 0;
     virtual BaseServer *clone(void) const = 0;
     void    setServerSide( void );
-    void    setClientSide( void );
+    void    setRequest( void );
 
     bool    checkServer( void ) const;
     int     getSocket(void) const;

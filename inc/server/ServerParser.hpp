@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   ServerParser.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/20 10:31:51 by jaizpuru         ###   ########.fr       */
+/*   Created: 2024/03/19 09:38:37 by jaizpuru          #+#    #+#             */
+/*   Updated: 2024/03/19 09:41:49 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/server/BaseServer.hpp"
-# include "../inc/server/Config.hpp"
+# include "../Utils.hpp"
 
-int main(int ac, const char **av, const char **) {
-  if (ac != 2) // if no argument is given
-      av[1] = "conf/default.conf";
-  try {
-    /* Config is the base object for the project */
-    Config  config(*(++av));
-  } catch (std::exception &e) {
-      std::cout << "Error: " << e.what() << std::endl;
-    }
-  return (0);
-}
+class ServerParser {
+ private:
+  vector<string>  buffer;
+ public:
+  ServerParser(void);
+  ~ServerParser(void);
+  ServerParser(const vector<string>&);
+  ServerParser &operator=(const ServerParser&);
+};

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 21:49:57 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:12:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,22 @@ Config &Config::operator=(const Config &copy) {
 }
 
 void  Config::setServer(void) {
-  // Prints the configuration parsed data
-  // parser.printData(parser.getData());
-
-  servers.setServers(parser.getNservers() - 1); // manually set -1, remove ASAP
+  servers.setServers(parser.getNservers());
   setServerConfig();
   servers.startServers();
 }
 
 void  Config::setServerConfig( void ) {
-  int i = 0;
-  int sCount = 1;
+  int sCount = 0;
   std::vector<string> ptrData = parser.getData();
   std::vector<string>::iterator ptrBegin = ptrData.begin();
   std::vector<string>::iterator ptrEnd = ptrData.end();
   for (ptrBegin = ptrData.begin(); (ptrBegin != ptrEnd); ptrBegin++) {
     std::cout << ptrData[i] << std::endl;
     if (ptrData[i].find("listen", 0) != std::string::npos) {
-      if (servers.setPort(sCount, getHostFromLine(ptrData[i]), getNumberFromLine(ptrData[i])))
-        throw(std::runtime_error("error: setPort failed, bad values."));
-      
+      if (servers.setPort(sCount, getHostFromLine(ptrData[i]), \
+        getNumberFromLine(ptrData[i])))
+          throw(std::runtime_error("error: setPort failed, bad values."));
     }
     if (findStrInLog(ptrData[i], "server_name") != "")
       servers.setName(findStrInLog(ptrData[i], "server_name"));
@@ -64,7 +60,6 @@ void  Config::setServerConfig( void ) {
       std::cout << std::endl;
       sCount++;
     }
-    i++;
   }
   std::cout << std::endl;
 }

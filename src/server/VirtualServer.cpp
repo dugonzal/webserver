@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   VirtualServer.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 12:21:46 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:16:48 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 
 VirtualServer::VirtualServer(void) { }
 
-VirtualServer::~VirtualServer(void) { }
+VirtualServer::~VirtualServer(void) {
+  /// delete temporal vServers
+  for (unsigned int i = 0; i < vServers.size(); i++) {
+    delete vServers[i];
+  }
+  vServers.clear();
+}
 
 VirtualServer::VirtualServer(const VirtualServer &copy): \
   server(copy.server) { }
@@ -32,7 +38,6 @@ void  VirtualServer::setServers( size_t _amount ) {
 }
 
 void  VirtualServer::startServers( void ) {
-  Server *ptr = new Server;
   for (size_t it = 0; it < nServers; it++) {
     Server *ptr = new Server;
     ptr->setServerNumber(nServers);
@@ -43,7 +48,6 @@ void  VirtualServer::startServers( void ) {
     vServers.push_back(ptr);
   }
   setSelect();
-  delete ptr;
 }
 
 void  VirtualServer::setSelect( void ) {
@@ -63,8 +67,8 @@ void  VirtualServer::setSelect( void ) {
 		if (retSelect < 0) { // Waits until file descriptor has info
 			perror("error: select");
 			exit(EXIT_FAILURE);
-		}
-    else if (retSelect == 0) { // Timeout for select()
+    }
+    else if (retSelect == 0) {
       perror("select() timeout\n");
       exit(EXIT_FAILURE);
     }
@@ -130,7 +134,6 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
     //std::cout << "[ " << ret << " , " << error_page << " ]" << std::endl;
     this->errorPage.insert(content);
     ss.str(std::string()); // clear std::stringstream
-
   }
   return 0;
 }

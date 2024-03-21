@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:37:20 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 17:39:42 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 12:59:30 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 class Signals {
  private:
-    __unused struct sigaction sign;
+    /* struct sigaction sign; */
 
  public:
     Signals(void);

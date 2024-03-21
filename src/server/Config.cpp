@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 21:49:57 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/21 12:59:12 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,38 +33,33 @@ Config &Config::operator=(const Config &copy) {
 }
 
 void  Config::setServer(void) {
-  // Prints the configuration parsed data
-  // parser.printData(parser.getData());
-
-  servers.setServers(parser.getNservers() - 1); // manually set -1, remove ASAP
+  servers.setServers(parser.getNservers());
   setServerConfig();
   servers.startServers();
 }
 
 void  Config::setServerConfig( void ) {
-  int i = 0;
-  int sCount = 1;
+  int sCount = 0;
   std::vector<string> ptrData = parser.getData();
   std::vector<string>::iterator ptrBegin = ptrData.begin();
   std::vector<string>::iterator ptrEnd = ptrData.end();
   for (ptrBegin = ptrData.begin(); (ptrBegin != ptrEnd); ptrBegin++) {
-    std::cout << ptrData[i] << std::endl;
-    if (ptrData[i].find("listen", 0) != std::string::npos) {
-      if (servers.setPort(sCount, getHostFromLine(ptrData[i]), getNumberFromLine(ptrData[i])))
-        throw(std::runtime_error("error: setPort failed, bad values."));
-      
+    std::cout << *ptrBegin << std::endl;
+    if (ptrBegin->find("listen", 0) != std::string::npos) {
+      if (servers.setPort(sCount, getHostFromLine(*ptrBegin), \
+        getNumberFromLine(*ptrBegin)))
+          throw(std::runtime_error("error: setPort failed, bad values."));
     }
-    if (findStrInLog(ptrData[i], "server_name") != "")
-      servers.setName(findStrInLog(ptrData[i], "server_name"));
-    if (findStrInLog(ptrData[i], "error_page") != "")
-      servers.setErrorPage(findStrInLog(ptrData[i], "error_page"));
-    if (findStrInLog(ptrData[i], "client_max_body_size") != "")
-      servers.setClientBodySize(findStrInLog(ptrData[i], "client_max_body_size"));
-    if (!ptrData[i].compare("};")) {
+    if (findStrInLog(*ptrBegin, "server_name") != "")
+      servers.setName(findStrInLog(*ptrBegin, "server_name"));
+    if (findStrInLog(*ptrBegin, "error_page") != "")
+      servers.setErrorPage(findStrInLog(*ptrBegin, "error_page"));
+    if (findStrInLog(*ptrBegin, "client_max_body_size") != "")
+      servers.setClientBodySize(findStrInLog(*ptrBegin, "client_max_body_size"));
+    if (!ptrBegin->compare("};")) {
       std::cout << std::endl;
       sCount++;
     }
-    i++;
   }
   std::cout << std::endl;
 }

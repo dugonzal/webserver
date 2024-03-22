@@ -6,19 +6,19 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/22 09:14:58 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 09:52:04 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/server/Request.hpp"
 
-Request::Request( void ) {}
-
-Request::Request( int _serverFd ) {
+Request::Request( void ) {
 	timeout.tv_sec = 5; // 5 seconds for Client
 	timeout.tv_usec = 0;
 	addrClientLen = sizeof(clientAddr);
-	serverFd = _serverFd;
+}
+
+Request::Request( int _serverFd ) : inputIsGood(true) {
 	bzero(clientMsg, sizeof(clientMsg));
 	std::cout << std::endl << "------------INPUT_DATA----------------" << std::endl;
 	if ((clientFd = accept(_serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
@@ -28,25 +28,10 @@ Request::Request( int _serverFd ) {
 		perror("error: setsockopt()");
 
 	//! Recieve message
-	returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
-	if (returnedBytes < 0) {
-		close(clientFd);
-		perror("recv error");
+	if (parseClientMsg() == EXIT_FAILURE)
 		return ;
-	} else if (returnedBytes == 0) { // Connection closed by the client
-		close(clientFd);
-		perror("client closed connection");
-		return ;
-	} else // Data received, process it
-		std::cout << "Bytes received: " << returnedBytes << std::endl;
-	inputIsGood = true;
-	inputMethod = getMethodType();
-	if (inputIsGood == true) {
-		inputRoute = getRoute();
-		if (inputIsGood == true)
-			checkHttpVersion();
-	}
-	//! Message from the client
+	
+	// Message from the client
 	/* std::cout << std::endl << "--------------INPUT--------------" << std::endl;
 	std::cout << std::endl << clientMsg << std::endl; */
 
@@ -69,7 +54,8 @@ Request::Request( int _serverFd ) {
 			methodDelete();
 			break ;
 		default:
-			return ;
+			// Erroneus Method, 405 Error (@inunez-g)
+			break ;
 	}
 
 	//! Message for the client
@@ -79,6 +65,31 @@ Request::Request( int _serverFd ) {
 }
 
 Request::~Request( void ) {}
+
+/* Parse Client Message */
+int	Request::parseClientMsg( void ) {
+	returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
+	if (returnedBytes < 0) {
+		close(clientFd);
+		perror("recv error");
+		return (EXIT_FAILURE);
+	} else if (returnedBytes == 0) { // Connection closed by the client
+		close(clientFd);
+		perror("client closed connection");
+		return (EXIT_FAILURE);
+	} else // Data received, process it
+		std::cout << "Bytes received: " << returnedBytes << std::endl;
+
+	inputMethod = getMethodType();
+	if (inputIsGood == true) {
+		inputRoute = getRoute();
+		if (inputIsGood == true)
+			checkHttpVersion();
+	}
+	else
+		inputRoute = "";
+	return (0);
+}
 
 std::string	Request::getRoute( void ) {
 	std::string str(clientMsg);
@@ -138,7 +149,7 @@ int		Request::getMethodType( void ) {
 	else {
 		inputIsGood = false;
 		perror("error: Method is erroneus OR non-handled");
-		return 0;
+		return (EXIT_FAILURE);
 	}
 }
 
@@ -151,7 +162,7 @@ void	Request::checkHttpVersion( void ) {
 	size_t pos = firstLine.find("HTTP/", 0);
 	if (pos == std::string::npos) {
 		inputIsGood = false;
-		perror("error: HTTP version is erroneus");
+		perror("error: HTTP is not present in the header");
 		return ;
 	}
 	while (firstLine[pos] && !isnumber(firstLine[pos])) {
@@ -168,6 +179,7 @@ void	Request::checkHttpVersion( void ) {
 	if (!ss.str().compare("1.1"))
 		std::cout << "Version : " << ss.str() << std::endl;
 	else {
+		// Error 505 (@inunez-g)
 		inputIsGood = false;
 		perror("error: HTTP version is erroneus");
 	}
@@ -175,6 +187,7 @@ void	Request::checkHttpVersion( void ) {
 	std::cout << std::endl;
 }
 
+/* Methods */
 void Request::methodGet( void )
 {
 	// Insert first line

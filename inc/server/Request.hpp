@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/21 22:43:01 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 09:33:42 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 class Request {
 	private:
     /* Client Server Side */
-	int							serverFd;
     int							clientFd;
     struct sockaddr_in			clientAddr; // IP socket address
     socklen_t					addrClientLen;
@@ -44,6 +43,7 @@ class Request {
 		Request( int _serverFd );
 		~Request( void );
 
+		int		parseClientMsg( void );
 		// Parsing input
 		int		getMethodType( void );
 		std::string	getRoute( void );

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Config.cpp                                         :+:      :+:    :+:   */
+/*   WebServer.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/server/Config.hpp"
+# include "../../inc/server/WebServer.hpp"
 
-Config::Config(void) { }
+WebServer::WebServer(void) { }
 
-Config::~Config(void) { }
+WebServer::~WebServer(void) { }
 
-Config::Config(const string &filename): parser(filename) { }
+WebServer::WebServer(const string &filename): parser(filename) { }
 
-Config::Config(const Config &copy): \
+WebServer::WebServer(const WebServer &copy): \
   servers(copy.servers), parser(copy.parser), signals(copy.signals) { }
 
-Config &Config::operator=(const Config &copy) {
+WebServer &WebServer::operator=(const WebServer &copy) {
   if (this != &copy) {
     servers = copy.servers;
     parser = copy.parser;
@@ -30,13 +30,13 @@ Config &Config::operator=(const Config &copy) {
   return (*this);
 }
 
-void  Config::setServer(void) {
+void  WebServer::setServer(void) {
   servers.setServers(parser.getNservers());
-  setServerConfig();
+  setServerWebServer();
   servers.startServers();
 }
 
-void  Config::setServerConfig( void ) {
+void  WebServer::setServerWebServer( void ) {
   int sCount = 0;
   std::vector<string> ptrData = parser.getData();
   std::vector<string>::iterator ptrBegin = ptrData.begin();

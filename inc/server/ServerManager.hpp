@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   VirtualServer.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:05:44 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/22 08:56:55 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "Server.hpp"
 # include "../Utils.hpp"
 
-class VirtualServer {
+class ServerManager {
  private:
   size_t                         nServers;
   std::deque<int>          portsServers;
@@ -30,10 +30,10 @@ class VirtualServer {
   fd_set cSockets, rSockets, wSockets;
 
  public:
-  VirtualServer(void);
-  ~VirtualServer(void);
-  VirtualServer(const VirtualServer&);
-  VirtualServer &operator=(const VirtualServer&);
+  ServerManager(void);
+  ~ServerManager(void);
+  ServerManager(const ServerManager&);
+  ServerManager &operator=(const ServerManager&);
  public:
   void  setServers( size_t _amount );
   void  startServers( void );

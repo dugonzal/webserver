@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:56:31 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/05 11:01:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/22 09:01:17 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TextOutputter.h>
 #include <cppunit/ui/text/TestRunner.h>
-# include "../../inc/server/Config.hpp"
+# include "../../inc/server/WebServer.hpp"
 # include "../../inc/parser/Parser.hpp"
 
 class TestServer : public CppUnit::TestFixture {

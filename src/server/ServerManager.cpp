@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   VirtualServer.cpp                                  :+:      :+:    :+:   */
+/*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 23:19:17 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 08:56:55 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/server/VirtualServer.hpp"
+# include "../../inc/server/ServerManager.hpp"
 
-VirtualServer::VirtualServer(void) {
+ServerManager::ServerManager(void) {
   FD_ZERO(&cSockets);
   FD_ZERO(&rSockets);
   FD_ZERO(&wSockets);
   nServers = 0;
 }
 
-VirtualServer::~VirtualServer(void) {
+ServerManager::~ServerManager(void) {
   /// delete temporal vServers
   vServers.clear();
 }
 
-VirtualServer::VirtualServer(const VirtualServer &copy): \
+ServerManager::ServerManager(const ServerManager &copy): \
   server(copy.server) { }
 
-VirtualServer &VirtualServer::operator=(const VirtualServer &copy) {
+ServerManager &ServerManager::operator=(const ServerManager &copy) {
   if (this != &copy) {
     server = copy.server;
     nServers = copy.nServers;
@@ -35,11 +35,11 @@ VirtualServer &VirtualServer::operator=(const VirtualServer &copy) {
   return (*this);
 }
 
-void  VirtualServer::setServers( size_t _amount ) {
+void  ServerManager::setServers( size_t _amount ) {
   nServers = _amount;
 }
 
-void  VirtualServer::startServers( void ) {
+void  ServerManager::startServers( void ) {
   for (size_t it = 0; it < nServers; it++) {
     Server ptr;
     ptr.setServerNumber(nServers);
@@ -53,7 +53,7 @@ void  VirtualServer::startServers( void ) {
   setSelect();
 }
 
-void  VirtualServer::setSelect(void) {
+void  ServerManager::setSelect(void) {
   FD_ZERO(&cSockets);
   for (size_t i = 0; i < nServers ; i++)
     FD_SET(vServers[i].getSocket(), &cSockets);
@@ -86,14 +86,14 @@ void  VirtualServer::setSelect(void) {
     }
 }
 
-int   VirtualServer::setName( const std::string& _name ) {
+int   ServerManager::setName( const std::string& _name ) {
   //this->server.setServerName(_name);
   this->nameServers.push_back(_name);
   std::cout << "Name: " << _name << std::endl;
   return 0;
 }
 
-int   VirtualServer::setPort( int _nServer, const std::string& _host, int _port ) {
+int   ServerManager::setPort( int _nServer, const std::string& _host, int _port ) {
   portsServers.push_back(_port);
   hostServers.push_back(_host);
   std::cout << "Port: " << _port << " (" << _nServer << ")." << std::endl;
@@ -101,7 +101,7 @@ int   VirtualServer::setPort( int _nServer, const std::string& _host, int _port 
   return 0;
 }
 
-int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
+int   ServerManager::setErrorPage( const std::string& _errorPages ) {
   const char *errorPages = _errorPages.c_str();
   std::stringstream ss;
   int ret;
@@ -133,7 +133,7 @@ int   VirtualServer::setErrorPage( const std::string& _errorPages ) {
   return 0;
 }
 
-int   VirtualServer::setClientBodySize( const std::string& _clientBodySize ) {
+int   ServerManager::setClientBodySize( const std::string& _clientBodySize ) {
   std::stringstream num;
   std::stringstream size;
   int ret;

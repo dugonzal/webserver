@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Config.hpp                                         :+:      :+:    :+:   */
+/*   WebServer.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:20:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/22 08:56:55 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@
 # include "../Signals.hpp"
 # include "Server.hpp"
 # include "../Utils.hpp"
-# include "../server/VirtualServer.hpp"
+# include "../server/ServerManager.hpp"
 
 /*
  * voy a usar el vector de servidores para obtener la data puedo crear una pequeña funcoion que parsee y comprueba 
  * la informcaion dentro del scope del servidor, cada server tendra un vector de string buffer 
  * que recibira el scope del buffer una vez que el scope este parceado
  * */
-class Config {
+class WebServer {
  private:
-  VirtualServer servers;
+  ServerManager servers;
   Parser        parser;
   Signals       signals;
 
  private:
-  Config(void);
+  WebServer(void);
 
  private:
-  void  setServerConfig( void );
+  void  setServerWebServer( void );
 
  public:
-  Config(const string&);
-  Config(const Config&);
-  Config &operator=(const Config&);
-  ~Config(void);
+  WebServer(const string&);
+  WebServer(const WebServer&);
+  WebServer &operator=(const WebServer&);
+  ~WebServer(void);
   void  setServer(void);
 };

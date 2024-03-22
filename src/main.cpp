@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:25:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/22 09:01:30 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/server/Config.hpp"
+# include "../inc/server/WebServer.hpp"
 
 int main(int ac, const char **av, const char **) {
   if (ac != 2)
       av[1] = "conf/default.conf";
   try {
-    Config  config(*(++av));
+    WebServer  webserver(*(++av));
 
-    config.setServer();
+    webserver.setServer();
   } catch (std::exception &e) {
       std::cout << "Error: " << e.what() << std::endl;
     }

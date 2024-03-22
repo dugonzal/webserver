@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 18:52:59 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 18:58:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../server/ServerParser.hpp"
 # include "../server/Request.hpp"
 # include "../Utils.hpp"
+# include "Location.hpp"
 
 class BaseServer {
  protected:
@@ -37,6 +38,7 @@ class BaseServer {
     
 
  protected:
+    map<string, Location>          locations;
     map<string, string>            data;
     vector<string>                 error_page;
     vector<string>                 buffer;

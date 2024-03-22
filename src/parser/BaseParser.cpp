@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 19:47:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:00:51 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void BaseParser::readIncludeError(string fileName) {
 void  BaseParser::setNservers(void) {
   std::size_t endServer = 0;
 
+  nServers = 0;
   for (unsigned int i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
@@ -101,6 +102,8 @@ void  BaseParser::setNservers(void) {
     else if (data[i].find("};") != string::npos)
       endServer++;
   }
+  std::cout << "nServers : " << nServers << std::endl;
+  std::cout << "endServer : " << endServer << std::endl;
   if (nServers != endServer)
     throw(runtime_error("scope server"));
   else

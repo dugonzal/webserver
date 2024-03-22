@@ -1,23 +1,59 @@
-Port: 404 (1).$
+nServers : 3$
+endServer : 3$
+server {$
+listen			0.0.0.0:1001;$
+Port: 1001 (0).$
+Host: 0.0.0.0 (0).$
+server_name		jokin;$
+Name: jokin$
+location /resources {$
+server_name		jokin;$
+Name: jokin$
+index readme.html;$
+}$
+return			301 https://$server_name$request_uri;$
+};$
+$
+server {$
+listen			3002;$
+Port: 3002 (1).$
 Host: 0.0.0.0 (1).$
+server_name		_;$
 Name: _$
+root			public/;$
+autoindex off;$
+index			index.html;$
+location /home {$
+index index.html;$
+autoindex on;$
+}$
+};$
 $
-warning: port: (default_server) directive was set$
-Port: 80 (2).$
+server {$
+worker_connections 1024;$
+listen			localhost:3001;$
+Port: 3001 (2).$
 Host: 0.0.0.0 (2).$
+server_name		_;$
 Name: _$
-$
-Port: 405 (3).$
-Host: 0.0.0.0 (3).$
-Name: _$
+client_max_body_size 1m;$
 Body Size : 1000000$
+error_page 404 405 406 407 408 /error.html;$
 Error_page: $
 [ 404 , /error.html ]$
 [ 405 , /error.html ]$
 [ 406 , /error.html ]$
 [ 407 , /error.html ]$
 [ 408 , /error.html ]$
+return			301 https://$server_name$request_uri;$
+};$
 $
 $
+------Server n.M-BM-*0----$
+socketFd: 3$
+Port : 1001$
+Host : 0.0.0.0$
+Server name : jokin$
 $
-Arrived before-select$
+Permission denied$
+Error: error: socket bind().$

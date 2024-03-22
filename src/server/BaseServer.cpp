@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/22 15:52:30 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:16:23 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,21 @@ void   BaseServer::setServerSide( void ) {
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
 
+/*   if (fcntl(serverFd, O_NONBLOCK, (char *)&opt) < 0) { // Valid for MacOS
+    close(serverFd);
+    std::cout << strerror(errno) << std::endl;
+    throw std::logic_error("error: socket bind().");
+  } */
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error("error: socket SO_REUSEADDR.");
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
       throw std::logic_error("error: socket SO_REUSEADDR.");
-/*   if (fcntl(serverFd, O_NONBLOCK, (char *)&opt) < 0) {
-    close(serverFd);
+  if (bind(serverFd, (sockaddr *)&addr, addrLen) < 0) {
+    std::cout << strerror(errno) << std::endl;
     throw std::logic_error("error: socket bind().");
-  } */
-  if (bind(serverFd, (sockaddr *)&addr, addrLen) < 0)
-    throw std::logic_error("error: socket bind().");
+  }
   if (listen(serverFd, 1024) < 0)
     throw std::logic_error("listen failed");
 }

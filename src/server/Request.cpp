@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/22 09:52:04 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:41:17 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void	Request::checkHttpVersion( void ) {
 		perror("error: HTTP is not present in the header");
 		return ;
 	}
-	while (firstLine[pos] && !isnumber(firstLine[pos])) {
+	while (firstLine[pos] && !isdigit(firstLine[pos])) {
 		if (!firstLine[pos + 1] || isspace(firstLine[pos + 1])) {
 			inputIsGood = false;
 			perror("error: HTTP version: bad format");
@@ -190,6 +190,7 @@ void	Request::checkHttpVersion( void ) {
 /* Methods */
 void Request::methodGet( void )
 {
+	std::stringstream ss;
 	// Insert first line
 	if (responseFile == "" || inputIsGood == false) { // File is not found
 		responseHeader = "HTTP/1.1 404 Not found\r\n";
@@ -199,7 +200,8 @@ void Request::methodGet( void )
 		responseHeader = "HTTP/1.1 200  OK\r\n";
 	// Insert content
 	responseHeader += "Content-Type: text/html\r\n";
-	responseHeader += "Content-Length: " + std::to_string(responseFile.size()) + "\r\n";
+	ss << responseFile.size() << "\r\n";
+	responseHeader += "Content-Length: " + ss.str();
 	responseHeader += "\r\n";
 	responseHeader += responseFile;
 	send(clientFd, responseHeader.data(), responseHeader.size(), 0);

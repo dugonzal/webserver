@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/21 23:20:14 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/22 09:14:58 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,10 @@ std::string	Request::getRoute( void ) {
 
 
 	for (start = 0; str[start]; start++) {
-		if (start > 0 && str[start - 1] == ' ')
+		if (str[start] == '/' && str[start - 1] == ' ')
 			break;
 		else if (str[start] == '\n') {
+			perror("error: Route is non existent");
 			inputIsGood = false;
 			return ("");
 		}
@@ -105,11 +106,13 @@ std::string	Request::getRoute( void ) {
 			}
 		}
 		else {
+			perror("error: Route has special characters");
 			inputIsGood = false;
 			return "";
 		}
 	}
 	else {
+		perror("error: Route is erroneus");
 		inputIsGood = false;
 		return "";
 	}

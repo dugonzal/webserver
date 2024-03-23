@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/22 15:39:18 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/23 10:05:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     opt = copy.opt;
     error_page = copy.error_page;
     buffer = copy.buffer;
-    if (options && copy.options) // Only if the two have data inside
-        *options = *(copy.options);
-    else // Depending on copy.options, NULL or copy.options.
-        options = copy.options ? new int(*copy.options) : NULL;
+    options = copy.options;
+    locations = copy.locations;
   }
   return (*this);
 }
@@ -40,7 +38,7 @@ BaseServer::~BaseServer(void) {
 //  close(serverFd);
 }
 
-void   BaseServer::setServerSide( void ) {
+void  BaseServer::setServerSide(void) {
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw std::logic_error("socket creation failed");
 
@@ -53,7 +51,6 @@ void   BaseServer::setServerSide( void ) {
   std::cout << "Server name : " << server_name << std::endl << std::endl;
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
-  
 /*   struct flock fvar;
   fvar.l_type=F_WRLCK;
   fvar.l_whence=SEEK_END;
@@ -104,11 +101,11 @@ void BaseServer::setPort(int _port) {
   port = _port;
 }
 
-void BaseServer::setHost(std::string& _host) {
+void BaseServer::setHost(const string& _host) {
   host = _host;
 }
 
-void  BaseServer::setServerName( std::string& _name ) {
+void  BaseServer::setServerName(const string& _name ) {
   this->server_name = _name;
 }
 

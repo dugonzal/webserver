@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/22 08:56:55 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/23 10:10:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ ServerManager::ServerManager(void) {
   FD_ZERO(&rSockets);
   FD_ZERO(&wSockets);
   nServers = 0;
+  timeout.tv_sec = 900;
+  timeout.tv_usec = 0;
 }
 
-ServerManager::~ServerManager(void) {
-  /// delete temporal vServers
-  vServers.clear();
-}
+ServerManager::~ServerManager(void) { }
 
 ServerManager::ServerManager(const ServerManager &copy): \
   server(copy.server) { }
@@ -35,11 +34,11 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
   return (*this);
 }
 
-void  ServerManager::setServers( size_t _amount ) {
+void  ServerManager::setServers(size_t _amount) {
   nServers = _amount;
 }
 
-void  ServerManager::startServers( void ) {
+void  ServerManager::startServers(void) {
   for (size_t it = 0; it < nServers; it++) {
     Server ptr;
     ptr.setServerNumber(nServers);
@@ -50,18 +49,14 @@ void  ServerManager::startServers( void ) {
     ptr.setServerSide();
     vServers.push_back(ptr);
   }
-  setSelect();
+ // setSelect();
 }
 
 void  ServerManager::setSelect(void) {
-  FD_ZERO(&cSockets);
   for (size_t i = 0; i < nServers ; i++)
     FD_SET(vServers[i].getSocket(), &cSockets);
-	while (true) {
-		rSockets = cSockets;
-
-    timeout.tv_sec = 900; // 900 timer for select()
-    timeout.tv_usec = 0;
+  while (true) {
+    rSockets = cSockets;
 		std::cout << RED << "!----SELECT ON POINT----!" << END << std::endl;
     int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout);
     usleep(100000);

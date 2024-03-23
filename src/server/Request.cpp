@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/22 15:41:17 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/23 09:59:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/server/Request.hpp"
 
-Request::Request( void ) {
-	timeout.tv_sec = 5; // 5 seconds for Client
-	timeout.tv_usec = 0;
-	addrClientLen = sizeof(clientAddr);
+Request::Request(void) {
+  timeout.tv_sec = 5;
+  timeout.tv_usec = 0;
+  addrClientLen = sizeof(clientAddr);
 }
 
-Request::Request( int _serverFd ) : inputIsGood(true) {
-	bzero(clientMsg, sizeof(clientMsg));
+Request::Request(int _serverFd): inputIsGood(true) {
+  bzero(clientMsg, sizeof(clientMsg));
 	std::cout << std::endl << "------------INPUT_DATA----------------" << std::endl;
 	if ((clientFd = accept(_serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
-		perror("error: accept");
+    perror("error: accept");
 
 	if (setsockopt(clientFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0)
-		perror("error: setsockopt()");
+    perror("error: setsockopt()");
 
-	//! Recieve message
+  //! Recieve message
 	if (parseClientMsg() == EXIT_FAILURE)
-		return ;
-	
+     return ;
+
 	// Message from the client
 	/* std::cout << std::endl << "--------------INPUT--------------" << std::endl;
 	std::cout << std::endl << clientMsg << std::endl; */
@@ -56,7 +56,7 @@ Request::Request( int _serverFd ) : inputIsGood(true) {
 		default:
 			// Erroneus Method, 405 Error (@inunez-g)
 			break ;
-	}
+}
 
 	//! Message for the client
 	/* std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl; */

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WebServer.cpp                                         :+:      :+:    :+:   */
+/*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 19:19:56 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/23 10:16:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void  WebServer::setServer(void) {
   servers.startServers();
 }
 
-void  WebServer::setServerWebServer( void ) {
+void  WebServer::setServerWebServer(void) {
   int sCount = 0;
   std::vector<string> ptrData = parser.getData();
-  std::vector<string>::iterator ptrBegin = ptrData.begin();
-  std::vector<string>::iterator ptrEnd = ptrData.end();
-  for (ptrBegin = ptrData.begin(); (ptrBegin != ptrEnd); ptrBegin++) {
+
+  for (vector<string>::iterator ptrBegin = ptrData.begin(); \
+    ptrBegin != ptrData.end(); ptrBegin++) {
     std::cout << *ptrBegin << std::endl;
     if (ptrBegin->find("listen", 0) != std::string::npos) {
       if (servers.setPort(sCount, getHostFromLine(*ptrBegin), \
@@ -53,7 +53,8 @@ void  WebServer::setServerWebServer( void ) {
     if (findStrInLog(*ptrBegin, "error_page") != "")
       servers.setErrorPage(findStrInLog(*ptrBegin, "error_page"));
     if (findStrInLog(*ptrBegin, "client_max_body_size") != "")
-      servers.setClientBodySize(findStrInLog(*ptrBegin, "client_max_body_size"));
+      servers.setClientBodySize(findStrInLog(*ptrBegin, \
+        "client_max_body_size"));
     if (!ptrBegin->compare("};")) {
       std::cout << std::endl;
       sCount++;

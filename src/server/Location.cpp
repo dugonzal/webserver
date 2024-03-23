@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Location.hpp                                       :+:      :+:    :+:   */
+/*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 09:55:05 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/03/23 09:56:52 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma once
+# include "../../inc/server/Location.hpp"
 
-# include "../Utils.hpp"
 
-class Location {
- private:
-    string  route;
+Location::Location(void) { }
 
- public:
-    Location(void);
-    ~Location(void);
-    Location(const Location&);
-    Location &operator=(const Location&);
-};
+Location::~Location(void) { }
+
+Location::Location(const Location &copy): route(copy.route) { }
+
+Location &Location::operator=(const Location &copy) {
+  if (&copy != this) {
+    route = copy.route;
+  }
+  return (*this);
+}

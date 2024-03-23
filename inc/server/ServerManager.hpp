@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   VirtualServer.hpp                                  :+:      :+:    :+:   */
+/*   ServerManager.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/22 08:56:55 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/23 10:09:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
 
 class ServerManager {
  private:
-  size_t                         nServers;
-  std::deque<int>          portsServers;
-  std::vector<string>                 hostServers;
-  std::vector<string>            nameServers;
-  std::map<int, string>          errorPage;
-  std::vector<int>               clientMaxBodySize;
-  Server                 server;
-  std::vector<Server>  vServers;
-
+  size_t                    nServers;
+  std::deque<int>           portsServers;
+  vector<string>            hostServers;
+  vector<string>            nameServers;
+  map<int, string>          errorPage;
+  vector<int>               clientMaxBodySize;
+  Server                    server;
+  vector<Server>            vServers;
+  map<string, Location>     locations;
   struct timeval timeout;
   fd_set cSockets, rSockets, wSockets;
 
@@ -34,13 +34,14 @@ class ServerManager {
   ~ServerManager(void);
   ServerManager(const ServerManager&);
   ServerManager &operator=(const ServerManager&);
- public:
-  void  setServers( size_t _amount );
-  void  startServers( void );
-  void  setSelect( void );
 
-  int   setPort( int _nServer, const std::string& _host, int _port );
-  int   setName( const std::string& _name );
-  int   setErrorPage( const std::string& _errorPages );
-  int   setClientBodySize( const std::string& _clientBodySize );
+ public:
+  void  setServers(size_t _amount);
+  void  startServers(void);
+  void  setSelect(void);
+
+  int   setPort(int _nServer, const string& _host, int _port);
+  int   setName(const string& _name);
+  int   setErrorPage(const string& _errorPages);
+  int   setClientBodySize( const string& _clientBodySize);
 };

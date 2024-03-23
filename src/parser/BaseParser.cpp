@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   BaseParser.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/22 15:42:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/23 12:23:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/BaseParser.hpp"
-#include <string>
 
 BaseParser::BaseParser(void) { }
 
@@ -34,12 +33,20 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
   string     buffer;
 
   file = openFile(fileName);
+  if (!file) {
+    delete file;
+    throw(runtime_error("file not found"));
+  }
   while (getline(*file, buffer, '\n')) {
     buffer = trim(buffer);
     if (skipLine(buffer))
        continue;
-    else if (buffer.find("include") != string::npos)
-      readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1));
+    else if (buffer.find("include") != string::npos) {
+      if (readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1))) {
+        delete file;
+        throw(runtime_error("include error"));
+      }
+    }
     else
       data.push_back(buffer);
   }
@@ -63,16 +70,20 @@ ifstream  *BaseParser::openFile(const string &fdName) const {
   file = new ifstream(fdName.data());
   if (file->bad() || file->fail() || file->eof()) {
     delete file;
-    throw(logic_error("file no open"));
+    return (NULL);
   }
   return (file);
 }
 
-void  BaseParser::readInclude(const string &fdFile) {
+bool  BaseParser::readInclude(const string &fdFile) {
   ifstream *file;
   string   buffer;
 
   file = openFile(fdFile);
+  if (!file) {
+    delete file;
+    return (true);
+  }
   while (getline(*file, buffer, '\n')) {
     buffer = trim(buffer);
     if (skipLine(buffer))
@@ -81,14 +92,17 @@ void  BaseParser::readInclude(const string &fdFile) {
       data.push_back(buffer);
   }
   delete file;
+  return (false);
 }
 
-void BaseParser::readIncludeError(string fileName) {
+bool  BaseParser::readIncludeError(string fileName) {
   if (fileName[fileName.size() - 1] == ';')
     fileName[fileName.size() - 1] = '\0';
   else
-    throw(runtime_error("no termine en  \";\""));
-  readInclude(fileName);
+    return (true);
+  if (readInclude(fileName))
+    return (true);
+  return (false);
 }
 
 void  BaseParser::setNservers(void) {

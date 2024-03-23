@@ -6,21 +6,19 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 10:04:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/23 11:46:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../parser/BaseParser.hpp"
-# include "../server/ServerParser.hpp"
 # include "../server/Request.hpp"
 # include "../Utils.hpp"
 # include "Location.hpp"
 
 class BaseServer {
  protected:
-   ServerParser                    *parser;
     /* Server Side */
     int                            serverFd; // File Descriptor
     int                            opt; // Special options set for server socket

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseParser.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 19:47:38 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/23 12:23:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ class BaseParser {
 
  private:
     void      setNservers(void);
-    void      readIncludeError(string);
-    void      readInclude(const string&);
+    bool      readIncludeError(string);
+    bool      readInclude(const string&);
     int       serverError(unsigned int) const;
     void      handlerScopeError(void);
     void      checkSemicolon(void) const;

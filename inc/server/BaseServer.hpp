@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 14:34:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:09:55 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class BaseServer {
     BaseServer(const BaseServer&);
     BaseServer &operator=(const BaseServer&);
     virtual ~BaseServer(void) = 0;
-    virtual BaseServer *clone(void) const = 0;
+////    virtual BaseServer clone(void) const = 0;
     void    setServerSide(void);
     void    setRequest(void);
 
@@ -57,6 +57,6 @@ class BaseServer {
     void    setPort(int _port);
     void    setHost(const string &_host);
     void    setServerName(const string &_name);
-    void    setLocations(const string&, Location);
+    void    setLocations(const string&, const Location&);
   friend ostream &operator<<(ostream&, const BaseServer&);
 };

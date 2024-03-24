@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 10:09:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 16:16:19 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class ServerManager {
   void  setServers(size_t _amount);
   void  startServers(void);
   void  setSelect(void);
-
+  void  addServer(Server _server);
   int   setPort(int _nServer, const string& _host, int _port);
   int   setName(const string& _name);
   int   setErrorPage(const string& _errorPages);

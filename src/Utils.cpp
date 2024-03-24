@@ -6,34 +6,30 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 17:54:33 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:03:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/Utils.hpp"
 
 bool  skipLine(const string &line) {
-  /* If line is empty OR a comment is made */
   if (line.empty() || line[0] == '#')
       return(true);
   return(false);
 }
-string trim(const string &line) {
-  /* Finds the first character that is not (space, tab, ...) */
-  std::size_t first = line.find_first_not_of(" \t\v\f\r");
 
-  /* Checks that the first character is not the end of file */
+string trim(const string &line) {
+  size_t first = line.find_first_not_of(" \t\v\f\r");
+
   if (first == string::npos)
     return ("");
 
-  /* Finds the last character that is not (space, tab, ...) */
-  std::size_t last = line.find_last_not_of(" \t\v\f\r");
+  size_t last = line.find_last_not_of(" \t\v\f\r");
 
-  /* Returns the resulting lines between first & last */
   return (line.substr(first, ((last - first) + 1)));
 }
 
-int  getNumberFromLine( const std::string& line ) {
+int getNumberFromLine(const string& line) {
   char c = 0;
   int flag = 0;
   std::stringstream ss;
@@ -47,11 +43,11 @@ int  getNumberFromLine( const std::string& line ) {
   for (; itBegin != itEnd; ++itBegin) {
     if (flag == 1) {
       if (*itBegin == ':')
-        break ;
+        break;
     }
     else if (flag == 2) {
       if (std::isspace(*itBegin))
-        break ;
+        break;
     }
   }
 
@@ -60,7 +56,7 @@ int  getNumberFromLine( const std::string& line ) {
     if (std::isdigit(c) || c == '.')
       ss << c;
     else if(c == '#' || c == ';')
-      break ;
+      break;
   }
   int ret = 80;
   if (line.find("default_server", 0) != std::string::npos)
@@ -82,22 +78,22 @@ std::string	getNameFromLine( const std::string& line, const std::string& strBefo
     ss << c;
     if (!ss.str().compare(strBefore)) {
       itBegin++;
-      break ;
+      break;
     }
     else if(c == '#' || c == ';')
-      break ;
+      break;
   }
   for (; itBegin != itEnd; ++itBegin) {
     c = *itBegin;
     if (c != ' ')
-      break ;
+      break;
   }
   std::stringstream ret;
   ss.clear();
   for (; itBegin != itEnd; ++itBegin) {
     c = *itBegin;
     if(c == '#' || c == ';')
-      break ;
+      break;
     else if (std::isalpha(c) || c == '_')
       ret << c;
   }
@@ -123,7 +119,7 @@ std::string  findStrInLog( const std::string& line, const std::string& toFind ) 
             if (!ss.str().compare(toFind)) {
               itBegin2++;
               exitLoop = true;
-              break ;
+              break;
             }
           }
           else
@@ -140,7 +136,7 @@ std::string  findStrInLog( const std::string& line, const std::string& toFind ) 
         if (!len)
           return ("");
         else
-          break ;
+          break;
       }
       ret << c;
       len++;
@@ -177,7 +173,7 @@ std::string  getHostFromLine( const std::string& line ) {
   for (; itBegin != itEnd; ++itBegin) {
     if (flag == 1) {
       if (isspace(*itBegin))
-        break ;
+        break;
     }
     else if (flag == 2)
       return ("0.0.0.0");
@@ -188,7 +184,7 @@ std::string  getHostFromLine( const std::string& line ) {
     if (std::isalpha(c) || std::isalnum(c) || c == '.')
       ss << c;
     else if(c == '#' || c == ';' || c == ':')
-      break ;
+      break;
   }
   if (ss.str().empty()) {
     std::cout << "warning: Host was not set, default set to 0.0.0.0" << std::endl;

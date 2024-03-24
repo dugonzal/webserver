@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 10:10:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:13:33 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,17 @@ void  ServerManager::setServers(size_t _amount) {
 void  ServerManager::startServers(void) {
   for (size_t it = 0; it < nServers; it++) {
     Server ptr;
+    Location location;
+
+    location.setPath("root");
     ptr.setServerNumber(nServers);
     ptr.setPort(portsServers[it]);
     ptr.setHost(hostServers[it]);
     ptr.setServerName(nameServers[it]);
-    std::cout << "------Server n.ª" << it << "----" << std::endl;
+    cout << "------Server n.ª" << it << "----" << endl;
     ptr.setServerSide();
-    vServers.push_back(ptr);
+    ptr.setLocations("root path xd", location.clone());
+    addServer(ptr);
   }
  // setSelect();
 }
@@ -57,7 +61,7 @@ void  ServerManager::setSelect(void) {
     FD_SET(vServers[i].getSocket(), &cSockets);
   while (true) {
     rSockets = cSockets;
-		std::cout << RED << "!----SELECT ON POINT----!" << END << std::endl;
+		cout << RED << "!----SELECT ON POINT----!" << END << endl;
     int retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout);
     usleep(100000);
     if (retSelect < 0) { // Waits until file descriptor has info
@@ -65,7 +69,7 @@ void  ServerManager::setSelect(void) {
       perror("error: select");
 			exit(EXIT_FAILURE);
     }
-    std::cout << "Available FDs : " << retSelect << std::endl << std::endl;
+    cout << "Available FDs : " << retSelect << endl << endl;
     for (int i = 0; i < FD_SETSIZE; i++) { // One or more descriptors may be available
       if (FD_ISSET(i, &rSockets)) { // check if 'i' number fd is available
         for (vector<Server>::iterator it = vServers.begin(); it != vServers.end(); it++) {
@@ -75,28 +79,33 @@ void  ServerManager::setSelect(void) {
         }
     }
       if (FD_ISSET(i, &wSockets))
-        std::cout << i << " can be used to write!" << std::endl;
+        cout << i << " can be used to write!" << endl;
+      else if (i == (int)nServers)
+          i = 0;
     }
     // bzero(clientMsg, sizeof(clientMsg));
     }
 }
 
-int   ServerManager::setName( const std::string& _name ) {
-  //this->server.setServerName(_name);
+void  ServerManager::addServer(Server _server) {
+  vServers.push_back(_server.clone());
+}
+
+int   ServerManager::setName(const string& _name) {
   this->nameServers.push_back(_name);
-  std::cout << "Name: " << _name << std::endl;
+  cout << "Name: " << _name << endl;
   return 0;
 }
 
-int   ServerManager::setPort( int _nServer, const std::string& _host, int _port ) {
+int   ServerManager::setPort(int _nServer, const string &_host, int _port) {
   portsServers.push_back(_port);
   hostServers.push_back(_host);
-  std::cout << "Port: " << _port << " (" << _nServer << ")." << std::endl;
-  std::cout << "Host: " << _host << " (" << _nServer << ")." << std::endl;
+  cout << "Port: " << _port << " (" << _nServer << ")." << endl;
+  cout << "Host: " << _host << " (" << _nServer << ")." << endl;
   return 0;
 }
 
-int   ServerManager::setErrorPage( const std::string& _errorPages ) {
+int ServerManager::setErrorPage( const std::string& _errorPages ) {
   const char *errorPages = _errorPages.c_str();
   std::stringstream ss;
   int ret;
@@ -123,12 +132,12 @@ int   ServerManager::setErrorPage( const std::string& _errorPages ) {
     std::pair<int, std::string> content(ret, error_page);
     std::cout << "[ " << ret << " , " << error_page << " ]" << std::endl;
     this->errorPage.insert(content);
-    ss.str(std::string()); // clear std::stringstream
+    ss.str(string()); // clear std::stringstream
   }
   return 0;
 }
 
-int   ServerManager::setClientBodySize( const std::string& _clientBodySize ) {
+int ServerManager::setClientBodySize(const string& _clientBodySize) {
   std::stringstream num;
   std::stringstream size;
   int ret;

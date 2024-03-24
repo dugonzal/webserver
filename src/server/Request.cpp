@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/23 09:59:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:04:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,8 @@ Request::Request(int _serverFd): inputIsGood(true) {
 
   //! Recieve message
 	if (parseClientMsg() == EXIT_FAILURE)
-     return ;
+    return;
 
-	// Message from the client
-	/* std::cout << std::endl << "--------------INPUT--------------" << std::endl;
-	std::cout << std::endl << clientMsg << std::endl; */
-
-	//! Response
-	// Manage file
 	if (inputRoute.empty()) // No file is asked
 		responseFile = readFile("resources/default.html");
 	else // Any file is asked

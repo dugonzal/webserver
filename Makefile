@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/24 13:04:14 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/03/24 15:53:13 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,11 @@ SHELL			:=	/bin/zsh
 
 CXX				:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++98
 
-INC_DIR					:= inc/
+INC_DIR		:= inc/
 INC_FILES += $(addprefix $(P_DIR),$(parser))
 INC_FILES += $(addprefix $(S_DIR),$(server ))
 INC_FILES += Signals Utils
-INC = $(addprefix $(I), $(INC_FILES))
+INC 			:= $(addprefix $(I), $(INC_FILES))
 
 SRC_DIR		:= src/
 
@@ -78,7 +78,7 @@ init:
 	sudo python main.py
 
 cleanPorts:
-	sudo lsof -i | grep 'python' | awk '{print}' | sudo xargs kill -9
+	sudo lsof -i | grep 'webserv' | awk '{print}' | sudo xargs kill -9
 
 val:
 	valgrind ./${NAME}

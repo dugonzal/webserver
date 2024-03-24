@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 10:05:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:13:00 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
+#include <utility>
 
 BaseServer::BaseServer(void): opt(1) {
   ::bzero(&addr, sizeof(addr));
@@ -34,9 +35,7 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
   return (*this);
 }
 
-BaseServer::~BaseServer(void) {
-//  close(serverFd);
-}
+BaseServer::~BaseServer(void) { }
 
 void  BaseServer::setServerSide(void) {
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -81,6 +80,12 @@ void  BaseServer::setServerSide(void) {
 
 void  BaseServer::setRequest( void ) {
   Request client(serverFd);
+}
+
+void  BaseServer::setLocations(const string &path, const Location &copy) {
+  cout << path << endl;
+  sleep(3);
+  location.insert(std::make_pair(path, copy));
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }

@@ -37,15 +37,18 @@ Port : 3001$
 Host : 0.0.0.0$
 Server name : jokin$
 $
+root path xd$
 ------Server n.M-BM-*1----$
 socketFd: 4$
 Port : 3002$
 Host : 0.0.0.0$
 Server name : jokin$
 $
+root path xd$
 ------Server n.M-BM-*2----$
 socketFd: 5$
 Port : 3003$
 Host : 0.0.0.0$
 Server name : _$
 $
+root path xd$

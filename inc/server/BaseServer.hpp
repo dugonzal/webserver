@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 13:02:44 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:34:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@ class BaseServer {
     struct sockaddr_in             addr; // IP socket address
     socklen_t                      addrLen; // Length of socket
     /* Configuration from input */
-    int                                 nServers;
-    int                                 port;
-    std::string                         host;
-    std::string                         server_name;
-    std::map<int, std::string>          errorPageAr;
-    int                                 clientMaxBodySize;
+    int                            nServers;
+    int                            port;
+    string                         host;
+    string                         server_name;
+    map<int, string>               errorPageAr;
+    int                            clientMaxBodySize;
+    map<string, Location>          location;
 
  protected:
     map<string, Location>          locations;

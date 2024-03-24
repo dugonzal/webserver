@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 09:55:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/24 14:36:14 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@
 
 class Location {
  private:
-    string  route;
+    string            root;
+    string            path;
+    string            index;
+    bool              autoIndex;
+    string            cgiPath;
+    vector<string>    methods;
+    map<int, string>  errorPages;
 
  public:
     Location(void);

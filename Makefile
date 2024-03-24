@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
+#    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/22 09:00:03 by jaizpuru         ###   ########.fr        #
+#    Updated: 2024/03/24 13:01:02 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,7 @@ parser		:= BaseParser Parser
 
 S_DIR			:= server/
 server		:= WebServer \
-			   Server ServerManager BaseServer \
-			   Request ServerParser
+			   Server ServerManager BaseServer Request
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))

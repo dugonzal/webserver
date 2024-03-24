@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/19 18:52:59 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/24 13:01:17 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../parser/BaseParser.hpp"
-# include "../server/ServerParser.hpp"
 # include "../server/Request.hpp"
 # include "../Utils.hpp"
 
 class BaseServer {
  protected:
-   ServerParser                    *parser;
     /* Server Side */
     int                            serverFd; // File Descriptor
     int                            opt; // Special options set for server socket

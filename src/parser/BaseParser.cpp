@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 11:25:38 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 14:59:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ BaseParser &BaseParser::operator=(const BaseParser &copy) {
 
 void  BaseParser::setWords(void) {
   words.insert("index");
+  words.insert("server");
+  words.insert("location");
+  words.insert("include");
   words.insert("server_name");
   words.insert("listen");
   words.insert("return");
@@ -38,15 +41,14 @@ void  BaseParser::setWords(void) {
   words.insert("client_max_body_size");
   words.insert("error_page");
   words.insert("cgi_path");
+  words.insert("cgi_ext");
   words.insert("allow_methods");
 }
 
 bool  BaseParser::checkWords(const string &line) const {
-  if (line  == "server" || line == "{" \
-    || line == "}" || line == "location" || line == "};")
+  if (line == "}" || line == "};")
     return (false);
-
-  if (words.find(line) == words.end())
+  else if (words.find(line) == words.end())
     return (true);
   return (false);
 }
@@ -78,10 +80,11 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
     data.push_back(buffer);
   }
   delete file; // el destructor de ifstream cierra el file
+   printData(data);
+  exit(0);
   setNservers();
   checkSemicolon();
   handlerScopeLocation();
-  // printData(data);
 }
 
 void  BaseParser::printData(const std::vector<string> &tmp) const {
@@ -123,6 +126,8 @@ bool  BaseParser::readInclude(const string &fdFile) {
 }
 
 bool  BaseParser::readIncludeError(string fileName) {
+  cout << "nombre del file que tengo que abrir " <<  fileName << endl;
+  sleep (3);
   if (fileName[fileName.size() - 1] == ';')
     fileName[fileName.size() - 1] = '\0';
   else

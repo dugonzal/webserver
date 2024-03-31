@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 16:59:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 11:01:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void  WebServer::setServerWebServer(void) {
       std::cout << std::endl;
       sCount++;
     }
-    else if (it->find("location") != string::npos) {
+    /*else if (it->find("location") != string::npos) {
       cout << sCount << endl;
       cout << *it << endl;
-    }
+    }*/
   }
   std::cout << std::endl;
 }

@@ -1,26 +1,14 @@
 Port: 3001 (0).$
 Host: 0.0.0.0 (0).$
 Name: jokin$
-0$
-location /resources {$
 Name: jokin$
 $
 Port: 3002 (1).$
 Host: 0.0.0.0 (1).$
 Name: _$
-1$
-location /home {$
 $
 Port: 3003 (2).$
 Host: 0.0.0.0 (2).$
-2$
-location / {$
-2$
-location / {$
-2$
-location / {$
-2$
-location / {$
 Name: _$
 Body Size : 1000000$
 Error_page: $

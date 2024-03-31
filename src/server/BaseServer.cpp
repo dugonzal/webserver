@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 17:13:00 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 11:03:01 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void  BaseServer::setRequest( void ) {
 
 void  BaseServer::setLocations(const string &path, const Location &copy) {
   cout << path << endl;
-  sleep(3);
   location.insert(std::make_pair(path, copy));
 }
 

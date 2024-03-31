@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 22:49:09 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/03/31 11:10:28 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <sys/socket.h>
 # include <arpa/inet.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/ioctl.h>
 # include <stdexcept>
 # include <map>
 # include <list>
@@ -30,13 +32,13 @@
 # include <fstream>
 # include <cstdlib>
 # include <cstddef>
+# include <set>
 # include <cassert>
 # include <sstream>
-# include <fcntl.h>
-# include <sys/ioctl.h>
 //# include <chrono>
 //# include <thread>
 
+using std::set;
 using std::cout;
 using std::endl;
 using std::string;
@@ -48,11 +50,12 @@ using std::size_t;
 using std::map;
 using std::ostream;
 
-bool    		errorFile(ifstream);
-string  		trim(const string&);
-bool    		skipLine(const string&);
-int  			getNumberFromLine( const std::string& line );
-std::string		getNameFromLine( const std::string& line, const std::string& strBefore );
-std::string  	findStrInLog( const std::string& line, const std::string& toFind );
-std::string 	readFile(const std::string& filename);
-std::string  	getHostFromLine( const std::string& line );
+bool    errorFile(ifstream);
+string  trim(const string&);
+bool    skipLine(const string&);
+int  		getNumberFromLine(const string& line);
+string	getNameFromLine(const string& line, const string& strBefore);
+string 	findStrInLog(const string& line, const string& toFind);
+string 	readFile(const string& filename);
+string 	getHostFromLine(const string& line );
+string  firstWord(string line); 

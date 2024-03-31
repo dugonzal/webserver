@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 17:03:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 11:13:57 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@ bool  skipLine(const string &line) {
   if (line.empty() || line[0] == '#')
       return(true);
   return(false);
+}
+
+string  firstWord(string line) {
+  size_t pos = line.find_first_of(" \t\v\f\r");
+
+  if (pos == string::npos)
+    return (line);
+
+  return (line.substr(0, pos));
 }
 
 string trim(const string &line) {

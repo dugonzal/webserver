@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 12:23:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 11:25:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,34 @@ BaseParser &BaseParser::operator=(const BaseParser &copy) {
   return (*this);
 }
 
+void  BaseParser::setWords(void) {
+  words.insert("index");
+  words.insert("server_name");
+  words.insert("listen");
+  words.insert("return");
+  words.insert("root");
+  words.insert("autoindex");
+  words.insert("client_max_body_size");
+  words.insert("error_page");
+  words.insert("cgi_path");
+  words.insert("allow_methods");
+}
+
+bool  BaseParser::checkWords(const string &line) const {
+  if (line  == "server" || line == "{" \
+    || line == "}" || line == "location" || line == "};")
+    return (false);
+
+  if (words.find(line) == words.end())
+    return (true);
+  return (false);
+}
+
 BaseParser::BaseParser(const string &filename): fileName(filename) {
   ifstream   *file;
   string     buffer;
 
+  setWords();
   file = openFile(fileName);
   if (!file) {
     delete file;
@@ -41,14 +65,17 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
     buffer = trim(buffer);
     if (skipLine(buffer))
        continue;
+    else if (checkWords(firstWord(buffer))) {
+      delete file;
+      throw(runtime_error(string("checkWords " + string(buffer))));
+    }
     else if (buffer.find("include") != string::npos) {
       if (readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1))) {
         delete file;
         throw(runtime_error("include error"));
       }
     }
-    else
-      data.push_back(buffer);
+    data.push_back(buffer);
   }
   delete file; // el destructor de ifstream cierra el file
   setNservers();
@@ -124,7 +151,7 @@ void  BaseParser::setNservers(void) {
 
 int  BaseParser::getNservers(void) const { return(nServers); }
 
-std::vector<string> BaseParser::getData(void) const { return(data); }
+vector<string> BaseParser::getData(void) const { return(data); }
 
 int BaseParser::serverError(unsigned int i) const {
   while (i < data.size()) {

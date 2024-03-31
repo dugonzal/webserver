@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/23 12:23:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 11:15:07 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ class BaseParser {
     string          fileName;
     size_t          nServers;
     vector<string>  data;
+    set<string>     words;
 
  private:
     void      setNservers(void);
@@ -29,6 +30,8 @@ class BaseParser {
     void      checkSemicolon(void) const;
     void      handlerScopeLocation(void);
     int       parserScopeLocation(unsigned int) const;
+    void      setWords(void);
+    bool      checkWords(const string&) const;
 
  public:
     BaseParser(void);

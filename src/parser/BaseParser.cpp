@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 14:59:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:36:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,27 +67,26 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
     buffer = trim(buffer);
     if (skipLine(buffer))
        continue;
-    else if (checkWords(firstWord(buffer))) {
+    if (checkWords(firstWord(buffer))) {
       delete file;
       throw(runtime_error(string("checkWords " + string(buffer))));
     }
-    else if (buffer.find("include") != string::npos) {
+    if (buffer.find("include") != string::npos) {
       if (readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1))) {
         delete file;
         throw(runtime_error("include error"));
       }
+      continue;
     }
     data.push_back(buffer);
   }
-  delete file; // el destructor de ifstream cierra el file
-   printData(data);
-  exit(0);
+  delete file;
   setNservers();
   checkSemicolon();
   handlerScopeLocation();
 }
 
-void  BaseParser::printData(const std::vector<string> &tmp) const {
+void  BaseParser::printData(const vector<string> &tmp) const {
   for (unsigned int i = 0; i < tmp.size(); i++)
     cout << tmp[i] << endl;
 }
@@ -118,16 +117,13 @@ bool  BaseParser::readInclude(const string &fdFile) {
     buffer = trim(buffer);
     if (skipLine(buffer))
       continue;
-    else
-      data.push_back(buffer);
+    data.push_back(buffer);
   }
   delete file;
   return (false);
 }
 
 bool  BaseParser::readIncludeError(string fileName) {
-  cout << "nombre del file que tengo que abrir " <<  fileName << endl;
-  sleep (3);
   if (fileName[fileName.size() - 1] == ';')
     fileName[fileName.size() - 1] = '\0';
   else
@@ -138,7 +134,7 @@ bool  BaseParser::readIncludeError(string fileName) {
 }
 
 void  BaseParser::setNservers(void) {
-  std::size_t endServer = 0;
+  size_t endServer = 0;
 
   nServers = 0;
   for (unsigned int i = 0; i < data.size(); i++) {
@@ -173,12 +169,13 @@ int BaseParser::serverError(unsigned int i) const {
 }
 
 void  BaseParser::handlerScopeError(void) {
-  for (unsigned int i = 0; i < data.size(); i++)
+  for (unsigned int i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         i = serverError(++i);
     else
-      throw(runtime_error("fuera del scope del server"));
+      throw(runtime_error(string("fuera del scope del server ") + string(data[i])));
+  }
 }
 
 int     BaseParser::parserScopeLocation(unsigned int j) const {
@@ -206,8 +203,7 @@ void  BaseParser::checkSemicolon(void) const {
 }
 
 void  BaseParser::handlerScopeLocation(void) {
-    int lo = 0;
-    int end = 0;
+  int lo = 0, end = 0;
   for (unsigned int i = 0; i < data.size(); i++) {
     if (data[i].find("location") != string::npos && ++lo)
       parserScopeLocation(i);

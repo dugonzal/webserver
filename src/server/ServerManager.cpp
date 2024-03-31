@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 17:13:33 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/03/31 15:36:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void  ServerManager::startServers(void) {
     ptr.setLocations("root path xd", location.clone());
     addServer(ptr);
   }
- // setSelect();
+  setSelect();
 }
 
 void  ServerManager::setSelect(void) {

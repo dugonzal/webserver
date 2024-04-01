@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 10:50:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 11:06:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void  BaseServer::setServerSide(void) {
     cout << strerror(errno) << endl;
     throw logic_error("error: socket bind().");
   }
-  if (listen(serverFd, 1024) < 0)
+  if (listen(serverFd, 1024 / nServers) < 0)
     throw logic_error("listen failed");
 }
 

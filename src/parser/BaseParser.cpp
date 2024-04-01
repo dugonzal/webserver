@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 15:36:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 10:56:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void  BaseParser::setWords(void) {
 
 bool  BaseParser::checkWords(const string &line) const {
   if (line == "}" || line == "};")
-    return (false);
-  else if (words.find(line) == words.end())
+    return (true);
+  else if (words.find(line) != words.end())
     return (true);
   return (false);
 }
@@ -67,7 +67,7 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
     buffer = trim(buffer);
     if (skipLine(buffer))
        continue;
-    if (checkWords(firstWord(buffer))) {
+    if (!checkWords(firstWord(buffer))) {
       delete file;
       throw(runtime_error(string("checkWords " + string(buffer))));
     }

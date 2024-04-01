@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 11:01:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 10:50:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void  WebServer::setServerWebServer(void) {
 
   for (vector<string>::const_iterator it = ptrData.begin(); \
     it != ptrData.end(); it++) {
-    if (it->find("listen", 0) != std::string::npos) {
+    if (it->find("listen", 0) != string::npos) {
       if (servers.setPort(sCount, getHostFromLine(*it), \
         getNumberFromLine(*it)))
-          throw(std::runtime_error("error: setPort failed, bad values."));
+          throw(runtime_error("error: setPort failed, bad values."));
     }
     else if (findStrInLog(*it, "server_name") != "")
       servers.setName(findStrInLog(*it, "server_name"));
@@ -55,7 +55,7 @@ void  WebServer::setServerWebServer(void) {
       servers.setClientBodySize(findStrInLog(*it, \
         "client_max_body_size"));
     else if (!it->compare("};")) {
-      std::cout << std::endl;
+      cout << endl;
       sCount++;
     }
     /*else if (it->find("location") != string::npos) {
@@ -63,5 +63,5 @@ void  WebServer::setServerWebServer(void) {
       cout << *it << endl;
     }*/
   }
-  std::cout << std::endl;
+  cout << endl;
 }

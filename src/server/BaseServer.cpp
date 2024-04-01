@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 11:03:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 10:50:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ BaseServer::~BaseServer(void) { }
 
 void  BaseServer::setServerSide(void) {
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-     throw std::logic_error("socket creation failed");
+     throw logic_error("socket creation failed");
 
   cout << "socketFd: " << serverFd << endl;
   assert((serverFd > 2) && (serverFd < 6553));
   addr.sin_family = AF_INET;
-  std::cout << "Port : " << port << std::endl;
+  cout << "Port : " << port << endl;
   addr.sin_port = htons(port);
-  std::cout << "Host : " << host << std::endl;
-  std::cout << "Server name : " << server_name << std::endl << std::endl;
+  cout << "Host : " << host << endl;
+  cout << "Server name : " << server_name << endl << endl;
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
 /*   struct flock fvar;
@@ -60,22 +60,22 @@ void  BaseServer::setServerSide(void) {
 
   if (fcntl(serverFd, F_SETFD, O_NONBLOCK) < 0) {
     close(serverFd);
-    std::cout << strerror(errno) << std::endl;
-    std::cout << errno << std::endl;
-    throw std::logic_error("error: socket bind().");
+    cout << strerror(errno) << endl;
+    cout << errno << endl;
+    throw logic_error("error: socket bind().");
   }
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error("error: socket SO_REUSEADDR.");
+      throw logic_error("error: socket SO_REUSEADDR.");
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
-      throw std::logic_error("error: socket SO_REUSEADDR.");
+      throw logic_error("error: socket SO_REUSEADDR.");
   if (bind(serverFd, (sockaddr *)&addr, addrLen) < 0) {
-    std::cout << strerror(errno) << std::endl;
-    throw std::logic_error("error: socket bind().");
+    cout << strerror(errno) << endl;
+    throw logic_error("error: socket bind().");
   }
   if (listen(serverFd, 1024) < 0)
-    throw std::logic_error("listen failed");
+    throw logic_error("listen failed");
 }
 
 void  BaseServer::setRequest( void ) {
@@ -84,7 +84,7 @@ void  BaseServer::setRequest( void ) {
 
 void  BaseServer::setLocations(const string &path, const Location &copy) {
   cout << path << endl;
-  location.insert(std::make_pair(path, copy));
+  location.insert(make_pair(path, copy));
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }
@@ -113,8 +113,8 @@ void  BaseServer::setServerName(const string& _name ) {
   this->server_name = _name;
 }
 
-std::ostream &operator<<(std::ostream &os, const BaseServer &copy) {
+ostream &operator<<(ostream &os, const BaseServer &copy) {
   int ret = copy.getSocket();
-  os << "host: " << ret << std::endl;
+  os << "host: " << ret << endl;
   return (os);
 }

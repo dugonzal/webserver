@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 16:00:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:09:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
 }
 
 void  BaseParser::printData(const vector<string> &tmp) const {
-  for (unsigned int i = 0; i < tmp.size(); i++)
+  for (size_t i = 0; i < tmp.size(); i++)
     cout << tmp[i] << endl;
 }
 
@@ -137,7 +137,7 @@ void  BaseParser::setNservers(void) {
   size_t endServer = 0;
 
   nServers = 0;
-  for (unsigned int i = 0; i < data.size(); i++) {
+  for (size_t i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         nServers++;
@@ -169,7 +169,7 @@ int BaseParser::serverError(unsigned int i) const {
 }
 
 void  BaseParser::handlerScopeError(void) {
-  for (unsigned int i = 0; i < data.size(); i++) {
+  for (size_t i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         i = serverError(++i);
@@ -198,7 +198,7 @@ int BaseParser::parserScopeLocation(unsigned int j) const {
 }
 
 void  BaseParser::checkSemicolon(void) const {
-  for (unsigned int i = 0; i < data.size(); i++) {
+  for (size_t i = 0; i < data.size(); i++) {
     if (data[i].find("{") != string::npos \
       || data[i].find("}") != string::npos)
         continue;
@@ -209,7 +209,7 @@ void  BaseParser::checkSemicolon(void) const {
 
 void  BaseParser::handlerScopeLocation(void) {
   int lo = 0, end = 0;
-  for (unsigned int i = 0; i < data.size(); i++) {
+  for (size_t i = 0; i < data.size(); i++) {
     if (data[i].find("location") != string::npos && ++lo)
       parserScopeLocation(i);
     else if ((data[i].find("}") != string::npos) \

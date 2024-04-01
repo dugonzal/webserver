@@ -6,12 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 15:41:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:08:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/WebServer.hpp"
-#include <vector>
+#include <cstddef>
 
 WebServer::WebServer(void) { }
 
@@ -39,13 +39,15 @@ void  WebServer::setServer(void) {
 //  servers.startServers();
 }
 
-void  printServer(const vector<string> &server) {
-  for (vector<string>::const_iterator it = server.begin(); it != server.end(); it++)
-    cout << *it << endl;
+void  printServer(const vector<string> &server, size_t n) {
+  cout << "Server: " << n << endl;
+  for (vector<string>::const_iterator it = server.begin(); \
+    it != server.end(); it++)
+      cout << *it << endl;
 }
 void  WebServer::setServerWebServer(void) {
   vector<string>  *tmp = parser.getDataServers();
-  unsigned int    n = nServers;
+  size_t          n = nServers;
 
   cout << endl << n << endl;
   for (unsigned int i = 0; i < n; i++) {
@@ -54,7 +56,7 @@ void  WebServer::setServerWebServer(void) {
       continue;
     }
     cout << endl << "nServer: (" << i << ")" << endl;
-    printServer(tmp[i]);
+    printServer(tmp[i], i);
     cout << endl;
   }
   cout << nServers << endl;

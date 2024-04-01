@@ -6,17 +6,20 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 13:08:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 15:41:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/WebServer.hpp"
+#include <vector>
 
 WebServer::WebServer(void) { }
 
 WebServer::~WebServer(void) { }
 
-WebServer::WebServer(const string &filename): parser(filename) { }
+WebServer::WebServer(const string &filename): parser(filename) {
+  nServers = parser.getNservers();
+}
 
 WebServer::WebServer(const WebServer &copy): \
   servers(copy.servers), parser(copy.parser), signals(copy.signals) { }
@@ -31,22 +34,30 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 }
 
 void  WebServer::setServer(void) {
-  servers.setServers(parser.getNservers());
   setServerWebServer();
+  servers.setNServers(nServers);
 //  servers.startServers();
 }
 
+void  printServer(const vector<string> &server) {
+  for (vector<string>::const_iterator it = server.begin(); it != server.end(); it++)
+    cout << *it << endl;
+}
 void  WebServer::setServerWebServer(void) {
   vector<string>  *tmp = parser.getDataServers();
-  unsigned int    nServer = parser.getNservers();
-  for (unsigned int i = 0; i < nServer; i++) {
-    if (tmp[i].empty())
+  unsigned int    n = nServers;
+
+  cout << endl << n << endl;
+  for (unsigned int i = 0; i < n; i++) {
+    if (tmp[i].empty()) {
+      --nServers;
       continue;
+    }
     cout << endl << "nServer: (" << i << ")" << endl;
-    for (vector<string>::const_iterator it = tmp[i].begin(); it != tmp[i].end(); it++)
-      cout << *it << endl;
+    printServer(tmp[i]);
     cout << endl;
   }
+  cout << nServers << endl;
 }
 /*
 void  WebServer::setServerWebServer(void) {

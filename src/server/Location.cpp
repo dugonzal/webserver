@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 13:14:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:24:12 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
-Location::Location(void): root("resources"), path("/"), index("index.html"), \
+Location::Location(void): root("resources"), path("None"), index("index.html"), \
   autoIndex(false), cgiPath("None"), cgiExt("None") { }
 
 Location::~Location(void) { }

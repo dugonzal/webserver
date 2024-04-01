@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 12:53:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 16:00:52 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void  BaseParser::setWords(void) {
   words.insert("allow_methods");
 }
 
-bool  BaseParser::checkWords(const string &line) const {
+bool  BaseParser::checkAllowedWords(const string &line) const {
   if (line == "}" || line == "};")
     return (true);
   else if (words.find(line) != words.end())
@@ -57,24 +57,23 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
   ifstream   *file;
   string     buffer;
 
-  setWords();
-  file = openFile(fileName);
-  if (!file) {
+  if (!(file = openFile(fileName))) {
     delete file;
-    throw(runtime_error("file not found"));
+    throw(runtime_error(string("file not found (") + string(fileName + ")")));
   }
+  setWords();
   while (getline(*file, buffer, '\n')) {
     buffer = trim(buffer);
     if (skipLine(buffer))
        continue;
-    if (!checkWords(firstWord(buffer))) {
+    if (!checkAllowedWords(firstWord(buffer))) {
       delete file;
-      throw(runtime_error(string("checkWords " + string(buffer))));
+      throw(runtime_error(string("Word not allowed: (" + string(buffer + ")"))));
     }
     if (buffer.find("include") != string::npos) {
       if (readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1))) {
         delete file;
-        throw(runtime_error(string("include error ") + string(buffer)));
+        throw(runtime_error(string("include error (") + string(buffer + ")")));
       }
       continue;
     }
@@ -108,8 +107,7 @@ bool  BaseParser::readInclude(const string &fdFile) {
   ifstream *file;
   string   buffer;
 
-  file = openFile(fdFile);
-  if (!file) {
+  if (!(file = openFile(fdFile))) {
     delete file;
     return (true);
   }
@@ -125,13 +123,15 @@ bool  BaseParser::readInclude(const string &fdFile) {
 
 bool  BaseParser::readIncludeError(string fileName) {
   if (fileName[fileName.size() - 1] == ';')
-    fileName[fileName.size() - 1] = '\0';
+    fileName[fileName.size() - 1] = 0;
   else
     return (true);
   if (readInclude(fileName))
     return (true);
   return (false);
 }
+
+void  BaseParser::setNservers(unsigned int nS) { nServers = nS; }
 
 void  BaseParser::setNservers(void) {
   size_t endServer = 0;
@@ -178,7 +178,7 @@ void  BaseParser::handlerScopeError(void) {
   }
 }
 
-int     BaseParser::parserScopeLocation(unsigned int j) const {
+int BaseParser::parserScopeLocation(unsigned int j) const {
   if (data[j].find("{") == string::npos \
     || data[j].find_first_of("/") == string::npos)
       throw(runtime_error("scope location"));
@@ -186,8 +186,13 @@ int     BaseParser::parserScopeLocation(unsigned int j) const {
   while (++j < data.size()) {
     if (data[j].find("}") != string::npos)
       break;
+    else if (data[j].find("server_name") != string::npos \
+      || data[j].find("listen") != string::npos)
+        throw(runtime_error(string("parser location (") + string(data[j] + ")")));
+    else if (data[j].find("server") != string::npos)
+      throw(runtime_error(string("parser location (") + string(data[j] + ")")));
     else if (data[j].find("location") != string::npos)
-      throw(runtime_error("parser location"));
+      throw(runtime_error(string("parser location (") + string(data[j] + ")")));
   }
   return(j);
 }
@@ -212,5 +217,5 @@ void  BaseParser::handlerScopeLocation(void) {
         end++;
   }
   if (lo != end)
-    throw(runtime_error("location"));
+    throw(runtime_error("Location scope not properly closed: Check brace matching."));
 }

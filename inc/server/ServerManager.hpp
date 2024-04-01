@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 16:16:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 15:41:24 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class ServerManager {
   ServerManager &operator=(const ServerManager&);
 
  public:
-  void  setServers(size_t _amount);
+  void  setNServers(size_t _amount);
   void  startServers(void);
   void  setSelect(void);
   void  addServer(Server _server);

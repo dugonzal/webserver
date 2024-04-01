@@ -6,13 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 11:15:07 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 15:44:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../Utils.hpp"
+#include <cstddef>
 
 class BaseParser {
  protected:
@@ -31,7 +32,7 @@ class BaseParser {
     void      handlerScopeLocation(void);
     int       parserScopeLocation(unsigned int) const;
     void      setWords(void);
-    bool      checkWords(const string&) const;
+    bool      checkAllowedWords(const string&) const;
 
  public:
     BaseParser(void);
@@ -45,4 +46,6 @@ class BaseParser {
     void  printData(const vector<string>&) const;
     vector<string> getData(void) const;
     int   getNservers(void) const;
+    void  setNservers(unsigned int);
 };
+

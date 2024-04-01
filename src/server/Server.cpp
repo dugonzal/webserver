@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 16:43:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:13:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Server.hpp"
 
-Server::Server(void) : BaseServer() { }
+Server::Server(void): BaseServer() { }
 
 Server::~Server(void) { }
 

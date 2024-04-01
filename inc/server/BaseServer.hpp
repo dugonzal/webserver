@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 17:09:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 11:33:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class BaseServer {
     map<int, string>               errorPageAr;
     int                            clientMaxBodySize;
     map<string, Location>          location;
+//    Request                        client;
 
  protected:
     map<string, Location>          locations;

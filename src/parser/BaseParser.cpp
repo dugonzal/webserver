@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 10:56:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:53:46 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
     if (buffer.find("include") != string::npos) {
       if (readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1))) {
         delete file;
-        throw(runtime_error("include error"));
+        throw(runtime_error(string("include error ") + string(buffer)));
       }
       continue;
     }

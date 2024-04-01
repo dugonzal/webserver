@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 10:50:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:08:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,22 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 void  WebServer::setServer(void) {
   servers.setServers(parser.getNservers());
   setServerWebServer();
-  servers.startServers();
+//  servers.startServers();
 }
 
+void  WebServer::setServerWebServer(void) {
+  vector<string>  *tmp = parser.getDataServers();
+  unsigned int    nServer = parser.getNservers();
+  for (unsigned int i = 0; i < nServer; i++) {
+    if (tmp[i].empty())
+      continue;
+    cout << endl << "nServer: (" << i << ")" << endl;
+    for (vector<string>::const_iterator it = tmp[i].begin(); it != tmp[i].end(); it++)
+      cout << *it << endl;
+    cout << endl;
+  }
+}
+/*
 void  WebServer::setServerWebServer(void) {
   vector<string> ptrData = parser.getData();
   int sCount = 0;
@@ -58,10 +71,10 @@ void  WebServer::setServerWebServer(void) {
       cout << endl;
       sCount++;
     }
-    /*else if (it->find("location") != string::npos) {
+    else if (it->find("location") != string::npos) {
       cout << sCount << endl;
       cout << *it << endl;
-    }*/
+    }
   }
   cout << endl;
-}
+}*/

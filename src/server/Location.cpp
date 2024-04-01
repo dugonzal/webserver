@@ -6,20 +6,20 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 15:51:00 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:14:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
 Location::Location(void): root("resources"), path("/"), index("index.html"), \
-  autoIndex(false), cgiPath("None") { }
+  autoIndex(false), cgiPath("None"), cgiExt("None") { }
 
 Location::~Location(void) { }
 
 Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
-    autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), methods(copy.methods),
+    autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), methods(copy.methods),
       errorPages(copy.errorPages) { }
 
 Location &Location::operator=(const Location &copy) {
@@ -29,6 +29,7 @@ Location &Location::operator=(const Location &copy) {
     index = copy.index;
     autoIndex = copy.autoIndex;
     cgiPath = copy.cgiPath;
+    cgiExt  = copy.cgiExt;
     methods = copy.methods;
     errorPages = copy.errorPages;
   }
@@ -55,6 +56,9 @@ void  Location::setCgiPath(const string &_cgiPath) {
   cgiPath = _cgiPath;
 }
 
+void  Location::setCgiExt(const string &_cgiExt) {
+  cgiExt = _cgiExt;
+}
 void  Location::setMethods(const string &_methods) {
   methods.push_back(_methods);
 }

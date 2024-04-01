@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/06 19:18:10 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:59:14 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 Parser::Parser(void) { }
 
-Parser::~Parser(void) {
-  for (unsigned int i = 0; i < nServers; i++)
-    delete dataServers[i];
-  delete [] dataServers;
-}
+Parser::~Parser(void) { delete [] dataServers; }
 
 Parser::Parser(const string &filename): BaseParser(filename) {
-  dataServers = new vector<string>*[nServers];
-
-  for (unsigned int i = 0; i < nServers; i++) {
-    dataServers[i] = new vector<string>;
+  dataServers = new vector<string>[nServers];
+  unsigned int i = -1;
+  for (vector<string>::const_iterator it = data.begin(); \
+    it != data.end() && ++i < nServers; it++) {
+      if (it->find("server") != string::npos) {
+        while (++it != data.end() && it->find("};") == string::npos) 
+          dataServers[i].push_back(*it);
+      }
   }
 }
 
@@ -39,3 +39,4 @@ Parser &Parser::operator=(const Parser &copy) {
   return (*this);
 }
 
+vector<string> *Parser::getDataServers(void) const { return (dataServers); }

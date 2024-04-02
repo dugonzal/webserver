@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 19:25:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:42:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void  WebServer::setServerWebServer(void) {
       --nServers;
       continue;
     }
-    printServer(tmp[0], 0);
+    printServer(tmp[i], i);
+    cout << endl << endl;
   }
   cout << nServers << endl;
 }

@@ -26,9 +26,6 @@ $
 error_page 404 405 406 407 408 /error.html;$
 404 405 406 407 408 /error.html;$
 $
-error_page 404 405 406 407 408 /error.html;$
-404 405 406 407 408 /error.html;$
-$
 location / {$
 / {$
 $
@@ -66,136 +63,61 @@ return			301 https://$server_name$request_uri;$
 301 https://$server_name$request_uri;$
 $
 $
-Server: 0$
 $
-listen			localhost:3001;$
-localhost:3001;$
 $
-server_name		jokin;$
-jokin;$
+Server: 2$
 $
-root public;$
-public;$
+listen			3002;$
+3002;$
+$
+error_page 404 405 406 407 408 /error.html;$
+404 405 406 407 408 /error.html;$
+$
+server_name		_;$
+_;$
+$
+root			public/;$
+public/;$
+$
+autoindex off;$
+off;$
+$
+index			index.html;$
+index.html;$
+$
+location /home {$
+/home {$
 $
 index index.html;$
 index.html;$
 $
-location /resources/ {$
-/resources/ {$
-$
-index readme.html;$
-readme.html;$
-$
-}$
-$
-$
-error_page 404 405 406 407 408 /error.html;$
-404 405 406 407 408 /error.html;$
-$
-error_page 404 405 406 407 408 /error.html;$
-404 405 406 407 408 /error.html;$
-$
-location / {$
-/ {$
-$
 autoindex on;$
 on;$
 $
-allow_methods GET POST DELETE;$
-GET POST DELETE;$
-$
 }$
 $
 $
-location / {$
-/ {$
 $
-index         log.py;$
-log.py;$
 $
-cgi_path      /usr/bin/python;$
-/usr/bin/python;$
 $
-cgi_ext       .py;$
-.py;$
+Server: 3$
 $
-autoindex     off;$
-off;$
+listen			localhost:3003;$
+localhost:3003;$
 $
-allow_methods GET POST DELETE;$
-GET POST DELETE;$
+server_name		_;$
+_;$
 $
-}$
+client_max_body_size 1m;$
+1m;$
 $
+error_page 404 405 406 407 408 /error.html;$
+404 405 406 407 408 /error.html;$
 $
 return			301 https://$server_name$request_uri;$
 301 https://$server_name$request_uri;$
 $
 $
-Server: 0$
-$
-listen			localhost:3001;$
-localhost:3001;$
-$
-server_name		jokin;$
-jokin;$
-$
-root public;$
-public;$
-$
-index index.html;$
-index.html;$
-$
-location /resources/ {$
-/resources/ {$
-$
-index readme.html;$
-readme.html;$
-$
-}$
-$
-$
-error_page 404 405 406 407 408 /error.html;$
-404 405 406 407 408 /error.html;$
-$
-error_page 404 405 406 407 408 /error.html;$
-404 405 406 407 408 /error.html;$
-$
-location / {$
-/ {$
-$
-autoindex on;$
-on;$
-$
-allow_methods GET POST DELETE;$
-GET POST DELETE;$
-$
-}$
-$
-$
-location / {$
-/ {$
-$
-index         log.py;$
-log.py;$
-$
-cgi_path      /usr/bin/python;$
-/usr/bin/python;$
-$
-cgi_ext       .py;$
-.py;$
-$
-autoindex     off;$
-off;$
-$
-allow_methods GET POST DELETE;$
-GET POST DELETE;$
-$
-}$
-$
-$
-return			301 https://$server_name$request_uri;$
-301 https://$server_name$request_uri;$
 $
 $
 3$

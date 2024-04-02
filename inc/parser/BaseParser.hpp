@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 18:17:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 20:35:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ class BaseParser {
     void      setNservers(void);
     bool      readIncludeError(string);
     bool      readInclude(const string&);
-    int       serverError(unsigned int) const;
+    size_t    serverError(size_t);
     void      handlerScopeError(void);
     void      checkSemicolon(void) const;
     void      handlerScopeLocation(void);
-    int       parserScopeLocation(unsigned int) const;
+    size_t    parserScopeLocation(size_t) const;
     void      setWords(void);
     bool      checkAllowedWords(const string&) const;
+    size_t    skipLocation(size_t);
 
  public:
     BaseParser(void);
@@ -41,10 +42,10 @@ class BaseParser {
     virtual ~BaseParser(void) = 0;
 
  public:
-    ifstream  *openFile(const string&) const;
-    void  printData(const vector<string>&) const;
-    vector<string> getData(void) const;
-    int   getNservers(void) const;
-    void  setNservers(unsigned int);
+    ifstream        *openFile(const string&) const;
+    void            printData(const vector<string>&) const;
+    vector<string>  getData(void) const;
+    size_t          getNservers(void) const;
+    void            setNservers(size_t);
 };
 

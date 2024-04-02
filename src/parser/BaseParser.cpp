@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 19:06:02 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 20:43:36 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ bool  BaseParser::readInclude(const string &fdFile) {
 
 bool  BaseParser::readIncludeError(string fileName) {
   if (fileName[fileName.size() - 1] == ';')
-    fileName[fileName.size() - 1] = 0;
+    fileName.erase(fileName.size() - 1);
   else
     return (true);
   if (readInclude(fileName))
@@ -131,7 +131,7 @@ bool  BaseParser::readIncludeError(string fileName) {
   return (false);
 }
 
-void  BaseParser::setNservers(unsigned int nS) { nServers = nS; }
+void  BaseParser::setNservers(size_t nS) { nServers = nS; }
 
 void  BaseParser::setNservers(void) {
   size_t endServer = 0;
@@ -145,22 +145,37 @@ void  BaseParser::setNservers(void) {
       endServer++;
   }
   if (nServers != endServer)
-    throw(runtime_error("scope server"));
+    throw(runtime_error("scope server "));
   else
     handlerScopeError();
 }
 
-int  BaseParser::getNservers(void) const { return(nServers); }
+size_t  BaseParser::getNservers(void) const { return(nServers); }
 
 vector<string> BaseParser::getData(void) const { return(data); }
 
-int BaseParser::serverError(unsigned int i) const {
+size_t  BaseParser::skipLocation(size_t i) {
+  while (++i < data.size())
+    if (data[i].find("}") != string::npos)
+      break;
+  return (i);
+}
+
+size_t  BaseParser::serverError(size_t i) {
   while (i < data.size()) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         throw(runtime_error("server dentro de server"));
     else if (data[i].find("include") != string::npos)
       throw(runtime_error("include circular"));
+    else if (data[i].find("cgi_path") != string::npos \
+      || data[i].find("cgi_ext") != string::npos)
+        throw(runtime_error(string("defined in global scope (") \
+          + string(data[i] + ")")));
+    else if (data[i].find("location") != string::npos) {
+        i = skipLocation(i);
+        continue;
+    }
     else if (data[i].find("};") != string::npos)
       break;
     i++;
@@ -174,15 +189,17 @@ void  BaseParser::handlerScopeError(void) {
       && data[i].find("{") != string::npos)
         i = serverError(++i);
     else
-      throw(runtime_error(string("fuera del scope del server ") + string(data[i])));
+      throw(runtime_error(string("fuera del scope del server ") \
+        + string(data[i])));
   }
 }
 
-int BaseParser::parserScopeLocation(unsigned int j) const {
+size_t BaseParser::parserScopeLocation(size_t j) const {
   string tmp = lastWord(data[j]);
 
   if (tmp[0] != '/')
-    throw(runtime_error(string("scope location missing / (") + string(data[j] + ")")));
+    throw(runtime_error(string("scope location missing / (") \
+      + string(data[j] + ")")));
   else if (data[j].find("{") == string::npos)
       throw(runtime_error("scope location"));
   while (++j < data.size()) {
@@ -190,7 +207,8 @@ int BaseParser::parserScopeLocation(unsigned int j) const {
       break;
     else if (data[j].find("server_name") != string::npos \
       || data[j].find("listen") != string::npos)
-        throw(runtime_error(string("parser location (") + string(data[j] + ")")));
+        throw(runtime_error(string("parser location (") \
+          + string(data[j] + ")")));
     else if (data[j].find("server") != string::npos)
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
     else if (data[j].find("location") != string::npos)
@@ -219,5 +237,6 @@ void  BaseParser::handlerScopeLocation(void) {
         end++;
   }
   if (lo != end)
-    throw(runtime_error("Location scope not properly closed: Check brace matching."));
+    throw(runtime_error(string("Location scope not properly") \
+      + string("closed: Check brace matching.")));
 }

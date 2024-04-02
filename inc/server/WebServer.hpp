@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 18:02:57 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 20:50:19 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class WebServer {
   void  setServerWebServer( void );
 
  public:
- explicit WebServer(const string&);
+  explicit WebServer(const string&);
   WebServer(const WebServer&);
   WebServer &operator=(const WebServer&);
   ~WebServer(void);

@@ -23,8 +23,17 @@ $
 }$
 $
 $
-error_page 404 405 406 407 408 /error.html;$
-404 405 406 407 408 /error.html;$
+error_page 403 /error.html;$
+403 /error.html;$
+$
+error_page 404 /error.html;$
+404 /error.html;$
+$
+error_page 405 /error.html;$
+405 /error.html;$
+$
+error_page 406 /error.html;$
+406 /error.html;$
 $
 location / {$
 / {$
@@ -70,8 +79,8 @@ $
 listen			3002;$
 3002;$
 $
-error_page 404 405 406 407 408 /error.html;$
-404 405 406 407 408 /error.html;$
+error_page 404 /error.html;$
+404 /error.html;$
 $
 server_name		_;$
 _;$

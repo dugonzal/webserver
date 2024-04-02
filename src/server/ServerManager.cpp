@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 15:41:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:32:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void  ServerManager::startServers(void) {
     ptr.setServerNumber(nServers);
     ptr.setPort(portsServers[it]);
     ptr.setHost(hostServers[it]);
-    ptr.setServerName(nameServers[it]);
+    ptr.setServerName(serverName[it]);
     cout << "------Server n.ª" << it << "----" << endl;
     ptr.setServerSide();
     ptr.setLocations("root path xd", location.clone());
@@ -91,13 +91,13 @@ void  ServerManager::addServer(Server _server) {
   vServers.push_back(_server.clone());
 }
 
-int   ServerManager::setName(const string& _name) {
-  this->nameServers.push_back(_name);
+int   ServerManager::setServerName(const string& _name) {
+  serverName.push_back(_name);
   cout << "Name: " << _name << endl;
   return 0;
 }
 
-int   ServerManager::setPort(int _nServer, const string &_host, int _port) {
+int   ServerManager::setListenConfig(int _nServer, const string &_host, int _port) {
   portsServers.push_back(_port);
   hostServers.push_back(_host);
   cout << "Port: " << _port << " (" << _nServer << ")." << endl;
@@ -105,6 +105,7 @@ int   ServerManager::setPort(int _nServer, const string &_host, int _port) {
   return 0;
 }
 
+/*
 int ServerManager::setErrorPage( const std::string& _errorPages ) {
   const char *errorPages = _errorPages.c_str();
   std::stringstream ss;
@@ -135,7 +136,7 @@ int ServerManager::setErrorPage( const std::string& _errorPages ) {
     ss.str(string()); // clear std::stringstream
   }
   return 0;
-}
+}*/
 
 int ServerManager::setClientBodySize(const string& _clientBodySize) {
   std::stringstream num;

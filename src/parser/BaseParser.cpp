@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 18:16:23 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:37:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void  BaseParser::setWords(void) {
   words.insert("cgi_path");
   words.insert("cgi_ext");
   words.insert("allow_methods");
+  words.insert("}");
+  words.insert("};");
 }
 
 bool  BaseParser::checkAllowedWords(const string &line) const {
-  if (line == "}" || line == "};")
-    return (true);
-  else if (words.find(line) != words.end())
+  if (words.find(line) != words.end())
     return (true);
   return (false);
 }

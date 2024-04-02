@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/31 11:13:57 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:41:36 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ string  firstWord(string line) {
     return (line);
 
   return (line.substr(0, pos));
+}
+
+string  lastWord(string line) {
+  size_t pos = line.find_last_of(" \t\v\f\r");
+
+  if (pos == string::npos)
+    return ("");
+
+  return (trim(line.substr(pos)));
 }
 
 string trim(const string &line) {

@@ -6,14 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 15:44:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:17:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../Utils.hpp"
-#include <cstddef>
 
 class BaseParser {
  protected:
@@ -36,9 +35,9 @@ class BaseParser {
 
  public:
     BaseParser(void);
+    explicit BaseParser(const string&);
     BaseParser(const BaseParser&);
     BaseParser &operator=(const BaseParser&);
-    BaseParser(const string&);
     virtual ~BaseParser(void) = 0;
 
  public:

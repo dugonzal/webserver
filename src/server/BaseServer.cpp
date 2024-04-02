@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 11:32:54 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:00:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void  BaseServer::setServerSide(void) {
     cout << errno << endl;
     throw logic_error("error: socket bind().");
   }
-  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR,
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR, \
     &opt, sizeof(opt)) < 0)
       throw logic_error("error: socket SO_REUSEADDR.");
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,

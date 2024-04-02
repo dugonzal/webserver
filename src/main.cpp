@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/22 09:01:30 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:04:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int main(int ac, const char **av, const char **) {
     WebServer  webserver(*(++av));
 
     webserver.setServer();
-  } catch (std::exception &e) {
-      std::cout << "Error: " << e.what() << std::endl;
+  } catch (exception &e) {
+      cout << "Error: " << e.what() << endl;
     }
   return (0);
 }

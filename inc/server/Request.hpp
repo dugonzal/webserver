@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/22 09:33:42 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:17:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,17 @@ class Request {
 	/* Server Input Side */
     int							returnedBytes;
     char						clientMsg[1028];
-	int							inputMethod;
-	std::string					inputRoute;
-	bool						inputIsGood;
+	  int							inputMethod;
+    string					inputRoute;
+	  bool						inputIsGood;
 
 	/* Server Output Side */
-	std::string					responseFile;
-	std::string					responseHeader; // Header for Client
+	  string					responseFile;
+	  string					responseHeader; // Header for Client
     struct  timeval				timeout;
 
 	// Variables Iker
-	std::string method, file;
+	  string method, file;
 
 	public:
 		Request( void );
@@ -46,7 +46,7 @@ class Request {
 		int		parseClientMsg( void );
 		// Parsing input
 		int		getMethodType( void );
-		std::string	getRoute( void );
+		string	getRoute( void );
 		void	checkHttpVersion( void );
 
 		// Funciones Iker

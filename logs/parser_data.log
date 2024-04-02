@@ -1,46 +1,62 @@
 $
 4$
-$
-nServer: (0)$
 Server: 0$
+$
 listen			3001$
+3001$
+$
 server_name		jokin$
-location /resources $
-index readme.html$
+jokin$
 $
-location / $
-autoindex on$
-allow_methods GET POST DELETE$
+root public$
+public$
 $
-location / $
-index         log.py$
-cgi_path      /usr/bin/python$
-cgi_ext       .py$
-autoindex     off$
-allow_methods GET POST DELETE$
-$
-return			301 https://$server_name$request_uri$
-$
-$
-nServer: (2)$
-Server: 2$
-listen			3002$
-server_name		_$
-root			public/$
-autoindex off$
-index			index.html$
-location /home $
 index index.html$
+index.html$
+$
+location /resources $
+$
+$
+index readme.html$
+readme.html$
+$
+$
+$
+$
+location / $
+$
+$
 autoindex on$
+on$
+$
+allow_methods GET POST DELETE$
+DELETE$
 $
 $
 $
-nServer: (3)$
-Server: 3$
-listen			localhost:3003$
-server_name		_$
-client_max_body_size 1m$
-error_page 404 405 406 407 408 /error.html$
+$
+location / $
+$
+$
+index         log.py$
+log.py$
+$
+cgi_path      /usr/bin/python$
+/usr/bin/python$
+$
+cgi_ext       .py$
+.py$
+$
+autoindex     off$
+off$
+$
+allow_methods GET POST DELETE$
+DELETE$
+$
+$
+$
+$
 return			301 https://$server_name$request_uri$
+https://$server_name$request_uri$
 $
-3$
+4$

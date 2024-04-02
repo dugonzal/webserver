@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 18:16:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:57:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ class Location {
     void  setCgiExt(const string&);
     void  setMethods(const string&);
     void  setErrorPages(const int&, const string&);
-    Location  clone(void);
+    Location  clone(void) const;
 };

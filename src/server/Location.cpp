@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 13:24:12 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:57:19 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ void  Location::setErrorPages(const int &n, const string &_errorPages) {
   errorPages.insert(std::make_pair<int, string>(n, _errorPages));
 }
 
-Location  Location::clone(void) {
+Location  Location::clone(void) const {
   return (*this);
 }

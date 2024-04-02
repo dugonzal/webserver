@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 18:37:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:06:02 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,12 @@ void  BaseParser::handlerScopeError(void) {
 }
 
 int BaseParser::parserScopeLocation(unsigned int j) const {
-  if (data[j].find("{") == string::npos \
-    || data[j].find_first_of("/") == string::npos)
-      throw(runtime_error("scope location"));
+  string tmp = lastWord(data[j]);
 
+  if (tmp[0] != '/')
+    throw(runtime_error(string("scope location missing / (") + string(data[j] + ")")));
+  else if (data[j].find("{") == string::npos)
+      throw(runtime_error("scope location"));
   while (++j < data.size()) {
     if (data[j].find("}") != string::npos)
       break;
@@ -213,7 +215,7 @@ void  BaseParser::handlerScopeLocation(void) {
     if (data[i].find("location") != string::npos && ++lo)
       parserScopeLocation(i);
     else if ((data[i].find("}") != string::npos) \
-      && (data[i].size() == 1))
+      && (data[i].size() == 1) )
         end++;
   }
   if (lo != end)

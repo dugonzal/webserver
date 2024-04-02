@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 18:19:17 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:22:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/parser/Parser.hpp"
-#include <cstddef>
 
 Parser::Parser(void) { }
 
@@ -25,7 +24,9 @@ Parser::Parser(const string &filename): BaseParser(filename) {
     it != data.end() && ++i < nServers; it++) {
       if (it->find("server") != string::npos) {
         while (++it != data.end() && it->find("};") == string::npos) {
-          dataServers[i].push_back(it->erase(it->size() - 1));
+          if (it->size() - 1 == ';')
+            it->erase(it->size() - 1);
+          dataServers[i].push_back(*it);
         }
       }
   }

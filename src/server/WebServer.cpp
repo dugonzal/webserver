@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 18:54:57 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:25:48 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void  printServer(const vector<string> &server, size_t n) {
       cout << endl << *it << endl;
       cout << lastWord(*it) << endl;
   }
+  cout << endl << endl;
 }
 void  WebServer::setServerWebServer(void) {
   vector<string>  *tmp = parser.getDataServers();
@@ -56,9 +57,7 @@ void  WebServer::setServerWebServer(void) {
       --nServers;
       continue;
     }
-    printServer(tmp[i], i);
-    cout << endl;
-    break;
+    printServer(tmp[0], 0);
   }
   cout << nServers << endl;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 10:54:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:56:28 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void  ServerManager::startServers(void) {
     ptr.setPort(portsServers[it]);
     ptr.setHost(hostServers[it]);
     ptr.setServerName(nameServers[it]);
-    cout << "------Server n.ª" << it << "----" << endl;
+    cout << endl << "------Server n.ª[" << it << "]----" << endl;
     ptr.setServerSide();
     ptr.setLocations("root path xd", location.clone());
     addServer(ptr);

@@ -19,24 +19,27 @@ Error_page: $
 [ 408 , /error.html ]$
 $
 $
-------Server n.M-BM-*0----$
+$
+------Server n.ª[0]----$
+^[[0;33mPort : 3001^[[0m$
+^[[0;36mHost : 0.0.0.0^[[0m$
+Server name : jokin$
 socketFd: 3$
-Port : 3001$
-Host : 0.0.0.0$
-Server name : jokin$
 $
 root path xd$
-------Server n.M-BM-*1----$
+$
+------Server n.ª[1]----$
+^[[0;33mPort : 3002^[[0m$
+^[[0;36mHost : 0.0.0.0^[[0m$
+Server name : jokin$
 socketFd: 4$
-Port : 3002$
-Host : 0.0.0.0$
-Server name : jokin$
 $
 root path xd$
-------Server n.M-BM-*2----$
-socketFd: 5$
-Port : 3003$
-Host : 0.0.0.0$
+$
+------Server n.ª[2]----$
+^[[0;33mPort : 3003^[[0m$
+^[[0;36mHost : 0.0.0.0^[[0m$
 Server name : _$
+socketFd: 5$
 $
 root path xd$

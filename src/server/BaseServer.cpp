@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/01 10:50:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:57:12 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void  BaseServer::setServerSide(void) {
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw logic_error("socket creation failed");
 
-  cout << "socketFd: " << serverFd << endl;
   assert((serverFd > 2) && (serverFd < 6553));
   addr.sin_family = AF_INET;
-  cout << "Port : " << port << endl;
+  cout << YEL << "Port : " << port << END;
   addr.sin_port = htons(port);
-  cout << "Host : " << host << endl;
-  cout << "Server name : " << server_name << endl << endl;
+  cout << CYN << "Host : " << host << END;
+  cout << "Server name : " << server_name << endl;
+  cout << "socketFd: " << serverFd << endl << endl;
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
 /*   struct flock fvar;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/24 15:51:00 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:52:41 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void  Location::setMethods(const string &_methods) {
 }
 
 void  Location::setErrorPages(const int &n, const string &_errorPages) {
-  errorPages.insert(std::make_pair<int, string>(n, _errorPages));
+  errorPages.insert(std::pair<int, string>(n, _errorPages));
 }
 
 Location  Location::clone(void) {

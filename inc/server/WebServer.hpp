@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 20:50:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:37:48 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@
  * */
 class WebServer {
  private:
-  ServerManager servers;
-  Parser        parser;
-  Signals       signals;
-  size_t        nServers;
+  mutable ServerManager servers;
+  mutable Parser        parser;
+  mutable Signals       signals;
+  mutable size_t        nServers;
+
  private:
   WebServer(void);
 
  private:
-  void  setServerWebServer( void );
+  void  setServerWebServer(void);
+  void  printServer(const vector<string>&, size_t);
 
  public:
   explicit WebServer(const string&);

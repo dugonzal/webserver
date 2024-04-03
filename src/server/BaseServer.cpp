@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/03 19:00:29 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:21:02 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     addrLen = copy.addrLen;
     serverFd = copy.serverFd;
     data = copy.data;
-    opt = copy.opt;
     error_page = copy.error_page;
     buffer = copy.buffer;
     options = copy.options;

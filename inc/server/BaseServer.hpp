@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 18:16:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:37:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class BaseServer {
  protected:
     /* Server Side */
     int                            serverFd; // File Descriptor
-    int                            opt; // Special options set for server socket
+    const int                      opt; // Special options set for server socket
     struct sockaddr_in             addr; // IP socket address
     socklen_t                      addrLen; // Length of socket
     /* Configuration from input */

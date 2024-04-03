@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 19:42:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:45:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,22 @@ void  WebServer::setServer(void) {
 //  servers.startServers();
 }
 
-void  printServer(const vector<string> &server, size_t n) {
+void  WebServer::printServer(const vector<string> &server, size_t n) {
   cout << "Server: " << n << endl;
   for (vector<string>::const_iterator it = server.begin(); \
     it != server.end(); it++) {
-      cout << endl << *it << endl;
-      cout << lastWord(*it) << endl;
+    if (it->find("listen", 0) != string::npos) {
+      if (servers.setListenConfig((unsigned int)n, getHostFromLine(*it), \
+        getNumberFromLine(*it)))
+          throw(runtime_error("error: setPort failed, bad values."));
+    }
+    else if (findStrInLog(*it, "server_name") != "")
+      servers.setServerName(findStrInLog(*it, "server_name"));
+   // else if (findStrInLog(*it, "error_page") != "")
+    //  servers.setErrorPage(findStrInLog(*it, "error_page"));
+    else if (findStrInLog(*it, "client_max_body_size") != "")
+      servers.setClientBodySize(findStrInLog(*it, \
+        "client_max_body_size"));
   }
   cout << endl << endl;
 }
@@ -51,16 +61,13 @@ void  WebServer::setServerWebServer(void) {
   vector<string>  *tmp = parser.getDataServers();
   size_t          n = nServers;
 
-  cout << endl << n << endl;
   for (size_t i = 0; i < n; i++) {
     if (tmp[i].empty()) {
       --nServers;
       continue;
     }
     printServer(tmp[i], i);
-    cout << endl << endl;
   }
-  cout << nServers << endl;
 }
 /*
 void  WebServer::setServerWebServer(void) {

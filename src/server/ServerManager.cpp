@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/03 19:01:15 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:24:20 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void  ServerManager::startServers(void) {
     ptr.setLocations("root path xd", location.clone());
     addServer(ptr);
   }
-//  setSelect();
+  setSelect();
 }
 
 void  ServerManager::setSelect(void) {

@@ -17,3 +17,12 @@ Name: _$
 Body Size : 1000000$
 $
 $
+$
+------Server n.ª[0]----$
+^[[0;33mPort : 9999^[[0m$
+^[[0;36mHost : 10.13.40.54^[[0m$
+Server name : tetaedro$
+socketFd: 3$
+$
+Can't assign requested address$
+Error: error: socket bind().$

@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/03 19:00:36 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:52:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
-Location::Location(void): root("resources"), path("None"), index("index.html"), \
-  autoIndex(false), cgiPath("None"), cgiExt("None") { }
+Location::Location(void): root("resources"), index("index.html"), \
+  autoIndex(false) { }
 
 Location::~Location(void) { }
 
 Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
-    autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), methods(copy.methods),
-      errorPages(copy.errorPages) { }
+    autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), \
+      methods(copy.methods),  errorPages(copy.errorPages) { }
 
 Location &Location::operator=(const Location &copy) {
   if (&copy != this) {
@@ -40,7 +40,12 @@ void  Location::setRoot(const string &_root) {
   root = _root;
 }
 
+// basicamente si se establece dos veces en un 
+// alcance de location es un error porque no podemos
+// definir dos veces lo mismo
 void  Location::setPath(const string &_path) {
+  if (!path.empty())
+    throw(runtime_error("setPath"));
   path = _path;
 }
 
@@ -69,4 +74,10 @@ void  Location::setErrorPages(const int &n, const string &_errorPages) {
 
 Location  Location::clone(void) const {
   return (*this);
+}
+
+ostream &operator<<(ostream &os, const Location &copy) {
+  os << "" << endl;
+  (void)copy;
+  return (os);
 }

@@ -1,1 +1,57 @@
-Error: missing key or value (root)$
+Server: 0$
+index location_server_1.html$
+$
+$
+$
+$
+autoindex on$
+allow_methods GET POST DELETE$
+$
+$
+index         log.py$
+cgi_path      /usr/bin/python$
+cgi_ext       .py$
+autoindex     off$
+allow_methods GET POST DELETE$
+$
+$
+$
+$
+Server: 2$
+index location_server_2.html$
+autoindex on$
+$
+$
+autoindex on$
+$
+$
+$
+$
+Server: 3$
+index index.html$
+$
+$
+Body Size : 1000000$
+$
+$
+$
+------Server n.M-BM-*[0]----$
+^[[0;33mPort : 9999^[[0m$
+^[[0;36mHost : 0.0.0.0^[[0m$
+Server name : tetaedro$
+socketFd: 3$
+$
+$
+------Server n.M-BM-*[1]----$
+^[[0;33mPort : 1111^[[0m$
+^[[0;36mHost : 0.0.0.0^[[0m$
+Server name : _$
+socketFd: 4$
+$
+$
+------Server n.M-BM-*[2]----$
+^[[0;33mPort : 2222^[[0m$
+^[[0;36mHost : 0.0.0.0^[[0m$
+Server name : _$
+socketFd: 5$
+$

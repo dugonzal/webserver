@@ -6,11 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 21:03:00 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:51:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/WebServer.hpp"
+#include <unistd.h>
+#include <utility>
 
 WebServer::WebServer(void) { }
 
@@ -39,12 +41,16 @@ void  WebServer::setServer(void) {
 }
 
 void  WebServer::setLocation(const vector<string> &server, size_t i) {
-  cout << endl << endl; 
+  Location tmp;
+
+  tmp.setPath(firstWord(lastWord(server[i])));
   while (++i < server.size()) {
     if (server[i].find("}") != string::npos)
       break;
-    cout << server[i] << endl; 
+    cout << server[i] << endl;
   }
+  cout << tmp << endl;
+  locations.insert(std::make_pair("hoña", tmp.clone()));
 }
 
 void  WebServer::printServer(const vector<string> &server, size_t n) {
@@ -73,6 +79,7 @@ void  WebServer::setServerWebServer(void) {
   size_t          n = nServers;
 
   for (size_t i = 0; i < n; i++) {
+    // hay que mejorar los servers vacios
     if (tmp[i].empty()) {
       --nServers;
       continue;

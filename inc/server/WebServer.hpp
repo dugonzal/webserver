@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/03 18:37:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:36:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class WebServer {
   mutable Parser        parser;
   mutable Signals       signals;
   mutable size_t        nServers;
+  map<string, Location> locations;
 
  private:
   WebServer(void);
@@ -36,6 +37,7 @@ class WebServer {
  private:
   void  setServerWebServer(void);
   void  printServer(const vector<string>&, size_t);
+  void  setLocation(const vector<string>&, size_t); 
 
  public:
   explicit WebServer(const string&);

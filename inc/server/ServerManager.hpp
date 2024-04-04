@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 18:31:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:40:18 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ class ServerManager {
   vector<int>               clientMaxBodySize;
   Server                    server;
   vector<Server>            vServers;
-  map<string, Location>     locations;
   struct timeval timeout;
   fd_set cSockets, rSockets, wSockets;
 

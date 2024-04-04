@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 20:43:36 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 19:40:11 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
       delete file;
       throw(runtime_error(string("Word not allowed: (" + string(buffer + ")"))));
     }
-    if (buffer.find("include") != string::npos) {
-      if (readIncludeError(buffer.substr(buffer.find_last_of(" ") + 1))) {
+    if (!firstWord(buffer).compare("include")) {
+      if (readIncludeError(lastWord(buffer))) {
         delete file;
         throw(runtime_error(string("include error (") + string(buffer + ")")));
       }
@@ -141,7 +141,7 @@ void  BaseParser::setNservers(void) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         nServers++;
-    else if (data[i].find("};") != string::npos)
+    else if (!data[i].compare("};"))
       endServer++;
   }
   if (nServers != endServer)
@@ -156,7 +156,7 @@ vector<string> BaseParser::getData(void) const { return(data); }
 
 size_t  BaseParser::skipLocation(size_t i) {
   while (++i < data.size())
-    if (data[i].find("}") != string::npos)
+    if (!data[i].compare("}"))
       break;
   return (i);
 }
@@ -166,17 +166,17 @@ size_t  BaseParser::serverError(size_t i) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         throw(runtime_error("server dentro de server"));
-    else if (data[i].find("include") != string::npos)
+    else if (!firstWord(data[i]).compare("include"))
       throw(runtime_error("include circular"));
-    else if (data[i].find("cgi_path") != string::npos \
-      || data[i].find("cgi_ext") != string::npos)
-        throw(runtime_error(string("defined in global scope (") \
-          + string(data[i] + ")")));
-    else if (data[i].find("location") != string::npos) {
+    else if (!firstWord(data[i]).compare("cgi_path") \
+      || !firstWord(data[i]).compare("cgi_ext"))
+        throw(runtime_error(string("defined in global scope (")  + string(data[i] + ")")));
+    else if (data[i].find("location") != string::npos \
+     && data[i].find("{") != string::npos) {
         i = skipLocation(i);
         continue;
     }
-    else if (data[i].find("};") != string::npos)
+    else if (!data[i].compare("};"))
       break;
     i++;
   }
@@ -198,20 +198,19 @@ size_t BaseParser::parserScopeLocation(size_t j) const {
   string tmp = lastWord(data[j]);
 
   if (tmp[0] != '/')
-    throw(runtime_error(string("scope location missing / (") \
-      + string(data[j] + ")")));
+    throw(runtime_error(string("scope location missing / (") + string(data[j] + ")")));
   else if (data[j].find("{") == string::npos)
       throw(runtime_error("scope location"));
   while (++j < data.size()) {
-    if (data[j].find("}") != string::npos)
+    if (!data[j].compare("}"))
       break;
-    else if (data[j].find("server_name") != string::npos \
-      || data[j].find("listen") != string::npos)
-        throw(runtime_error(string("parser location (") \
-          + string(data[j] + ")")));
-    else if (data[j].find("server") != string::npos)
+    else if (!firstWord(data[j]).compare("server_name"))
+        throw(runtime_error(string("parser location (") + string(data[j] + ")")));
+    else if (!firstWord(data[j]).compare("server"))
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
-    else if (data[j].find("location") != string::npos)
+    else if (!firstWord(data[j]).compare("location"))
+      throw(runtime_error(string("parser location (") + string(data[j] + ")")));
+    else if (!firstWord(data[j]).compare("listen"))
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
   }
   return(j);
@@ -220,7 +219,7 @@ size_t BaseParser::parserScopeLocation(size_t j) const {
 void  BaseParser::checkSemicolon(void) const {
   for (size_t i = 0; i < data.size(); i++) {
     if (data[i].find("{") != string::npos \
-      || data[i].find("}") != string::npos)
+      || !data[i].compare("}"))
         continue;
     else if (data[i][data[i].size() - 1] != ';')
       throw(runtime_error("no termina en semicolon"));
@@ -230,10 +229,10 @@ void  BaseParser::checkSemicolon(void) const {
 void  BaseParser::handlerScopeLocation(void) {
   int lo = 0, end = 0;
   for (size_t i = 0; i < data.size(); i++) {
-    if (data[i].find("location") != string::npos && ++lo)
-      parserScopeLocation(i);
-    else if ((data[i].find("}") != string::npos) \
-      && (data[i].size() == 1) )
+    if (data[i].find("location") != string::npos \
+      && data[i].find("{") != string::npos && ++lo)
+        parserScopeLocation(i);
+    else if ((!data[i].compare("}")))
         end++;
   }
   if (lo != end)

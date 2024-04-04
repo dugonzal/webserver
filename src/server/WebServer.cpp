@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/03 19:26:29 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:40:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,37 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 void  WebServer::setServer(void) {
   setServerWebServer();
   servers.setNServers(nServers);
-  servers.startServers();
+  //servers.startServers();
+}
+
+void  WebServer::setLocation(const vector<string> &server, size_t i) {
+  cout << endl << endl; 
+  while (++i < server.size()) {
+    if (server[i].find("}") != string::npos)
+      break;
+    cout << server[i] << endl; 
+  }
+  sleep(2);
 }
 
 void  WebServer::printServer(const vector<string> &server, size_t n) {
   cout << "Server: " << n << endl;
-  for (vector<string>::const_iterator it = server.begin(); \
-    it != server.end(); it++) {
-    if (it->find("listen", 0) != string::npos) {
-      if (servers.setListenConfig((unsigned int)n, getHostFromLine(*it), \
-        getNumberFromLine(*it)))
+  for (size_t i = 0; i < server.size(); i++) {
+    if (server[i].find("listen", 0) != string::npos) {
+      if (servers.setListenConfig((unsigned int)n, getHostFromLine(server[i]), \
+        getNumberFromLine(server[i])))
           throw(runtime_error("error: setPort failed, bad values."));
     }
-    else if (findStrInLog(*it, "server_name") != "")
-      servers.setServerName(findStrInLog(*it, "server_name"));
+    else if (findStrInLog(server[i], "server_name") != "")
+      servers.setServerName(findStrInLog(server[i], "server_name"));
    // else if (findStrInLog(*it, "error_page") != "")
     //  servers.setErrorPage(findStrInLog(*it, "error_page"));
-    else if (findStrInLog(*it, "client_max_body_size") != "")
-      servers.setClientBodySize(findStrInLog(*it, \
+    else if (findStrInLog(server[i], "client_max_body_size") != "")
+      servers.setClientBodySize(findStrInLog(server[i], \
         "client_max_body_size"));
+    else if (server[i].find("location") != string::npos) {
+      setLocation(server, i);
+    }
   }
   cout << endl << endl;
 }

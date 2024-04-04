@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/03 19:24:20 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:41:22 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void  ServerManager::startServers(void) {
     ptr.setLocations("root path xd", location.clone());
     addServer(ptr);
   }
-  setSelect();
+//  setSelect();
 }
 
 void  ServerManager::setSelect(void) {
@@ -93,15 +93,16 @@ void  ServerManager::addServer(Server _server) {
 
 int   ServerManager::setServerName(const string& _name) {
   serverName.push_back(_name);
-  cout << "Name: " << _name << endl;
+ // cout << "Name: " << _name << endl;
   return 0;
 }
 
 int   ServerManager::setListenConfig(int _nServer, const string &_host, int _port) {
   portsServers.push_back(_port);
   hostServers.push_back(_host);
-  cout << "Port: " << _port << " (" << _nServer << ")." << endl;
-  cout << "Host: " << _host << " (" << _nServer << ")." << endl;
+  (void)_nServer;
+//  cout << "Port: " << _port << " (" << _nServer << ")." << endl;
+//  cout << "Host: " << _host << " (" << _nServer << ")." << endl;
   return 0;
 }
 

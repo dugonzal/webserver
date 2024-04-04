@@ -1,28 +1,25 @@
 Server: 0$
-Port: 9999 (0).$
-Host: 10.13.40.54 (0).$
-Name: tetaedro$
+$
+$
+index location_server_1.html;$
+$
+$
 $
 $
 Server: 2$
-Port: 1111 (2).$
-Host: 0.0.0.0 (2).$
-Name: _$
+$
+$
+index location_server_2.html;$
+autoindex on;$
+$
+$
+autoindex on;$
 $
 $
 Server: 3$
-Port: 2222 (3).$
-Host: 0.0.0.0 (3).$
-Name: _$
+$
+$
+index index.html;$
 Body Size : 1000000$
 $
 $
-$
-------Server n.ª[0]----$
-^[[0;33mPort : 9999^[[0m$
-^[[0;36mHost : 10.13.40.54^[[0m$
-Server name : tetaedro$
-socketFd: 3$
-$
-Can't assign requested address$
-Error: error: socket bind().$

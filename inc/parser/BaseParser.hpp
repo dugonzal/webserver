@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 20:50:39 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 20:55:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class BaseParser {
     void      setWords(void);
     bool      checkAllowedWords(const string&) const;
     size_t    skipLocation(size_t);
+    void      keyValueCkeck(void);
 
  public:
     BaseParser(void);

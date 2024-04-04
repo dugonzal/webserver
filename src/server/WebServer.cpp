@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 18:40:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:03:00 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 void  WebServer::setServer(void) {
   setServerWebServer();
   servers.setNServers(nServers);
-  //servers.startServers();
+  servers.startServers();
 }
 
 void  WebServer::setLocation(const vector<string> &server, size_t i) {
@@ -45,7 +45,6 @@ void  WebServer::setLocation(const vector<string> &server, size_t i) {
       break;
     cout << server[i] << endl; 
   }
-  sleep(2);
 }
 
 void  WebServer::printServer(const vector<string> &server, size_t n) {

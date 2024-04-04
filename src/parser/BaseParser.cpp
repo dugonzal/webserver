@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 19:40:11 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:11:13 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,22 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
   delete file;
   setNservers();
   checkSemicolon();
+  keyValueCkeck();
   handlerScopeLocation();
+}
+
+void  BaseParser::keyValueCkeck(void) {
+  for (vector<string>::iterator it = data.begin(); it != data.end(); it++) {
+    string::iterator end = it->end() - 1;
+    if (it->find("{") != string::npos \
+      || it->find("}") != string::npos)
+        continue;
+    if (*end == ';') {
+      it->erase(end);
+      if (!lastWord(*it).size())
+        throw(runtime_error(string("missing key or value (") + string(trim(*it) + ")")));
+    }
+  }
 }
 
 void  BaseParser::printData(const vector<string> &tmp) const {

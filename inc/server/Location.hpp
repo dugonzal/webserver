@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 21:42:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:55:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ class Location {
     string            root;
     string            path;
     string            index;
-    bool              autoIndex;
+    int               autoIndex;
     string            cgiPath;
     string            cgiExt;
     vector<string>    methods;
@@ -39,5 +39,5 @@ class Location {
     void  setMethods(const string&);
     void  setErrorPages(const int&, const string&);
     Location  clone(void) const;
- friend ostream &operator<<(ostream &, const Location &);
+ friend ostream &operator<<(ostream &, const Location&);
 };

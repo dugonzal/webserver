@@ -6,14 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 21:52:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:54:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
-Location::Location(void): root("resources"), index("index.html"), \
-  autoIndex(false) { }
+Location::Location(void): autoIndex(-1) { }
 
 Location::~Location(void) { }
 

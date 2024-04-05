@@ -6,13 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 21:51:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/04 21:57:28 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/WebServer.hpp"
-#include <unistd.h>
-#include <utility>
 
 WebServer::WebServer(void) { }
 

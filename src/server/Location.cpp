@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 12:11:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:25:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,23 @@ void  Location::setCgiExt(const string &_cgiExt) {
   cgiExt = _cgiExt;
 }
 void  Location::setMethods(const string &_methods) {
-  methods.push_back(_methods);
+  istringstream iss(_methods);
+
+  while (iss) {
+    string sub;
+    iss >> sub;
+    if (sub.empty())
+      break;
+    else if (sub.compare("GET") && sub.compare("POST") && sub.compare("DELETE"))
+      throw(runtime_error(string(" methods no allowed (") + string(sub + ")")));
+    methods.push_back(sub);
+  }
 }
 
 void  Location::setErrorPages(const int &n, const string &_errorPages) {
   if (errorPages.find(n) != errorPages.end())
     throw(runtime_error("setErrorPages"));
-  errorPages.insert(std::pair<int, string>(n, _errorPages));
+  errorPages.insert(pair<int, string>(n, _errorPages));
 }
 
 Location  Location::clone(void) const {

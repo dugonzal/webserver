@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 12:11:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:17:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
   else if (!firstWord(line).compare("autoindex"))
     tmp->setAutoIndex(lastWord(line));
   else if (!firstWord(line).compare("allow_methods"))
-    cout << line << endl;
+    tmp->setMethods(lastWord(line));
   else if (!firstWord(line).compare("error_page"))
     cout << line << endl;
   else if (!firstWord(line).compare("return"))

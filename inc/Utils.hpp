@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 11:07:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:19:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ using std::map;
 using std::ostream;
 using std::make_pair;
 using std::pair;
+using std::istringstream;
 
 bool    errorFile(ifstream);
 string  trim(const string&);

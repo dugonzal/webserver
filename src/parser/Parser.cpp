@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 21:07:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:12:18 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Parser::Parser(const string &filename): BaseParser(filename) {
   for (vector<string>::iterator it = data.begin(); \
     it != data.end() && ++i < nServers; it++) {
     if (it->find("server") != string::npos \
-      && it->find("{")) {
+      && it->find("{") != string::npos) {
         while (++it != data.end() && it->find("};") == string::npos)
           dataServers[i].push_back(*it);
     }

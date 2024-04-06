@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 21:11:13 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/05 20:01:25 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ BaseParser &BaseParser::operator=(const BaseParser &copy) {
 }
 
 void  BaseParser::setWords(void) {
-  words.insert("index");
   words.insert("server");
   words.insert("location");
   words.insert("include");
   words.insert("server_name");
   words.insert("listen");
-  words.insert("return");
-  words.insert("root");
-  words.insert("autoindex");
-  words.insert("client_max_body_size");
-  words.insert("error_page");
-  words.insert("cgi_path");
-  words.insert("cgi_ext");
-  words.insert("allow_methods");
+  words.insert("index");
+  words.insert("return");//x
+  words.insert("root");//x
+  words.insert("autoindex");//x
+  words.insert("client_max_body_size");//x
+  words.insert("error_page");//x
+  words.insert("cgi_path");//x
+  words.insert("cgi_ext");//x
+  words.insert("allow_methods");//x
   words.insert("}");
   words.insert("};");
 }
@@ -187,7 +187,7 @@ size_t  BaseParser::serverError(size_t i) {
       || !firstWord(data[i]).compare("cgi_ext"))
         throw(runtime_error(string("defined in global scope (")  + string(data[i] + ")")));
     else if (data[i].find("location") != string::npos \
-     && data[i].find("{") != string::npos) {
+      && data[i].find("{") != string::npos) {
         i = skipLocation(i);
         continue;
     }

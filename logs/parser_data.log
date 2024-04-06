@@ -1,57 +1,39 @@
-Server: 0$
-index location_server_1.html$
+3$
 $
+inicio de server$
 $
-$
-$
-autoindex on$
+index.html  $
+error_page 403 /error.html$
+error_page 404 /error.html$
+error_page 405 /error.html$
+error_page 406 /error.html$
+index.html  $
 allow_methods GET POST DELETE$
+log.py  $
 $
-$
-index         log.py$
-cgi_path      /usr/bin/python$
-cgi_ext       .py$
-autoindex     off$
 allow_methods GET POST DELETE$
+error_page 404 /error.html$
+error_page 405 /error.html$
+error_page 406 /error.html$
 $
+fin de server$
 $
+inicio de server$
 $
+error_page 404 /error.html$
+index.html  $
+error_page 404 /error.html$
+index.html  $
+location_server_2.html  $
 $
-Server: 2$
-index location_server_2.html$
-autoindex on$
+fin de server$
 $
+inicio de server$
 $
-autoindex on$
+client_max_body_size 1m$
+error_page 404 405 406 407 408 /error.html$
+index.html  $
+client_max_body_size 1m$
+error_page 404 405 406 407 408 /error.html$
 $
-$
-$
-$
-Server: 3$
-index index.html$
-$
-$
-Body Size : 1000000$
-$
-$
-$
-------Server n.M-BM-*[0]----$
-^[[0;33mPort : 9999^[[0m$
-^[[0;36mHost : 0.0.0.0^[[0m$
-Server name : tetaedro$
-socketFd: 3$
-$
-$
-------Server n.M-BM-*[1]----$
-^[[0;33mPort : 1111^[[0m$
-^[[0;36mHost : 0.0.0.0^[[0m$
-Server name : _$
-socketFd: 4$
-$
-$
-------Server n.M-BM-*[2]----$
-^[[0;33mPort : 2222^[[0m$
-^[[0;36mHost : 0.0.0.0^[[0m$
-Server name : _$
-socketFd: 5$
-$
+fin de server$

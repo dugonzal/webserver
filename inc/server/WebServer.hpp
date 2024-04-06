@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 14:46:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:19:26 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class WebServer {
  private:
   void    setServerWebServer(const vector<string>&, size_t);
   void    handlerSetServerWebServer(void);
-  void    setLocation(const vector<string>&, size_t); 
+  void    setLocations(const vector<string>&, size_t); 
   void    insertLocation(Location*, const string&);
 
  public:

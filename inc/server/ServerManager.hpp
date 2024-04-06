@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 16:40:18 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:19:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ class ServerManager {
   vector<Server>            vServers;
   struct timeval timeout;
   fd_set cSockets, rSockets, wSockets;
+  mutable  map<string, Location>     *locat;
 
  public:
   ServerManager(void);
   ~ServerManager(void);
   ServerManager(const ServerManager&);
   ServerManager &operator=(const ServerManager&);
+
 
  public:
   void  setNServers(size_t _amount);
@@ -42,5 +44,6 @@ class ServerManager {
   int   setServerName(const string& _name);
   int   setListenConfig(int _nServer, const string& _host, int _port);
   int   setErrorPage(const string& _errorPages);
-  int   setClientBodySize( const string& _clientBodySize);
+  int   setClientBodySize(const string& _clientBodySize);
+  void  setLocations(map<string, Location>*);
 };

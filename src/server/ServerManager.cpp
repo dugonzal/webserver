@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/04 21:37:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:19:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
     nServers = copy.nServers;
   }
   return (*this);
+}
+
+void  ServerManager::setLocations(map<string, Location> *tmp) {
+  /*map<string, Location> **/locat = tmp;
+  for (size_t i = 0; i < nServers; i++) {
+    cout << locat[i].size() << endl;
+  }
 }
 
 void  ServerManager::setNServers(size_t _amount) {

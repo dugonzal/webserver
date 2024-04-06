@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 14:50:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:17:53 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 void  WebServer::setServer(void) {
   handlerSetServerWebServer();
   servers.setNServers(nServers);
+  servers.setLocations(locations);
   //servers.startServers();
 }
 
@@ -59,7 +60,7 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
     tmp->setIndex(lastWord(line));
 }
 
-void  WebServer::setLocation(const vector<string> &line, size_t n) {
+void  WebServer::setLocations(const vector<string> &line, size_t n) {
   Location tmp;
 
   // recogida de la locacion de alcance general
@@ -84,7 +85,7 @@ void  WebServer::setLocation(const vector<string> &line, size_t n) {
       else
         tmp.setPath(firstWord(lastWord(line[i])));
       while (++i < line.size()) {
-        if (line[i].find("}") != string::npos) {
+        if (!line[i].compare("}")) {
           locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
           tmp.clear();
           break;
@@ -117,7 +118,7 @@ void  WebServer::handlerSetServerWebServer(void) {
   for (size_t i = 0; i < nServers; i++) {
    // setServerWebServer(tmp[i], i);
     cout << endl << "inicio de server" << endl << endl;
-    setLocation(tmp[i], i);
+    setLocations(tmp[i], i);
     cout << endl << "fin de server" << endl;
   }
 }

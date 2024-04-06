@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 14:18:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:17:07 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ Location::Location(const Location &copy): \
 
 Location &Location::operator=(const Location &copy) {
   if (&copy != this) {
-    cout << "copia locations" << endl;
     root = copy.root;
     path = copy.path;
     index = copy.index;
@@ -52,7 +51,6 @@ void  Location::setPath(const string &_path) {
 }
 
 void  Location::setIndex(const string &_index) {
-  cout << "setIndex " << _index << endl;
   if (!index.empty())
     throw(runtime_error("setIndex"));
   cout << !index.empty() << " -  " << _index << endl;
@@ -121,7 +119,7 @@ void  Location::setErrorPages(const string &_errorPages) {
 Location  Location::clone(void) const {
   // antes de copiar la location podemos dejar valores por default
   // o a null para facilitar el uso de la location
-  cout << *this << endl;
+  //cout << *this << endl;
   return (*this);
 }
 

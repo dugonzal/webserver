@@ -2,42 +2,23 @@
 $
 inicio de server$
 $
-setIndex index.html$
 0 -  index.html$
-path: root name tmp$
-$
-path: /a$
-$
-setIndex log.py$
 0 -  log.py$
-path: /$
-$
 $
 fin de server$
 $
 inicio de server$
 $
-path: root name tmp$
-$
-path: /a$
-$
-setIndex log.py$
 0 -  log.py$
-path: /$
-$
 $
 fin de server$
 $
 inicio de server$
 $
 client_max_body_size 1m$
-path: root name tmp$
-$
-path: /a$
-$
-setIndex log.py$
 0 -  log.py$
-path: /$
-$
 $
 fin de server$
+3$
+3$
+3$

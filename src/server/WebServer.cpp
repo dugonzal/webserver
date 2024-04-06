@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 13:46:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:50:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 WebServer::WebServer(void) { }
 
-WebServer::~WebServer(void) { delete [] locations; }
+WebServer::~WebServer(void) { delete [] locations;  }
 
 WebServer::WebServer(const string &filename): parser(filename) {
   nServers = parser.getNservers();
@@ -73,6 +73,7 @@ void  WebServer::setLocation(const vector<string> &line, size_t n) {
   }
   // solo se inserta una locacion general
   tmp.setPath("root name tmp");
+
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
   tmp.clear();
   // recogida de las locaciones
@@ -80,14 +81,16 @@ void  WebServer::setLocation(const vector<string> &line, size_t n) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
       if (locations[n].find(firstWord(lastWord(line[i]))) != locations[n].end())
         throw(runtime_error(string("error: location already exists. (") + string(line[i] + ")")));
-      tmp.setPath(firstWord(lastWord(line[i])));
-    }
-    while (++i < line.size()) {
-      if (line[i].find("}") != string::npos)
-        break;
-      insertLocation(&tmp, line[i]);
-      locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
-      tmp.clear();
+      else
+        tmp.setPath(firstWord(lastWord(line[i])));
+      while (++i < line.size()) {
+        if (line[i].find("}") != string::npos) {
+          locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
+          tmp.clear();
+          break;
+        }
+        insertLocation(&tmp, line[i]);
+      }
     }
   }
 }

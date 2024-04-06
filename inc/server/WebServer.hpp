@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 12:04:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:46:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@
  * */
 class WebServer {
  private:
-  mutable ServerManager servers;
-  mutable Parser        parser;
-  mutable Signals       signals;
-  mutable size_t        nServers;
-  map<string, Location> *locations;
+  mutable ServerManager         servers;
+  mutable Parser                parser;
+  mutable Signals               signals;
+  mutable size_t                nServers;
+  mutable map<string, Location> *locations;
 
  private:
   WebServer(void);

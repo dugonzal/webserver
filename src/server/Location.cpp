@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 13:46:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:18:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void  Location::setErrorPages(const string &_errorPages) {
 Location  Location::clone(void) const {
   // antes de copiar la location podemos dejar valores por default
   // o a null para facilitar el uso de la location
+  cout << *this << endl;
   return (*this);
 }
 

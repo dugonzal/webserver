@@ -4,35 +4,40 @@ inicio de server$
 $
 setIndex index.html$
 0 -  index.html$
-setIndex index.html$
-0 -  index.html$
+path: root name tmp$
+$
+path: /a$
+$
 setIndex log.py$
 0 -  log.py$
-setIndex log.py$
-0 -  log.py$
-setIndex log.py$
-0 -  log.py$
+path: /$
+$
 $
 fin de server$
 $
 inicio de server$
 $
-setIndex location_server_2.html$
-0 -  location_server_2.html$
+path: root name tmp$
+$
+path: /a$
+$
+setIndex log.py$
+0 -  log.py$
+path: /$
+$
 $
 fin de server$
 $
 inicio de server$
 $
 client_max_body_size 1m$
-setIndex index.html$
-0 -  index.html$
-setIndex index.html$
-0 -  index.html$
-setIndex index.html$
-0 -  index.html$
-setIndex index.html$
-0 -  index.html$
-client_max_body_size 1m$
+path: root name tmp$
+$
+path: /a$
+$
+setIndex log.py$
+0 -  log.py$
+path: /$
+$
 $
 fin de server$

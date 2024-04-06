@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/05 20:01:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 13:35:22 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,13 @@ void  BaseParser::keyValueCkeck(void) {
       it->erase(end);
       if (!lastWord(*it).size())
         throw(runtime_error(string("missing key or value (") + string(trim(*it) + ")")));
+      if (numberWords(*it) > 2) {
+        string tmp = firstWord(*it);
+        if (!tmp.compare("error_page") \
+          || !tmp.compare("allow_methods") || !tmp.compare("return"))
+            continue;
+        throw(runtime_error(string("too many words (") + string(trim(*it) + ")")));
+      }
     }
   }
 }

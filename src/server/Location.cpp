@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 12:25:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 13:46:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,17 @@ void  Location::setPath(const string &_path) {
 }
 
 void  Location::setIndex(const string &_index) {
-  cout << _index << "  " << index << endl;
-/*  if (!_index.empty())
+  cout << "setIndex " << _index << endl;
+  if (!index.empty())
     throw(runtime_error("setIndex"));
-  */index = _index;
+  cout << !index.empty() << " -  " << _index << endl;
+  index = _index;
 }
 
 void  Location::setAutoIndex(const string &_autoIndex) {
   if (autoIndex != -1)
     throw(runtime_error("setAutoIndex"));
-  if (!_autoIndex.compare("true") || !_autoIndex.compare("on") \
+  else if (!_autoIndex.compare("true") || !_autoIndex.compare("on") \
     || !_autoIndex.compare("TRUE") || !_autoIndex.compare("ON"))
     autoIndex = true;
   else if (!_autoIndex.compare("false") || !_autoIndex.compare("off") \
@@ -72,7 +73,6 @@ void  Location::setAutoIndex(const string &_autoIndex) {
 }
 
 void  Location::setCgiPath(const string &_cgiPath) {
-  cout << cgiPath << endl;
   if (!cgiPath.empty())
     throw(runtime_error("setCgiPath"));
   cgiPath = _cgiPath;
@@ -82,6 +82,8 @@ void  Location::setReturn(const string &return_) {
   if (!_return.second.empty())
     throw(runtime_error("setReturn"));
   _return.first = atoi(firstWord(return_).data());
+  if (_return.first < 100 || _return.first > 505)
+    throw(runtime_error("setErrorPages code not allowed"));
   _return.second = lastWord(return_);
 }
 
@@ -90,9 +92,12 @@ void  Location::setCgiExt(const string &_cgiExt) {
     throw(runtime_error("setCgiExt"));
   cgiExt = _cgiExt;
 }
+
 void  Location::setMethods(const string &_methods) {
   istringstream iss(_methods);
 
+  if (!methods.empty())
+    throw(runtime_error("setMethods"));
   while (iss) {
     string sub;
     iss >> sub;
@@ -104,10 +109,13 @@ void  Location::setMethods(const string &_methods) {
   }
 }
 
-void  Location::setErrorPages(const int &n, const string &_errorPages) {
+void  Location::setErrorPages(const string &_errorPages) {
+  size_t n = atoi(firstWord(_errorPages).data());
+  if (n < 100 || n > 505)
+    throw(runtime_error("setErrorPages code not allowed"));
   if (errorPages.find(n) != errorPages.end())
-    throw(runtime_error("setErrorPages"));
-  errorPages.insert(pair<int, string>(n, _errorPages));
+    throw(runtime_error("setErrorPages code already exists"));
+  errorPages.insert(pair<size_t, string>(n, lastWord(_errorPages)));
 }
 
 Location  Location::clone(void) const {
@@ -116,9 +124,7 @@ Location  Location::clone(void) const {
   return (*this);
 }
 
-const string Location::getPath(void) const {
-  return (path);
-}
+const string Location::getPath(void) const { return (path); }
 
 void  Location::clear(void) {
   root.clear();
@@ -134,7 +140,6 @@ void  Location::clear(void) {
 }
 
 ostream &operator<<(ostream &os, const Location &copy) {
-  os << "" << endl;
-  (void)copy;
+  os << "path: " << copy.getPath() << endl;
   return (os);
 }

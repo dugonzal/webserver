@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 11:51:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 13:07:48 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
 
 class Location {
  private:
-    string              root;
-    string              path;
-    string              index;
-    int                 autoIndex;
-    string              cgiPath;
-    string              cgiExt;
-    pair<int, string>   _return;
-    vector<string>      methods;
-    map<int, string>    errorPages;
+    string                root;
+    string                path;
+    string                index;
+    int                   autoIndex;
+    string                cgiPath;
+    string                cgiExt;
+    pair<size_t, string>  _return;
+    vector<string>        methods;
+    map<size_t, string>   errorPages;
 
  public:
     Location(void);
@@ -40,7 +40,7 @@ class Location {
     void          setCgiExt(const string&);
     void          setMethods(const string&);
     void          setReturn(const string&);
-    void          setErrorPages(const int&, const string&);
+    void          setErrorPages(const string&);
     Location      clone(void) const;
     const string  getPath(void) const;
     void          clear(void);

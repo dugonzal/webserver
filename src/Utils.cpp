@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/02 19:25:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 13:21:17 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,34 @@ string trim(const string &line) {
   return (line.substr(first, ((last - first) + 1)));
 }
 
+bool isW(const char c) {
+  for (size_t i = 0; i < strlen(WHITESPACES) ; i++)
+    if (WHITESPACES[i] == c)
+    return (true);
+  return (false);
+}
+
+size_t  numberWords(const string  &line) {
+  size_t  count = 0;
+  size_t  i = 0;
+
+  while (i < line.size()) {
+    if (!isW(line[i])) {
+      count++;
+      while (i < line.size() && !isW(line[i]))
+        i++;
+    }
+    i++;
+  }
+  return (count);
+}
+
 int getNumberFromLine(const string& line) {
   char c = 0;
   int flag = 0;
   std::stringstream ss;
-  std::string::const_iterator itBegin = line.begin();
-  std::string::const_iterator itEnd = line.end();
+  string::const_iterator itBegin = line.begin();
+  string::const_iterator itEnd = line.end();
 
   if (line.find(':', 0) != std::string::npos)
     flag = 1;

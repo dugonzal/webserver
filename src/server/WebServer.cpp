@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 12:17:56 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 13:46:55 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 WebServer::WebServer(void) { }
 
-WebServer::~WebServer(void) {
-  delete [] locations;
-}
+WebServer::~WebServer(void) { delete [] locations; }
 
 WebServer::WebServer(const string &filename): parser(filename) {
   nServers = parser.getNservers();
@@ -52,7 +50,7 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
   else if (!firstWord(line).compare("allow_methods"))
     tmp->setMethods(lastWord(line));
   else if (!firstWord(line).compare("error_page"))
-    cout << line << endl;
+    tmp->setErrorPages(lastWord(line));
   else if (!firstWord(line).compare("return"))
     tmp->setReturn(lastWord(line));
   else if (!firstWord(line).compare("client_max_body_size"))
@@ -67,15 +65,14 @@ void  WebServer::setLocation(const vector<string> &line, size_t n) {
   // recogida de la locacion de alcance general
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
-        while (++i < line.size()) {
-          if (line[i].find("}") != string::npos)
-            break;
-        }
+      while (++i < line.size())
+        if (line[i].find("}") != string::npos)
+          break;
     }
     insertLocation(&tmp, line[i]);
   }
   // solo se inserta una locacion general
-  tmp.setPath("");
+  tmp.setPath("root name tmp");
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
   tmp.clear();
   // recogida de las locaciones

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 15:19:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:17:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class ServerManager {
   vector<Server>            vServers;
   struct timeval timeout;
   fd_set cSockets, rSockets, wSockets;
-  mutable  map<string, Location>     *locat;
+  mutable  map<string, Location>     *location;
 
  public:
   ServerManager(void);

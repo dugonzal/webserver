@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 15:19:03 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:19:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
 }
 
 void  ServerManager::setLocations(map<string, Location> *tmp) {
-  /*map<string, Location> **/locat = tmp;
-  for (size_t i = 0; i < nServers; i++) {
-    cout << locat[i].size() << endl;
-  }
+  location = tmp;
 }
 
 void  ServerManager::setNServers(size_t _amount) {
@@ -55,6 +52,7 @@ void  ServerManager::startServers(void) {
     ptr.setServerName(serverName[it]);
     cout << endl << "------Server n.ª[" << it << "]----" << endl;
     ptr.setServerSide();
+    ptr.setLocations(location[it]);
     addServer(ptr);
   }
 //  setSelect();
@@ -84,7 +82,7 @@ void  ServerManager::setSelect(void) {
     }
       if (FD_ISSET(i, &wSockets))
         cout << i << " can be used to write!" << endl;
-      else if (i == (int)nServers)
+      else if (i == static_cast<int>(nServers))
           i = 0;
     }
     // bzero(clientMsg, sizeof(clientMsg));

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 15:17:07 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:47:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ void  Location::setRoot(const string &_root) {
   root = _root;
 }
 
-// basicamente si se establece dos veces en un
-// alcance de location es un error porque no podemos
-// definir dos veces lo mismo
 void  Location::setPath(const string &_path) {
   if (!path.empty())
     throw(runtime_error("setPath"));
@@ -116,14 +113,32 @@ void  Location::setErrorPages(const string &_errorPages) {
   errorPages.insert(pair<size_t, string>(n, lastWord(_errorPages)));
 }
 
-Location  Location::clone(void) const {
-  // antes de copiar la location podemos dejar valores por default
-  // o a null para facilitar el uso de la location
-  //cout << *this << endl;
-  return (*this);
-}
+// hay que setear default posiblemente
+Location  Location::clone(void) const { return (*this); }
 
 const string Location::getPath(void) const { return (path); }
+
+const string  Location::getRoot(void) const { return(root); }
+
+const string  Location::getIndex(void) const { return(index); }
+
+const string  Location::getCgiPath(void) const { return(cgiPath); }
+
+const string  Location::getCgiext(void) const { return(cgiExt); }
+
+int Location::getAutoIndex(void) const { return(autoIndex); }
+
+const vector<string>  Location::getmethods(void) const {
+  return(methods);
+}
+
+const pair<size_t, string>  Location::getReturn(void) const {
+  return(_return);
+}
+
+const map<size_t, string>    Location::getErrorPages(void) const {
+  return(errorPages);
+}
 
 void  Location::clear(void) {
   root.clear();
@@ -139,6 +154,12 @@ void  Location::clear(void) {
 }
 
 ostream &operator<<(ostream &os, const Location &copy) {
-  os << "path: " << copy.getPath() << endl;
+  os << "Location:" << endl << "path: " << copy.getPath() << endl \
+  << "root: " << copy.getPath() << endl << "index: " << copy.getIndex() \
+  << endl << "autoIndex: " << copy.getAutoIndex() << endl << "cgiPath: " \
+  << copy.getCgiPath() << endl << "cgiExt: " << copy.getCgiext() \
+  << endl << "methods: " << copy.getmethods().size() << endl << "return: " \
+  << copy.getReturn().second << endl << "errorPages: " \
+  << copy.getErrorPages().size() << endl;
   return (os);
 }

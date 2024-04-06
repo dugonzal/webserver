@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 15:17:53 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:19:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/WebServer.hpp"
+#include <vector>
 
 WebServer::WebServer(void) { }
 
@@ -36,7 +37,7 @@ void  WebServer::setServer(void) {
   handlerSetServerWebServer();
   servers.setNServers(nServers);
   servers.setLocations(locations);
-  //servers.startServers();
+  servers.startServers();
 }
 
 void  WebServer::insertLocation(Location *tmp, const string &line) {
@@ -63,7 +64,6 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
 void  WebServer::setLocations(const vector<string> &line, size_t n) {
   Location tmp;
 
-  // recogida de la locacion de alcance general
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
       while (++i < line.size())
@@ -72,12 +72,10 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
     }
     insertLocation(&tmp, line[i]);
   }
-  // solo se inserta una locacion general
-  tmp.setPath("root name tmp");
 
+  tmp.setPath("");
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
   tmp.clear();
-  // recogida de las locaciones
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
       if (locations[n].find(firstWord(lastWord(line[i]))) != locations[n].end())
@@ -116,39 +114,28 @@ void  WebServer::handlerSetServerWebServer(void) {
   cout << nServers << endl;
   locations = new map<string, Location>[nServers];
   for (size_t i = 0; i < nServers; i++) {
-   // setServerWebServer(tmp[i], i);
     cout << endl << "inicio de server" << endl << endl;
+    setServerWebServer(tmp[i], i);
     setLocations(tmp[i], i);
     cout << endl << "fin de server" << endl;
   }
 }
-/*
-void  WebServer::setServerWebServer(void) {
-  vector<string> ptrData = parser.getData();
-  int sCount = 0;
 
+void  WebServer::setServerWebServer(const vector<string> &ptrData, size_t sCount) {
   for (vector<string>::const_iterator it = ptrData.begin(); \
     it != ptrData.end(); it++) {
     if (it->find("listen", 0) != string::npos) {
-      if (servers.setPort(sCount, getHostFromLine(*it), \
+      if (servers.setListenConfig(sCount, getHostFromLine(*it), \
         getNumberFromLine(*it)))
           throw(runtime_error("error: setPort failed, bad values."));
     }
     else if (findStrInLog(*it, "server_name") != "")
-      servers.setName(findStrInLog(*it, "server_name"));
-    else if (findStrInLog(*it, "error_page") != "")
-      servers.setErrorPage(findStrInLog(*it, "error_page"));
+      servers.setServerName(findStrInLog(*it, "server_name"));
+//    else if (findStrInLog(*it, "error_page") != "")
+//      servers.setErrorPage(findStrInLog(*it, "error_page"));
     else if (findStrInLog(*it, "client_max_body_size") != "")
       servers.setClientBodySize(findStrInLog(*it, \
         "client_max_body_size"));
-    else if (!it->compare("};")) {
-      cout << endl;
-      sCount++;
-    }
-    else if (it->find("location") != string::npos) {
-      cout << sCount << endl;
-      cout << *it << endl;
-    }
   }
   cout << endl;
-}*/
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/03 19:21:02 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:40:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,16 @@ void  BaseServer::setRequest( void ) {
   Request client(serverFd);
 }
 
-void  BaseServer::setLocations(const string &path, const Location &copy) {
-  cout << path << endl;
-  location.insert(make_pair(path, copy));
+void  BaseServer::setLocations(map<string, Location> copy) {
+  location = copy;
+  cout << location.find("/")->second << endl;
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }
 
-int   BaseServer::getNServers( void ) const { return (nServers); }
+int   BaseServer::getNServers(void) const { return (nServers); }
 
-bool   BaseServer::checkServer( void ) const {
+bool  BaseServer::checkServer(void) const {
   if (port <= 0 || server_name.empty())
     return false;
   return true;

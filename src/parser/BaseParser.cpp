@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 13:35:22 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:08:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void  BaseParser::setWords(void) {
   words.insert("server_name");
   words.insert("listen");
   words.insert("index");
-  words.insert("return");//x
-  words.insert("root");//x
-  words.insert("autoindex");//x
-  words.insert("client_max_body_size");//x
-  words.insert("error_page");//x
-  words.insert("cgi_path");//x
-  words.insert("cgi_ext");//x
-  words.insert("allow_methods");//x
+  words.insert("return");
+  words.insert("root");
+  words.insert("autoindex");
+  words.insert("client_max_body_size");
+  words.insert("error_page");
+  words.insert("cgi_path");
+  words.insert("cgi_ext");
+  words.insert("allow_methods");
   words.insert("}");
   words.insert("};");
 }
@@ -96,12 +96,15 @@ void  BaseParser::keyValueCkeck(void) {
       it->erase(end);
       if (!lastWord(*it).size())
         throw(runtime_error(string("missing key or value (") + string(trim(*it) + ")")));
-      if (numberWords(*it) > 2) {
+      size_t n = numberWords(*it);
+      if (n > 2) {
         string tmp = firstWord(*it);
-        if (!tmp.compare("error_page") \
-          || !tmp.compare("allow_methods") || !tmp.compare("return"))
-            continue;
-        throw(runtime_error(string("too many words (") + string(trim(*it) + ")")));
+        if ((n == 3 && (!tmp.compare("error_page") || !tmp.compare("return"))))
+          continue;
+        else if (n < 5 && !tmp.compare("allow_methods"))
+          continue;
+        else
+          throw(runtime_error(string("too many words (") + string(trim(*it) + ")")));
       }
     }
   }
@@ -184,7 +187,7 @@ size_t  BaseParser::skipLocation(size_t i) {
 }
 
 size_t  BaseParser::serverError(size_t i) {
-  while (i < data.size()) {
+  while (++i < data.size()) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
         throw(runtime_error("server dentro de server"));
@@ -197,10 +200,9 @@ size_t  BaseParser::serverError(size_t i) {
       && data[i].find("{") != string::npos) {
         i = skipLocation(i);
         continue;
-    }
-    else if (!data[i].compare("};"))
+    } else if (!data[i].compare("};")) {
       break;
-    i++;
+    }
   }
   return (i);
 }
@@ -209,7 +211,7 @@ void  BaseParser::handlerScopeError(void) {
   for (size_t i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
-        i = serverError(++i);
+        i = serverError(i);
     else
       throw(runtime_error(string("fuera del scope del server ") \
         + string(data[i])));

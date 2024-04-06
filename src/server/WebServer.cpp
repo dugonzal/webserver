@@ -6,16 +6,15 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 18:19:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:54:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/WebServer.hpp"
-#include <vector>
 
 WebServer::WebServer(void) { }
 
-WebServer::~WebServer(void) { delete [] locations;  }
+WebServer::~WebServer(void) { delete [] locations; }
 
 WebServer::WebServer(const string &filename): parser(filename) {
   nServers = parser.getNservers();
@@ -65,10 +64,11 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
   Location tmp;
 
   for (size_t i = 0; i < line.size(); i++) {
-    if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
-      while (++i < line.size())
-        if (line[i].find("}") != string::npos)
-          break;
+    if (line[i].find("location") != string::npos \
+      && line[i].find("{") != string::npos) {
+        while (++i < line.size())
+          if (!line[i].compare("}"))
+            break;
     }
     insertLocation(&tmp, line[i]);
   }
@@ -93,15 +93,6 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
     }
   }
 }
-
-/*
- * necesito una que recoja los datos de alcance de server y que salte
- * las location y otra que solo entre en las locaciones y se salte el alcance general
- * */
-/*void  WebServer::setServerWebServer(const vector<string> &line, size_t n) {
-  // vamos a ir estableciendo el servidor mas poco a poco primero el alcance general 
-  // saltando las locaciones y luego las locaciones saltando el alcance general
-}*/
 
 void  WebServer::handlerSetServerWebServer(void) {
   vector<string>  *tmp = parser.getDataServers();

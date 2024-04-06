@@ -39,7 +39,7 @@ cgiPath: /usr/bin/python$
 cgiExt: .py$
 methods: 3$
 return: $
-errorPages: 0$
+errorPages: 3$
 $
 $
 ------Server n.M-BM-*[1]----$
@@ -57,7 +57,7 @@ cgiPath: /usr/bin/python$
 cgiExt: .py$
 methods: 3$
 return: $
-errorPages: 0$
+errorPages: 3$
 $
 $
 ------Server n.M-BM-*[2]----$
@@ -75,5 +75,5 @@ cgiPath: /usr/bin/python$
 cgiExt: .py$
 methods: 3$
 return: $
-errorPages: 0$
+errorPages: 3$
 $

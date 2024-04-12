@@ -41,6 +41,7 @@ methods: 3$
 return: $
 errorPages: 3$
 $
+size de locations   3$
 $
 ------Server n.M-BM-*[1]----$
 ^[[0;33mPort : 1111^[[0m$
@@ -59,6 +60,7 @@ methods: 3$
 return: $
 errorPages: 3$
 $
+size de locations   4$
 $
 ------Server n.M-BM-*[2]----$
 ^[[0;33mPort : 2222^[[0m$
@@ -77,3 +79,4 @@ methods: 3$
 return: $
 errorPages: 3$
 $
+size de locations   3$

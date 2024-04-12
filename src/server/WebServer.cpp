@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 18:54:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:01:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,21 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
     insertLocation(&tmp, line[i]);
   }
 
-  tmp.setPath("");
+  tmp.setPath("root path");
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
+  if (locations[n].empty())
+    locations[n].erase(tmp.getPath());
   tmp.clear();
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
       if (locations[n].find(firstWord(lastWord(line[i]))) != locations[n].end())
         throw(runtime_error(string("error: location already exists. (") + string(line[i] + ")")));
-      else
-        tmp.setPath(firstWord(lastWord(line[i])));
+      tmp.setPath(firstWord(lastWord(line[i])));
       while (++i < line.size()) {
         if (!line[i].compare("}")) {
           locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
+          if (locations[n].empty())
+            locations[n].erase(tmp.getPath());
           tmp.clear();
           break;
         }

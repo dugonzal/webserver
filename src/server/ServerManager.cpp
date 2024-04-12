@@ -6,17 +6,16 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 18:19:47 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:12:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/ServerManager.hpp"
 
-ServerManager::ServerManager(void) {
+ServerManager::ServerManager(void): nServers(0) {
   FD_ZERO(&cSockets);
   FD_ZERO(&rSockets);
   FD_ZERO(&wSockets);
-  nServers = 0;
   timeout.tv_sec = 900;
   timeout.tv_usec = 0;
 }
@@ -53,6 +52,8 @@ void  ServerManager::startServers(void) {
     cout << endl << "------Server n.ª[" << it << "]----" << endl;
     ptr.setServerSide();
     ptr.setLocations(location[it]);
+    cout << "size de locations   " << location[it].size() << endl;
+    sleep(2);
     addServer(ptr);
   }
 //  setSelect();
@@ -82,8 +83,6 @@ void  ServerManager::setSelect(void) {
     }
       if (FD_ISSET(i, &wSockets))
         cout << i << " can be used to write!" << endl;
-      else if (i == static_cast<int>(nServers))
-          i = 0;
     }
     // bzero(clientMsg, sizeof(clientMsg));
     }

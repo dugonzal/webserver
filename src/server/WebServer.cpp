@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 18:53:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 21:00:57 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
     cout << line << endl;
   else if (!firstWord(line).compare("index"))
     tmp->setIndex(lastWord(line));
+  else if (!firstWord(line).compare("listen"))
+    tmp->setListen(lastWord(line));
+  else if (!firstWord(line).compare("server_name"))
+    tmp->setServerName(lastWord(line));
 }
 
 void  WebServer::setLocations(const vector<string> &line, size_t n) {
@@ -73,7 +77,7 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
     insertLocation(&tmp, line[i]);
   }
 
-  tmp.setPath("");
+  tmp.setPath("root");
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
   if (locations[n].empty())
     locations[n].erase(tmp.getPath());
@@ -96,38 +100,9 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
 }
 
 void  WebServer::handlerSetServerWebServer(void) {
-  vector<string>  *tmp = parser.getDataServers();
-  size_t          n = nServers;
-
-  for (size_t i = 0; i < n; i++)
-    if (tmp[i].empty())
-      --nServers;
-
-  cout << nServers << endl;
+  vector<string> *tmp = parser.getDataServers();
   locations = new map<string, Location>[nServers];
-  for (size_t i = 0; i < nServers; i++) {
-    cout << endl << "inicio de server" << endl << endl;
-    setServerWebServer(tmp[i], i);
-    setLocations(tmp[i], i);
-    cout << endl << "fin de server" << endl;
-  }
-}
 
-void  WebServer::setServerWebServer(const vector<string> &ptrData, size_t sCount) {
-  for (vector<string>::const_iterator it = ptrData.begin(); \
-    it != ptrData.end(); it++) {
-    if (it->find("listen", 0) != string::npos) {
-      if (servers.setListenConfig(sCount, getHostFromLine(*it), \
-        getNumberFromLine(*it)))
-          throw(runtime_error("error: setPort failed, bad values."));
-    }
-    else if (findStrInLog(*it, "server_name") != "")
-      servers.setServerName(findStrInLog(*it, "server_name"));
-//    else if (findStrInLog(*it, "error_page") != "")
-//      servers.setErrorPage(findStrInLog(*it, "error_page"));
-    else if (findStrInLog(*it, "client_max_body_size") != "")
-      servers.setClientBodySize(findStrInLog(*it, \
-        "client_max_body_size"));
-  }
-  cout << endl;
+  for (size_t i = 0; i < nServers; i++)
+    setLocations(tmp[i], i);
 }

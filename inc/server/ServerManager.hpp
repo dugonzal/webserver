@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/12 22:09:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 19:10:11 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ class ServerManager {
   ServerManager(const ServerManager&);
   ServerManager &operator=(const ServerManager&);
 
-
  public:
   void  setNServers(size_t _amount);
   void  startServers(void);
@@ -44,6 +43,5 @@ class ServerManager {
   int   setServerName(const string& _name);
   int   setListenConfig(int _nServer, const string& _host, int _port);
   int   setErrorPage(const string& _errorPages);
-  int   setClientBodySize(const string& _clientBodySize);
   void  setLocations(map<string, Location>*);
 };

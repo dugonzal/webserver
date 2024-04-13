@@ -6,20 +6,21 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 18:52:44 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 21:19:54 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
-Location::Location(void): autoIndex(-1) { }
+Location::Location(void): autoIndex(-1), listen("0.0.0.0", -1) { }
 
 Location::~Location(void) { }
 
 Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
     autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), \
-      methods(copy.methods),  errorPages(copy.errorPages) { }
+      methods(copy.methods),  errorPages(copy.errorPages),
+        listen(copy.listen), serverName(copy.serverName) { }
 
 Location &Location::operator=(const Location &copy) {
   if (&copy != this) {
@@ -31,6 +32,8 @@ Location &Location::operator=(const Location &copy) {
     cgiExt  = copy.cgiExt;
     methods = copy.methods;
     errorPages = copy.errorPages;
+    listen = copy.listen;
+    serverName = copy.serverName;
   }
   return (*this);
 }
@@ -50,7 +53,6 @@ void  Location::setPath(const string &_path) {
 void  Location::setIndex(const string &_index) {
   if (!index.empty())
     throw(runtime_error("setIndex"));
-  cout << !index.empty() << " -  " << _index << endl;
   index = _index;
 }
 
@@ -106,11 +108,47 @@ void  Location::setMethods(const string &_methods) {
 
 void  Location::setErrorPages(const string &_errorPages) {
   size_t n = atoi(firstWord(_errorPages).data());
+
   if (n < 100 || n > 505)
     throw(runtime_error("setErrorPages code not allowed"));
-  if (errorPages.find(n) != errorPages.end())
+  else if (errorPages.find(n) != errorPages.end())
     throw(runtime_error("setErrorPages code already exists"));
   errorPages.insert(pair<size_t, string>(n, lastWord(_errorPages)));
+}
+
+void  Location::setListen(const string &_listen) {
+  int pos = _listen.find_first_of(":");
+  int n = 0;
+  string  tmp;
+
+  if (listen.first.compare("0.0.0.0"))
+    throw(runtime_error(string("listen exists (") + string(_listen + ")")));
+  else if (pos > 6) {
+    tmp  = _listen.substr(0, pos);
+    n  = atoi(_listen.substr(pos + 1).data());
+    if (!tmp.compare("localhost") || !tmp.compare("127.0.0.1"))
+      listen.first = "0.0.0.0";
+    else
+      listen.first = tmp;
+    if (n < 0 or n > 65535)
+      throw(runtime_error(string("error port out range (") + string(_listen + ")")));
+    else
+      listen.second = n;
+  } else if (pos < 0) {
+    if (n < 0 or n > 65535)
+      throw(runtime_error(string("error port out range (") + string(_listen + ")")));
+    else
+      listen.second = atoi(_listen.data());
+  } else
+      throw(runtime_error(string("no puedo establecer listen (") + string(_listen + ")")));
+  cout << n << endl;
+  cout << tmp << endl;
+}
+
+void  Location::setServerName(const string &_serverName) {
+  if (!serverName.empty())
+    throw(runtime_error("exist serverName"));
+  serverName = _serverName;
 }
 
 // hay que setear default posiblemente
@@ -141,9 +179,13 @@ const pair<size_t, string>  Location::getReturn(void) const {
   return(_return);
 }
 
-const map<size_t, string>    Location::getErrorPages(void) const {
+const map<size_t, string> Location::getErrorPages(void) const {
   return(errorPages);
 }
+
+const pair<string, size_t>  Location::getListen(void) const { return (listen); }
+
+const string  Location::getServerName(void) const { return (serverName); }
 
 void  Location::clear(void) {
   root.clear();

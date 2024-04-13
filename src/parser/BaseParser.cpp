@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/12 16:03:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 19:27:23 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,23 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
     data.push_back(buffer);
   }
   delete file;
+  deleteServerEmpty();
   setNservers();
   checkSemicolon();
   keyValueCkeck();
   handlerScopeLocation();
+}
+
+void  BaseParser::deleteServerEmpty(void) {
+  for (size_t i = 0; i < data.size(); i++) {
+    if (data[i].find("server") != string::npos \
+      && data[i].find("{") != string::npos) {
+        if (data[i + 1].find("};") != string::npos) {
+          data.erase(data.begin() + i, data.begin() + i + 2);
+          i--;
+        }
+    }
+  }
 }
 
 void  BaseParser::keyValueCkeck(void) {

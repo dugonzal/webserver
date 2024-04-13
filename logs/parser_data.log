@@ -1,80 +1,13 @@
-3$
-$
-inicio de server$
-$
-$
-0 -  index.html$
-0 -  log.py$
-$
-fin de server$
-$
-inicio de server$
-$
-$
-0 -  index.html$
-0 -  log.py$
-$
-fin de server$
-$
-inicio de server$
-$
-Body Size : 1000000$
-$
+65535$
+localhost$
+1$
+34443343$
+2222$
+0.0.0.1$
 client_max_body_size 1m$
-0 -  log.py$
-$
-fin de server$
 $
 ------Server n.M-BM-*[0]----$
-^[[0;33mPort : 9999^[[0m$
-^[[0;36mHost : 0.0.0.0^[[0m$
-Server name : tetaedro$
-socketFd: 3$
-$
-Location:$
-path: /$
-root: /$
-index: log.py$
-autoIndex: 0$
-cgiPath: /usr/bin/python$
-cgiExt: .py$
-methods: 3$
-return: $
-errorPages: 3$
-$
 $
 ------Server n.M-BM-*[1]----$
-^[[0;33mPort : 1111^[[0m$
-^[[0;36mHost : 0.0.0.0^[[0m$
-Server name : _$
-socketFd: 4$
-$
-Location:$
-path: /$
-root: /$
-index: log.py$
-autoIndex: 0$
-cgiPath: /usr/bin/python$
-cgiExt: .py$
-methods: 3$
-return: $
-errorPages: 3$
-$
 $
 ------Server n.M-BM-*[2]----$
-^[[0;33mPort : 33331^[[0m$
-^[[0;36mHost : 0.0.0.0^[[0m$
-Server name : _$
-socketFd: 5$
-$
-Location:$
-path: /$
-root: /$
-index: log.py$
-autoIndex: 0$
-cgiPath: /usr/bin/python$
-cgiExt: .py$
-methods: 3$
-return: $
-errorPages: 3$
-$

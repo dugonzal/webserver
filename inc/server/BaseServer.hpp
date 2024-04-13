@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 18:16:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 21:01:07 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ class BaseServer {
     int     getNServers(void) const;
 
     void    setServerNumber(int _amount);
-    void    setPort(int _port);
-    void    setHost(const string &_host);
     void    setServerName(const string &_name);
     void    setLocations(map<string, Location>);
   friend ostream &operator<<(ostream&, const BaseServer&);

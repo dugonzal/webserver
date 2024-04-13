@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 18:40:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 21:21:18 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
 
 BaseServer::~BaseServer(void) { }
 
+/*
 void  BaseServer::setServerSide(void) {
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw logic_error("socket creation failed");
@@ -48,13 +49,13 @@ void  BaseServer::setServerSide(void) {
   cout << "socketFd: " << serverFd << endl << endl;
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
-/*   struct flock fvar;
+   struct flock fvar;
   fvar.l_type=F_WRLCK;
   fvar.l_whence=SEEK_END;
   fvar.l_start=-100;
   fvar.l_len=100;
 
-  if (fcntl(serverFd, O_NONBLOCK, &fvar) < 0 ) { */
+  if (fcntl(serverFd, O_NONBLOCK, &fvar) < 0 ) { 
 
   if (fcntl(serverFd, F_SETFD, O_NONBLOCK) < 0) {
     close(serverFd);
@@ -74,7 +75,7 @@ void  BaseServer::setServerSide(void) {
   }
   if (listen(serverFd, 1024 / nServers) < 0)
     throw logic_error("listen failed");
-}
+}*/
 
 void  BaseServer::setRequest( void ) {
   Request client(serverFd);
@@ -82,7 +83,12 @@ void  BaseServer::setRequest( void ) {
 
 void  BaseServer::setLocations(map<string, Location> copy) {
   location = copy;
-  cout << location.find("/")->second << endl;
+  // establesco malamanete server_name y listen
+/*  pair<string, size_t> tmp = locations.find("root")->second.getListen();
+  port = tmp.second;
+  host = tmp.first;
+  server_name = location.find("root")->second.getServerName();
+*/
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }
@@ -96,19 +102,7 @@ bool  BaseServer::checkServer(void) const {
 }
 
 void   BaseServer::setServerNumber(int _amount) {
-  this->nServers = _amount;
-}
-
-void BaseServer::setPort(int _port) {
-  port = _port;
-}
-
-void BaseServer::setHost(const string& _host) {
-  host = _host;
-}
-
-void  BaseServer::setServerName(const string& _name ) {
-  this->server_name = _name;
+  nServers = _amount;
 }
 
 ostream &operator<<(ostream &os, const BaseServer &copy) {

@@ -11,6 +11,7 @@ $
 inicio de server$
 $
 $
+0 -  index.html$
 0 -  log.py$
 $
 fin de server$
@@ -41,7 +42,6 @@ methods: 3$
 return: $
 errorPages: 3$
 $
-size de locations   3$
 $
 ------Server n.M-BM-*[1]----$
 ^[[0;33mPort : 1111^[[0m$
@@ -60,10 +60,9 @@ methods: 3$
 return: $
 errorPages: 3$
 $
-size de locations   4$
 $
 ------Server n.M-BM-*[2]----$
-^[[0;33mPort : 2222^[[0m$
+^[[0;33mPort : 33331^[[0m$
 ^[[0;36mHost : 0.0.0.0^[[0m$
 Server name : _$
 socketFd: 5$
@@ -79,4 +78,3 @@ methods: 3$
 return: $
 errorPages: 3$
 $
-size de locations   3$

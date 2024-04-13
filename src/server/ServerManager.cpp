@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/12 16:12:03 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/12 22:15:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void  ServerManager::setNServers(size_t _amount) {
 }
 
 void  ServerManager::startServers(void) {
-  for (size_t it = 0; it < nServers; it++) {
-    Server ptr;
+  Server ptr;
 
+  for (size_t it = 0; it < nServers; it++) {
     ptr.setServerNumber(nServers);
     ptr.setPort(portsServers[it]);
     ptr.setHost(hostServers[it]);
@@ -52,9 +52,8 @@ void  ServerManager::startServers(void) {
     cout << endl << "------Server n.ª[" << it << "]----" << endl;
     ptr.setServerSide();
     ptr.setLocations(location[it]);
-    cout << "size de locations   " << location[it].size() << endl;
-    sleep(2);
     addServer(ptr);
+    ptr.clear();
   }
 //  setSelect();
 }

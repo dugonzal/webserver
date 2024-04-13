@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/12 16:01:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 18:53:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
     insertLocation(&tmp, line[i]);
   }
 
-  tmp.setPath("root path");
+  tmp.setPath("");
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
   if (locations[n].empty())
     locations[n].erase(tmp.getPath());
@@ -86,8 +86,6 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
       while (++i < line.size()) {
         if (!line[i].compare("}")) {
           locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
-          if (locations[n].empty())
-            locations[n].erase(tmp.getPath());
           tmp.clear();
           break;
         }

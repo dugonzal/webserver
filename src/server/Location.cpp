@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 18:47:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 18:52:44 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,12 @@ void  Location::setErrorPages(const string &_errorPages) {
 }
 
 // hay que setear default posiblemente
-Location  Location::clone(void) const { return (*this); }
+Location  Location::clone(void) const {
+  if ((!cgiPath.empty() and cgiExt.empty()) \
+    or (cgiPath.empty() and !cgiExt.empty()))
+      throw(runtime_error("si hay cgi tiene que haber path y ext"));
+  return (*this);
+}
 
 const string Location::getPath(void) const { return (path); }
 

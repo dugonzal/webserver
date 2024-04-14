@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 11:50:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:11:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
 
   tmp.setPath("root");
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
-  if (locations[n].empty())
-    locations[n].erase(tmp.getPath());
   tmp.clear();
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
@@ -100,7 +98,7 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
 }
 
 void  WebServer::handlerSetServerWebServer(void) {
-  vector<string> *tmp = parser.getDataServers();
+  const vector<string> *tmp = parser.getDataServers();
   locations = new map<string, Location>[nServers];
 
   for (size_t i = 0; i < nServers; i++)

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 19:27:23 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:23:45 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
        continue;
     if (!checkAllowedWords(firstWord(buffer))) {
       delete file;
-      throw(runtime_error(string("Word not allowed: (" + string(buffer + ")"))));
+      throw(runtime_error(string("Word not allowed: (" \
+        + string(buffer + ")"))));
     }
     if (!firstWord(buffer).compare("include")) {
       if (readIncludeError(lastWord(buffer))) {
@@ -108,7 +109,8 @@ void  BaseParser::keyValueCkeck(void) {
     if (*end == ';') {
       it->erase(end);
       if (!lastWord(*it).size())
-        throw(runtime_error(string("missing key or value (") + string(trim(*it) + ")")));
+        throw(runtime_error(string("missing key or value (") \
+          + string(trim(*it) + ")")));
       size_t n = numberWords(*it);
       if (n > 2) {
         string tmp = firstWord(*it);
@@ -117,7 +119,8 @@ void  BaseParser::keyValueCkeck(void) {
         else if (n < 5 && !tmp.compare("allow_methods"))
           continue;
         else
-          throw(runtime_error(string("too many words (") + string(trim(*it) + ")")));
+          throw(runtime_error(string("too many words (") \
+            + string(trim(*it) + ")")));
       }
     }
   }

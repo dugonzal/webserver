@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 11:00:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:16:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ using std::ostream;
 using std::make_pair;
 using std::pair;
 using std::istringstream;
-using std::istringstream;
+using std::ostringstream;
 using std::stringstream;
 
 bool    errorFile(ifstream);

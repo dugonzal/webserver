@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 11:56:00 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:20:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
     addr = copy.addr;
     addrLen = copy.addrLen;
     serverFd = copy.serverFd;
-    data = copy.data;
     error_page = copy.error_page;
     buffer = copy.buffer;
     options = copy.options;
-    locations = copy.locations;
+    location = copy.location;
   }
   return (*this);
 }
@@ -81,9 +80,11 @@ void  BaseServer::setRequest(void) {
 
 void  BaseServer::setLocations(const map<string, Location> &copy) {
   location = copy;
+
   LocationRoot = location.find("root")->second;
   host = LocationRoot.getHost();
   port = LocationRoot.getPort();
+  server_name = LocationRoot.getServerName();
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }

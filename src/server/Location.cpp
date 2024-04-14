@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 21:19:54 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 10:36:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
-Location::Location(void): autoIndex(-1), listen("0.0.0.0", -1) { }
+Location::Location(void): autoIndex(-1), port(0) { }
 
 Location::~Location(void) { }
 
@@ -20,7 +20,7 @@ Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
     autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), \
       methods(copy.methods),  errorPages(copy.errorPages),
-        listen(copy.listen), serverName(copy.serverName) { }
+        host(copy.host), port(copy.port), serverName(copy.serverName) { }
 
 Location &Location::operator=(const Location &copy) {
   if (&copy != this) {
@@ -32,7 +32,8 @@ Location &Location::operator=(const Location &copy) {
     cgiExt  = copy.cgiExt;
     methods = copy.methods;
     errorPages = copy.errorPages;
-    listen = copy.listen;
+    host = copy.host;
+    port = copy.port;
     serverName = copy.serverName;
   }
   return (*this);
@@ -120,29 +121,27 @@ void  Location::setListen(const string &_listen) {
   int pos = _listen.find_first_of(":");
   int n = 0;
   string  tmp;
-
-  if (listen.first.compare("0.0.0.0"))
+// habria que comprobar que el host tengo 4 puntos y sean mayores a 0 y < 255
+  if (!host.empty())
     throw(runtime_error(string("listen exists (") + string(_listen + ")")));
   else if (pos > 6) {
     tmp  = _listen.substr(0, pos);
     n  = atoi(_listen.substr(pos + 1).data());
     if (!tmp.compare("localhost") || !tmp.compare("127.0.0.1"))
-      listen.first = "0.0.0.0";
+      host = "0.0.0.0";
     else
-      listen.first = tmp;
+      host = tmp;
     if (n < 0 or n > 65535)
       throw(runtime_error(string("error port out range (") + string(_listen + ")")));
     else
-      listen.second = n;
+      port = n;
   } else if (pos < 0) {
     if (n < 0 or n > 65535)
       throw(runtime_error(string("error port out range (") + string(_listen + ")")));
     else
-      listen.second = atoi(_listen.data());
+      port = atoi(_listen.data());
   } else
       throw(runtime_error(string("no puedo establecer listen (") + string(_listen + ")")));
-  cout << n << endl;
-  cout << tmp << endl;
 }
 
 void  Location::setServerName(const string &_serverName) {
@@ -183,7 +182,8 @@ const map<size_t, string> Location::getErrorPages(void) const {
   return(errorPages);
 }
 
-const pair<string, size_t>  Location::getListen(void) const { return (listen); }
+const string  Location::getHost(void) const { return (host); }
+size_t  Location::getPort(void) const { return (port); }
 
 const string  Location::getServerName(void) const { return (serverName); }
 
@@ -201,11 +201,12 @@ void  Location::clear(void) {
 }
 
 ostream &operator<<(ostream &os, const Location &copy) {
-  os << "Location:" << endl << "path: " << copy.getPath() << endl \
-  << "root: " << copy.getPath() << endl << "index: " << copy.getIndex() \
-  << endl << "autoIndex: " << copy.getAutoIndex() << endl << "cgiPath: " \
-  << copy.getCgiPath() << endl << "cgiExt: " << copy.getCgiext() \
-  << endl << "methods: " << copy.getmethods().size() << endl << "return: " \
+  os << "Location:" << endl << "host: " << copy.host << endl << "port: " \
+  << copy.port << endl << "path: " << copy.getPath() << endl << "root: " \
+  << copy.getRoot() << endl << "index: " << copy.getIndex() << endl << "autoIndex: " \
+  << copy.getAutoIndex() << endl << "cgiPath: " << copy.getPath() << endl \
+  << "cgiExt: " << copy.getCgiext() <<  endl << "methods: " \
+  << copy.getmethods().size() << endl << "return: " \
   << copy.getReturn().second << endl << "errorPages: " \
   << copy.getErrorPages().size() << endl;
   return (os);

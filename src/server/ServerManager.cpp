@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 21:21:36 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 10:41:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
 void  ServerManager::startServers(void) {
   for (size_t it = 0; it < nServers; it++) {
     Server ptr;
-    ptr.setServerNumber(nServers);
     cout << endl << "------Server n.ª[" << it << "]----" << endl;
     ptr.setLocations(location[it]);
-    cout << location[it] << endl;
+    ptr.setServerSide();
     addServer(ptr);
   }
-//  setSelect();
+  setSelect();
 }
 
 void  ServerManager::setSelect(void) {

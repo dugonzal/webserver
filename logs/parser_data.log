@@ -1,13 +1,17 @@
-65535$
-localhost$
-1$
-34443343$
-2222$
-0.0.0.1$
 client_max_body_size 1m$
 $
 ------Server n.M-BM-*[0]----$
+^[[0;33mPort : 3003^[[0m$
+^[[0;36mHost : 0.0.0.0^[[0m$
+Server name : $
+socketFd: 3$
+$
+pasa por aqui $
 $
 ------Server n.M-BM-*[1]----$
+^[[0;33mPort : 1^[[0m$
+^[[0;36mHost : 34443343^[[0m$
+Server name : $
+socketFd: 4$
 $
-------Server n.M-BM-*[2]----$
+Error: error: socket bind().$

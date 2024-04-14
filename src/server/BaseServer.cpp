@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 21:21:18 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 10:43:46 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
+#include <sys/socket.h>
 
 BaseServer::BaseServer(void): opt(1) {
   ::bzero(&addr, sizeof(addr));
@@ -35,7 +36,6 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
 
 BaseServer::~BaseServer(void) { }
 
-/*
 void  BaseServer::setServerSide(void) {
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
      throw logic_error("socket creation failed");
@@ -49,13 +49,13 @@ void  BaseServer::setServerSide(void) {
   cout << "socketFd: " << serverFd << endl << endl;
   addr.sin_addr.s_addr = inet_addr(host.c_str());
   addrLen = sizeof(addr);
-   struct flock fvar;
+/*   struct flock fvar;
   fvar.l_type=F_WRLCK;
   fvar.l_whence=SEEK_END;
   fvar.l_start=-100;
   fvar.l_len=100;
 
-  if (fcntl(serverFd, O_NONBLOCK, &fvar) < 0 ) { 
+  if (fcntl(serverFd, O_NONBLOCK, &fvar) < 0 ) { */
 
   if (fcntl(serverFd, F_SETFD, O_NONBLOCK) < 0) {
     close(serverFd);
@@ -69,31 +69,28 @@ void  BaseServer::setServerSide(void) {
   if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT,
     &opt, sizeof(opt)) < 0)
       throw logic_error("error: socket SO_REUSEADDR.");
-  if (bind(serverFd, (sockaddr *)&addr, addrLen) < 0) {
-    cout << strerror(errno) << endl;
+  if (bind(serverFd, reinterpret_cast<sockaddr *>(&addr), addrLen) < 0) {
     throw logic_error("error: socket bind().");
   }
-  if (listen(serverFd, 1024 / nServers) < 0)
+  cout << "pasa por aqui "<< endl;
+  if (listen(serverFd, 1024) < 0)
     throw logic_error("listen failed");
-}*/
+}
 
-void  BaseServer::setRequest( void ) {
+void  BaseServer::setRequest(void) {
   Request client(serverFd);
 }
 
-void  BaseServer::setLocations(map<string, Location> copy) {
+void  BaseServer::setLocations(const map<string, Location> &copy) {
   location = copy;
-  // establesco malamanete server_name y listen
-/*  pair<string, size_t> tmp = locations.find("root")->second.getListen();
-  port = tmp.second;
-  host = tmp.first;
-  server_name = location.find("root")->second.getServerName();
-*/
+  LocationRoot = location.find("root")->second;
+  host = LocationRoot.getHost();
+  port = LocationRoot.getPort();
 }
 
 int   BaseServer::getSocket(void) const { return (serverFd); }
 
-int   BaseServer::getNServers(void) const { return (nServers); }
+size_t  BaseServer::getNServers(void) const { return (nServers); }
 
 bool  BaseServer::checkServer(void) const {
   if (port <= 0 || server_name.empty())
@@ -101,7 +98,7 @@ bool  BaseServer::checkServer(void) const {
   return true;
 }
 
-void   BaseServer::setServerNumber(int _amount) {
+void  BaseServer::setServerNumber(int _amount) {
   nServers = _amount;
 }
 

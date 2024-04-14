@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 21:01:07 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 10:37:23 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ class BaseServer {
     struct sockaddr_in             addr; // IP socket address
     socklen_t                      addrLen; // Length of socket
     /* Configuration from input */
-    int                            nServers;
-    int                            port;
+    size_t                         nServers;
+    size_t                         port;
     string                         host;
     string                         server_name;
     map<int, string>               errorPageAr;
     int                            clientMaxBodySize;
     map<string, Location>          location;
+    Location                       LocationRoot;
 //    Request                        client;
 
  protected:
@@ -52,10 +53,10 @@ class BaseServer {
 
     bool    checkServer(void) const;
     int     getSocket(void) const;
-    int     getNServers(void) const;
+    size_t  getNServers(void) const;
 
-    void    setServerNumber(int _amount);
+    void    setServerNumber(int);
     void    setServerName(const string &_name);
-    void    setLocations(map<string, Location>);
+    void    setLocations(const map<string, Location>&);
   friend ostream &operator<<(ostream&, const BaseServer&);
 };

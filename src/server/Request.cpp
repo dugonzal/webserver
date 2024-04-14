@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/03/24 17:04:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 10:42:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ Request::Request(int _serverFd): inputIsGood(true) {
 	//! Message for the client
 	/* std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl; */
 
-	close(clientFd); // After server has replied, close connection
+//	close(clientFd); // After server has replied, close connection
 }
 
 Request::~Request( void ) {}

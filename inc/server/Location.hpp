@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 20:48:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/13 21:59:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,16 @@ class Location {
     map<size_t, string>   errorPages;
     // estas dos son directrises generales del servidor que solo se alojaran
   //  en el alcance general de la locacion
-    pair<string, size_t>  listen;
+    string                host;
+    size_t                port;
     string                serverName;
 
  public:
     Location(void);
     ~Location(void);
     Location(const Location&);
+
+ public:
     Location                    &operator=(const Location&);
     void                        setRoot(const string&);
     void                        setPath(const string&);
@@ -56,8 +59,10 @@ class Location {
     const vector<string>        getmethods(void) const;
     const pair<size_t, string>  getReturn(void) const;
     const map<size_t, string>   getErrorPages(void) const;
-    const pair<string, size_t>  getListen(void) const;
+    const string                getHost(void) const;
+    size_t                      getPort(void) const;
     const string                getServerName(void) const;
     void                        clear(void);
-  friend ostream                &operator<<(ostream &, const Location&);
+
+ friend ostream                &operator<<(ostream &, const Location&);
 };

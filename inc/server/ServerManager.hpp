@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 19:10:11 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 10:34:46 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@
 class ServerManager {
  private:
   size_t                          nServers;
-  deque<int>                      portsServers;
-  vector<string>                  hostServers;
-  vector<string>                  serverName;
-  vector<map<int, string> >       errorPage;
-  vector<int>                     clientMaxBodySize;
   Server                          server;
   vector<Server>                  vServers;
   struct                          timeval timeout;
@@ -36,12 +31,10 @@ class ServerManager {
   ServerManager &operator=(const ServerManager&);
 
  public:
-  void  setNServers(size_t _amount);
+  void  setNServers(size_t);
   void  startServers(void);
   void  setSelect(void);
-  void  addServer(Server _server);
-  int   setServerName(const string& _name);
-  int   setListenConfig(int _nServer, const string& _host, int _port);
-  int   setErrorPage(const string& _errorPages);
+  void  addServer(Server);
+  int   setServerName(const string&);
   void  setLocations(map<string, Location>*);
 };

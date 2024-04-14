@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 10:41:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 11:52:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void  ServerManager::startServers(void) {
     ptr.setServerSide();
     addServer(ptr);
   }
-  setSelect();
+  //setSelect();
 }
 
 void  ServerManager::setSelect(void) {

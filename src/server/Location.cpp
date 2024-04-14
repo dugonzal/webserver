@@ -6,13 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 10:36:38 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:00:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
+#include <string>
 
-Location::Location(void): autoIndex(-1), port(0) { }
+Location::Location(void): autoIndex(-1), port(-1), clientBodySize(-1) { }
 
 Location::~Location(void) { }
 
@@ -122,7 +123,7 @@ void  Location::setListen(const string &_listen) {
   int n = 0;
   string  tmp;
 // habria que comprobar que el host tengo 4 puntos y sean mayores a 0 y < 255
-  if (!host.empty())
+  if (!host.empty() || port != -1)
     throw(runtime_error(string("listen exists (") + string(_listen + ")")));
   else if (pos > 6) {
     tmp  = _listen.substr(0, pos);
@@ -148,6 +149,28 @@ void  Location::setServerName(const string &_serverName) {
   if (!serverName.empty())
     throw(runtime_error("exist serverName"));
   serverName = _serverName;
+}
+
+
+void Location::setClientBodySize(const string& _clientBodySize) {
+  stringstream num;
+  stringstream size;
+  int ret;
+
+  if (clientBodySize != -1)
+    throw(runtime_error(string("clientBodySize exists ("+ string(_clientBodySize + ")"))));
+  for (size_t i = 0; i < _clientBodySize.size(); i++) {
+    if (isdigit(_clientBodySize.c_str()[i]))
+      num << _clientBodySize.c_str()[i];
+    else
+      size << _clientBodySize.c_str()[i];
+  }
+  ret = atoi(num.str().c_str());
+  if (!size.str().compare("m"))
+    ret *= 1000000;
+  else if (!size.str().compare("k"))
+    ret *= 1000;
+  clientBodySize = ret;
 }
 
 // hay que setear default posiblemente
@@ -198,6 +221,9 @@ void  Location::clear(void) {
   _return.second.clear();
   methods.clear();
   errorPages.clear();
+  host.clear();
+  port = -1;
+  clientBodySize = -1;
 }
 
 ostream &operator<<(ostream &os, const Location &copy) {

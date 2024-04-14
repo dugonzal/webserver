@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 21:44:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 11:50:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
   else if (!firstWord(line).compare("return"))
     tmp->setReturn(lastWord(line));
   else if (!firstWord(line).compare("client_max_body_size"))
-    cout << line << endl;
+    tmp->setClientBodySize(lastWord(line));
   else if (!firstWord(line).compare("index"))
     tmp->setIndex(lastWord(line));
   else if (!firstWord(line).compare("listen"))

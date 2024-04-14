@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 10:43:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 11:56:00 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/BaseServer.hpp"
-#include <sys/socket.h>
 
 BaseServer::BaseServer(void): opt(1) {
   ::bzero(&addr, sizeof(addr));
@@ -72,8 +71,7 @@ void  BaseServer::setServerSide(void) {
   if (bind(serverFd, reinterpret_cast<sockaddr *>(&addr), addrLen) < 0) {
     throw logic_error("error: socket bind().");
   }
-  cout << "pasa por aqui "<< endl;
-  if (listen(serverFd, 1024) < 0)
+  if (listen(serverFd, nServers / 1024) < 0)
     throw logic_error("listen failed");
 }
 

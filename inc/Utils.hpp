@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 13:21:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 11:00:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,13 @@ using std::ostream;
 using std::make_pair;
 using std::pair;
 using std::istringstream;
+using std::istringstream;
+using std::stringstream;
 
 bool    errorFile(ifstream);
 string  trim(const string&);
 bool    skipLine(const string&);
-int     getNumberFromLine(const string& line);
-string  getNameFromLine(const string& line, const string& strBefore);
-string  findStrInLog(const string& line, const string& toFind);
 string  readFile(const string& filename);
-string  getHostFromLine(const string& line);
 string  firstWord(string line);
 string  lastWord(string line);
 size_t  numberWords(const string  &line);

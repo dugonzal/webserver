@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 21:59:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 11:58:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ class Location {
     // estas dos son directrises generales del servidor que solo se alojaran
   //  en el alcance general de la locacion
     string                host;
-    size_t                port;
+    int                   port;
     string                serverName;
+    int                   clientBodySize;
 
  public:
     Location(void);
@@ -49,6 +50,7 @@ class Location {
     void                        setErrorPages(const string&);
     void                        setListen(const string&);
     void                        setServerName(const string&);
+    void                        setClientBodySize(const string&);   
     Location                    clone(void) const;
     const string                getRoot(void) const;
     const string                getPath(void) const;

@@ -19,3 +19,6 @@ $
 Server name : _$
 socketFd: 5$
 $
+^[[0;31m!----SELECT ON POINT----!^[[0m$
+$
+Error: error select$

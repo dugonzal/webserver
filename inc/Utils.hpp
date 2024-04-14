@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:16:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:30:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ using std::ifstream;
 using std::vector;
 using std::size_t;
 using std::map;
+using std::list;
 using std::ostream;
 using std::make_pair;
 using std::pair;

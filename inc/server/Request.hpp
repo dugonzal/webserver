@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 09:54:41 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/04/02 18:17:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:27:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,18 @@ class Request {
 	  string method, file;
 
 	public:
-		Request( void );
-		Request( int _serverFd );
-		~Request( void );
+		Request(void);
+		Request(int _serverFd);
+		~Request(void);
 
-		int		parseClientMsg( void );
+		int		parseClientMsg(void);
 		// Parsing input
-		int		getMethodType( void );
-		string	getRoute( void );
-		void	checkHttpVersion( void );
+		int		getMethodType(void);
+		string	getRoute(void);
+		void	checkHttpVersion(void);
 
 		// Funciones Iker
-		void methodGet( void );
-		void methodPost( void );
-		void methodDelete( void );
-
+		void methodGet(void);
+		void methodPost(void);
+		void methodDelete(void);
 };

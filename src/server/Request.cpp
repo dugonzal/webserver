@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/04/14 10:42:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 13:20:34 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,21 +119,20 @@ std::string	Request::getRoute( void ) {
 	else {
 		perror("error: Route is erroneus");
 		inputIsGood = false;
-		return "";
-	}
-	
-	std::cout << "Route : " << ss.str() << std::endl;
-	std::string ret(ss.str());
-	return (ret);
+    return "";
+  }
+  cout << "Route : " << ss.str() << endl;
+  string ret(ss.str());
+  return (ret);
 }
 
 int		Request::getMethodType( void ) {
-	std::stringstream ss;
+  stringstream ss;
 
 	for ( int i = 0; !isspace(clientMsg[i]) && clientMsg[i]; i++)
 		ss << clientMsg[i];
 
-	std::cout << "Method : " << ss.str() << std::endl;
+	cout << "Method : " << ss.str() << endl;
 	if (!ss.str().compare("GET"))
 		return GET;
 	else if (!ss.str().compare("DELETE"))
@@ -144,13 +143,13 @@ int		Request::getMethodType( void ) {
 		inputIsGood = false;
 		perror("error: Method is erroneus OR non-handled");
 		return (EXIT_FAILURE);
-	}
+  }
 }
 
 void	Request::checkHttpVersion( void ) {
-	std::string str(clientMsg);
-	std::string firstLine;
-	std::stringstream ss;
+	string str(clientMsg);
+	string firstLine;
+	stringstream ss;
 
 	firstLine = str.substr(0, str.find("\n", 0));
 	size_t pos = firstLine.find("HTTP/", 0);

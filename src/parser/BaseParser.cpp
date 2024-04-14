@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:23:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:55:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void  BaseParser::setNservers(void) {
 
 size_t  BaseParser::getNservers(void) const { return(nServers); }
 
-vector<string> BaseParser::getData(void) const { return(data); }
+const vector<string> BaseParser::getData(void) const { return(data); }
 
 size_t  BaseParser::skipLocation(size_t i) {
   while (++i < data.size())

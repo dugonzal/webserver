@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 11:52:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 13:36:22 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ ServerManager::ServerManager(void): nServers(0) {
   FD_ZERO(&cSockets);
   FD_ZERO(&rSockets);
   FD_ZERO(&wSockets);
-  timeout.tv_sec = 900;
+  timeout.tv_sec = 90;
   timeout.tv_usec = 0;
 }
 
@@ -41,7 +41,7 @@ void  ServerManager::startServers(void) {
     ptr.setServerSide();
     addServer(ptr);
   }
-  //setSelect();
+  setSelect();
 }
 
 void  ServerManager::setSelect(void) {
@@ -57,12 +57,13 @@ void  ServerManager::setSelect(void) {
     }
     for (int i = 0; i < FD_SETSIZE; i++) {
       if (FD_ISSET(i, &rSockets)) {
-        for (vector<Server>::iterator it = vServers.begin(); \
+        cout << i << endl;
+        /*for (vector<Server>::iterator it = vServers.begin(); \
           it != vServers.end(); it++) {
             if (i == it->getSocket()) {
               it->setRequest();
             }
-        }
+        }*/
       }
       if (FD_ISSET(i, &wSockets))
         cout << i << " can be used to write!" << endl;

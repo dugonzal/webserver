@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:21:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/14 12:54:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,10 @@ class BaseServer {
     size_t                         port;
     string                         host;
     string                         server_name;
-    map<int, string>               errorPageAr;
     int                            clientMaxBodySize;
     map<string, Location>          location;
     Location                       LocationRoot;
-//    Request                        client;
-
- protected:
-    vector<string>                 error_page;
     vector<string>                 buffer;
-    int                            *options;
 
  public:
     BaseServer(void);
@@ -48,12 +42,9 @@ class BaseServer {
 ////    virtual BaseServer clone(void) const = 0;
     void    setServerSide(void);
     void    setRequest(void);
-    void    setServerNumber(int);
-    void    setServerName(const string &_name);
     void    setLocations(const map<string, Location>&);
-    bool    checkServer(void) const;
     int     getSocket(void) const;
     size_t  getNServers(void) const;
 
- friend ostream &operator<<(ostream&, const BaseServer&);
+  friend ostream &operator<<(ostream&, const BaseServer&);
 };

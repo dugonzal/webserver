@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 20:40:18 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/15 21:20:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void  ServerManager::setSelect(void) {
     if ((retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout)) < 0) {
       throw(runtime_error("error select"));
     }
-    cout << "paso " << endl;
     for (int i = 0; i < FD_SETSIZE; i++) {
       if (FD_ISSET(i, &rSockets)) {
         cout << i << endl;
@@ -63,15 +62,14 @@ void  ServerManager::setSelect(void) {
           it != vServers.end(); it++) {
             if (i == it->getSocket()) {
               int newSocket;
-              if ((newSocket = accept(it->getSocket(), NULL, NULL)) < 0) {
-                throw(runtime_error("error accept"));
-              }
-              if (newSocket == -1)
-                throw(runtime_error("error accept"));
+              sockaddr_in addr;
+              socklen_t addr_size = sizeof(addr);
+              newSocket = accept(it->getSocket(), (struct sockaddr *)&addr, &addr_size);
               FD_SET(newSocket, &cSockets);
               cout << "New connection on socket: " << newSocket << endl;
               char buffer[1024] = {0};
               if (::recv(newSocket, buffer, 1024, 0) < 0) {
+                cout << "cierra socket" << endl;
                 close (newSocket);
                 FD_CLR(newSocket, &cSockets); // remove from master set
               }

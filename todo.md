@@ -5,6 +5,7 @@ TODO :
 
     [x] checkerar que toda la configuracion siempre este dentro del \
         scope de un servidor si esta afuera es un error
+  std::string response = "HTTP/1.1 200  OK\r\n\r\n <h1 align=\"center\"> Hello, World! </h1>";
 
 @JOKITON:
     - Comando para verificar multiples puertos al mismo tiempo:

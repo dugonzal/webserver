@@ -3,20 +3,9 @@
 #include <cstring>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 #include <unistd.h>
-#include <sys/select.h>
-#include <fstream>
-
-// Función para leer un archivo y devolver su contenido como una cadena
-std::string readFile(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file) {
-        return "";
-    }
-    std::string content((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
-    return content;
-}
+#include <poll.h>
+#include <arpa/inet.h> // Incluir esta cabecera para inet_ntop
 
 int main() {
     // Crear el socket del servidor
@@ -26,18 +15,11 @@ int main() {
         return 1;
     }
 
-    // Configurar opciones del socket para reutilizar la dirección y puerto del servidor
-    int opt = 1;
-    if (setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) == -1) {
-        std::cerr << "Error al configurar las opciones del socket\n";
-        return 1;
-    }
-
     // Configurar la dirección del servidor
     struct sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
-    serverAddr.sin_port = htons(8080);
+    serverAddr.sin_port = htons(8082);
 
     // Enlazar el socket a la dirección y puerto
     if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) == -1) {
@@ -51,24 +33,21 @@ int main() {
         return 1;
     }
 
-    // Crear un conjunto de descriptores de archivos para select
-    fd_set readSet;
-    FD_ZERO(&readSet);
-    FD_SET(serverSocket, &readSet);
-    int maxFd = serverSocket;
+    // Crear estructura de eventos para poll
+    struct pollfd fds[1];
+    fds[0].fd = serverSocket;
+    fds[0].events = POLLIN;
 
     while (true) {
-        fd_set tmpSet = readSet;
-        
-        // Llamar a select para esperar actividad en los sockets
-        int activity = select(maxFd + 1, &tmpSet, NULL, NULL, NULL);
+        // Llamar a poll para esperar actividad en los sockets
+        int activity = poll(fds, 1, -1);
         if (activity == -1) {
-            std::cerr << "Error en select\n";
+            std::cerr << "Error en poll\n";
             return 1;
         }
 
         // Comprobar si hay actividad en el socket del servidor
-        if (FD_ISSET(serverSocket, &tmpSet)) {
+        if (fds[0].revents & POLLIN) {
             // Aceptar la conexión entrante
             struct sockaddr_in clientAddr;
             socklen_t clientAddrLen = sizeof(clientAddr);
@@ -79,43 +58,13 @@ int main() {
             }
 
             // Imprimir información sobre el cliente conectado
-/*            char clientIP[INET_ADDRSTRLEN];
+            char clientIP[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, &clientAddr.sin_addr, clientIP, INET_ADDRSTRLEN);
             std::cout << "Nuevo cliente conectado desde: " << clientIP << ":" << ntohs(clientAddr.sin_port) << std::endl;
-*/
-            // Recibir la solicitud del cliente
-            char buffer[1024];
-            int bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-            if (bytesRead <= 0) {
-                std::cerr << "Error al recibir la solicitud del cliente\n";
-                close(clientSocket);
-                continue;
-            }
 
-            // Analizar la solicitud HTTP
-            std::string request(buffer, bytesRead);
-            size_t pos = request.find("GET");
-            if (pos != std::string::npos) {
-                size_t endPos = request.find(" ", pos + 4);
-                if (endPos != std::string::npos) {
-                    std::string filePath = request.substr(pos + 4, endPos - pos - 4);
-                    if (filePath == "/") {
-                        filePath = "/index.html"; // Servir index.html por defecto si no se especifica un archivo
-                    }
-
-                    // Leer el archivo solicitado
-                    std::string fileContent = readFile("public" + filePath);
-                    if (fileContent.empty()) {
-                        // Archivo no encontrado, enviar respuesta 404 Not Found
-                        std::string response = "HTTP/1.1 404 Not Found\r\n\r\n";
-                        send(clientSocket, response.c_str(), response.length(), 0);
-                    } else {
-                        // Archivo encontrado, enviar respuesta 200 OK con el contenido del archivo
-                        std::string response = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(fileContent.length()) + "\r\n\r\n" + fileContent;
-                        send(clientSocket, response.c_str(), response.length(), 0);
-                    }
-                }
-            }
+            std::string response = "HTTP/1.1 200  OK\r\n\r\n <h1 align=\"center\"> Hello, World! </h1>";
+            // Enviar "Hello, World!" al cliente
+            send(clientSocket, response.data(), response.size(), 0);
 
             // Cerrar la conexión con el cliente
             close(clientSocket);

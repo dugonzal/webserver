@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 11:56:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 21:42:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 
 Server::Server(void): BaseServer() { }
 
-Server::~Server(void) { }
+Server::~Server(void) { cout << "destructor server" << endl;}
 
 Server::Server(const Server &copy): BaseServer(copy) { }
 
 Server &Server::operator=(const Server &copy) {
-  if (this != &copy)
+  if (this != &copy) {
     BaseServer::operator=(copy);
-  return (*this);
-}
-
-Server Server::clone(void) const {
+    request = copy.request;
+  }
   return (*this);
 }

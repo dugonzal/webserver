@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 21:00:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 21:44:17 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ vector<pollfd>  fds;
 
 ServerManager::ServerManager(void): nServers(0) { }
 
-ServerManager::~ServerManager(void) { }
+ServerManager::~ServerManager(void) {
+  for (size_t it = 0; it < vServers.size(); it++)
+    delete vServers[it];
+}
 
 ServerManager::ServerManager(const ServerManager &copy): \
   server(copy.server) { }
@@ -30,27 +33,31 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
 }
 
 void  ServerManager::startServers(void) {
+  vServers.reserve(nServers);
   cout << "# servers: " << nServers << endl;
   for (size_t it = 0; it < nServers; it++) {
-    Server ptr;
+    Server *ptr = new Server();
     cout << endl << "------Server n.ª[" << it << "]----" << endl;
-    ptr.setLocations(location[it]);
-    ptr.setServerSide();
-    addServer(ptr);
+    ptr->setLocations(location[it]);
+    ptr->setServerSide();
+    vServers.push_back(ptr);
   }
-  setSelect();
+  for (size_t it = 0; it < vServers.size(); it++) {
+    cout << vServers[it]->getLocation()  << endl;
+  }
+//  setSelect();
 }
 
-
+/*
 void  ServerManager::setSelect(void) {
-  for (vector<Server>::const_iterator it = vServers.begin(); \
+  for (vector<Server*>::const_iterator it = vServers->begin(); \
     it < vServers.end(); it++) {
       struct pollfd tmp;
       tmp.fd = it->getSocket();
+      cout << it->getLocation().getHost() << "  " << it->getLocation().getPort() << endl;
       tmp.events = POLLIN;
       fds.push_back(tmp);
   }
-  cout << "server" << fds.size() << endl;
   const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
   while (true) {
     if (poll(fds.data(), fds.size(), -1) < 0)
@@ -100,15 +107,11 @@ void  ServerManager::setSelect(void) {
     }
   }
 }
-
+*/
 void  ServerManager::setNServers(size_t _amount) {
   nServers = _amount;
 }
 
 void  ServerManager::setLocations(map<string, Location> *_location) {
   location = _location;
-}
-
-void  ServerManager::addServer(Server _server) {
-  vServers.push_back(_server.clone());
 }

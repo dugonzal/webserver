@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:32:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 21:42:02 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 class Server: public virtual BaseServer {
  private:
   Request   request;
-  list<int> clients;
   //Response response;
 
  public:
@@ -25,5 +24,4 @@ class Server: public virtual BaseServer {
     ~Server(void);
     Server(const Server&);
     Server &operator=(const Server&);
-    Server clone(void) const;
 };

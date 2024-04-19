@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 19:29:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 21:37:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ class ServerManager {
  private:
   size_t                          nServers;
   Server                          server;
-  vector<Server>                  vServers;
-  struct                          timeval timeout;
+  vector<Server*>                 vServers;
   mutable map<string, Location>   *location;
 
  public:

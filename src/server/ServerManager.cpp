@@ -6,17 +6,15 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 18:15:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 20:06:14 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/ServerManager.hpp"
 
+vector<pollfd>  fds;
 
-ServerManager::ServerManager(void): nServers(0) {
-  timeout.tv_sec = 900;
-  timeout.tv_usec = 0;
-}
+ServerManager::ServerManager(void): nServers(0) { }
 
 ServerManager::~ServerManager(void) { }
 
@@ -45,26 +43,59 @@ void  ServerManager::startServers(void) {
 
 
 void  ServerManager::setSelect(void) {
-  for (vector<Server>::const_iterator it = vServers.begin(); it < vServers.end(); it++) {
-    struct pollfd tmp;
-    tmp.fd = it->getSocket();
-    tmp.events = POLLIN;
-    fds.push_back(tmp);
+  for (vector<Server>::const_iterator it = vServers.begin(); \
+    it < vServers.end(); it++) {
+      struct pollfd tmp;
+      tmp.fd = it->getSocket();
+      tmp.events = POLLIN;
+      fds.push_back(tmp);
   }
-
-  while (42) {
-      cout << "klk" << endl;
-      sleep(10);
-  }
+  cout << "server" << fds.size() << endl;
+  char *recvClient[1024] = {0};
+  const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
   while (true) {
-    if (poll(fds.data(), fds.size(), timeout.tv_sec ) < 0)
+    if (poll(fds.data(), fds.size(), -1) < 0)
       throw(runtime_error("eerrr poll"));
-
-    cout << "xd" << endl;
     for (size_t i = 0; i < fds.size(); i++) {
-      if (fds[i].revents & POLLIN) {
-          cout << "entra un server" << endl;
-          cout << "entra un cliente" << endl;
+      cout << "n:   " << i << endl;
+      if (fds[i].revents & POLLIN)  {
+        cout << "n: match " << i << endl;
+        if (i < nServers) {
+          cout << "socket server es un nuevo cliente" << endl;
+          struct pollfd fd;
+          struct sockaddr client;
+          socklen_t clientLen = sizeof(client);
+
+          int tmp = accept(fds[i].fd, \
+            reinterpret_cast<sockaddr *>(&client), &clientLen);
+          if (tmp < 0) {
+            std::cerr << "error client " << endl;
+            Signals::setSignals(SIGQUIT);
+            throw(runtime_error("error al aceptar un cliente"));
+          }
+          fd.fd = tmp;
+          fd.events = POLLIN;
+          if (::recv(tmp, recvClient, sizeof(recvClient), 0) < 0) {
+            std::cerr << "error al recibir" << endl;
+            Signals::setSignals(SIGQUIT);
+            throw(runtime_error("error al aceptar un cliente"));
+          }
+          send (tmp, response, strlen(response), 0);
+          fds.push_back(fd);
+        } else {
+          cout << "es un cliente" << endl;
+          int pos = ::recv(fds[i].fd, recvClient, sizeof(recvClient), 0);
+          if (pos < 0) {
+            std::cerr << "error al recibir" << endl;
+            Signals::setSignals(SIGQUIT);
+          }
+          if (!pos) {
+            close(fds[i].fd);
+            fds.erase(fds.begin() + i);
+          }
+          send (fds[i].fd, response, strlen(response), 0);
+          cout << recvClient << endl;
+        }
       }
     }
   }

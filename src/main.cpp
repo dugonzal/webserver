@@ -6,13 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 18:07:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:29:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/server/WebServer.hpp"
-
-vector<pollfd>  fds;
 
 int main(int ac, const char **av, const char **) {
   if (ac != 2)

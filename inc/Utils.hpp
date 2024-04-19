@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 18:13:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:22:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # include <sstream>
 //# include <chrono>
 //# include <thread>
+# include "Signals.hpp"
 
 extern std::vector<pollfd> fds;
 

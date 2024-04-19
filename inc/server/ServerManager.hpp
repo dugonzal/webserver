@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 18:02:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:29:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 # include "Server.hpp"
 # include "../Utils.hpp"
 
-enum type {
-  server,
-  client
-};
 
 class ServerManager {
  private:

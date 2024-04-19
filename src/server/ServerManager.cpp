@@ -6,17 +6,15 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/15 21:20:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:15:01 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/ServerManager.hpp"
 
+
 ServerManager::ServerManager(void): nServers(0) {
-  FD_ZERO(&cSockets);
-  FD_ZERO(&rSockets);
-  FD_ZERO(&wSockets);
-  timeout.tv_sec = 90;
+  timeout.tv_sec = 900;
   timeout.tv_usec = 0;
 }
 
@@ -34,6 +32,7 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
 }
 
 void  ServerManager::startServers(void) {
+  cout << "# servers: " << nServers << endl;
   for (size_t it = 0; it < nServers; it++) {
     Server ptr;
     cout << endl << "------Server n.ª[" << it << "]----" << endl;
@@ -44,44 +43,29 @@ void  ServerManager::startServers(void) {
   setSelect();
 }
 
-void  ServerManager::setSelect(void) {
-  int retSelect = 0;
 
-  for (size_t i = 0; i < nServers ; i++)
-    FD_SET(vServers[i].getSocket(), &cSockets);
+void  ServerManager::setSelect(void) {
+  for (vector<Server>::const_iterator it = vServers.begin(); it < vServers.end(); it++) {
+    struct pollfd tmp;
+    tmp.fd = it->getSocket();
+    tmp.events = POLLIN;
+    fds.push_back(tmp);
+  }
+
+  while (42) {
+      cout << "klk" << endl;
+      sleep(10);
+  }
   while (true) {
-    rSockets = cSockets;
-    cout << RED << "!----SELECT ON POINT----!" << END << endl;
-    if ((retSelect = select(FD_SETSIZE, &rSockets, NULL, NULL, &timeout)) < 0) {
-      throw(runtime_error("error select"));
-    }
-    for (int i = 0; i < FD_SETSIZE; i++) {
-      if (FD_ISSET(i, &rSockets)) {
-        cout << i << endl;
-        for (vector<Server>::iterator it = vServers.begin(); \
-          it != vServers.end(); it++) {
-            if (i == it->getSocket()) {
-              int newSocket;
-              sockaddr_in addr;
-              socklen_t addr_size = sizeof(addr);
-              newSocket = accept(it->getSocket(), (struct sockaddr *)&addr, &addr_size);
-              FD_SET(newSocket, &cSockets);
-              cout << "New connection on socket: " << newSocket << endl;
-              char buffer[1024] = {0};
-              if (::recv(newSocket, buffer, 1024, 0) < 0) {
-                cout << "cierra socket" << endl;
-                close (newSocket);
-                FD_CLR(newSocket, &cSockets); // remove from master set
-              }
-              if (send(newSocket, "Hello, world!", 13, 0) < 0) {
-                close (newSocket);
-                FD_CLR(newSocket, &cSockets); // remove from master set
-              }
-            }
-        }
+    if (poll(fds.data(), fds.size(), timeout.tv_sec ) < 0)
+      throw(runtime_error("eerrr poll"));
+
+    cout << "xd" << endl;
+    for (size_t i = 0; i < fds.size(); i++) {
+      if (fds[i].revents & POLLIN) {
+          cout << "entra un server" << endl;
+          cout << "entra un cliente" << endl;
       }
-      if (FD_ISSET(i, &wSockets))
-        cout << i << " can be used to write!" << endl;
     }
   }
 }

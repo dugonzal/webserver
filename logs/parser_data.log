@@ -1,3 +1,4 @@
+# servers: 3$
 $
 ------Server n.M-BM-*[0]----$
 ^[[0;33mPort : 3003^[[0m$
@@ -19,5 +20,4 @@ $
 Server name : _$
 socketFd: 5$
 $
-^[[0;31m!----SELECT ON POINT----!^[[0m$
-$
+klk$

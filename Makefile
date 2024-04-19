@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/03/24 15:53:13 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/04/19 18:26:40 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,19 +45,20 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 
 .SILENT:
 
-all: ${NAME}
+all: ${NAME} 
 
 ${NAME}: ${OBJ} ${I}
-	${CXX} ${OBJ} -o $@ && ./$@
-#	make -C tests
-	./webserv | cat -e > logs/parser_data.log
+	${CXX} ${OBJ} -o ${NAME} && ./$@
 	printf "compile done ->: [$@]\n"
+
+#	make -C tests
+#./webserv | cat -e > logs/parser_data.log
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	mkdir -p ${OBJ_DIR}
 	mkdir -p ${OBJ_DIR}${P_DIR}
 	mkdir -p ${OBJ_DIR}${S_DIR}
-	${CXX} -c $? -o $@ 
+	${CXX} -c $? -o $@
 	printf "compile ->: {$?}\n"
 
 clean:
@@ -70,7 +71,6 @@ fclean: clean
 
 re: fclean all
 
-	
 serv:
 	sudo python3 -m http.server 80853
 

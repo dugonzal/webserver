@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 11:58:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:42:14 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ class Location {
     const pair<size_t, string>  getReturn(void) const;
     const map<size_t, string>   getErrorPages(void) const;
     const string                getHost(void) const;
-    size_t                      getPort(void) const;
+    int                         getPort(void) const;
     const string                getServerName(void) const;
     void                        clear(void);
 

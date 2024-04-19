@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 20:18:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:02:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,19 @@
 # include "Server.hpp"
 # include "../Utils.hpp"
 
+enum type {
+  server,
+  client
+};
+
 class ServerManager {
  private:
   size_t                          nServers;
   Server                          server;
   vector<Server>                  vServers;
   struct                          timeval timeout;
-  fd_set                          cSockets, rSockets, wSockets;
   mutable map<string, Location>   *location;
+
  public:
   ServerManager(void);
   ~ServerManager(void);

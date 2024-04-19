@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:11:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:30:54 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ WebServer::WebServer(void) { }
 
 WebServer::~WebServer(void) { delete [] locations; }
 
-WebServer::WebServer(const string &filename): parser(filename) {
+WebServer::WebServer(const string &filename): parser(filename), signals() {
   nServers = parser.getNservers();
 }
 

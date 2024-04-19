@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Signals.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:37:20 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/03/21 12:59:30 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:21:24 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include <csignal>
+# include "Utils.hpp"
 
 class Signals {
  private:
@@ -21,5 +21,5 @@ class Signals {
  public:
     Signals(void);
     ~Signals(void);
-    void setSignals(void);
+    static void setSignals(int);
 };

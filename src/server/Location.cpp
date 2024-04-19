@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:00:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:47:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
-#include <string>
 
 Location::Location(void): autoIndex(-1), port(-1), clientBodySize(-1) { }
 
@@ -137,7 +136,7 @@ void  Location::setListen(const string &_listen) {
     else
       port = n;
   } else if (pos < 0) {
-    if (n < 0 or n > 65535)
+    if (n < 1 or n > 65535)
       throw(runtime_error(string("error port out range (") + string(_listen + ")")));
     else
       port = atoi(_listen.data());
@@ -178,7 +177,9 @@ Location  Location::clone(void) const {
   if ((!cgiPath.empty() and cgiExt.empty()) \
     or (cgiPath.empty() and !cgiExt.empty()))
       throw(runtime_error("si hay cgi tiene que haber path y ext"));
-  return (*this);
+  else if (!path.compare("root") && port < 1)
+      throw(runtime_error("errror tiene que haber port"));
+    return (*this);
 }
 
 const string Location::getPath(void) const { return (path); }
@@ -206,7 +207,8 @@ const map<size_t, string> Location::getErrorPages(void) const {
 }
 
 const string  Location::getHost(void) const { return (host); }
-size_t  Location::getPort(void) const { return (port); }
+
+int Location::getPort(void) const { return (port); }
 
 const string  Location::getServerName(void) const { return (serverName); }
 
@@ -229,11 +231,11 @@ void  Location::clear(void) {
 ostream &operator<<(ostream &os, const Location &copy) {
   os << "Location:" << endl << "host: " << copy.host << endl << "port: " \
   << copy.port << endl << "path: " << copy.getPath() << endl << "root: " \
-  << copy.getRoot() << endl << "index: " << copy.getIndex() << endl << "autoIndex: " \
-  << copy.getAutoIndex() << endl << "cgiPath: " << copy.getPath() << endl \
-  << "cgiExt: " << copy.getCgiext() <<  endl << "methods: " \
-  << copy.getmethods().size() << endl << "return: " \
-  << copy.getReturn().second << endl << "errorPages: " \
-  << copy.getErrorPages().size() << endl;
+  << copy.getRoot() << endl << "index: " << copy.getIndex() << endl \
+  << "autoIndex: " << copy.getAutoIndex() << endl << "cgiPath: " \
+  << copy.getPath() << endl << "cgiExt: " << copy.getCgiext() \
+  <<  endl << "methods: " << copy.getmethods().size() << endl \
+  << "return: " << copy.getReturn().second << endl \
+  << "errorPages: " << copy.getErrorPages().size() << endl;
   return (os);
 }

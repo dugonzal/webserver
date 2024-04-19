@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:30:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:13:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@
 # define WHT "\033[0;37m"
 # define END "\033[0m\n"
 # define WHITESPACES " \t\n\r\v"
+
 # include <sys/un.h>
 # include <sys/socket.h>
 # include <arpa/inet.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/ioctl.h>
+# include <sys/poll.h>
 # include <stdexcept>
 # include <map>
 # include <list>
+# include <csignal>
 # include <string>
 # include <iostream>
 # include <ostream>
@@ -44,6 +47,9 @@
 # include <sstream>
 //# include <chrono>
 //# include <thread>
+
+extern std::vector<pollfd> fds;
+
 using std::deque;
 using std::set;
 using std::cout;

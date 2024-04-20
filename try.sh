@@ -1,5 +1,5 @@
 while true; do
-  curl http://0.0.0.0:3007
-  curl http://0.0.0.0:3008
-  curl http://0.0.0.0:3009
+siege -c 10 -t 1M http://127.0.0.1:3007;
+siege -c 10 -t 1M http://127.0.0.1:3008;
+siege -c 10 -t 1M http://127.0.0.1:3009;
 done

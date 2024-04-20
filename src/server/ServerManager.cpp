@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 13:58:17 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:17:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,38 @@ void  ServerManager::startServers(void) {
 void ServerManager::initPoll(void) {
   fds.reserve(nServers);
   for (size_t i = 0; i < vServers.size(); i++) {
-    struct pollfd tmp;
-    tmp.fd = vServers[i]->getSocket();
-    tmp.events = POLLIN | POLLERR | POLLHUP;
-    tmp.revents = 0;
-    fds.push_back(tmp);
+    struct pollfd pFd;
+    bzero(&pFd, sizeof(pFd));
+    pFd.fd = vServers[i]->getSocket();
+    pFd.events = POLLIN | POLLERR | POLLHUP;
+    fds.push_back(pFd);
+  }
+}
+
+void  ServerManager::addClient(void) {
+  // handler sockets server | add client | handler
+  for (size_t i = 0; i < nServers; i++) {
+    if (fds[i].revents & POLLIN)  {
+      struct pollfd   pFd;
+      struct sockaddr client;
+      socklen_t clientLen = sizeof(client);
+      bzero(&pFd, sizeof(pFd));
+      int tmp = accept(fds[i].fd, \
+        reinterpret_cast<sockaddr *>(&client), &clientLen);
+      if (tmp < 0) {
+        close(tmp);
+        break;
+      }
+      if (fcntl(tmp, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
+        close(tmp);
+        break;
+      }
+      pFd.fd = tmp;
+      pFd.events = POLLIN | POLLERR | POLLHUP;
+      pFd.revents = 0;
+      fds.push_back(pFd);
+      break;
+    }
   }
 }
 
@@ -64,29 +91,7 @@ void  ServerManager::handlerPoll(void) {
       Signals::setSignals(SIGQUIT);
     }
     // handler sockets server | add client | handler
-    for (size_t i = 0; i < nServers; i++) {
-      if (fds[i].revents & POLLIN)  {
-          struct pollfd fd;
-          struct sockaddr client;
-          socklen_t clientLen = sizeof(client);
-
-          int tmp = accept(fds[i].fd, \
-            reinterpret_cast<sockaddr *>(&client), &clientLen);
-          if (tmp < 0) {
-            close(tmp);
-            break;
-          }
-          if (fcntl(tmp, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
-            close(tmp);
-            break;
-          }
-          fd.fd = tmp;
-          fd.events = POLLIN | POLLERR | POLLHUP;
-          fd.revents = 0;
-          fds.push_back(fd);
-          break;
-      }
-    }
+    addClient();
     // event clients
     for (size_t i = nServers; i < fds.size(); i++) {
       if (fds[i].revents & POLLIN) {

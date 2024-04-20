@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 13:25:07 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:16:12 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ class ServerManager {
   void  handlerPoll(void);
   void  addServer(Server);
   void  initPoll(void);
+  void  addClient(void);
 };

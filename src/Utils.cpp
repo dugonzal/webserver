@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/13 19:41:24 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:09:34 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/Utils.hpp"
+#include <dirent.h>
 
 bool  skipLine(const string &line) {
   if (line.empty() || line[0] == '#')
@@ -68,14 +69,45 @@ size_t  numberWords(const string  &line) {
   return (count);
 }
 
-string readFile(const std::string& filename) {
-    ifstream file(filename.data(), std::ios::binary);
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filename << std::endl;
-        return "";
-    }
+string  readFile(const string &filename) {
+  ifstream file(filename.data());
+  ostringstream oss;
 
-    std::ostringstream oss;
-    oss << file.rdbuf();
-    return oss.str();
+  if (!file.is_open()) {
+      cerr << "Failed to open file: " << filename << endl;
+      return ("");
+  }
+  oss << file.rdbuf();
+  return (oss.str());
+}
+
+void  readDirectory(const string &path) {
+  struct dirent *ent;
+  DIR *dir;
+
+  if (path.empty()) {
+    cerr << "error es impty file" << endl;
+    return;
+  }
+  if ((dir = opendir(path.data())) != NULL) {
+    while ((ent = readdir(dir)) != NULL)
+      cout << ent->d_name << endl;
+  }
+  closedir(dir);
+}
+
+bool isDirectory(const string &path) {
+  struct stat s;
+
+  if (!stat(path.data(), &s))
+    return S_ISDIR(s.st_mode);
+  return false;
+}
+
+bool isFile(const string &path) {
+  struct stat s;
+
+  if (!stat(path.data(), &s))
+    return S_ISREG(s.st_mode);
+  return false;
 }

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 13:58:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:10:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define END "\033[0m\n"
 # define WHITESPACES " \t\n\r\v"
 
+# include <dirent.h>
+# include <sys/stat.h>
 # include <sys/un.h>
 # include <sys/socket.h>
 # include <arpa/inet.h>
@@ -45,8 +47,7 @@
 # include <set>
 # include <cassert>
 # include <sstream>
-//# include <chrono>
-//# include <thread>
+# include <cstdio>
 # include "Signals.hpp"
 
 extern std::vector<pollfd> fds;
@@ -71,10 +72,14 @@ using std::istringstream;
 using std::ostringstream;
 using std::stringstream;
 using std::cerr;
+
 bool    errorFile(ifstream);
 string  trim(const string&);
 bool    skipLine(const string&);
 string  readFile(const string& filename);
 string  firstWord(string line);
 string  lastWord(string line);
-size_t  numberWords(const string  &line);
+size_t  numberWords(const string &line);
+bool    isDirectory(const string &path);
+bool    isFile(const string &path);
+void    readDirectory(const string &path);

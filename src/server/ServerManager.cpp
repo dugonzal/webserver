@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 19:59:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 20:03:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void  ServerManager::addClient(void) {
 void  ServerManager::handlerPoll(void) {
   const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
   initPoll();
-  cout << CYN << "Inicio de Servidor" << END << endl;
+  cout << CYN << "Inicio " << fds.size() << " Servidores" << END << endl;
   while (true) {
     if (poll(fds.data(), fds.size(), -1) < 0) {
       cerr << "error poll" << endl;

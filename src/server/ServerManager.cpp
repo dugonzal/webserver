@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 21:44:17 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:47:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,80 +34,77 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
 
 void  ServerManager::startServers(void) {
   vServers.reserve(nServers);
-  cout << "# servers: " << nServers << endl;
   for (size_t it = 0; it < nServers; it++) {
     Server *ptr = new Server();
-    cout << endl << "------Server n.ª[" << it << "]----" << endl;
     ptr->setLocations(location[it]);
     ptr->setServerSide();
     vServers.push_back(ptr);
   }
-  for (size_t it = 0; it < vServers.size(); it++) {
-    cout << vServers[it]->getLocation()  << endl;
-  }
-//  setSelect();
+  handlerPoll();
 }
 
-/*
-void  ServerManager::setSelect(void) {
-  for (vector<Server*>::const_iterator it = vServers->begin(); \
-    it < vServers.end(); it++) {
-      struct pollfd tmp;
-      tmp.fd = it->getSocket();
-      cout << it->getLocation().getHost() << "  " << it->getLocation().getPort() << endl;
-      tmp.events = POLLIN;
-      fds.push_back(tmp);
+void ServerManager::initPoll(void) {
+  fds.reserve(nServers);
+  for (size_t i = 0; i < vServers.size(); i++) {
+    struct pollfd tmp;
+    tmp.fd = vServers[i]->getSocket();
+    tmp.events = POLLIN | POLLERR | POLLHUP;
+    fds.push_back(tmp);
   }
+}
+
+void  ServerManager::handlerPoll(void) {
   const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
+
+  initPoll();
   while (true) {
-    if (poll(fds.data(), fds.size(), -1) < 0)
-      throw(runtime_error("eerrr poll"));
-    cout << "n-----------------------------------------n" << endl;
+    if (poll(fds.data(), fds.size(), -1) < 0) {
+      std::cerr << "error poll" << endl;
+      Signals::setSignals(SIGQUIT);
+    }
     for (size_t i = 0; i < nServers; i++) {
       if (fds[i].revents & POLLIN)  {
-          cout << "es un server que quiere agregar un cliente" << endl;
           struct pollfd fd;
           struct sockaddr client;
           socklen_t clientLen = sizeof(client);
+
           int tmp = accept(fds[i].fd, \
             reinterpret_cast<sockaddr *>(&client), &clientLen);
           if (tmp < 0) {
-            std::cerr << "error client " << endl;
-            Signals::setSignals(SIGQUIT);
-            throw(runtime_error("error al aceptar un cliente"));
+            close(tmp);
+            break;
+          }
+          if (fcntl(tmp, F_SETFD, O_NONBLOCK) < 0) {
+            close(tmp);
+            break;
           }
           fd.fd = tmp;
-          fd.events = POLLIN;
+          fd.events = POLLIN | POLLERR | POLLHUP;
+          fd.revents = 0;
           fds.push_back(fd);
           break;
       }
     }
     for (size_t i = nServers; i < fds.size(); i++) {
-      cout << "n:   " << i << endl;
       if (fds[i].revents & POLLIN)  {
-        cout << "n: match " << i << endl;
-          cout << "es un cliente" << endl;
         char t[1024];
         int pos = ::recv(fds[i].fd, t, 1024, 0);
-          if (pos < 0) {
-            std::cerr << "error al recibir" << endl;
-            Signals::setSignals(SIGQUIT);
-          }
-          if (!pos) {
+          if (pos < 1) {
             close(fds[i].fd);
             fds.erase(fds.begin() + i);
+            break;
           }
           t[pos] = 0;
           cout << t << endl;
-          if (send (fds[i].fd, response, strlen(response), 0) < 0) {
-            throw(runtime_error("errro send"));
+          if (send(fds[i].fd, response, strlen(response), 0) < 0) {
+          std::cerr << "error al enviar" << endl;
           }
           break;
       }
     }
   }
 }
-*/
+
 void  ServerManager::setNServers(size_t _amount) {
   nServers = _amount;
 }

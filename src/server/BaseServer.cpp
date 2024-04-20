@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 13:40:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:55:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void  BaseServer::setServerSide(void) {
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
   addr.sin_addr.s_addr = inet_addr(host.data());
-  if (fcntl(serverFd, F_SETFD, O_NONBLOCK) < 0) {
+  if (fcntl(serverFd, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
     close(serverFd);
     throw logic_error("error: socket bind().");
   }

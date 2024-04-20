@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 13:47:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:58:17 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
 
 void  ServerManager::startServers(void) {
   vServers.reserve(nServers);
-  for (size_t it = 0; it < nServers; it++) {
+  for (size_t n = 0; n < nServers; n++) {
     Server *ptr = new Server();
-    ptr->setLocations(location[it]);
+    ptr->setLocations(location[n]);
     ptr->setServerSide();
     vServers.push_back(ptr);
   }
@@ -49,6 +49,7 @@ void ServerManager::initPoll(void) {
     struct pollfd tmp;
     tmp.fd = vServers[i]->getSocket();
     tmp.events = POLLIN | POLLERR | POLLHUP;
+    tmp.revents = 0;
     fds.push_back(tmp);
   }
 }
@@ -59,9 +60,10 @@ void  ServerManager::handlerPoll(void) {
   initPoll();
   while (true) {
     if (poll(fds.data(), fds.size(), -1) < 0) {
-      std::cerr << "error poll" << endl;
+      cerr << "error poll" << endl;
       Signals::setSignals(SIGQUIT);
     }
+    // handler sockets server | add client | handler
     for (size_t i = 0; i < nServers; i++) {
       if (fds[i].revents & POLLIN)  {
           struct pollfd fd;
@@ -74,7 +76,7 @@ void  ServerManager::handlerPoll(void) {
             close(tmp);
             break;
           }
-          if (fcntl(tmp, F_SETFD, O_NONBLOCK) < 0) {
+          if (fcntl(tmp, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
             close(tmp);
             break;
           }
@@ -85,8 +87,10 @@ void  ServerManager::handlerPoll(void) {
           break;
       }
     }
+    // event clients
     for (size_t i = nServers; i < fds.size(); i++) {
-      if (fds[i].revents & POLLIN)  {
+      if (fds[i].revents & POLLIN) {
+        // req
         char t[1024];
         int pos = ::recv(fds[i].fd, t, 1024, 0);
           if (pos < 1) {
@@ -96,6 +100,7 @@ void  ServerManager::handlerPoll(void) {
           }
           t[pos] = 0;
           cout << t << endl;
+          // res
           if (send(fds[i].fd, response, strlen(response), 0) < 0) {
           std::cerr << "error al enviar" << endl;
           }

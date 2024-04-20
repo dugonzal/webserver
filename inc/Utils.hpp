@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 19:22:47 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:58:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ using std::pair;
 using std::istringstream;
 using std::ostringstream;
 using std::stringstream;
-
+using std::cerr;
 bool    errorFile(ifstream);
 string  trim(const string&);
 bool    skipLine(const string&);

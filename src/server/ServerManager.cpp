@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 15:17:56 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:59:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,34 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
   return (*this);
 }
 
+bool  ServerManager::removeDuplicateServers(const string& host, int port) {
+  for (size_t i = 0; i < vServers.size(); i++) {
+    Location loc = vServers[i]->getLocation();
+    if (loc.getHost() == host && loc.getPort() == port) {
+      cout << RED << "host and port exist: " << host \
+        << " " << port << END << endl;
+      return (true);
+    }
+  }
+  return (false);
+}
+
 void  ServerManager::startServers(void) {
-  vServers.reserve(nServers);
   for (size_t n = 0; n < nServers; n++) {
+    Location tmp = location[n].find("root")->second;
+    if (removeDuplicateServers(tmp.getHost(), tmp.getPort()))
+      continue;
     Server *ptr = new Server();
     ptr->setLocations(location[n]);
     ptr->setServerSide();
     vServers.push_back(ptr);
   }
+  nServers = vServers.size();
   handlerPoll();
 }
 
 void ServerManager::initPoll(void) {
-  fds.reserve(nServers);
-  for (size_t i = 0; i < vServers.size(); i++) {
+  for (size_t i = 0; i < nServers; i++) {
     struct pollfd pFd;
     bzero(&pFd, sizeof(pFd));
     pFd.fd = vServers[i]->getSocket();
@@ -74,7 +88,6 @@ void  ServerManager::addClient(void) {
       }
       pFd.fd = tmp;
       pFd.events = POLLIN | POLLERR | POLLHUP;
-      pFd.revents = 0;
       fds.push_back(pFd);
       break;
     }
@@ -83,8 +96,8 @@ void  ServerManager::addClient(void) {
 
 void  ServerManager::handlerPoll(void) {
   const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
-
   initPoll();
+  cout << CYN << "Inicio de Servidor" << END << endl;
   while (true) {
     if (poll(fds.data(), fds.size(), -1) < 0) {
       cerr << "error poll" << endl;
@@ -104,11 +117,10 @@ void  ServerManager::handlerPoll(void) {
             break;
           }
           t[pos] = 0;
-          cout << t << endl;
           // res
-          if (send(fds[i].fd, response, strlen(response), 0) < 0) {
-          std::cerr << "error al enviar" << endl;
-          }
+          cout << t << endl;
+          if (send(fds[i].fd, response, strlen(response), 0) < 0)
+            cerr << "error al enviar" << endl;
           break;
       }
     }

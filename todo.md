@@ -1,5 +1,21 @@
 TODO :
 
+```c++
+bool  ServerManager::removeDuplicateServers(size_t j) {
+  for (size_t n = j; n < nServers; n++) {
+      int port = location[n].find("root")->second.getPort();
+      string host = location[n].find("root")->second.getHost();
+      cout << "paso1" << endl;
+      for (size_t i = n + 1; i < nServers; i++) {
+        cout << "paso2" << endl;
+        int port1 = location[i].find("root")->second.getPort();
+        string host1 = location[i].find("root")->second.getHost();
+        if (host == host1 && port == port1)
+          return (true);
+      }
+  }
+  return (false);
+```
 @dugonzal:
     el parseo tiene buena pinta cosas por hacer:
 

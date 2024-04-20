@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 13:55:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:39:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
   return (*this);
 }
 
-BaseServer::~BaseServer(void) { cout << "destructor BaseServer" << endl;}
+BaseServer::~BaseServer(void) { }
 
 void  BaseServer::setServerSide(void) {
   if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)

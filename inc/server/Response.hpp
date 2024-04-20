@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 21:57:02 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/04/20 21:46:17 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/04/20 21:50:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
-# include "BaseServer.hpp"
+
 # include "../Utils.hpp"
 
-class Server: public virtual BaseServer {
+class Response {
  private:
-  //Request   request;
-  //Response response;
+  string  response;
 
  public:
-  Server(void);
-  ~Server(void);
-  Server(const Server&);
-  Server  &operator=(const Server&);
-  void    handlerClient(size_t, const char *);
+  Response(void);
+  ~Response(void);
+  Response(const Response&);
+  Response operator=(const Response&);
 };

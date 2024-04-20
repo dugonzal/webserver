@@ -6,27 +6,18 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 10:00:28 by jaizpuru          #+#    #+#             */
-/*   Updated: 2024/04/14 13:20:34 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:56:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/server/Request.hpp"
 
-Request::Request(void) {
-  timeout.tv_sec = 5;
-  timeout.tv_usec = 0;
-  addrClientLen = sizeof(clientAddr);
-}
+Request::Request(void) { }
 
-Request::Request(int _serverFd): inputIsGood(true) {
-  bzero(clientMsg, sizeof(clientMsg));
-	std::cout << std::endl << "------------INPUT_DATA----------------" << std::endl;
-	if ((clientFd = accept(_serverFd, (sockaddr *)&clientAddr, &addrClientLen)) < 0)
-    perror("error: accept");
+Request::~Request(void) {}
 
-	if (setsockopt(clientFd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout)) < 0)
-    perror("error: setsockopt()");
-
+/*
+Request::tmp(void) {
   //! Recieve message
 	if (parseClientMsg() == EXIT_FAILURE)
     return;
@@ -35,7 +26,6 @@ Request::Request(int _serverFd): inputIsGood(true) {
 		responseFile = readFile("resources/default.html");
 	else // Any file is asked
 		responseFile = readFile(inputRoute);
-
 	//! Differing method types should divide here!
 	switch (inputMethod) {
 		case GET:
@@ -50,46 +40,25 @@ Request::Request(int _serverFd): inputIsGood(true) {
 		default:
 			// Erroneus Method, 405 Error (@inunez-g)
 			break ;
+  }
 }
 
-	//! Message for the client
-	/* std::cout << "--------------OUTPUT--------------" << std::endl << responseHeader << std::endl << "---------------------------------" << std::endl; */
 
-//	close(clientFd); // After server has replied, close connection
-}
-
-Request::~Request( void ) {}
-
-/* Parse Client Message */
-int	Request::parseClientMsg( void ) {
-	returnedBytes = recv(clientFd, clientMsg, sizeof(clientMsg), 0);
-	if (returnedBytes < 0) {
-		close(clientFd);
-		perror("recv error");
-		return (EXIT_FAILURE);
-	} else if (returnedBytes == 0) { // Connection closed by the client
-		close(clientFd);
-		perror("client closed connection");
-		return (EXIT_FAILURE);
-	} else // Data received, process it
-		std::cout << "Bytes received: " << returnedBytes << std::endl;
-
+int	Request::parseClientMsg(void) {
 	inputMethod = getMethodType();
 	if (inputIsGood == true) {
 		inputRoute = getRoute();
 		if (inputIsGood == true)
 			checkHttpVersion();
-	}
+  }
 	else
 		inputRoute = "";
 	return (0);
 }
 
-std::string	Request::getRoute( void ) {
-	std::string str(clientMsg);
-	std::stringstream ss;
-	size_t start;
-
+string  Request::getRoute(void) {
+  stringstream ss;
+  size_t  start;
 
 	for (start = 0; str[start]; start++) {
 		if (str[start] == '/' && str[start - 1] == ' ')
@@ -126,11 +95,11 @@ std::string	Request::getRoute( void ) {
   return (ret);
 }
 
-int		Request::getMethodType( void ) {
+int Request::getMethodType(void) {
   stringstream ss;
 
-	for ( int i = 0; !isspace(clientMsg[i]) && clientMsg[i]; i++)
-		ss << clientMsg[i];
+	for (int i = 0; !isspace(clientMsg[i]) && clientMsg[i]; i++)
+    ss << clientMsg[i];
 
 	cout << "Method : " << ss.str() << endl;
 	if (!ss.str().compare("GET"))
@@ -180,9 +149,7 @@ void	Request::checkHttpVersion( void ) {
 	std::cout << std::endl;
 }
 
-/* Methods */
-void Request::methodGet( void )
-{
+void Request::methodGet(void) {
 	std::stringstream ss;
 	// Insert first line
 	if (responseFile == "" || inputIsGood == false) { // File is not found
@@ -197,13 +164,11 @@ void Request::methodGet( void )
 	responseHeader += "Content-Length: " + ss.str();
 	responseHeader += "\r\n";
 	responseHeader += responseFile;
-	send(clientFd, responseHeader.data(), responseHeader.size(), 0);
 }
 
 
-void Request::methodPost( void )
-{
-	/*std::string msgRet(clientMsg);
+void Request::methodPost( void ) {
+	std::string msgRet(clientMsg);
 	if (msgRet.find("favicon.ico", 0) != std::string::npos) {
 		//msgRet = readFaviconFile("resources/favicon.ico");
 		std::string httpResponse = "HTTP/1.1 200 OK\r\n";
@@ -212,19 +177,15 @@ void Request::methodPost( void )
 		httpResponse += "\r\n";
 		httpResponse += msgRet;
 		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-	}*/
+	}
 }
 
-void Request::methodDelete( void )
-{
-	std::cout << "DELETEMETHOD" << std::endl;
-	std::string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+void Request::methodDelete(void) {
+  cout << "DELETEMETHOD" << std::endl;
+  string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
     // Intentar eliminar el archivo
-    if (std::remove(("resources/GET/" + file).c_str()) != 0)
-		httpResponse = "HTTP/1.1 404 Not Found\r\n";
-	else
-		httpResponse = "HTTP/1.1 200 OK\r\n";
-	send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-	std::cout << "TERMINO" << std::endl;
-	close(clientFd);
-}
+  if (std::remove(("resources/GET/" + file).c_str()) != 0)
+    httpResponse = "HTTP/1.1 404 Not Found\r\n";
+  else
+    httpResponse = "HTTP/1.1 200 OK\r\n";
+}*/

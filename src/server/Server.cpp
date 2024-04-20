@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 21:34:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:57:36 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Server::Server(const Server &copy): BaseServer(copy) { }
 Server &Server::operator=(const Server &copy) {
   if (this != &copy) {
     BaseServer::operator=(copy);
-    request = copy.request;
+    //request = copy.request;
   }
   return (*this);
 }

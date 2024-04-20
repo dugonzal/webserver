@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 21:35:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:52:19 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ void  ServerManager::handlerPoll(void) {
       Signals::setSignals(SIGQUIT);
     }
     addClient();
-    // event clients
     for (size_t i = nServers; i < fds.size(); i++) {
       if (fds[i].revents & POLLIN)
         if (selectServerForClient(fds[i].fd))
@@ -139,9 +138,8 @@ void  ServerManager::handlerPoll(void) {
     }
   }
 }
-void  ServerManager::setNServers(size_t _amount) {
-  nServers = _amount;
-}
+
+void  ServerManager::setNServers(size_t _amount) { nServers = _amount; }
 
 void  ServerManager::setLocations(map<string, Location> *_location) {
   location = _location;

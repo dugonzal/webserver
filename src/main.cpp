@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 15:12:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:50:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int main(int ac, const char **av, const char **) {
     WebServer  webserver(*(++av));
 
     webserver.setServer();
-  } catch (exception &e)
-    { cout << "Error: " << e.what() << endl; }
+  } catch (exception &e) {
+    cout << "Error: " << e.what() << endl;
+  }
   return (0);
 }

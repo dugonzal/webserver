@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 20:03:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:35:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,35 @@ void  ServerManager::addClient(void) {
   }
 }
 
+bool  ServerManager::selectServerForClient(size_t fd) {
+  char t[1024];
+
+  int r = ::recv(fd, t, 1024, 0);
+  if (r < 1) {
+    close(fd);
+    fds.erase(fds.begin() + fd);
+    return (true);
+  }
+  t[r] = 0;
+  string tmp(t);
+  int pos = tmp.find("Host") + 6;
+  int end = tmp.find('\n', pos);
+  string addr = tmp.substr(pos, end - pos);
+
+  int i = addr.find(":");
+  int port = atoi(addr.substr(i + 1).data());
+  string host = addr.substr(0, i);
+
+  for (size_t i = 0; i < vServers.size(); i++) {
+    if (vServers[i]->getHost() == host && vServers[i]->getPort() == port) {
+      vServers[i]->handlerClient(fd, t);
+      break;
+    }
+  }
+  return (false);
+}
+
 void  ServerManager::handlerPoll(void) {
-  const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
   initPoll();
   cout << CYN << "Inicio " << fds.size() << " Servidores" << END << endl;
   while (true) {
@@ -103,30 +130,15 @@ void  ServerManager::handlerPoll(void) {
       cerr << "error poll" << endl;
       Signals::setSignals(SIGQUIT);
     }
-    // handler sockets server | add client | handler
     addClient();
     // event clients
     for (size_t i = nServers; i < fds.size(); i++) {
-      if (fds[i].revents & POLLIN) {
-        // req
-        char t[1024];
-        int pos = ::recv(fds[i].fd, t, 1024, 0);
-          if (pos < 1) {
-            close(fds[i].fd);
-            fds.erase(fds.begin() + i);
-            break;
-          }
-          t[pos] = 0;
-          // res
-          cout << t << endl;
-          if (send(fds[i].fd, response, strlen(response), 0) < 0)
-            cerr << "error al enviar" << endl;
+      if (fds[i].revents & POLLIN)
+        if (selectServerForClient(fds[i].fd))
           break;
-      }
     }
   }
 }
-
 void  ServerManager::setNServers(size_t _amount) {
   nServers = _amount;
 }

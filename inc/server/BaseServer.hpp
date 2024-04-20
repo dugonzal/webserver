@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 21:14:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:22:00 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@ class BaseServer {
     BaseServer &operator=(const BaseServer&);
     virtual ~BaseServer(void) = 0;
 ////    virtual BaseServer clone(void) const = 0;
-    void      setServerSide(void);
-    void      setRequest(void);
-    void      setLocations(const map<string, Location>&);
-    int       getSocket(void) const;
-    size_t    getNServers(void) const;
-    Location  getLocation(void) const;
-  friend ostream &operator<<(ostream&, const BaseServer&);
+    void          setServerSide(void);
+    void          setRequest(void);
+    void          setLocations(const map<string, Location>&);
+    int           getSocket(void) const;
+    size_t        getNServers(void) const;
+    Location      getLocation(void) const;
+    const string  getHost(void) const;
+    int           getPort(void) const;
+  friend ostream  &operator<<(ostream&, const BaseServer&);
 };

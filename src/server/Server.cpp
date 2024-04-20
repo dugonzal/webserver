@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 16:39:23 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:34:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,14 @@ Server &Server::operator=(const Server &copy) {
     request = copy.request;
   }
   return (*this);
+}
+
+void  Server::handlerClient(size_t fd, const char *tmp) {
+  const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
+  (void)tmp;
+  cout << "  client: " << fd << endl;
+  cout << LocationRoot << endl;
+  if (::send(fd, response, strlen(response), 0) < 0) {
+    cerr << "error al enviar" << endl;
+  }
 }

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 16:39:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:21:54 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,11 @@ size_t  BaseServer::getNServers(void) const { return (nServers); }
 
 Location  BaseServer::getLocation(void) const { return (LocationRoot); }
 
+const string  BaseServer::getHost(void) const { return(host);}
+
+int BaseServer::getPort(void) const { return(port); }
+
 ostream &operator<<(ostream &os, const BaseServer &copy) {
-  int ret = copy.getSocket();
-  os << "host: " << ret << endl;
+  os << "host: " << copy.host << endl;
   return (os);
 }

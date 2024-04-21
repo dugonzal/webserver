@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 20:54:19 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:56:29 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "../Utils.hpp"
 # include "Location.hpp"
 # include "Response.hpp"
-# include "Logger.hpp"
+# include "../Logger.hpp"
 
 class Location;
 class Response;

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:46:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 14:28:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 14:34:24 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void  Logger::Log(const char *line, ...) {
 
   c_time[strlen(c_time) - 1] = 0;
   vsnprintf(out, sizeof(out), line, arg);
-  cout << WHT << "[INFO] " << END << c_time \
+  cout << MAG << "[INFO] " << END << c_time \
     << " | " << BLU << out << END << endl;
 
   file << "[INFO] " << c_time << " | " << out << endl;

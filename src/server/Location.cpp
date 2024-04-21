@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 18:47:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:59:34 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void  Location::setListen(const string &_listen) {
   int pos = _listen.find_first_of(":");
   int n = 0;
   string  tmp;
-// habria que comprobar que el host tengo 4 puntos y sean mayores a 0 y < 255
+  // habria que comprobar que el host tengo 4 puntos y sean mayores a 0 y < 255
   if (!host.empty() || port != -1)
     throw(runtime_error(string("listen exists (") + string(_listen + ")")));
   else if (pos > 6) {
@@ -131,15 +131,15 @@ void  Location::setListen(const string &_listen) {
       host = "0.0.0.0";
     else
       host = tmp;
+    cout << " s   " << pos << "  " << n << endl;
     if (n < 0 or n > 65535)
       throw(runtime_error(string("error port out range (") + string(_listen + ")")));
     else
       port = n;
   } else if (pos < 0) {
-    if (n < 1 or n > 65535)
-      throw(runtime_error(string("error port out range (") + string(_listen + ")")));
-    else
       port = atoi(_listen.data());
+    if (port < 1 or port > 65535)
+      throw(runtime_error(string("error port out range (") + string(_listen + ")")));
   } else
       throw(runtime_error(string("no puedo establecer listen (") + string(_listen + ")")));
 }

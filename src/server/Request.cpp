@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 10:17:12 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:46:22 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void  Request::setLocation(const map<string, Location> &tmp, \
 }
 
 void Request::handlerRequest(void) {
-  int pos = header.find('\n');
-  cout << header.substr(0, pos) << endl;
+  int pos = header.find_first_of('\n');
+  cout << firstWord(header.substr(0, pos)) << endl;
   cout << endl << endl;
 }

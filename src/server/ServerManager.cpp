@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 10:40:38 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:43:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,16 @@ void  ServerManager::addClient(void) {
 }
 
 bool  ServerManager::selectServerForClient(size_t fd) {
-  char t[1024];
+  char header[1024];
 
-  int r = ::recv(fd, t, 1024, 0);
+  int r = ::recv(fd, header, 1024, 0);
   if (r < 1) {
     close(fd);
     fds.erase(fds.begin() + fd);
     return (true);
   }
-  t[r] = 0;
-  string tmp(t);
+  header[r] = 0;
+  string tmp(header);
   int pos = tmp.find("Host") + 6;
   int end = tmp.find('\n', pos);
   string addr = tmp.substr(pos, end - pos);
@@ -116,7 +116,7 @@ bool  ServerManager::selectServerForClient(size_t fd) {
 
   for (size_t i = 0; i < vServers.size(); i++) {
     if (vServers[i]->getHost() == host && vServers[i]->getPort() == port) {
-      vServers[i]->handlerClient(fd, t);
+      vServers[i]->handlerClient(fd, header);
       break;
     }
   }

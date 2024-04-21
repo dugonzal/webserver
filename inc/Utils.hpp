@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 12:38:40 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 14:22:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@
 # define MAG "\033[0;35m"
 # define CYN "\033[0;36m"
 # define WHT "\033[0;37m"
-# define END "\033[0m\n"
+# define END "\033[0m"
 # define WHITESPACES " \t\n\r\v"
 
+# include <ctime>
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/un.h>
@@ -45,6 +46,7 @@
 # include <cstdlib>
 # include <cstddef>
 # include <set>
+# include <cstdarg>
 # include <cassert>
 # include <sstream>
 # include <cstdio>

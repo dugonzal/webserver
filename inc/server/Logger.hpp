@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:42:46 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 13:18:53 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 13:29:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ class Logger {
   ~Logger(void);
   Logger(const Logger&);
   Logger        &operator=(const Logger&);
- // void          Log(const string&);
+  void          Log(const char *, ...);
 };

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 11:40:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 14:28:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void  Location::setListen(const string &_listen) {
       port = n;
   } else if (pos < 0) {
       port = atoi(_listen.data());
+      host = "0.0.0.0";
     if (port < 1 or port > 65535)
       throw(runtime_error(string("error port out range (") + string(_listen + ")")));
   } else

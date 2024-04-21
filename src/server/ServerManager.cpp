@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 13:01:56 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 13:46:24 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void  ServerManager::addClient(void) {
       }
       pFd.fd = tmp;
       pFd.events = POLLIN;
-      cout << MAG << "add client " << tmp << END << endl;
+      logger.Log("new cliente [%d] ", tmp);
       fds.push_back(pFd);
       break;
     }

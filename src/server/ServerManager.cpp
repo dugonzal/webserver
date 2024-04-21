@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 19:42:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:01:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,18 @@ void  ServerManager::addClient(void) {
   }
 }
 
-bool  ServerManager::selectServerForClient(size_t fd) {
+bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
   char header[1025];
 
   int r = ::recv(fd, header, 1024, 0);
   if (r < 0) {
     close(fd);
-    fds.erase(fds.begin() + fd);
+    fds.erase(fds.begin() + i);
     logger.Log("error recv client: [%d]", fd);
     return (true);
   } else if (!r) {
     close(fd);
-    fds.erase(fds.begin() + fd);
+    fds.erase(fds.begin() + i);
     logger.Log("close client: [%d]", fd);
     return (true);
   }
@@ -116,9 +116,9 @@ bool  ServerManager::selectServerForClient(size_t fd) {
   int end = tmp.find('\n', pos);
   string addr = tmp.substr(pos, end - pos);
 
-  int i = addr.find(":");
-  int port = atoi(addr.substr(i + 1).data());
-  string host = addr.substr(0, i);
+  int idx = addr.find(":");
+  int port = atoi(addr.substr(idx + 1).data());
+  string host = addr.substr(0, idx);
 
   for (size_t i = 0; i < vServers.size(); i++) {
     if (vServers[i]->getHost() == host && vServers[i]->getPort() == port) {
@@ -140,7 +140,7 @@ void  ServerManager::handlerPoll(void) {
     addClient();
     for (size_t i = nServers; i < fds.size(); i++) {
       if (fds[i].revents & POLLIN)
-        if (selectServerForClient(fds[i].fd))
+        if (selectServerForClient(fds[i].fd, i))
           break;
     }
   }

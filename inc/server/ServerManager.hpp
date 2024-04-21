@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 19:23:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:00:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ class ServerManager {
   void  initPoll(void);
   void  addClient(void);
   bool  removeDuplicateServers(const string&, int port);
-  bool  selectServerForClient(size_t);
+  bool  selectServerForClient(size_t, size_t);
 };

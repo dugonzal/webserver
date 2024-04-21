@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:45:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:57:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,11 +231,12 @@ size_t  BaseParser::serverError(size_t i) {
 void  BaseParser::handlerScopeError(void) {
   for (size_t i = 0; i < data.size(); i++) {
     if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos)
+      && data[i].find("{") != string::npos) {
         i = serverError(i);
-    else
-      throw(runtime_error(string("fuera del scope del server ") \
-        + string(data[i])));
+     } else {
+      logger.Log("fuera del scope del server [%s]", data[i].data());
+      throw(runtime_error(""));
+    }
   }
 }
 
@@ -279,7 +280,8 @@ void  BaseParser::handlerScopeLocation(void) {
     else if ((!data[i].compare("}")))
         end++;
   }
-  if (lo != end)
-    throw(runtime_error(string("Location scope not properly") \
-      + string("closed: Check brace matching.")));
+  if (lo != end) {
+    logger.Log("Location scope not properly closed: Check brace matching.");
+    throw(runtime_error(""));
+  }
 }

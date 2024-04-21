@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 20:44:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:33:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ void  Location::setIndex(const string &_index) {
 void  Location::setAutoIndex(const string &_autoIndex) {
   if (autoIndex != -1)
     throw(runtime_error("setAutoIndex"));
-  else if (!_autoIndex.compare("true") || !_autoIndex.compare("on") \
-    || !_autoIndex.compare("TRUE") || !_autoIndex.compare("ON"))
+  else if (!_autoIndex.compare("true") or !_autoIndex.compare("on") \
+    or !_autoIndex.compare("TRUE") or !_autoIndex.compare("ON"))
     autoIndex = true;
-  else if (!_autoIndex.compare("false") || !_autoIndex.compare("off") \
-    || !_autoIndex.compare("False") || !_autoIndex.compare("OFF"))
+  else if (!_autoIndex.compare("false") or !_autoIndex.compare("off") \
+    or !_autoIndex.compare("False") or !_autoIndex.compare("OFF"))
       autoIndex = false;
   else
     throw(runtime_error(string("autoIndex (") + string(_autoIndex + ")")));
@@ -80,7 +80,7 @@ void  Location::setReturn(const string &return_) {
   if (!_return.second.empty())
     throw(runtime_error("setReturn"));
   _return.first = atoi(firstWord(return_).data());
-  if (_return.first < 100 || _return.first > 505)
+  if (_return.first < 100 or _return.first > 505)
     throw(runtime_error("setErrorPages code not allowed"));
   _return.second = lastWord(return_);
 }
@@ -101,7 +101,7 @@ void  Location::setMethods(const string &_methods) {
     iss >> sub;
     if (sub.empty())
       break;
-    else if (sub.compare("GET") && sub.compare("POST") && sub.compare("DELETE"))
+    else if (sub.compare("GET") and sub.compare("POST") && sub.compare("DELETE"))
       throw(runtime_error(string(" methods no allowed (") + string(sub + ")")));
     methods.push_back(sub);
   }
@@ -110,7 +110,7 @@ void  Location::setMethods(const string &_methods) {
 void  Location::setErrorPages(const string &_errorPages) {
   size_t n = atoi(firstWord(_errorPages).data());
 
-  if (n < 100 || n > 505)
+  if (n < 100 or n > 505)
     throw(runtime_error("setErrorPages code not allowed"));
   else if (errorPages.find(n) != errorPages.end())
     throw(runtime_error("setErrorPages code already exists"));
@@ -122,7 +122,7 @@ void  Location::setListen(const string &_listen) {
   int n = 0;
   string  tmp;
   // habria que comprobar que el host tengo 4 puntos y sean mayores a 0 y < 255
-  if (!host.empty() || port != -1)
+  if (!host.empty() or port != -1)
     throw(runtime_error(string("listen exists (") + string(_listen + ")")));
   else if (pos > 6) {
     tmp  = _listen.substr(0, pos);
@@ -177,7 +177,7 @@ Location  Location::clone(void) const {
   if ((!cgiPath.empty() and cgiExt.empty()) \
     or (cgiPath.empty() and !cgiExt.empty()))
       throw(runtime_error("si hay cgi tiene que haber path y ext"));
-  else if (!path.compare("root") && port < 1)
+  else if (!path.compare("root") and port < 1)
       throw(runtime_error("errror tiene que haber port"));
     return (*this);
 }

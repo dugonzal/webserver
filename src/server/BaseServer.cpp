@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:47:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:34:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void  BaseServer::setServerSide(void) {
     throw logic_error("");
   }
 
-  assert((serverFd > 2) && (serverFd < 6553));
+  assert((serverFd > 2) and (serverFd < 6553));
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
   addr.sin_addr.s_addr = inet_addr(host.data());

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:46:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 22:26:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 
 void  WebServer::setServer(void) {
   system("clear");
+  logger.Log("todo lo que pase se guarda en logs/serverLog.log");
   handlerSetServerWebServer();
   servers.setNServers(nServers);
   servers.setLocations(locations);

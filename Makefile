@@ -6,7 +6,7 @@
 #    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/04/21 19:21:55 by jaizpuru         ###   ########.fr        #
+#    Updated: 2024/04/21 20:54:00 by jaizpuru         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,12 @@ parser		:= BaseParser Parser
 
 S_DIR			:= server/
 server		:= WebServer Server ServerManager \
-							BaseServer Request Response Location Logger
+							BaseServer Request Response Location 
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))
 
-SRC_FILES += main Signals Utils 
+SRC_FILES += main Signals Utils Logger
 
 SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 
@@ -47,6 +47,7 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 all: ${NAME} 
 
 ${NAME}: ${OBJ} ${I}
+	mkdir -p logs
 	${CXX} ${OBJ} -o ${NAME} && ./$@
 	printf "compile done ->: [$@]\n"
 
@@ -61,12 +62,11 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	printf "compile ->: {$?}\n"
 
 clean:
-#		make clean -C ./tests
-		rm -rf ${NAME}
+	rm -rf ${NAME}
 
 fclean: clean
-#		make fclean -C ./tests
-		rm -rf	${OBJ_DIR}
+	rm -rf	${OBJ_DIR}
+	rm -rf logs
 
 re: fclean all
 

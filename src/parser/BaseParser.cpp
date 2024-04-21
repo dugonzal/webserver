@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseParser.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:56:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 17:57:07 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,6 @@ void  BaseParser::handlerScopeError(void) {
 
 size_t BaseParser::parserScopeLocation(size_t j) const {
   string  tmp = lastWord(data[j]);
-  size_t  c = 0;
   if (tmp[0] != '/')
     throw(runtime_error(string("scope location missing / (") + string(data[j] + ")")));
   else if (data[j].find("{") == string::npos)
@@ -259,7 +258,6 @@ size_t BaseParser::parserScopeLocation(size_t j) const {
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
     else if (!firstWord(data[j]).compare("listen"))
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
-    c++;
   }
   return(j);
 }

@@ -4,6 +4,7 @@ a.out
 bin
 logs/parser_data.log
 *.o
+serverLog.log
 
 # Configuration
 examples

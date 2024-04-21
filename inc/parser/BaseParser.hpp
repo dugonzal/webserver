@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:07 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:31:26 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:45:33 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,5 @@ class BaseParser {
     const vector<string>  getData(void) const;
     size_t                getNservers(void) const;
     void                  setNservers(size_t);
-    const Logger          &getLogger(void) const;
 };
 

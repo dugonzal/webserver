@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:41:26 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:47:08 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
   return (*this);
 }
 
-void  ServerManager::setLogger(const Logger &copy) { logger = copy; }
-
 bool  ServerManager::removeDuplicateServers(const string& host, int port) {
   for (size_t i = 0; i < vServers.size(); i++) {
     Location loc = vServers[i]->getLocation();
@@ -51,7 +49,6 @@ void  ServerManager::startServers(void) {
     if (removeDuplicateServers(tmp.getHost(), tmp.getPort()))
       continue;
     Server *ptr = new Server();
-    ptr->setLogger(logger);
     ptr->setLocations(location[n]);
     ptr->setLocationRequest();
     ptr->setServerSide();

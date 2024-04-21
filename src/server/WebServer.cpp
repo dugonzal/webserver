@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:35:28 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:46:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ WebServer::~WebServer(void) { delete [] locations; }
 
 WebServer::WebServer(const string &filename): parser(filename), signals() {
   nServers = parser.getNservers();
-  logger = parser.getLogger();
 }
 
 WebServer::WebServer(const WebServer &copy): \
@@ -35,7 +34,6 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 
 void  WebServer::setServer(void) {
   system("clear");
-  servers.setLogger(logger);
   handlerSetServerWebServer();
   servers.setNServers(nServers);
   servers.setLocations(locations);

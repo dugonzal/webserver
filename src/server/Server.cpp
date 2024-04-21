@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:21:28 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:47:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void  Server::setLocationRequest(void) {
 void  Server::handlerRequest(const char *header) {
   request.setHeader(header);
   request.handlerRequest();
-  request.setLogger(logger); // add logger aqui por simplicidad
 }
 
 void  Server::handlerResponse(size_t fd) {

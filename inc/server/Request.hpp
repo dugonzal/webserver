@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:19:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:48:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ class Request {
   Request &operator=(const Request&);
   void    setHeader(const char *);
   void    setLocation(const map<string, Location>&, const Location&);
-  void    setLogger(const Logger&);
   void    handlerRequest(void);
 
 // private:

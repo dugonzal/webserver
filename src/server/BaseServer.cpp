@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:14:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:47:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ void  BaseServer::setServerSide(void) {
     throw logic_error("");
   }
 }
-
-void  BaseServer::setLogger(const Logger &copy) { logger = copy; }
 
 void  BaseServer::setLocations(const map<string, Location> &copy) {
   location = copy;

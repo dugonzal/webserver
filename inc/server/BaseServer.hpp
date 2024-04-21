@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:04:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:47:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ class BaseServer {
     BaseServer(const BaseServer&);
     BaseServer &operator=(const BaseServer&);
     virtual ~BaseServer(void) = 0;
-    void          setLogger(const Logger&);
     void          setServerSide(void);
     void          setRequest(void);
     void          setLocations(const map<string, Location>&);

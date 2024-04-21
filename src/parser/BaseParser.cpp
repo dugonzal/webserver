@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BaseParser.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 17:57:07 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:45:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ BaseParser &BaseParser::operator=(const BaseParser &copy) {
   }
   return (*this);
 }
-
-const Logger  &BaseParser::getLogger(void) const { return(logger); }
 
 void  BaseParser::setWords(void) {
   words.insert("server");

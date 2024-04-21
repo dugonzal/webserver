@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:48:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:47:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # include "../Utils.hpp"
 # include "Location.hpp"
-# include "Logger.hpp"
+# include "../Logger.hpp"
 
 class Location;
 

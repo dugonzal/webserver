@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/04/21 13:05:09 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/04/21 21:46:10 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,12 @@ parser		:= BaseParser Parser
 
 S_DIR			:= server/
 server		:= WebServer Server ServerManager \
-							BaseServer Request Response Location Logger
+							BaseServer Request Response Location 
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))
 
-SRC_FILES += main Signals Utils 
+SRC_FILES += main Signals Utils Logger
 
 SRC				:= $(addprefix ${SRC_DIR}, $(addsuffix .cpp, ${SRC_FILES}))
 

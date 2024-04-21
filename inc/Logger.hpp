@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:42:46 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 13:29:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:46:23 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-# include "../Utils.hpp"
+# include "Utils.hpp"
 
 class Logger {
  private:

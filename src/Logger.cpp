@@ -6,11 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:46:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:57:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:48:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../inc/server/Logger.hpp"
+# include "../inc/Logger.hpp"
 
 Logger::Logger(void): file("serverLog.log", ios::out | ios::app) { }
 

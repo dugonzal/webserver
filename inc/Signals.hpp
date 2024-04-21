@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:37:20 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/19 18:21:24 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:20:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 # include "Utils.hpp"
 
-class Signals {
- private:
-    /* struct sigaction sign; */
+# include "server/Logger.hpp"
 
+class Logger;
+
+class Signals {
  public:
     Signals(void);
     ~Signals(void);

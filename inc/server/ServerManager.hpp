@@ -6,13 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:46:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:23:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
-#include "Logger.hpp"
+# include "../Signals.hpp"
+# include "Logger.hpp"
 # include "Server.hpp"
 # include "../Utils.hpp"
 

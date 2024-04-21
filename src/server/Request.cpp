@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 10:46:22 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 11:44:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Request::Request(const Request &copy) {
   }
 }
 
-Request Request::operator=(const Request &copy) {
+Request &Request::operator=(const Request &copy) {
   if (this != &copy) {
     header = copy.header;
   }

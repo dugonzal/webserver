@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 10:59:34 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 11:40:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ void  Location::setListen(const string &_listen) {
       host = "0.0.0.0";
     else
       host = tmp;
-    cout << " s   " << pos << "  " << n << endl;
     if (n < 0 or n > 65535)
       throw(runtime_error(string("error port out range (") + string(_listen + ")")));
     else

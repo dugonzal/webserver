@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.hpp                                        :+:      :+:    :+:   */
+/*   Logger.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 11:44:06 by Dugonzal         ###   ########.fr       */
+/*   Created: 2024/04/21 11:42:46 by Dugonzal          #+#    #+#             */
+/*   Updated: 2024/04/21 13:18:53 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../Utils.hpp"
-# include "Location.hpp"
 
-class Location;
-
-class Request {
+class Logger {
  private:
-  string                header;
-  map<string, Location> locations;
-  Location              locationRoot;
+  static Logger *ins;
+  ofstream      file;
+  string        fileName;
 
  public:
-  Request(void);
-  ~Request(void);
-  Request(const Request&);
-  Request &operator=(const Request&);
-  void    setHeader(const char *);
-  void    setLocation(const map<string, Location>&, const Location&);
-  void handlerRequest(void);
-
-// private:
+  Logger(void);
+  explicit Logger(const string&);
+  ~Logger(void);
+  Logger(const Logger&);
+  Logger        &operator=(const Logger&);
+ // void          Log(const string&);
 };

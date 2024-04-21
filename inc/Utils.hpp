@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 15:10:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 12:38:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,17 @@
 # include <cstdio>
 # include "Signals.hpp"
 
-extern std::vector<pollfd> fds;
-
 using std::deque;
 using std::set;
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::string;
 using std::runtime_error;
 using std::logic_error;
 using std::exception;
 using std::ifstream;
+using std::ofstream;
 using std::vector;
 using std::size_t;
 using std::map;
@@ -71,7 +71,9 @@ using std::pair;
 using std::istringstream;
 using std::ostringstream;
 using std::stringstream;
-using std::cerr;
+using std::ios;
+
+extern vector<pollfd> fds;
 
 bool    errorFile(ifstream);
 string  trim(const string&);

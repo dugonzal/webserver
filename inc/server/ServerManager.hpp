@@ -6,15 +6,15 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 20:14:51 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 13:01:02 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
+#include "Logger.hpp"
 # include "Server.hpp"
 # include "../Utils.hpp"
-
 
 class ServerManager {
  private:
@@ -22,6 +22,7 @@ class ServerManager {
   Server                          server;
   vector<Server*>                 vServers;
   mutable map<string, Location>   *location;
+  Logger                          logger;
 
  public:
   ServerManager(void);

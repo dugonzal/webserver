@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/04/21 10:37:20 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/04/21 13:05:09 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ parser		:= BaseParser Parser
 
 S_DIR			:= server/
 server		:= WebServer Server ServerManager \
-							BaseServer Request Response Location
+							BaseServer Request Response Location Logger
 
 SRC_FILES += $(addprefix $(P_DIR),$(parser))
 SRC_FILES += $(addprefix $(S_DIR),$(server))

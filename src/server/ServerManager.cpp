@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 10:43:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 13:01:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 vector<pollfd>  fds;
 
-ServerManager::ServerManager(void): nServers(0) { }
+ServerManager::ServerManager(void): nServers(0), logger("serverLog.log") { }
 
 ServerManager::~ServerManager(void) {
   for (size_t it = 0; it < vServers.size(); it++)
@@ -89,6 +89,7 @@ void  ServerManager::addClient(void) {
       }
       pFd.fd = tmp;
       pFd.events = POLLIN;
+      cout << MAG << "add client " << tmp << END << endl;
       fds.push_back(pFd);
       break;
     }

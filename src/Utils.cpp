@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 15:09:34 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:53:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/Utils.hpp"
-#include <dirent.h>
 
 bool  skipLine(const string &line) {
   if (line.empty() || line[0] == '#')

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 14:50:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:41:26 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 vector<pollfd>  fds;
 
-ServerManager::ServerManager(void): nServers(0), logger("serverLog.log") { }
+ServerManager::ServerManager(void): nServers(0) { }
 
 ServerManager::~ServerManager(void) {
   for (size_t it = 0; it < vServers.size(); it++)
@@ -31,6 +31,8 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
   }
   return (*this);
 }
+
+void  ServerManager::setLogger(const Logger &copy) { logger = copy; }
 
 bool  ServerManager::removeDuplicateServers(const string& host, int port) {
   for (size_t i = 0; i < vServers.size(); i++) {
@@ -49,11 +51,10 @@ void  ServerManager::startServers(void) {
     if (removeDuplicateServers(tmp.getHost(), tmp.getPort()))
       continue;
     Server *ptr = new Server();
+    ptr->setLogger(logger);
     ptr->setLocations(location[n]);
     ptr->setLocationRequest();
     ptr->setServerSide();
-    ptr->setLogger(logger);
-    logger.Log("socket listen created, [%d]", ptr->getSocket());
     vServers.push_back(ptr);
   }
   nServers = vServers.size();
@@ -65,13 +66,13 @@ void ServerManager::initPoll(void) {
     struct pollfd pFd;
     bzero(&pFd, sizeof(pFd));
     pFd.fd = vServers[i]->getSocket();
+    logger.Log("socket listen created, [%d]", pFd.fd);
     pFd.events = POLLIN;
     fds.push_back(pFd);
   }
 }
 
 void  ServerManager::addClient(void) {
-  // handler sockets server | add client | handler
   for (size_t i = 0; i < nServers; i++) {
     if (fds[i].revents & POLLIN) {
       struct sockaddr client;
@@ -101,7 +102,12 @@ bool  ServerManager::selectServerForClient(size_t fd) {
   char header[1024];
 
   int r = ::recv(fd, header, 1024, 0);
-  if (r < 1) {
+  if (r < 0) {
+    close(fd);
+    fds.erase(fds.begin() + fd);
+    logger.Log("error recv client: [%d]", fd);
+    return (true);
+  } else if (!r) {
     close(fd);
     fds.erase(fds.begin() + fd);
     logger.Log("close client: [%d]", fd);
@@ -131,7 +137,7 @@ void  ServerManager::handlerPoll(void) {
   logger.Log("|--Inicio de servidor--|");
   while (42) {
     if (poll(fds.data(), fds.size(), -1) < 0) {
-      cerr << "error poll" << endl;
+      logger.Log("error poll");
       Signals::setSignals(SIGQUIT);
     }
     addClient();

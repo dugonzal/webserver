@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 11:44:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:19:55 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 # include "../Utils.hpp"
 # include "Location.hpp"
+# include "Logger.hpp"
 
 class Location;
 
@@ -22,6 +23,7 @@ class Request {
   string                header;
   map<string, Location> locations;
   Location              locationRoot;
+  Logger                logger;
 
  public:
   Request(void);
@@ -30,7 +32,8 @@ class Request {
   Request &operator=(const Request&);
   void    setHeader(const char *);
   void    setLocation(const map<string, Location>&, const Location&);
-  void handlerRequest(void);
+  void    setLogger(const Logger&);
+  void    handlerRequest(void);
 
 // private:
 };

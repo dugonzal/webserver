@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/06 15:19:26 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:32:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class WebServer {
   mutable Signals               signals;
   mutable size_t                nServers;
   mutable map<string, Location> *locations;
-
+  Logger                        logger;
  private:
   WebServer(void);
 

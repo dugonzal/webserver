@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 11:44:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:20:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void  Request::setLocation(const map<string, Location> &tmp, \
     locations = tmp;
     locationRoot = root;
 }
+
+void  Request::setLogger(const Logger &copy) { logger = copy; }
 
 void Request::handlerRequest(void) {
   int pos = header.find_first_of('\n');

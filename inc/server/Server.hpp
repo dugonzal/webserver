@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:04:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:54:58 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 class Server: public virtual BaseServer {
  private:
-  Request     request;
-  //Response  response;
+  
+  Request    request;
 
  public:
   Server(void);
@@ -25,7 +25,7 @@ class Server: public virtual BaseServer {
   Server(const Server&);
   Server  &operator=(const Server&);
   void    handlerClient(size_t, const char *);
-  void    handlerRequest(const char *);
+  void    handlerRequest(const char *, int);
   void    handlerResponse(size_t);
   void    setLocationRequest(void);
 };

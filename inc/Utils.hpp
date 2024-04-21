@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 19:20:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:37:26 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # define WHT "\033[0;37m"
 # define END "\033[0m"
 # define WHITESPACES " \t\n\r\v"
+
+#define GET 101
+#define DELETE 201
+#define POST 301
 
 # include <ctime>
 # include <dirent.h>

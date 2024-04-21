@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:47:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:55:08 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ void  Server::setLocationRequest(void) {
   request.setLocation(location, LocationRoot);
 }
 
-void  Server::handlerRequest(const char *header) {
+void  Server::handlerRequest(const char *header, int clientFd) {
   request.setHeader(header);
+  request.setClientFd(clientFd);
   request.handlerRequest();
 }
 
@@ -44,7 +45,7 @@ void  Server::handlerResponse(size_t fd) {
 
 void  Server::handlerClient(size_t fd, const char *header) {
   // req
-  handlerRequest(header);
+  handlerRequest(header, fd);
   /// res
   handlerResponse(fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:46:17 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 21:50:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:30:24 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,19 @@
 
 # include "../Utils.hpp"
 
+class Request;
+
 class Response {
  private:
-  string  response;
+  Request*  ptrData;
+  string    response;
 
  public:
   Response(void);
   ~Response(void);
   Response(const Response&);
-  Response operator=(const Response&);
+  Response    operator=(const Response&);
+  void	      setPtrRequest( Request* ptr );
+  Request*	  getPtrData( void ) const;
+  std::string	getResponse( void ) const;
 };

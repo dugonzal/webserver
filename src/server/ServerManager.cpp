@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 13:46:24 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 14:50:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ bool  ServerManager::removeDuplicateServers(const string& host, int port) {
   for (size_t i = 0; i < vServers.size(); i++) {
     Location loc = vServers[i]->getLocation();
     if (loc.getHost() == host && loc.getPort() == port) {
-      cout << RED << "host and port exist: " << host \
-        << " " << port << END << endl;
+      logger.Log("host and port exist skiped [%s] [%d]", host.data(), port);
       return (true);
     }
   }
@@ -53,6 +52,8 @@ void  ServerManager::startServers(void) {
     ptr->setLocations(location[n]);
     ptr->setLocationRequest();
     ptr->setServerSide();
+    ptr->setLogger(logger);
+    logger.Log("socket listen created, [%d]", ptr->getSocket());
     vServers.push_back(ptr);
   }
   nServers = vServers.size();
@@ -103,6 +104,7 @@ bool  ServerManager::selectServerForClient(size_t fd) {
   if (r < 1) {
     close(fd);
     fds.erase(fds.begin() + fd);
+    logger.Log("close client: [%d]", fd);
     return (true);
   }
   header[r] = 0;
@@ -126,7 +128,7 @@ bool  ServerManager::selectServerForClient(size_t fd) {
 
 void  ServerManager::handlerPoll(void) {
   initPoll();
-  cout << CYN << "Inicio " << fds.size() << " Servidores" << END << endl;
+  logger.Log("|--Inicio de servidor--|");
   while (42) {
     if (poll(fds.data(), fds.size(), -1) < 0) {
       cerr << "error poll" << endl;

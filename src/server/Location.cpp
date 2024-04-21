@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 14:28:37 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:44:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void  Location::setListen(const string &_listen) {
   else if (pos > 6) {
     tmp  = _listen.substr(0, pos);
     n  = atoi(_listen.substr(pos + 1).data());
-    if (!tmp.compare("localhost") || !tmp.compare("127.0.0.1"))
+    if (!tmp.compare("localhost") or !tmp.compare("127.0.0.1"))
       host = "0.0.0.0";
     else
       host = tmp;

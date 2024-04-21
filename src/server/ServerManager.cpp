@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:47:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:42:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void  ServerManager::addClient(void) {
 }
 
 bool  ServerManager::selectServerForClient(size_t fd) {
-  char header[1024];
+  char header[1025];
 
   int r = ::recv(fd, header, 1024, 0);
   if (r < 0) {

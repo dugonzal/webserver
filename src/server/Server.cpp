@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 14:49:57 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:21:28 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ Server &Server::operator=(const Server &copy) {
   return (*this);
 }
 
-void  Server::setLogger(const Logger &copy) { logger = copy; }
 
 void  Server::setLocationRequest(void) {
   request.setLocation(location, LocationRoot);
@@ -35,13 +34,13 @@ void  Server::setLocationRequest(void) {
 void  Server::handlerRequest(const char *header) {
   request.setHeader(header);
   request.handlerRequest();
+  request.setLogger(logger); // add logger aqui por simplicidad
 }
 
 void  Server::handlerResponse(size_t fd) {
   const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
-  if (::send(fd, response, strlen(response), 0) < 0) {
-    cerr << "error al enviar" << endl;
-  }
+  if (::send(fd, response, strlen(response), 0) < 0)
+    logger.Log("error al enviar [%d]", fd);
 }
 
 void  Server::handlerClient(size_t fd, const char *header) {

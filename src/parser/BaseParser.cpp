@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:55:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:56:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ BaseParser &BaseParser::operator=(const BaseParser &copy) {
   }
   return (*this);
 }
+
+const Logger  &BaseParser::getLogger(void) const { return(logger); }
 
 void  BaseParser::setWords(void) {
   words.insert("server");
@@ -59,7 +61,8 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
 
   if (!(file = openFile(fileName))) {
     delete file;
-    throw(runtime_error(string("file not found (") + string(fileName + ")")));
+    logger.Log("file not found [%s]", filename.data());
+    throw(runtime_error(""));
   }
   setWords();
   while (getline(*file, buffer, '\n')) {
@@ -68,13 +71,14 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
        continue;
     if (!checkAllowedWords(firstWord(buffer))) {
       delete file;
-      throw(runtime_error(string("Word not allowed: (" \
-        + string(buffer + ")"))));
+      logger.Log("Word not allowed: [%s]", buffer.data());
+      throw(runtime_error(string("")));
     }
     if (!firstWord(buffer).compare("include")) {
       if (readIncludeError(lastWord(buffer))) {
         delete file;
-        throw(runtime_error(string("include error (") + string(buffer + ")")));
+        logger.Log("include error [%s]", buffer.data());
+        throw(runtime_error(""));
       }
       continue;
     }
@@ -108,19 +112,22 @@ void  BaseParser::keyValueCkeck(void) {
         continue;
     if (*end == ';') {
       it->erase(end);
-      if (!lastWord(*it).size())
-        throw(runtime_error(string("missing key or value (") \
-          + string(trim(*it) + ")")));
+      if (!lastWord(*it).size()) {
+        logger.Log("missing key or value [%s]", trim(*it).data());
+        throw(runtime_error(""));
+      }
       size_t n = numberWords(*it);
       if (n > 2) {
         string tmp = firstWord(*it);
-        if ((n == 3 && (!tmp.compare("error_page") || !tmp.compare("return"))))
+        if ((n == 3 && (!tmp.compare("error_page") \
+          || !tmp.compare("return")))) {
           continue;
-        else if (n < 5 && !tmp.compare("allow_methods"))
+        } else if (n < 5 && !tmp.compare("allow_methods")) {
           continue;
-        else
-          throw(runtime_error(string("too many words (") \
-            + string(trim(*it) + ")")));
+        } else {
+          logger.Log("too many words [%s]", trim(*it).data());
+          throw(runtime_error(""));
+        }
       }
     }
   }

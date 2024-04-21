@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/14 12:56:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:37:45 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,6 @@ Parser &Parser::operator=(const Parser &copy) {
   return (*this);
 }
 
-const vector<string> *Parser::getDataServers(void) const { return (dataServers); }
+const vector<string> *Parser::getDataServers(void) const {
+  return (dataServers);
+}

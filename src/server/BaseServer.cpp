@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 14:30:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:14:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,43 @@ BaseServer &BaseServer::operator=(const BaseServer &copy) {
 BaseServer::~BaseServer(void) { }
 
 void  BaseServer::setServerSide(void) {
-  if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-     throw logic_error("socket creation failed");
+  if ((serverFd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+    logger.Log("socket creation failed");
+    throw logic_error("");
+  }
 
   assert((serverFd > 2) && (serverFd < 6553));
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
   addr.sin_addr.s_addr = inet_addr(host.data());
+
   if (fcntl(serverFd, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
     close(serverFd);
-    throw logic_error("error: socket bind().");
+    logger.Log("error: socket bind().");
+    throw logic_error("");
   }
-  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
-      throw logic_error("error: socket SO_REUSEADDR.");
-  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)) < 0)
-      throw logic_error("error: socket SO_REUSEADDR.");
-  if (bind(serverFd, reinterpret_cast<sockaddr *>(&addr), addrLen) < 0)
-    throw logic_error("error: socket bind().");
-  if (listen(serverFd, 1024) < 0)
-    throw logic_error("listen failed");
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+    logger.Log("error: socket SO_REUSEADDR.");
+    throw logic_error("");
+  }
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)) < 0) {
+    logger.Log("error: socket SO_REUSEPORT.");
+    throw logic_error("");
+  }
+  if (bind(serverFd, reinterpret_cast<sockaddr *>(&addr), addrLen) < 0) {
+    logger.Log("error: socket bind().");
+    throw logic_error("");
+  }
+  if (listen(serverFd, 1024) < 0) {
+    logger.Log("listen failed");
+    throw logic_error("");
+  }
 }
+
+void  BaseServer::setLogger(const Logger &copy) { logger = copy; }
 
 void  BaseServer::setLocations(const map<string, Location> &copy) {
   location = copy;
-
   LocationRoot = location.find("root")->second;
   host = LocationRoot.getHost();
   port = LocationRoot.getPort();

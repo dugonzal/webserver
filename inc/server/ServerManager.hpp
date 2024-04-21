@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 14:51:38 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:29:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class ServerManager {
   void  startServers(void);
   int   setServerName(const string&);
   void  setLocations(map<string, Location>*);
+  void  setLogger(const Logger&);
 
  private:
   void  handlerPoll(void);

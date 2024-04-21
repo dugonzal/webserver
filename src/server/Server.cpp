@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 21:57:36 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:16:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,30 @@ Server::Server(const Server &copy): BaseServer(copy) { }
 Server &Server::operator=(const Server &copy) {
   if (this != &copy) {
     BaseServer::operator=(copy);
-    //request = copy.request;
+    request = copy.request;
   }
   return (*this);
 }
 
-void  Server::handlerClient(size_t fd, const char *tmp) {
+void  Server::setLocationRequest(void) {
+  request.setLocation(location, LocationRoot);
+}
+
+void  Server::handlerRequest(const char *header) {
+  request.setHeader(header);
+  request.handlerRequest();
+}
+
+void  Server::handlerResponse(size_t fd) {
   const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
-  (void)tmp;
-  cout << "  client: " << fd << endl;
-  cout << LocationRoot << endl;
   if (::send(fd, response, strlen(response), 0) < 0) {
     cerr << "error al enviar" << endl;
   }
+}
+
+void  Server::handlerClient(size_t fd, const char *header) {
+  // req
+  handlerRequest(header);
+  /// res
+  handlerResponse(fd);
 }

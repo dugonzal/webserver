@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 21:52:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:40:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void  ServerManager::startServers(void) {
       continue;
     Server *ptr = new Server();
     ptr->setLocations(location[n]);
+    ptr->setLocationRequest();
     ptr->setServerSide();
     vServers.push_back(ptr);
   }
@@ -63,7 +64,7 @@ void ServerManager::initPoll(void) {
     struct pollfd pFd;
     bzero(&pFd, sizeof(pFd));
     pFd.fd = vServers[i]->getSocket();
-    pFd.events = POLLIN | POLLERR | POLLHUP;
+    pFd.events = POLLIN;
     fds.push_back(pFd);
   }
 }
@@ -71,9 +72,9 @@ void ServerManager::initPoll(void) {
 void  ServerManager::addClient(void) {
   // handler sockets server | add client | handler
   for (size_t i = 0; i < nServers; i++) {
-    if (fds[i].revents & POLLIN)  {
-      struct pollfd   pFd;
+    if (fds[i].revents & POLLIN) {
       struct sockaddr client;
+      struct pollfd   pFd;
       socklen_t clientLen = sizeof(client);
       bzero(&pFd, sizeof(pFd));
       int tmp = accept(fds[i].fd, \
@@ -87,7 +88,7 @@ void  ServerManager::addClient(void) {
         break;
       }
       pFd.fd = tmp;
-      pFd.events = POLLIN | POLLERR | POLLHUP;
+      pFd.events = POLLIN;
       fds.push_back(pFd);
       break;
     }
@@ -125,7 +126,7 @@ bool  ServerManager::selectServerForClient(size_t fd) {
 void  ServerManager::handlerPoll(void) {
   initPoll();
   cout << CYN << "Inicio " << fds.size() << " Servidores" << END << endl;
-  while (true) {
+  while (42) {
     if (poll(fds.data(), fds.size(), -1) < 0) {
       cerr << "error poll" << endl;
       Signals::setSignals(SIGQUIT);

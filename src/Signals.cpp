@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 19:03:54 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 17:40:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 10:34:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ void Signals::setSignals(int sig) {
   if (sig == SIGQUIT || sig == SIGINT) {
     for (vector<pollfd>::const_iterator it = fds.begin(); \
       it != fds.end(); it++) {
-        cout << "cerrando fd: " << it->fd << endl;
+        cout << RED << "close fd: " << it->fd << END << endl;
         close(it->fd);
     }
+    cout << CYN << "Server conquered! Keep coding, stay safe. 🙂🙂🙂" << END << endl;
     exit(0);
   }
 }

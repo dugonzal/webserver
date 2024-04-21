@@ -6,7 +6,7 @@
 #    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/04/21 21:46:10 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/04/21 22:27:18 by Dugonzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 all: ${NAME} 
 
 ${NAME}: ${OBJ} ${I}
+	mkdir -p logs
 	${CXX} ${OBJ} -o ${NAME} && ./$@
 	printf "compile done ->: [$@]\n"
 
@@ -61,12 +62,11 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	printf "compile ->: {$?}\n"
 
 clean:
-#		make clean -C ./tests
-		rm -rf ${NAME}
+	rm -rf ${NAME}
 
 fclean: clean
-#		make fclean -C ./tests
-		rm -rf	${OBJ_DIR}
+	rm -rf	${OBJ_DIR}
+	rm -rf logs
 
 re: fclean all
 

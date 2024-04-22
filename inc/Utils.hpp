@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 19:20:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:34:18 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # define END "\033[0m"
 # define WHITESPACES " \t\n\r\v"
 
-# include <ctime>
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/un.h>
@@ -38,6 +37,7 @@
 # include <list>
 # include <csignal>
 # include <string>
+# include <ctime>
 # include <iostream>
 # include <ostream>
 # include <vector>

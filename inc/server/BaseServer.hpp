@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 21:47:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:49:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 # include "../Logger.hpp"
 # include "../parser/BaseParser.hpp"
-# include "../server/Request.hpp"
 # include "../Utils.hpp"
 # include "Location.hpp"
 

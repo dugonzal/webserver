@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 16:20:47 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:30:20 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ class Location {
     pair<size_t, string>  _return;
     vector<string>        methods;
     map<size_t, string>   errorPages;
-    // estas dos son directrises generales del servidor que solo se alojaran
-  //  en el alcance general de la locacion
     string                host;
     int                   port;
     string                serverName;

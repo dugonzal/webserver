@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:46:17 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/20 21:50:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:53:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 # include "../Utils.hpp"
 
+class Request;
+
 class Response {
  private:
-  string  response;
-
  public:
   Response(void);
   ~Response(void);
-  Response(const Response&);
-  Response operator=(const Response&);
+  void  print(void) {
+    cout << "hola mundo" << endl;
+  }
 };

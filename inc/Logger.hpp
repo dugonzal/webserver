@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:42:46 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 22:07:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:46:23 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ class Logger {
   ofstream      file;
   string        fileName;
 
- private:
-  explicit Logger(const string&);
-
  public:
   Logger(void);
+  explicit Logger(const string&);
   ~Logger(void);
   Logger(const Logger&);
   Logger        &operator=(const Logger&);

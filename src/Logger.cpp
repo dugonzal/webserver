@@ -6,13 +6,13 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:46:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 22:28:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:48:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../inc/Logger.hpp"
 
-Logger::Logger(void): file("logs/serverLog.log", ios::out | ios::app) { }
+Logger::Logger(void): file("serverLog.log", ios::out | ios::app) { }
 
 Logger::Logger(const string &name): file(name.data(), ios::out | ios::app) { }
 
@@ -37,13 +37,12 @@ void  Logger::Log(const char *line, ...) {
   char out[1024] = {0};
   va_list arg;
 
+  va_start(arg, line);
   if (!file.is_open()) {
-    delete [] c_time;
     cerr << "file logger no open" << endl;
     return;
   }
 
-  va_start(arg, line);
   c_time[strlen(c_time) - 1] = 0;
   vsnprintf(out, sizeof(out), line, arg);
   cout << MAG << "[INFO] " << END << c_time \

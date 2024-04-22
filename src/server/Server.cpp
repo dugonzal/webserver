@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:47:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:13:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ Server &Server::operator=(const Server &copy) {
 
 
 void  Server::setLocationRequest(void) {
-  request.setLocation(location, LocationRoot);
+  request.setLocation(location);
 }
 
 void  Server::handlerRequest(const char *header) {

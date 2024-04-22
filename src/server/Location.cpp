@@ -6,13 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 21:33:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:22:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
-Location::Location(void): autoIndex(-1), port(-1), clientBodySize(-1) { }
+Location::Location(void): autoIndex(-1), \
+  port(-1), clientBodySize(-1), isCgi(false) { }
 
 Location::~Location(void) { }
 
@@ -20,7 +21,8 @@ Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
     autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), \
       methods(copy.methods),  errorPages(copy.errorPages),
-        host(copy.host), port(copy.port), serverName(copy.serverName) { }
+        host(copy.host), port(copy.port), serverName(copy.serverName),
+          isCgi(copy.isCgi) { }
 
 Location &Location::operator=(const Location &copy) {
   if (&copy != this) {
@@ -35,6 +37,7 @@ Location &Location::operator=(const Location &copy) {
     host = copy.host;
     port = copy.port;
     serverName = copy.serverName;
+    isCgi = copy.isCgi;
   }
   return (*this);
 }
@@ -74,6 +77,13 @@ void  Location::setCgiPath(const string &_cgiPath) {
   if (!cgiPath.empty())
     throw(runtime_error("setCgiPath"));
   cgiPath = _cgiPath;
+  isCgi = true;
+}
+
+void  Location::setCgiExt(const string &_cgiExt) {
+  if (!cgiExt.empty())
+    throw(runtime_error("setCgiExt"));
+  cgiExt = _cgiExt;
 }
 
 void  Location::setReturn(const string &return_) {
@@ -83,12 +93,6 @@ void  Location::setReturn(const string &return_) {
   if (_return.first < 100 or _return.first > 505)
     throw(runtime_error("setErrorPages code not allowed"));
   _return.second = lastWord(return_);
-}
-
-void  Location::setCgiExt(const string &_cgiExt) {
-  if (!cgiExt.empty())
-    throw(runtime_error("setCgiExt"));
-  cgiExt = _cgiExt;
 }
 
 void  Location::setMethods(const string &_methods) {
@@ -194,6 +198,8 @@ const string  Location::getCgiext(void) const { return(cgiExt); }
 
 int Location::getAutoIndex(void) const { return(autoIndex); }
 
+bool  Location::getIsCgi(void) const { return(isCgi); }
+
 const vector<string>  Location::getmethods(void) const {
   return(methods);
 }
@@ -226,6 +232,7 @@ void  Location::clear(void) {
   host.clear();
   port = -1;
   clientBodySize = -1;
+  isCgi = false;
 }
 
 ostream &operator<<(ostream &os, const Location &copy) {
@@ -236,6 +243,7 @@ ostream &operator<<(ostream &os, const Location &copy) {
   << copy.getPath() << endl << "cgiExt: " << copy.getCgiext() \
   <<  endl << "methods: " << copy.getmethods().size() << endl \
   << "return: " << copy.getReturn().second << endl \
-  << "errorPages: " << copy.getErrorPages().size() << endl;
+  << "errorPages: " << copy.getErrorPages().size() << endl \
+  << "isCgi: " << copy.getIsCgi() << endl;
   return (os);
 }

@@ -6,13 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:30:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:14:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../Utils.hpp"
+# include "../Logger.hpp"
 
 class Location {
  private:
@@ -30,6 +31,7 @@ class Location {
     string                serverName;
     int                   clientBodySize;
     bool                  isCgi;
+    Logger                logger;
 
  public:
     Location(void);

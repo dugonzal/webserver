@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:57:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:12:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
 
   if (!(file = openFile(fileName))) {
     delete file;
-    logger.Log("file not found [%s]", filename.data());
-    throw(runtime_error(""));
+    logger.LogThrow("file not found [%s]", filename.data());
   }
   setWords();
   while (getline(*file, buffer, '\n')) {
@@ -69,14 +68,12 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
        continue;
     if (!checkAllowedWords(firstWord(buffer))) {
       delete file;
-      logger.Log("Word not allowed: [%s]", buffer.data());
-      throw(runtime_error(string("")));
+      logger.LogThrow("Word not allowed: [%s]", buffer.data());
     }
     if (!firstWord(buffer).compare("include")) {
       if (readIncludeError(lastWord(buffer))) {
         delete file;
-        logger.Log("include error [%s]", buffer.data());
-        throw(runtime_error(""));
+        logger.LogThrow("include error [%s]", buffer.data());
       }
       continue;
     }
@@ -111,8 +108,7 @@ void  BaseParser::keyValueCkeck(void) {
     if (*end == ';') {
       it->erase(end);
       if (!lastWord(*it).size()) {
-        logger.Log("missing key or value [%s]", trim(*it).data());
-        throw(runtime_error(""));
+        logger.LogThrow("missing key or value [%s]", trim(*it).data());
       }
       size_t n = numberWords(*it);
       if (n > 2) {
@@ -123,8 +119,7 @@ void  BaseParser::keyValueCkeck(void) {
         } else if (n < 5 && !tmp.compare("allow_methods")) {
           continue;
         } else {
-          logger.Log("too many words [%s]", trim(*it).data());
-          throw(runtime_error(""));
+          logger.LogThrow("too many words [%s]", trim(*it).data());
         }
       }
     }
@@ -191,7 +186,7 @@ void  BaseParser::setNservers(void) {
       endServer++;
   }
   if (nServers != endServer)
-    throw(runtime_error("scope server "));
+    logger.LogThrow("scope server ");
   else
     handlerScopeError();
 }
@@ -211,12 +206,12 @@ size_t  BaseParser::serverError(size_t i) {
   while (++i < data.size()) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos)
-        throw(runtime_error("server dentro de server"));
+        logger.LogThrow("server dentro de server");
     else if (!firstWord(data[i]).compare("include"))
-      throw(runtime_error("include circular"));
+      logger.LogThrow("include circular");
     else if (!firstWord(data[i]).compare("cgi_path") \
       || !firstWord(data[i]).compare("cgi_ext"))
-        throw(runtime_error(string("defined in global scope (")  + string(data[i] + ")")));
+        logger.LogThrow("defined in global scope ",  data[i].data());
     else if (data[i].find("location") != string::npos \
       && data[i].find("{") != string::npos) {
         i = skipLocation(i);
@@ -234,8 +229,7 @@ void  BaseParser::handlerScopeError(void) {
       && data[i].find("{") != string::npos) {
         i = serverError(i);
      } else {
-      logger.Log("fuera del scope del server [%s]", data[i].data());
-      throw(runtime_error(""));
+      logger.LogThrow("fuera del scope del server [%s]", data[i].data());
     }
   }
 }
@@ -281,7 +275,6 @@ void  BaseParser::handlerScopeLocation(void) {
         end++;
   }
   if (lo != end) {
-    logger.Log("Location scope not properly closed: Check brace matching.");
-    throw(runtime_error(""));
+    logger.LogThrow("Location scope not properly closed: Check brace matching.");
   }
 }

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:46:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:13:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
       if (locations[n].find(firstWord(lastWord(line[i]))) != locations[n].end())
-        throw(runtime_error(string("error: location already exists. (") + string(line[i] + ")")));
+        logger.LogThrow("error: location already exists. ", line[i].data());
       tmp.setPath(firstWord(lastWord(line[i])));
       while (++i < line.size()) {
         if (!line[i].compare("}")) {

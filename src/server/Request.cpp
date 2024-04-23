@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:18:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:38:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,12 @@ void  Request::parserData(void) {
   if (setMethod(trim(firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
   }
+  if (isCgi) {
+    logger.Log("hay que lanzar cgi para esta location");
+  }
 }
 
 void Request::handlerRequest(void) {
   parserData();
+  cout << endl << endl << header << endl;
 }

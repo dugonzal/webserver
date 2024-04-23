@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:55:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:43:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../Logger.hpp"
 # include "../Utils.hpp"
 # include "Response.hpp"
+# include "CGI.hpp"
 
 class Response;
 
@@ -24,6 +25,7 @@ class Request {
   string                header;
   Logger                logger;
   Response              response;
+  CGI                   cgi;
 
  private:
   map<string, Location> locations;

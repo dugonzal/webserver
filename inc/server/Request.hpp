@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 19:43:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:12:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ class Request {
   void    setLocation(void);
   void    handlerRequest(void);
   void    parserData(void);
-// private:
+  void    serverToClient(const string&, size_t); 
+  // private:
 };

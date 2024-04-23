@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 19:38:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:22:25 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,9 @@ void  Request::parserData(void) {
   }
 }
 
-void Request::handlerRequest(void) {
-  parserData();
-  cout << endl << endl << header << endl;
+void  Request::serverToClient(const string &_header, size_t fd) {
+  cout << fd << _header << endl;
+  const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
+  if (::send(fd, response, strlen(response), 0) < 0)
+    logger.Log("error al enviar [%d]", fd);
 }

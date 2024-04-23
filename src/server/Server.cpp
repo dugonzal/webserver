@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 19:37:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:17:12 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,7 @@ void  Server::setLocationRequest(void) {
   request.setLocation(location);
 }
 
-void  Server::handlerRequest(const char *header) {
-  request.setHeader(header);
-  request.handlerRequest();
-}
-
-void  Server::handlerResponse(size_t fd) {
-  const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
-  if (::send(fd, response, strlen(response), 0) < 0)
-    logger.Log("error al enviar [%d]", fd);
-}
-
 void  Server::handlerClient(size_t fd, const char *header) {
-  // req
-  handlerRequest(header);
-  /// res
-  handlerResponse(fd);
+  setLocationRequest();
+  request.serverToClient(header, fd);
 }

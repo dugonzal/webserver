@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/23 20:12:38 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:05:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void  BaseParser::setWords(void) {
   words.insert("listen");
   words.insert("index");
   words.insert("return");
+  words.insert("alias");
   words.insert("root");
   words.insert("autoindex");
   words.insert("client_max_body_size");

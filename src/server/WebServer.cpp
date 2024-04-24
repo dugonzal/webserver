@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 19:45:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:48:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 }
 
 void  WebServer::setServer(void) {
-  system("clear");
+  //system("clear");
   handlerSetServerWebServer();
   servers.setNServers(nServers);
   servers.setLocations(locations);

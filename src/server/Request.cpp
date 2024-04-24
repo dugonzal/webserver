@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/23 19:22:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:53:34 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void  Request::setLocation(void) {
 bool  Request::setRouteAndVersion(const string &tmp) {
   route = firstWord(tmp);
   version = lastWord(tmp);
-
   if (version.compare("HTTP/1.1"))
     return (true);
   return(false);
@@ -92,7 +91,8 @@ void  Request::parserData(void) {
 }
 
 void  Request::serverToClient(const string &_header, size_t fd) {
-  cout << fd << _header << endl;
+  header = _header;
+  parserData();
   const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
   if (::send(fd, response, strlen(response), 0) < 0)
     logger.Log("error al enviar [%d]", fd);

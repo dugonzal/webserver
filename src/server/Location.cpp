@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 19:44:23 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:50:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,45 @@ Location::Location(const Location &copy): \
           isCgi(copy.isCgi), alias(copy.alias) { }
 
 Location &Location::operator=(const Location &copy) {
-  if (&copy != this) {
-    root = copy.root;
-    path = copy.path;
-    index = copy.index;
-    autoIndex = copy.autoIndex;
-    cgiPath = copy.cgiPath;
-    cgiExt  = copy.cgiExt;
-    methods = copy.methods;
-    errorPages = copy.errorPages;
-    host = copy.host;
-    port = copy.port;
-    serverName = copy.serverName;
-    isCgi = copy.isCgi;
-    _return = copy._return;
-    alias = copy.alias;
-  }
+  root = copy.root;
+  path = copy.path;
+  index = copy.index;
+  autoIndex = copy.autoIndex;
+  cgiPath = copy.cgiPath;
+  cgiExt  = copy.cgiExt;
+  methods = copy.methods;
+  errorPages = copy.errorPages;
+  host = copy.host;
+  port = copy.port;
+  serverName = copy.serverName;
+  isCgi = copy.isCgi;
+  _return = copy._return;
+  alias = copy.alias;
   return (*this);
 }
 
 void  Location::setRoot(const string &_root) {
   if (!root.empty())
-    logger.LogThrow("setRoot");
+    logger.LogThrow("setRoot [%s]", _root.data());
   root = _root;
 }
 
 void  Location::setPath(const string &_path) {
+  cout << path << endl;
   if (!path.empty())
-    logger.LogThrow("setPath");
+    logger.LogThrow("setPath [%s]", _path.data());
   path = _path;
 }
 
 void  Location::setIndex(const string &_index) {
   if (!index.empty())
-    logger.LogThrow("setIndex");
+    logger.LogThrow("setIndex [%s]", _index.data());
   index = _index;
 }
 
 void  Location::setAutoIndex(const string &_autoIndex) {
   if (autoIndex != -1)
-    logger.LogThrow("setAutoIndex");
+    logger.LogThrow("setAutoIndex [%s]", _autoIndex.data());
   else if (!_autoIndex.compare("true") or !_autoIndex.compare("on") \
     or !_autoIndex.compare("TRUE") or !_autoIndex.compare("ON"))
     autoIndex = true;
@@ -72,28 +71,28 @@ void  Location::setAutoIndex(const string &_autoIndex) {
     or !_autoIndex.compare("False") or !_autoIndex.compare("OFF"))
       autoIndex = false;
   else
-    logger.LogThrow("autoIndex ", _autoIndex.data());
+    logger.LogThrow("autoIndex [%s]", _autoIndex.data());
 }
 
 void  Location::setCgiPath(const string &_cgiPath) {
   if (!cgiPath.empty())
-    logger.LogThrow("setCgiPath");
+    logger.LogThrow("setCgiPath [%s]", _cgiPath.data());
   cgiPath = _cgiPath;
   isCgi = true;
 }
 
 void  Location::setCgiExt(const string &_cgiExt) {
   if (!cgiExt.empty())
-    logger.LogThrow("setCgiExt");
+    logger.LogThrow("setCgiExt [%s]", _cgiExt.data());
   cgiExt = _cgiExt;
 }
 
 void  Location::setReturn(const string &return_) {
   if (!_return.second.empty())
-    logger.LogThrow("setReturn");
+    logger.LogThrow("setReturn [%s]", return_.data());
   _return.first = atoi(firstWord(return_).data());
   if (_return.first < 100 or _return.first > 505)
-    logger.LogThrow("setErrorPages code not allowed");
+    logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
   _return.second = lastWord(return_);
 }
 
@@ -108,7 +107,7 @@ void  Location::setMethods(const string &_methods) {
     if (sub.empty())
       break;
     else if (sub.compare("GET") and sub.compare("POST") && sub.compare("DELETE"))
-      logger.LogThrow(" methods no allowed (", sub.data());
+      logger.LogThrow(" methods no allowed [%s]", sub.data());
     methods.push_back(sub);
   }
 }
@@ -117,9 +116,9 @@ void  Location::setErrorPages(const string &_errorPages) {
   size_t n = atoi(firstWord(_errorPages).data());
 
   if (n < 100 or n > 505 or errorPages.find(n) != errorPages.end())
-    logger.LogThrow("setErrorPages code not allowed");
+    logger.LogThrow("setErrorPages code not allowed [%s]", _errorPages.data());
   else if (errorPages.find(n) != errorPages.end())
-    logger.LogThrow("setErrorPages code already exists");
+    logger.LogThrow("setErrorPages code already exists [%s]", _errorPages.data());
   errorPages.insert(pair<size_t, string>(n, lastWord(_errorPages)));
 }
 
@@ -152,7 +151,7 @@ void  Location::setListen(const string &_listen) {
 
 void  Location::setServerName(const string &_serverName) {
   if (!serverName.empty())
-    logger.LogThrow("exist serverName");
+    logger.LogThrow("exist serverName [%s]", _serverName.data());
   serverName = _serverName;
 }
 
@@ -190,7 +189,7 @@ Location  Location::clone(void) const {
       throw(runtime_error("si hay cgi tiene que haber path y ext"));
   else if (!path.compare("root") and port < 1)
       throw(runtime_error("errror tiene que haber port"));
-    return (*this);
+  return (*this);
 }
 
 const string Location::getPath(void) const { return (path); }
@@ -241,6 +240,7 @@ void  Location::clear(void) {
   host.clear();
   port = -1;
   clientBodySize = -1;
+  alias.clear();
   isCgi = false;
 }
 
@@ -249,10 +249,11 @@ ostream &operator<<(ostream &os, const Location &copy) {
   << copy.port << endl << "path: " << copy.getPath() << endl << "root: " \
   << copy.getRoot() << endl << "index: " << copy.getIndex() << endl \
   << "autoIndex: " << copy.getAutoIndex() << endl << "cgiPath: " \
-  << copy.getPath() << endl << "cgiExt: " << copy.getCgiext() \
+  << copy.getCgiPath() << endl << "cgiExt: " << copy.getCgiext() \
   <<  endl << "methods: " << copy.getmethods().size() << endl \
   << "return: " << copy.getReturn().second << endl \
   << "errorPages: " << copy.getErrorPages().size() << endl \
-  << "isCgi: " << copy.getIsCgi() << endl;
+  << "isCgi: " << copy.getIsCgi() << endl << "alias: " \
+  << copy.getAlias() << endl;
   return (os);
 }

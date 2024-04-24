@@ -6,11 +6,12 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 21:07:38 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 22:16:45 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
+#include <unistd.h>
 
 Location::Location(void): autoIndex(-1), \
   port(-1), clientBodySize(-1), isCgi(false) { }
@@ -49,7 +50,6 @@ void  Location::setRoot(const string &_root) {
 }
 
 void  Location::setPath(const string &_path) {
-  cout << path << endl;
   if (!path.empty())
     logger.LogThrow("setPath [%s]", _path.data());
   path = _path;
@@ -90,10 +90,17 @@ void  Location::setCgiExt(const string &_cgiExt) {
 void  Location::setReturn(const string &return_) {
   if (!_return.second.empty())
     logger.LogThrow("setReturn [%s]", return_.data());
+
   _return.first = atoi(firstWord(return_).data());
   if (_return.first < 100 or _return.first > 505)
     logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
+
   _return.second = lastWord(return_);
+  if (_return.second.substr(0, 8).compare("https://") \
+    && _return.second.substr(0, 7).compare("http://"))
+    logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
+  if (_return.second[_return.second.size() - 1] != '/')
+    _return.second[_return.second.size() - 1] = '/';
 }
 
 void  Location::setMethods(const string &_methods) {

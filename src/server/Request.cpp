@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 20:53:34 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 22:20:11 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,19 @@ void  Request::parserData(void) {
 void  Request::serverToClient(const string &_header, size_t fd) {
   header = _header;
   parserData();
-  const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
-  if (::send(fd, response, strlen(response), 0) < 0)
+  string response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
+  if (header.find("3009") != string::npos) {
+    if (::send(fd, response.data(), response.size(), 0) < 0)
+      logger.Log("error al enviar [%d]", fd);
+   return;
+  }
+  std::string redirect_response = "HTTP/1.1 301 Moved Permanently\r\n";
+  redirect_response += "Location:" + locationRoot.getReturn().second  + "\r\n"; // Cambia la URL según sea necesario
+  redirect_response += "Connection: close\r\n\r\n";
+  /*std::string redirect_response = "HTTP/1.1 301 Moved Permanently\r\n";
+   redirect_response += "Location: http:0.0.0.0:3008/nueva_pagina\r\n";
+   redirect_response += "Connection: close\r\n\r\n";
+  */
+  if (::send(fd, redirect_response.data(), redirect_response.size(), 0) < 0)
     logger.Log("error al enviar [%d]", fd);
 }

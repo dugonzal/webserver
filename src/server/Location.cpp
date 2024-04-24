@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 22:16:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 22:45:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Location::~Location(void) { }
 Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
     autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), \
-      _return(copy._return), methods(copy.methods),  errorPages(copy.errorPages),
+      _return(copy._return), methods(copy.methods), errorPages(copy.errorPages),
         host(copy.host), port(copy.port), serverName(copy.serverName),
           isCgi(copy.isCgi), alias(copy.alias) { }
 
@@ -71,7 +71,7 @@ void  Location::setAutoIndex(const string &_autoIndex) {
     or !_autoIndex.compare("False") or !_autoIndex.compare("OFF"))
       autoIndex = false;
   else
-    logger.LogThrow("autoIndex [%s]", _autoIndex.data());
+    logger.LogThrow("setAutoIndex [%s]", _autoIndex.data());
 }
 
 void  Location::setCgiPath(const string &_cgiPath) {
@@ -114,7 +114,7 @@ void  Location::setMethods(const string &_methods) {
     if (sub.empty())
       break;
     else if (sub.compare("GET") and sub.compare("POST") && sub.compare("DELETE"))
-      logger.LogThrow(" methods no allowed [%s]", sub.data());
+      logger.LogThrow("methods no allowed [%s]", sub.data());
     methods.push_back(sub);
   }
 }
@@ -139,19 +139,17 @@ void  Location::setListen(const string &_listen) {
   else if (pos > 6) {
     tmp  = _listen.substr(0, pos);
     n  = atoi(_listen.substr(pos + 1).data());
-    if (!tmp.compare("localhost") or !tmp.compare("127.0.0.1"))
-      host = "0.0.0.0";
-    else
-      host = tmp;
-    if (n < 0 or n > 65535)
+    host = tmp;
+    if (n < 1024 or n > 65535)
       logger.LogThrow("error port out range (",  _listen.data());
     else
       port = n;
   } else if (pos < 0) {
       port = atoi(_listen.data());
+      if (port < 1024 or port > 65535)
+        logger.LogThrow("error port out range (",  _listen.data() );
       host = "0.0.0.0";
-    if (port < 1 or port > 65535)
-      logger.LogThrow("error port out range (",  _listen.data() );
+      logger.Log("host empty default is 0.0.0.0:[%d]", port);
   } else
       logger.LogThrow("no puedo establecer listen ", _listen.data());
 }
@@ -171,12 +169,12 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   if (clientBodySize != -1)
     logger.LogThrow("clientBodySize exists ", _clientBodySize.data());
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
-    if (isdigit(_clientBodySize.c_str()[i]))
-      num << _clientBodySize.c_str()[i];
+    if (isdigit(_clientBodySize.data()[i]))
+      num << _clientBodySize.data()[i];
     else
-      size << _clientBodySize.c_str()[i];
+      size << _clientBodySize.data()[i];
   }
-  ret = atoi(num.str().c_str());
+  ret = atoi(num.str().data());
   if (!size.str().compare("m"))
     ret *= 1000000;
   else if (!size.str().compare("k"))

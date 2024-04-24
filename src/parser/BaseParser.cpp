@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 20:05:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 21:15:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
     if (!firstWord(buffer).compare("include")) {
       if (readIncludeError(lastWord(buffer))) {
         delete file;
-        logger.LogThrow("include error [%s]", buffer.data());
+        logger.LogThrow("include error file open or word no allowed [%s]", buffer.data());
       }
       continue;
     }
@@ -157,6 +157,11 @@ bool  BaseParser::readInclude(const string &fdFile) {
     buffer = trim(buffer);
     if (skipLine(buffer))
       continue;
+    if (!checkAllowedWords(firstWord(buffer))) {
+      logger.Log("[%s]", buffer.data());
+      delete file;
+      return (true);
+    }
     data.push_back(buffer);
   }
   delete file;

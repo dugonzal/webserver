@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 20:50:58 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 21:07:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,8 +240,8 @@ void  Location::clear(void) {
   host.clear();
   port = -1;
   clientBodySize = -1;
-  alias.clear();
   isCgi = false;
+  alias.clear();
 }
 
 ostream &operator<<(ostream &os, const Location &copy) {

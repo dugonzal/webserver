@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/23 20:13:37 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 19:45:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
     tmp->setListen(lastWord(line));
   else if (!firstWord(line).compare("server_name"))
     tmp->setServerName(lastWord(line));
+  else if (!firstWord(line).compare("alias"))
+    tmp->setAlias(lastWord(line));
 }
 
 void  WebServer::setLocations(const vector<string> &line, size_t n) {

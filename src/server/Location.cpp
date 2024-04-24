@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/23 20:21:28 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 19:44:23 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ Location::~Location(void) { }
 Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
     autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), \
-      methods(copy.methods),  errorPages(copy.errorPages),
+      _return(copy._return), methods(copy.methods),  errorPages(copy.errorPages),
         host(copy.host), port(copy.port), serverName(copy.serverName),
-          isCgi(copy.isCgi) { }
+          isCgi(copy.isCgi), alias(copy.alias) { }
 
 Location &Location::operator=(const Location &copy) {
   if (&copy != this) {
@@ -38,6 +38,8 @@ Location &Location::operator=(const Location &copy) {
     port = copy.port;
     serverName = copy.serverName;
     isCgi = copy.isCgi;
+    _return = copy._return;
+    alias = copy.alias;
   }
   return (*this);
 }
@@ -176,6 +178,11 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   clientBodySize = ret;
 }
 
+void  Location::setAlias(const string &_alias) {
+  if (!alias.empty())
+    logger.LogThrow("alias exists [%s]", _alias.data());
+  alias = _alias;
+}
 // hay que setear default posiblemente
 Location  Location::clone(void) const {
   if ((!cgiPath.empty() and cgiExt.empty()) \
@@ -217,6 +224,8 @@ const string  Location::getHost(void) const { return (host); }
 int Location::getPort(void) const { return (port); }
 
 const string  Location::getServerName(void) const { return (serverName); }
+
+const string  &Location::getAlias(void) const { return(alias); }
 
 void  Location::clear(void) {
   root.clear();

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/23 20:14:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/24 19:43:22 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Location {
     int                   clientBodySize;
     bool                  isCgi;
     Logger                logger;
+    string                alias;
 
  public:
     Location(void);
@@ -52,6 +53,7 @@ class Location {
     void                        setListen(const string&);
     void                        setServerName(const string&);
     void                        setClientBodySize(const string&);   
+    void                        setAlias(const string&);
     Location                    clone(void) const;
     const string                getRoot(void) const;
     const string                getPath(void) const;
@@ -66,6 +68,7 @@ class Location {
     int                         getPort(void) const;
     const string                getServerName(void) const;
     bool                        getIsCgi(void) const;
+    const string                &getAlias(void) const;  
     void                        clear(void);
 
  friend ostream                &operator<<(ostream &, const Location&);

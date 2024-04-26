@@ -28,7 +28,7 @@ class Location {
     string                host;
     int                   port;
     string                serverName;
-    int                   clientBodySize;
+   long                   clientBodySize;
     bool                  isCgi;
     Logger                logger;
     string                alias;
@@ -68,6 +68,8 @@ class Location {
     bool                        getIsCgi(void) const;
     const string                &getAlias(void) const;  
     void                        clear(void);
+    //FUNCION IKER
+    long               getClientBodySize(void) const;
 
  friend ostream                &operator<<(ostream &, const Location&);
 };

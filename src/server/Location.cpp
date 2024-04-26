@@ -216,6 +216,10 @@ int Location::getPort(void) const { return (port); }
 const string  Location::getServerName(void) const { return (serverName); }
 
 const string  &Location::getAlias(void) const { return(alias); }
+//FUNCIONES IKER
+
+long Location::getClientBodySize(void) const { return (clientBodySize); }
+
 
 void  Location::clear(void) {
   root.clear();

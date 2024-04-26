@@ -37,6 +37,10 @@ class Request {
   string  version;
   bool    isCgi;
 
+  ///PRIVATE IKEEEER
+  int     clientFd;
+  string  autoDirectory;
+
  public:
   Request(void);
   ~Request(void);
@@ -51,4 +55,8 @@ class Request {
   void    parserData(void);
   void    serverToClient(const string&, size_t); 
   // private:
+
+    // FUNCIONES IKEEEERRRR
+  int     checkMethod(const string &_method);
+  void    getMethod( void );
 };

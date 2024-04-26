@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/25 19:52:10 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:36:25 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
   int idx = addr.find(":");
   int port = atoi(addr.substr(idx + 1).data());
   string host = addr.substr(0, idx);
+  if (!host.compare("localhost"))
+    host = "127.0.0.1";
 
   for (size_t i = 0; i < vServers.size(); i++) {
     if (vServers[i]->getHost() == host && vServers[i]->getPort() == port) {

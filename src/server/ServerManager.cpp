@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 22:29:23 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:52:10 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void  ServerManager::startServers(void) {
 void ServerManager::initPoll(void) {
   for (size_t i = 0; i < nServers; i++) {
     struct pollfd pFd;
-    bzero(&pFd, sizeof(pFd));
+    ::bzero(&pFd, sizeof(pFd));
     pFd.fd = vServers[i]->getSocket();
     logger.Log("socket listen created, [%d]", pFd.fd);
     pFd.events = POLLIN;
@@ -75,11 +75,11 @@ void  ServerManager::addClient(void) {
       struct sockaddr client;
       struct pollfd   pFd;
       socklen_t clientLen = sizeof(client);
-      bzero(&pFd, sizeof(pFd));
+      ::bzero(&pFd, sizeof(pFd));
       int tmp = accept(fds[i].fd, \
         reinterpret_cast<sockaddr *>(&client), &clientLen);
       if (tmp < 0) {
-        close(tmp);
+        ::close(tmp);
         break;
       }
       if (fcntl(tmp, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
@@ -100,12 +100,12 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
 
   int r = ::recv(fd, header, 1024, 0);
   if (r < 0) {
-    close(fd);
+    ::close(fd);
     fds.erase(fds.begin() + i);
     logger.Log("error recv client: [%d]", fd);
     return (true);
   } else if (!r) {
-    close(fd);
+    ::close(fd);
     fds.erase(fds.begin() + i);
     logger.Log("close client: [%d]", fd);
     return (true);

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 19:43:22 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:33:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ class Location {
     string                index;
     int                   autoIndex;
     string                cgiPath;
-    string                cgiExt;
     pair<size_t, string>  _return;
     vector<string>        methods;
     map<size_t, string>   errorPages;
@@ -46,7 +45,6 @@ class Location {
     void                        setIndex(const string&);
     void                        setAutoIndex(const string&);
     void                        setCgiPath(const string&);
-    void                        setCgiExt(const string&);
     void                        setMethods(const string&);
     void                        setReturn(const string&);
     void                        setErrorPages(const string&);

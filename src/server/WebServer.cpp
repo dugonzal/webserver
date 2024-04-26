@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 22:29:56 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:35:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
     tmp->setRoot(lastWord(line));
   else if (!firstWord(line).compare("cgi_path"))
     tmp->setCgiPath(lastWord(line));
-  else if (!firstWord(line).compare("cgi_ext"))
-    tmp->setCgiExt(lastWord(line));
   else if (!firstWord(line).compare("autoindex"))
     tmp->setAutoIndex(lastWord(line));
   else if (!firstWord(line).compare("allow_methods"))

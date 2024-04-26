@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 22:45:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/25 22:11:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
-#include <unistd.h>
 
 Location::Location(void): autoIndex(-1), \
   port(-1), clientBodySize(-1), isCgi(false) { }
@@ -20,26 +19,28 @@ Location::~Location(void) { }
 
 Location::Location(const Location &copy): \
   root(copy.root), path(copy.path), index(copy.index), \
-    autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), cgiExt(copy.cgiExt), \
-      _return(copy._return), methods(copy.methods), errorPages(copy.errorPages),
-        host(copy.host), port(copy.port), serverName(copy.serverName),
-          isCgi(copy.isCgi), alias(copy.alias) { }
+    autoIndex(copy.autoIndex), cgiPath(copy.cgiPath), \
+      _return(copy._return), methods(copy.methods), \
+        errorPages(copy.errorPages), host(copy.host), \
+          port(copy.port), serverName(copy.serverName), \
+            isCgi(copy.isCgi), alias(copy.alias) { }
 
 Location &Location::operator=(const Location &copy) {
-  root = copy.root;
-  path = copy.path;
-  index = copy.index;
-  autoIndex = copy.autoIndex;
-  cgiPath = copy.cgiPath;
-  cgiExt  = copy.cgiExt;
-  methods = copy.methods;
-  errorPages = copy.errorPages;
-  host = copy.host;
-  port = copy.port;
-  serverName = copy.serverName;
-  isCgi = copy.isCgi;
-  _return = copy._return;
-  alias = copy.alias;
+  if (this != &copy) {
+    root = copy.root;
+    path = copy.path;
+    index = copy.index;
+    autoIndex = copy.autoIndex;
+    cgiPath = copy.cgiPath;
+    methods = copy.methods;
+    errorPages = copy.errorPages;
+    host = copy.host;
+    port = copy.port;
+    serverName = copy.serverName;
+    isCgi = copy.isCgi;
+    _return = copy._return;
+    alias = copy.alias;
+  }
   return (*this);
 }
 
@@ -71,7 +72,7 @@ void  Location::setAutoIndex(const string &_autoIndex) {
     or !_autoIndex.compare("False") or !_autoIndex.compare("OFF"))
       autoIndex = false;
   else
-    logger.LogThrow("setAutoIndex [%s]", _autoIndex.data());
+    logger.LogThrow("autoIndex [%s]", _autoIndex.data());
 }
 
 void  Location::setCgiPath(const string &_cgiPath) {
@@ -81,26 +82,13 @@ void  Location::setCgiPath(const string &_cgiPath) {
   isCgi = true;
 }
 
-void  Location::setCgiExt(const string &_cgiExt) {
-  if (!cgiExt.empty())
-    logger.LogThrow("setCgiExt [%s]", _cgiExt.data());
-  cgiExt = _cgiExt;
-}
-
 void  Location::setReturn(const string &return_) {
   if (!_return.second.empty())
     logger.LogThrow("setReturn [%s]", return_.data());
-
   _return.first = atoi(firstWord(return_).data());
   if (_return.first < 100 or _return.first > 505)
     logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
-
   _return.second = lastWord(return_);
-  if (_return.second.substr(0, 8).compare("https://") \
-    && _return.second.substr(0, 7).compare("http://"))
-    logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
-  if (_return.second[_return.second.size() - 1] != '/')
-    _return.second[_return.second.size() - 1] = '/';
 }
 
 void  Location::setMethods(const string &_methods) {
@@ -114,7 +102,7 @@ void  Location::setMethods(const string &_methods) {
     if (sub.empty())
       break;
     else if (sub.compare("GET") and sub.compare("POST") && sub.compare("DELETE"))
-      logger.LogThrow("methods no allowed [%s]", sub.data());
+      logger.LogThrow(" methods no allowed [%s]", sub.data());
     methods.push_back(sub);
   }
 }
@@ -139,17 +127,19 @@ void  Location::setListen(const string &_listen) {
   else if (pos > 6) {
     tmp  = _listen.substr(0, pos);
     n  = atoi(_listen.substr(pos + 1).data());
-    host = tmp;
-    if (n < 1024 or n > 65535)
+    if (!tmp.compare("localhost") or !tmp.compare("127.0.0.1"))
+      host = "0.0.0.0";
+    else
+      host = tmp;
+    if (n < 0 or n > 65535)
       logger.LogThrow("error port out range (",  _listen.data());
     else
       port = n;
   } else if (pos < 0) {
       port = atoi(_listen.data());
-      if (port < 1024 or port > 65535)
-        logger.LogThrow("error port out range (",  _listen.data() );
       host = "0.0.0.0";
-      logger.Log("host empty default is 0.0.0.0:[%d]", port);
+    if (port < 1 or port > 65535)
+      logger.LogThrow("error port out range (",  _listen.data() );
   } else
       logger.LogThrow("no puedo establecer listen ", _listen.data());
 }
@@ -169,12 +159,12 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   if (clientBodySize != -1)
     logger.LogThrow("clientBodySize exists ", _clientBodySize.data());
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
-    if (isdigit(_clientBodySize.data()[i]))
-      num << _clientBodySize.data()[i];
+    if (isdigit(_clientBodySize.c_str()[i]))
+      num << _clientBodySize.c_str()[i];
     else
-      size << _clientBodySize.data()[i];
+      size << _clientBodySize.c_str()[i];
   }
-  ret = atoi(num.str().data());
+  ret = atoi(num.str().c_str());
   if (!size.str().compare("m"))
     ret *= 1000000;
   else if (!size.str().compare("k"))
@@ -187,12 +177,10 @@ void  Location::setAlias(const string &_alias) {
     logger.LogThrow("alias exists [%s]", _alias.data());
   alias = _alias;
 }
+
 // hay que setear default posiblemente
 Location  Location::clone(void) const {
-  if ((!cgiPath.empty() and cgiExt.empty()) \
-    or (cgiPath.empty() and !cgiExt.empty()))
-      throw(runtime_error("si hay cgi tiene que haber path y ext"));
-  else if (!path.compare("root") and port < 1)
+  if (!path.compare("root") and port < 1)
       throw(runtime_error("errror tiene que haber port"));
   return (*this);
 }
@@ -204,8 +192,6 @@ const string  Location::getRoot(void) const { return(root); }
 const string  Location::getIndex(void) const { return(index); }
 
 const string  Location::getCgiPath(void) const { return(cgiPath); }
-
-const string  Location::getCgiext(void) const { return(cgiExt); }
 
 int Location::getAutoIndex(void) const { return(autoIndex); }
 
@@ -237,7 +223,6 @@ void  Location::clear(void) {
   index.clear();
   autoIndex = -1;
   cgiPath.clear();
-  cgiExt.clear();
   _return.first = 0;
   _return.second.clear();
   methods.clear();
@@ -245,8 +230,8 @@ void  Location::clear(void) {
   host.clear();
   port = -1;
   clientBodySize = -1;
-  isCgi = false;
   alias.clear();
+  isCgi = false;
 }
 
 ostream &operator<<(ostream &os, const Location &copy) {
@@ -254,11 +239,10 @@ ostream &operator<<(ostream &os, const Location &copy) {
   << copy.port << endl << "path: " << copy.getPath() << endl << "root: " \
   << copy.getRoot() << endl << "index: " << copy.getIndex() << endl \
   << "autoIndex: " << copy.getAutoIndex() << endl << "cgiPath: " \
-  << copy.getCgiPath() << endl << "cgiExt: " << copy.getCgiext() \
-  <<  endl << "methods: " << copy.getmethods().size() << endl \
-  << "return: " << copy.getReturn().second << endl \
-  << "errorPages: " << copy.getErrorPages().size() << endl \
-  << "isCgi: " << copy.getIsCgi() << endl << "alias: " \
-  << copy.getAlias() << endl;
+  << copy.getCgiPath() << endl <<  endl << "methods: " \
+  << copy.getmethods().size() << endl << "return: " \
+  << copy.getReturn().second << endl << "errorPages: " \
+  << copy.getErrorPages().size() << endl << "isCgi: " \
+  << copy.getIsCgi() << endl << "alias: " << copy.getAlias() << endl;
   return (os);
 }

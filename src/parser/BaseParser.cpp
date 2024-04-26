@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 21:15:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:36:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void  BaseParser::setWords(void) {
   words.insert("client_max_body_size");
   words.insert("error_page");
   words.insert("cgi_path");
-  words.insert("cgi_ext");
   words.insert("allow_methods");
   words.insert("}");
   words.insert("};");
@@ -133,17 +132,6 @@ void  BaseParser::printData(const vector<string> &tmp) const {
 }
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
-ifstream  *BaseParser::openFile(const string &fdName) const {
-  ifstream  *file;
-  string    buffer;
-
-  file = new ifstream(fdName.data());
-  if (file->bad() || file->fail() || file->eof()) {
-    delete file;
-    return (NULL);
-  }
-  return (file);
-}
 
 bool  BaseParser::readInclude(const string &fdFile) {
   ifstream *file;
@@ -211,14 +199,14 @@ size_t  BaseParser::skipLocation(size_t i) {
 size_t  BaseParser::serverError(size_t i) {
   while (++i < data.size()) {
     if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos)
+      && data[i].find("{") != string::npos) {
         logger.LogThrow("server dentro de server");
-    else if (!firstWord(data[i]).compare("include"))
+    } else if (!firstWord(data[i]).compare("include")) {
       logger.LogThrow("include circular");
-    else if (!firstWord(data[i]).compare("cgi_path") \
-      || !firstWord(data[i]).compare("cgi_ext"))
+    } else if (!firstWord(data[i]).compare("cgi_path") \
+      || !firstWord(data[i]).compare("cgi_ext")) {
         logger.LogThrow("defined in global scope ",  data[i].data());
-    else if (data[i].find("location") != string::npos \
+    } else if (data[i].find("location") != string::npos \
       && data[i].find("{") != string::npos) {
         i = skipLocation(i);
         continue;

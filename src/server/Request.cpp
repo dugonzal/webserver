@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/25 22:14:53 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:27:16 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,8 +179,10 @@ void Request::getMethod( void )
 				httpResponse = "HTTP/1.1 301 Moved Permanently\r\n";
         
 				  std::string host = locationRoot.getHost();
-          cout << "Location: " + host + ":" + std::to_string(locationRoot.getPort()) + "/" +location[route] << endl;
-    			httpResponse += "Location: " + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";//+ location[route] + "\r\n";//+ host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
+          std::stringstream locationRoute;
+          locationRoute << locationRoot.getPort() << "/" << location[route];
+          cout << "Location: " + host + ":" + locationRoute.str() << endl;
+    			httpResponse += "Location: " + host + ":" + locationRoute.str() + "\r\n";//+ location[route] + "\r\n";//+ host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
     			httpResponse += "\r\n";
     			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 			}
@@ -193,7 +195,9 @@ void Request::getMethod( void )
 		else
 		{
       std::cout << "Hola estoy aqui " << locationRoot.getRoot() + route << std::endl;
-			std::ifstream archivo(locationRoot.getRoot() + route);
+			std::stringstream fileRoute;
+      fileRoute << locationRoot.getRoot() << route;
+      std::ifstream archivo(fileRoute.str().c_str());
 			std::ostringstream oss;
 			std::string directoryPath = locationRoot.getRoot() + route;
 			if (isDirectory(directoryPath)) {
@@ -203,7 +207,9 @@ void Request::getMethod( void )
                 // Respuesta 200 OK con el autoindex
                 httpResponse = "HTTP/1.1 200 OK\r\n";
                 httpResponse += "Content-Type: text/html\r\n";
-                httpResponse += "Content-Length: " + std::to_string(autoindex.size()) + "\r\n";
+                std::stringstream strContentLength;
+                strContentLength << autoindex.size();
+                httpResponse += "Content-Length: " + strContentLength.str() + "\r\n";
                 httpResponse += "\r\n";
                 httpResponse += autoindex;
                 autoDirectory = route;
@@ -223,7 +229,9 @@ void Request::getMethod( void )
 					// Respuesta 200 OK
 	    			httpResponse = "HTTP/1.1 200 OK\r\n";
 					httpResponse += "Content-Type: text/html\r\n";
-					httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+          std::stringstream strContentLen;
+          strContentLen << oss.str().size();
+					httpResponse += "Content-Length: " + strContentLen.str() + "\r\n";
 					httpResponse += "\r\n";
 					httpResponse += oss.str();
 					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
@@ -235,7 +243,9 @@ void Request::getMethod( void )
 	    		oss << archivo.rdbuf();
 				std::string httpResponse = "HTTP/1.1 404 Not Found\r\n";
 				httpResponse += "Content-Type: text/html\r\n";
-				httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+        std::stringstream strContentLen;
+        strContentLen << oss.str().size();
+				httpResponse += "Content-Length: " + strContentLen.str() + "\r\n";
 				httpResponse += "\r\n";
 				httpResponse += oss.str();
 				send(clientFd, httpResponse.data(), httpResponse.size(), 0);

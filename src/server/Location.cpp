@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/25 22:11:37 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:28:00 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void  Location::setListen(const string &_listen) {
     tmp  = _listen.substr(0, pos);
     n  = atoi(_listen.substr(pos + 1).data());
     if (!tmp.compare("localhost") or !tmp.compare("127.0.0.1"))
-      host = "0.0.0.0";
+      host = "127.0.0.1";
     else
       host = tmp;
     if (n < 0 or n > 65535)

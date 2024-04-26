@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/25 20:33:03 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:59:57 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Location {
     string                host;
     int                   port;
     string                serverName;
-   long                   clientBodySize;
+    long                  clientBodySize;
     bool                  isCgi;
     Logger                logger;
     string                alias;

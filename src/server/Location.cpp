@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/26 09:28:00 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:10:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ Location::Location(const Location &copy): \
       _return(copy._return), methods(copy.methods), \
         errorPages(copy.errorPages), host(copy.host), \
           port(copy.port), serverName(copy.serverName), \
-            isCgi(copy.isCgi), alias(copy.alias) { }
+            clientBodySize(copy.clientBodySize), isCgi(copy.isCgi), \
+              alias(copy.alias) { }
 
 Location &Location::operator=(const Location &copy) {
   if (this != &copy) {
@@ -37,6 +38,7 @@ Location &Location::operator=(const Location &copy) {
     host = copy.host;
     port = copy.port;
     serverName = copy.serverName;
+    clientBodySize = copy.clientBodySize;
     isCgi = copy.isCgi;
     _return = copy._return;
     alias = copy.alias;
@@ -89,6 +91,11 @@ void  Location::setReturn(const string &return_) {
   if (_return.first < 100 or _return.first > 505)
     logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
   _return.second = lastWord(return_);
+  if (_return.second.substr(0, 7).compare("http://") \
+    and _return.second.substr(0, 8).compare("https://"))
+    logger.LogThrow("tiene que empezar por http [%s]", return_.data());
+  if (_return.second[_return.second.size() - 1] != '/')
+    _return.second.append("/");
 }
 
 void  Location::setMethods(const string &_methods) {

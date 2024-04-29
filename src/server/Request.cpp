@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 09:11:03 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:35:17 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,15 @@ void  Request::parserData(void) {
       tmp = locationRoot.getRoot();
       tmp.append("/");
     }
-    cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
+    tmp.append(locationRoot.getIndex());
+    ifstream f(tmp.c_str());
+    std::cout << tmp.c_str() << std::endl;
+    if (f.fail()) {
+      isCgi = false;
+      std::cout << "(warning: bad Cgi route)" << std::endl;
+      return ;
+    }
+    cgi.setCgi(locationRoot.getCgiPath(), tmp);
     cgi.handlerCgi();
     logger.Log("hay que lanzar cgi para esta location");
   }
@@ -155,8 +163,8 @@ void Request::getMethod( void )
 	if (!checkMethod("GET"))
 	{
 		std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
-    	httpResponse += "Allow: " + allowed_methods + "\r\n";
-    	httpResponse += "\r\n";
+    httpResponse += "Allow: " + allowed_methods + "\r\n";
+    httpResponse += "\r\n";
 		std::cout << "Error allowed methods" << std::endl;
 		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 	}
@@ -200,19 +208,23 @@ void Request::getMethod( void )
 			std::ostringstream oss;
 			std::string directoryPath = locationRoot.getRoot() + route;
 			if (isDirectory(directoryPath)) {
-                // Generar autoindex
-                std::string autoindex;
-                autoindex = generate_autoindex(directoryPath, autoindex, route);
-                // Respuesta 200 OK con el autoindex
-                httpResponse = "HTTP/1.1 200 OK\r\n";
-                httpResponse += "Content-Type: text/html\r\n";
-                std::stringstream strContentLength;
-                strContentLength << autoindex.size();
-                httpResponse += "Content-Length: " + strContentLength.str() + "\r\n";
-                httpResponse += "\r\n";
-                httpResponse += autoindex;
-                autoDirectory = route;
-                send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+          // Generar autoindex
+          std::string autoindex;
+          autoindex = generate_autoindex(directoryPath, autoindex, route);
+          // Respuesta 200 OK con el autoindex
+          httpResponse = "HTTP/1.1 200 OK\r\n";
+          httpResponse += "Content-Type: text/html\r\n";
+          std::stringstream strContentLength;
+          strContentLength << autoindex.size();
+          httpResponse += "Content-Length: " + strContentLength.str() + "\r\n";
+          httpResponse += "\r\n";
+          if (isCgi) {
+            httpResponse += cgi.getCgi();
+          }
+          else
+            httpResponse += autoindex;
+          autoDirectory = route;
+          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
             } else if (archivo.is_open()){
 				std::cout << "y" << std::endl;
 				oss << archivo.rdbuf();
@@ -232,7 +244,7 @@ void Request::getMethod( void )
           strContentLen << oss.str().size();
 					httpResponse += "Content-Length: " + strContentLen.str() + "\r\n";
 					httpResponse += "\r\n";
-					httpResponse += oss.str();
+          httpResponse += oss.str();
 					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 				}
 	    	}

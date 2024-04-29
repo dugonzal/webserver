@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/25 19:35:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:06:14 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 # include <sstream>
 # include <cstdio>
 # include <filesystem>
+# include <sstream>
 
 using std::deque;
 using std::set;
@@ -88,4 +89,4 @@ size_t  numberWords(const string &line);
 bool    isDirectory(const string &path);
 bool    isFile(const string &path);
 void    readDirectory(const string &path);
-ifstream  *openFile(const string &fdName); 
+ifstream  *openFile(const string &fdName);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/26 10:10:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:27:59 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,22 @@ void  CGI::setCgi(const string &_path, const string &_fileName) {
   cout << path  << "  " << fileName << endl;
 }
 
+std::string CGI::getCgi( void ) const {
+  return cmdOutput;
+}
+
 const string  CGI::handlerCgi(void) {
-  int pid;
-
+  cmdOutput.clear();
   logger.Log("intenta ejecutar el descriptor de archivo");
-  pid = fork();
-  if (pid < 0) {
-    logger.Log("fork error");
-    return ("error");
+  std::ofstream outputFile;
+  outputFile.open("cgi.out", std::ofstream::out | std::ofstream::in);
+  char buffer[128];
+  FILE *file = popen("/usr/bin/python3 /workspaces/webserver/resources/main.py", "r");
+  if (!file) throw std::runtime_error("popen() failed!");
+  while (fgets(buffer, sizeof buffer, file) != NULL) {
+    cmdOutput += buffer;
   }
-  if (!pid) {
-    const char *tmp[3];
-
-    tmp[0] = path.data();
-    tmp[1] = fileName.data();
-    tmp[2] = NULL;
-    if (execve(*tmp, (char *const *)(tmp), NULL) < 0) {
-        logger.Log("error cgi");
-    }
-    exit(0);
-  } else {
-    int tmp;
-    waitpid(pid, &tmp, 0);
-  }
-  return(result.append("CGI OK"));
+  return(cmdOutput);
 }
 
 void CGI::clear(void) {

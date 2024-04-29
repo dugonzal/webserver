@@ -3,17 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/26 16:10:37 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/29 09:07:20 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
 Location::Location(void): autoIndex(-1), \
-  port(-1), clientBodySize(-1), isCgi(false) { }
+  port(-1), clientBodySize(-1), isCgi(false) {
+    methods.push_back("GET");
+    methods.push_back("POST");
+    methods.push_back("DELETE");
+  }
 
 Location::~Location(void) { }
 
@@ -101,6 +105,7 @@ void  Location::setReturn(const string &return_) {
 void  Location::setMethods(const string &_methods) {
   istringstream iss(_methods);
 
+  methods.clear();
   if (!methods.empty())
     logger.LogThrow("setMethods");
   while (iss) {

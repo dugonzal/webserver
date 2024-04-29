@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/26 16:11:48 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/29 08:49:03 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void  Request::parserData(void) {
 int  Request::checkMethod(const string &_method) {
   vector<string> tmp = locationRoot.getmethods();
   for (size_t i = 0; i < tmp.size(); i++) {
-    cout << tmp[i] << endl;
     if (!tmp[i].compare(_method)) {
       return (1);
     }

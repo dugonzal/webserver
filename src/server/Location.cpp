@@ -6,17 +6,18 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 09:07:20 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/29 09:12:57 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
 Location::Location(void): autoIndex(-1), \
-  port(-1), clientBodySize(-1), isCgi(false) {
-    methods.push_back("GET");
+  port(-1), isCgi(false) {
+    methods.push_back("GET"); /* Default allowed methods */
     methods.push_back("POST");
     methods.push_back("DELETE");
+    clientBodySize = 1000000; /* 1MB */
   }
 
 Location::~Location(void) { }
@@ -168,8 +169,6 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   stringstream size;
   int ret;
 
-  if (clientBodySize != -1)
-    logger.LogThrow("clientBodySize exists ", _clientBodySize.data());
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
     if (isdigit(_clientBodySize.c_str()[i]))
       num << _clientBodySize.c_str()[i];

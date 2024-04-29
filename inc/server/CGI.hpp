@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 10:21:50 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:08:11 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 class CGI {
  private:
   string    result;
-  string    cmdOutput;
   ifstream  file;
   string    path;
   string    fileName;

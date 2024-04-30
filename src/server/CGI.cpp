@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 15:31:44 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:46:34 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ const string  CGI::handlerCgi(void) {
   result.clear();
   int pid;
   char buffer[128];
-  int fdFile = open("cgi.out", O_CREAT | O_RDWR, 0666);
+  int fdFile = open("cgi.out", O_CREAT | O_TRUNC | O_WRONLY, 0666);
   if (fdFile == -1)
     throw (logic_error("error: CGI: could not open file: " + fileName));
   pid = fork();
@@ -50,23 +50,35 @@ const string  CGI::handlerCgi(void) {
   if (!pid) {
     const char *tmp[3];
 
-    dup2(STDOUT_FILENO, fdFile); /* Makes STDOUT -> fdFile */
-    tmp[0] = path.data();
-    tmp[1] = fileName.data();
+    tmp[0] = path.c_str();
+    tmp[1] = fileName.c_str();
     tmp[2] = NULL;
+    if (dup2(fdFile, STDOUT_FILENO) == -1) /* Makes fdFile -> STDOUT */
+      exit (EXIT_FAILURE);
     if (execve(*tmp, (char *const *)(tmp), NULL) < 0) {
         logger.Log("error cgi");
     }
-    close(fdFile);
     exit(0);
   } else {
     int tmp;
     waitpid(pid, &tmp, 0);
-    while (read(fdFile, buffer, 128)) /* Reads the file with the content of script output */
-      result.append(buffer);
+    std::cout << "execve return code : " << tmp << std::endl;
+    if (tmp == EXIT_FAILURE)
+      logger.Log("error: CGI: dup2() failed");
   }
+  close(fdFile); /* Close file used to write */
+  fdFile = open("cgi.out", O_RDONLY);
+  if (fdFile == -1) {
+      logger.Log("error: CGI: could not open file for reading");
+      return ("error");
+  }
+  int bytesRead;
+  while ( (bytesRead = read(fdFile, buffer, sizeof(buffer))) > 0) /* Reads the file with the content of script output */ {
+    buffer[bytesRead] = '\0';
+    result.append(buffer); }
+  close(fdFile);
   remove("cgi.out"); /* Part of C++98 */
-  return(result.append("CGI OK"));
+  return(result);
 }
 
 void CGI::clear(void) {

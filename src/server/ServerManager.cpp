@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 20:01:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:36:25 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void  ServerManager::startServers(void) {
 void ServerManager::initPoll(void) {
   for (size_t i = 0; i < nServers; i++) {
     struct pollfd pFd;
-    bzero(&pFd, sizeof(pFd));
+    ::bzero(&pFd, sizeof(pFd));
     pFd.fd = vServers[i]->getSocket();
     logger.Log("socket listen created, [%d]", pFd.fd);
     pFd.events = POLLIN;
@@ -75,11 +75,11 @@ void  ServerManager::addClient(void) {
       struct sockaddr client;
       struct pollfd   pFd;
       socklen_t clientLen = sizeof(client);
-      bzero(&pFd, sizeof(pFd));
+      ::bzero(&pFd, sizeof(pFd));
       int tmp = accept(fds[i].fd, \
         reinterpret_cast<sockaddr *>(&client), &clientLen);
       if (tmp < 0) {
-        close(tmp);
+        ::close(tmp);
         break;
       }
       if (fcntl(tmp, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
@@ -100,12 +100,12 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
 
   int r = ::recv(fd, header, 1024, 0);
   if (r < 0) {
-    close(fd);
+    ::close(fd);
     fds.erase(fds.begin() + i);
     logger.Log("error recv client: [%d]", fd);
     return (true);
   } else if (!r) {
-    close(fd);
+    ::close(fd);
     fds.erase(fds.begin() + i);
     logger.Log("close client: [%d]", fd);
     return (true);
@@ -119,6 +119,8 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
   int idx = addr.find(":");
   int port = atoi(addr.substr(idx + 1).data());
   string host = addr.substr(0, idx);
+  if (!host.compare("localhost"))
+    host = "127.0.0.1";
 
   for (size_t i = 0; i < vServers.size(); i++) {
     if (vServers[i]->getHost() == host && vServers[i]->getPort() == port) {

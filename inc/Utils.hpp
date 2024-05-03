@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:34:18 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:32:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define END "\033[0m"
 # define WHITESPACES " \t\n\r\v"
 
+# include <sys/wait.h>
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/un.h>
@@ -50,6 +51,8 @@
 # include <cassert>
 # include <sstream>
 # include <cstdio>
+# include <filesystem>
+# include <algorithm>    // std::transform
 
 using std::deque;
 using std::set;
@@ -86,3 +89,7 @@ size_t  numberWords(const string &line);
 bool    isDirectory(const string &path);
 bool    isFile(const string &path);
 void    readDirectory(const string &path);
+ifstream  *openFile(const string &fdName);
+
+//template<typename T>
+//string toString(T value);

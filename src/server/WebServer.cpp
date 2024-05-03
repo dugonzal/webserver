@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:46:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:35:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
     tmp->setRoot(lastWord(line));
   else if (!firstWord(line).compare("cgi_path"))
     tmp->setCgiPath(lastWord(line));
-  else if (!firstWord(line).compare("cgi_ext"))
-    tmp->setCgiExt(lastWord(line));
   else if (!firstWord(line).compare("autoindex"))
     tmp->setAutoIndex(lastWord(line));
   else if (!firstWord(line).compare("allow_methods"))
@@ -63,6 +61,8 @@ void  WebServer::insertLocation(Location *tmp, const string &line) {
     tmp->setListen(lastWord(line));
   else if (!firstWord(line).compare("server_name"))
     tmp->setServerName(lastWord(line));
+  else if (!firstWord(line).compare("alias"))
+    tmp->setAlias(lastWord(line));
 }
 
 void  WebServer::setLocations(const vector<string> &line, size_t n) {
@@ -84,7 +84,7 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
       if (locations[n].find(firstWord(lastWord(line[i]))) != locations[n].end())
-        throw(runtime_error(string("error: location already exists. (") + string(line[i] + ")")));
+        logger.LogThrow("error: location already exists. ", line[i].data());
       tmp.setPath(firstWord(lastWord(line[i])));
       while (++i < line.size()) {
         if (!line[i].compare("}")) {

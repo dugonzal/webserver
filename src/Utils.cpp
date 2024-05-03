@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:53:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:32:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,3 +110,23 @@ bool isFile(const string &path) {
     return S_ISREG(s.st_mode);
   return false;
 }
+
+ifstream  *openFile(const string &fdName) {
+  ifstream  *file;
+  string    buffer;
+
+  file = new ifstream(fdName.data());
+  if (file->bad() || file->fail() || file->eof()) {
+    delete file;
+    return (NULL);
+  }
+  return (file);
+}
+
+/*
+template<class T>
+string toString(const T& value) {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
+}*/

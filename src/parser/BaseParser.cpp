@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 18:57:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:36:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void  BaseParser::setWords(void) {
   words.insert("listen");
   words.insert("index");
   words.insert("return");
+  words.insert("alias");
   words.insert("root");
   words.insert("autoindex");
   words.insert("client_max_body_size");
   words.insert("error_page");
   words.insert("cgi_path");
-  words.insert("cgi_ext");
   words.insert("allow_methods");
   words.insert("}");
   words.insert("};");
@@ -59,8 +59,7 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
 
   if (!(file = openFile(fileName))) {
     delete file;
-    logger.Log("file not found [%s]", filename.data());
-    throw(runtime_error(""));
+    logger.LogThrow("file not found [%s]", filename.data());
   }
   setWords();
   while (getline(*file, buffer, '\n')) {
@@ -69,14 +68,12 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
        continue;
     if (!checkAllowedWords(firstWord(buffer))) {
       delete file;
-      logger.Log("Word not allowed: [%s]", buffer.data());
-      throw(runtime_error(string("")));
+      logger.LogThrow("Word not allowed: [%s]", buffer.data());
     }
     if (!firstWord(buffer).compare("include")) {
       if (readIncludeError(lastWord(buffer))) {
         delete file;
-        logger.Log("include error [%s]", buffer.data());
-        throw(runtime_error(""));
+        logger.LogThrow("include error file open or word no allowed [%s]", buffer.data());
       }
       continue;
     }
@@ -111,8 +108,7 @@ void  BaseParser::keyValueCkeck(void) {
     if (*end == ';') {
       it->erase(end);
       if (!lastWord(*it).size()) {
-        logger.Log("missing key or value [%s]", trim(*it).data());
-        throw(runtime_error(""));
+        logger.LogThrow("missing key or value [%s]", trim(*it).data());
       }
       size_t n = numberWords(*it);
       if (n > 2) {
@@ -123,8 +119,7 @@ void  BaseParser::keyValueCkeck(void) {
         } else if (n < 5 && !tmp.compare("allow_methods")) {
           continue;
         } else {
-          logger.Log("too many words [%s]", trim(*it).data());
-          throw(runtime_error(""));
+          logger.LogThrow("too many words [%s]", trim(*it).data());
         }
       }
     }
@@ -137,17 +132,6 @@ void  BaseParser::printData(const vector<string> &tmp) const {
 }
 
 // como no puedo copiar el objeto me toca retornar un puntero de ifstream
-ifstream  *BaseParser::openFile(const string &fdName) const {
-  ifstream  *file;
-  string    buffer;
-
-  file = new ifstream(fdName.data());
-  if (file->bad() || file->fail() || file->eof()) {
-    delete file;
-    return (NULL);
-  }
-  return (file);
-}
 
 bool  BaseParser::readInclude(const string &fdFile) {
   ifstream *file;
@@ -161,6 +145,11 @@ bool  BaseParser::readInclude(const string &fdFile) {
     buffer = trim(buffer);
     if (skipLine(buffer))
       continue;
+    if (!checkAllowedWords(firstWord(buffer))) {
+      logger.Log("[%s]", buffer.data());
+      delete file;
+      return (true);
+    }
     data.push_back(buffer);
   }
   delete file;
@@ -191,7 +180,7 @@ void  BaseParser::setNservers(void) {
       endServer++;
   }
   if (nServers != endServer)
-    throw(runtime_error("scope server "));
+    logger.LogThrow("scope server ");
   else
     handlerScopeError();
 }
@@ -210,14 +199,14 @@ size_t  BaseParser::skipLocation(size_t i) {
 size_t  BaseParser::serverError(size_t i) {
   while (++i < data.size()) {
     if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos)
-        throw(runtime_error("server dentro de server"));
-    else if (!firstWord(data[i]).compare("include"))
-      throw(runtime_error("include circular"));
-    else if (!firstWord(data[i]).compare("cgi_path") \
-      || !firstWord(data[i]).compare("cgi_ext"))
-        throw(runtime_error(string("defined in global scope (")  + string(data[i] + ")")));
-    else if (data[i].find("location") != string::npos \
+      && data[i].find("{") != string::npos) {
+        logger.LogThrow("server dentro de server");
+    } else if (!firstWord(data[i]).compare("include")) {
+      logger.LogThrow("include circular");
+    } else if (!firstWord(data[i]).compare("cgi_path") \
+      || !firstWord(data[i]).compare("cgi_ext")) {
+        logger.LogThrow("defined in global scope ",  data[i].data());
+    } else if (data[i].find("location") != string::npos \
       && data[i].find("{") != string::npos) {
         i = skipLocation(i);
         continue;
@@ -234,8 +223,7 @@ void  BaseParser::handlerScopeError(void) {
       && data[i].find("{") != string::npos) {
         i = serverError(i);
      } else {
-      logger.Log("fuera del scope del server [%s]", data[i].data());
-      throw(runtime_error(""));
+      logger.LogThrow("fuera del scope del server [%s]", data[i].data());
     }
   }
 }
@@ -281,7 +269,6 @@ void  BaseParser::handlerScopeLocation(void) {
         end++;
   }
   if (lo != end) {
-    logger.Log("Location scope not properly closed: Check brace matching.");
-    throw(runtime_error(""));
+    logger.LogThrow("Location scope not properly closed: Check brace matching.");
   }
 }

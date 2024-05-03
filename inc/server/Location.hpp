@@ -6,13 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:30:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:59:57 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
 
 # include "../Utils.hpp"
+# include "../Logger.hpp"
 
 class Location {
  private:
@@ -21,15 +22,16 @@ class Location {
     string                index;
     int                   autoIndex;
     string                cgiPath;
-    string                cgiExt;
     pair<size_t, string>  _return;
     vector<string>        methods;
     map<size_t, string>   errorPages;
     string                host;
     int                   port;
     string                serverName;
-    int                   clientBodySize;
+    long                  clientBodySize;
     bool                  isCgi;
+    Logger                logger;
+    string                alias;
 
  public:
     Location(void);
@@ -43,13 +45,13 @@ class Location {
     void                        setIndex(const string&);
     void                        setAutoIndex(const string&);
     void                        setCgiPath(const string&);
-    void                        setCgiExt(const string&);
     void                        setMethods(const string&);
     void                        setReturn(const string&);
     void                        setErrorPages(const string&);
     void                        setListen(const string&);
     void                        setServerName(const string&);
     void                        setClientBodySize(const string&);   
+    void                        setAlias(const string&);
     Location                    clone(void) const;
     const string                getRoot(void) const;
     const string                getPath(void) const;
@@ -64,7 +66,10 @@ class Location {
     int                         getPort(void) const;
     const string                getServerName(void) const;
     bool                        getIsCgi(void) const;
+    const string                &getAlias(void) const;  
     void                        clear(void);
+    //FUNCION IKER
+    long               getClientBodySize(void) const;
 
  friend ostream                &operator<<(ostream &, const Location&);
 };

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 17:49:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:04:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,8 @@ void  Location::setAlias(const string &_alias) {
 Location  Location::clone(void) const {
   if (!path.compare("root") and port < 1)
       throw(runtime_error("errror tiene que haber port"));
+  else if (!path.compare("root") and !alias.empty())
+      throw(runtime_error("error no aceptamos un alias en el general"));
   return (*this);
 }
 

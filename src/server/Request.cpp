@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 18:13:54 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:03:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,13 +323,11 @@ void Request::getMethod( void )
 			}
 		}
 	}
-	
 	cout << "TERMINO" << std::endl;
 	close(clientFd);
 }
 
-void Request::postMethod( void )
-{
+void Request::postMethod(void) {
 	cout << "ENTRO AL METODO POST" << std::endl;
 	string httpResponse;
 	string allowed_methods = "GET POST"; // Métodos permitidos
@@ -342,19 +340,19 @@ void Request::postMethod( void )
         return;
     } else {
 		string msgString(header);
-	    size_t bodyStart = msgString.find("\r\n\r\n");
+	  size_t bodyStart = msgString.find("\r\n\r\n");
 		string postBody = msgString.substr(bodyStart + 4);
-	    if (postBody.empty()) {
+	  if (postBody.empty()) {
 	        cout << "HTTP/1.1 204 No Content\r\n" << std::endl;
 	        httpResponse = "HTTP/1.1 204 No Content\r\n";
 	        httpResponse += "\r\n";
 	        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 	        return;
-	    }
-	    cout << "Body: " << postBody << std::endl;
+	  }
+	  cout << "Body: " << postBody << std::endl;
 		ifstream verificarArchivo((locationRoot.getRoot() + route).c_str());
-    	bool archivoExiste = verificarArchivo.good();
-    	verificarArchivo.close();
+    bool archivoExiste = verificarArchivo.good();
+    verificarArchivo.close();
 
 	    ofstream archivo((locationRoot.getRoot() + route).c_str(), std::ios::app);
 	    if (archivo.is_open()) {
@@ -414,13 +412,14 @@ string Request::replaceAlias(const std::string& path) {
     for (map<std::string, Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
         const string& aliasPath = it->first;
         const string& replacement = it->second.getAlias();
-        
+
         size_t pos = path.find(aliasPath);
-        
         // Si se encuentra el alias, reemplazarlo
         while (pos != string::npos) {
-            result.replace(pos, aliasPath.length(), replacement);
-            pos = result.find(aliasPath, pos + replacement.length());
+            if (replacement != "\0") {
+              result.replace(pos, aliasPath.length(), replacement);
+              pos = result.find(aliasPath, pos + replacement.length());
+            }
         }
     }
     cout << "result = " << result << std::endl;

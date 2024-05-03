@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 10:26:10 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:59:51 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ class Request {
  private:
   map<string, Location> locations;
   Location              locationRoot;
+  string                host;
+  size_t                port;
 
  private:
   string  method;
@@ -48,15 +50,18 @@ class Request {
   Request &operator=(const Request&);
   void    setHeader(const char *);
   void    setLocation(const map<string, Location>&);
+  void    setHostAndPort(const string&, size_t);
   bool    setMethod(const string&);
   bool    setRouteAndVersion(const string&);
   void    setLocation(void);
   void    handlerRequest(void);
   void    parserData(void);
-  void    serverToClient(const string&, size_t); 
-  // private:
+  void    serverToClient(const string&, size_t);
 
     // FUNCIONES IKEEEERRRR
-  int     checkMethod(const string &_method);
-  void    getMethod( void );
+  int         checkMethod(const string &_method);
+  void        getMethod(void);
+  void        postMethod(void);
+  void        deleteMethod(void);
+  string      replaceAlias(const string& path);
 };

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: inunez-g <inunez-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 10:35:17 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:53:51 by inunez-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void Request::setHeader(const char *_header) {
 
 void  Request::setLocation(const map<string, Location> &tmp) {
     locations = tmp;
+}
+
+void  Request::setHostAndPort(const string &_host, size_t _port) {
+  host = _host;
+  port = _port;
 }
 
 bool  Request::setMethod(const string &_method) {
@@ -91,15 +96,7 @@ void  Request::parserData(void) {
       tmp = locationRoot.getRoot();
       tmp.append("/");
     }
-    tmp.append(locationRoot.getIndex());
-    ifstream f(tmp.c_str());
-    std::cout << tmp.c_str() << std::endl;
-    if (f.fail()) {
-      isCgi = false;
-      std::cout << "(warning: bad Cgi route)" << std::endl;
-      return ;
-    }
-    cgi.setCgi(locationRoot.getCgiPath(), tmp);
+    cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
     cgi.handlerCgi();
     logger.Log("hay que lanzar cgi para esta location");
   }
@@ -107,9 +104,50 @@ void  Request::parserData(void) {
 
 //FUNCIONES IKER
 
+std::string checkContentType(const std::string& routeToFile) {
+    // Mapeo de extensiones a tipos de contenido
+    std::map<std::string, std::string> extensionsMap;
+    extensionsMap[".html"] = "text/html";
+    extensionsMap[".css"] = "text/css";
+    extensionsMap[".js"] = "application/javascript";
+    extensionsMap[".jpg"] = "image/jpeg";
+    extensionsMap[".jpeg"] = "image/jpeg";
+    extensionsMap[".png"] = "image/png";
+    extensionsMap[".gif"] = "image/gif";
+    extensionsMap[".txt"] = "text/plain";
+
+    // Obtener la extensión del archivo
+    std::string extension;
+    size_t puntoPos = routeToFile.find_last_of('.');
+    if (puntoPos != std::string::npos) {
+        extension = routeToFile.substr(puntoPos);
+        // Convertir la extensión a minúsculas para comparar
+        std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+        std::map<std::string, std::string>::iterator it = extensionsMap.find(extension);
+        if (it != extensionsMap.end()) {
+            return it->second;  // Devuelve el tipo de contenido correspondiente si se encuentra la extensión
+        }
+    }
+    
+    // Si no se encuentra la extensión en el mapa o no hay extensión, se asigna 'text/plain'
+    return "text/plain";
+}
+
+std::string checkAllowedMethods(const std::vector<std::string>& methods) {
+    std::string result;
+    for (size_t i = 0; i < methods.size(); ++i) {
+        if (i != 0) {
+            result += " ";  // Agrega un espacio antes de cada método excepto el primero
+        }
+        result += methods[i];
+    }
+    return result;
+}
+
 int  Request::checkMethod(const string &_method) {
   vector<string> tmp = locationRoot.getmethods();
   for (size_t i = 0; i < tmp.size(); i++) {
+    cout << tmp[i] << endl;
     if (!tmp[i].compare(_method)) {
       return (1);
     }
@@ -122,7 +160,7 @@ bool isAbsolutePath(const std::string& path) {
     return (path.find("http://") == 0 || path.find("https://") == 0);
 }
 
-std::string generate_autoindex(const std::string& directoryPath, string autoindex, string route) {
+std::string generate_autoindex(const std::string& directoryPath, string autoindex, string route, string host, int port) {
     cout << "ey mi route es " << route << endl;
     // Abre el directorio
     DIR* dir = opendir(directoryPath.c_str());
@@ -136,7 +174,7 @@ std::string generate_autoindex(const std::string& directoryPath, string autoinde
     // Lee el contenido del directorio
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
-        autoindex += "<li><a href=\"" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n";
+        autoindex += "<li><a href=\"" "http://" + host + ":" +std::to_string(port) + "/" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
         
     }
 
@@ -150,15 +188,14 @@ std::string generate_autoindex(const std::string& directoryPath, string autoinde
 
 void Request::getMethod( void )
 {
-	std::map<std::string, std::string> location;
-	//std::map<std::string, std::string> alias;
-	//unsigned long max_length = 3000;
-	location["GET/web2.html"] = "GET/web.html";
-	location["/web3.html"] = "http://localhost:405/extra/web3.html";
-	location["/Extra/hola.html"] = "https://www.youtube.com";
+	//std::map<std::string, std::string> location;
 	//alias["/kapouet"] = "/mi_carpeta";
-	std::string allowed_methods = "GET POST";
+  std::string contentType = checkContentType(route);
+	std::string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
 	std::cout << "GETMETHOD" << std::endl;
+  cout << "ContentType " << contentType << endl;
+  cout << "Allowed_methods " << allowed_methods << endl;
+  //cout << locations["/a"].getReturn().second << endl;
 	std::string httpResponse;
 	if (!checkMethod("GET"))
 	{
@@ -170,96 +207,113 @@ void Request::getMethod( void )
 	}
 	else
 	{
-		if (location.find(route) != location.end())
+		if (locations.find(route) != locations.end())
 		{
-			if (isAbsolutePath(location[route]))
+			if (isAbsolutePath(locations[route].getReturn().second))
 			{
-    			// Redirección 301
-				  std::cout << "AQUI VA" << std::endl;
-    			httpResponse = "HTTP/1.1 302 Found\r\n";
-    			httpResponse += "Location: " + location[route] + "\r\n";
+    		// Redirección 301
+				std::cout << "AQUI VA" << std::endl;
+    		httpResponse = "HTTP/1.1 302 Found\r\n";
+    		httpResponse += "Location: " + locations[route].getReturn().second + "\r\n";
 				httpResponse += "\r\n";
 				send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 			}
-			else if (!location[route].empty())
+			else if (!locations[route].getReturn().second.empty() && route != locations[route].getReturn().second)
 			{
 				httpResponse = "HTTP/1.1 301 Moved Permanently\r\n";
-        
-				  std::string host = locationRoot.getHost();
-          std::stringstream locationRoute;
-          locationRoute << locationRoot.getPort() << "/" << location[route];
-          cout << "Location: " + host + ":" + locationRoute.str() << endl;
-    			httpResponse += "Location: " + host + ":" + locationRoute.str() + "\r\n";//+ location[route] + "\r\n";//+ host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
-    			httpResponse += "\r\n";
-    			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        cout << "LO CONSEGUI" << endl;
+        cout << "Location: " + locationRoot.getReturn().second << endl;//+ host + ":" + std::to_string(locationRoot.getPort()) + "/" +location[route] << endl;
+        if (locations[route].getReturn().second[0] == '/')
+          httpResponse += "Location: http://" + host + ":" + std::to_string(port) + locations[route].getReturn().second + "\r\n";
+        else
+    		  httpResponse += "Location: http://" + host + ":" + std::to_string(port) + "/" + locations[route].getReturn().second + "\r\n";//+ locationRoot.getReturn().second + "\r\n"; //"Location: " + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";//+ location[route] + "\r\n";//+ host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
+    		httpResponse += "\r\n";
+    		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 			}
 			else
 			{
+        cout << "INTERNAL" << endl;
 				httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+        httpResponse += "Content-Type: text/html\r\n";
+        httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
+        httpResponse += "\r\n";
+        // Asegúrate de agregar un carácter nulo al final de la cadena
+        httpResponse.push_back('\0');
 				send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 			}
 	  }
 		else
 		{
       std::cout << "Hola estoy aqui " << locationRoot.getRoot() + route << std::endl;
-			std::stringstream fileRoute;
-      fileRoute << locationRoot.getRoot() << route;
-      std::ifstream archivo(fileRoute.str().c_str());
-			std::ostringstream oss;
-			std::string directoryPath = locationRoot.getRoot() + route;
+			std::ifstream archivo(locationRoot.getRoot() + route);
+			std::ostringstream oss;    
+      std::string directoryPath = locationRoot.getRoot() + route;
+      std::cout << "Hola estoy aqui " << directoryPath << std::endl;
+      std::cout << "HOST: " << locationRoot.getHost() << endl;
+      std::cout << "PORT: " << locationRoot.getPort() << endl;
 			if (isDirectory(directoryPath)) {
-          // Generar autoindex
-          std::string autoindex;
-          autoindex = generate_autoindex(directoryPath, autoindex, route);
-          // Respuesta 200 OK con el autoindex
-          httpResponse = "HTTP/1.1 200 OK\r\n";
-          httpResponse += "Content-Type: text/html\r\n";
-          std::stringstream strContentLength;
-          strContentLength << autoindex.size();
-          httpResponse += "Content-Length: " + strContentLength.str() + "\r\n";
-          httpResponse += "\r\n";
-          if (isCgi) {
-            httpResponse += cgi.getCgi();
-          }
-          else
-            httpResponse += autoindex;
-          autoDirectory = route;
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-            } else if (archivo.is_open()){
+        cout << "AUTOINDEX" << endl;
+        // Generar autoindex
+        std::string autoindex;
+        if (route == "/")
+          route = ""; 
+        autoindex = generate_autoindex(directoryPath, autoindex, route, locationRoot.getHost(), locationRoot.getPort());
+        // Respuesta 200 OK con el autoindex
+        httpResponse = "HTTP/1.1 200 OK\r\n";
+        httpResponse += "Content-Type: " + contentType + "\r\n";
+        httpResponse += "Content-Length: " + std::to_string(autoindex.size()) + "\r\n";
+        httpResponse += "\r\n";
+        httpResponse += autoindex;
+        autoDirectory = route;
+        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+      } else if (archivo.is_open()){
 				std::cout << "y" << std::endl;
 				oss << archivo.rdbuf();
 				std::string httpResponse;
-				if (static_cast<long>(oss.str().size()) > locationRoot.getClientBodySize())
+        cout << static_cast<long>(oss.str().size()) << endl;
+        cout << locationRoot.getClientBodySize() << endl;
+				if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))//OJOOO
 				{
-					httpResponse = "HTTP/1.1 413 Request Entity Too Large\r\n";
-					httpResponse += "\r\n";
-					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+          cout << "TOO LARGE" << endl;
+				  httpResponse = "HTTP/1.1 413 Request Entity Too Large\r\n";
+				  httpResponse += "\r\n";
+				  send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 				}
 				else
 				{
-					// Respuesta 200 OK
-	    			httpResponse = "HTTP/1.1 200 OK\r\n";
-					httpResponse += "Content-Type: text/html\r\n";
-          std::stringstream strContentLen;
-          strContentLen << oss.str().size();
-					httpResponse += "Content-Length: " + strContentLen.str() + "\r\n";
-					httpResponse += "\r\n";
-          httpResponse += oss.str();
-					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+				  // Respuesta 200 OK
+          cout << "200 OK" << endl;
+	    	  httpResponse = "HTTP/1.1 200 OK\r\n";
+				  httpResponse += "Content-Type: " + contentType + "\r\n";
+				  httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+				  httpResponse += "\r\n";
+				  httpResponse += oss.str();
+				  send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 				}
-	    	}
+	    }
 			else
 			{
 				std::ifstream archivo("resources/GET/404.html");
-	    		oss << archivo.rdbuf();
-				std::string httpResponse = "HTTP/1.1 404 Not Found\r\n";
-				httpResponse += "Content-Type: text/html\r\n";
-        std::stringstream strContentLen;
-        strContentLen << oss.str().size();
-				httpResponse += "Content-Length: " + strContentLen.str() + "\r\n";
-				httpResponse += "\r\n";
-				httpResponse += oss.str();
-				send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        if (archivo.is_open()) {
+          std::ostringstream oss;
+          oss << archivo.rdbuf();
+          cout << "NOT FOUND" << endl;
+          std::string httpResponse = "HTTP/1.1 404 Not Found\r\n";
+          httpResponse += "Content-Type: " + contentType + "\r\n";
+          httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+          httpResponse += "\r\n";
+          httpResponse += oss.str();
+          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        } else {
+          cout << "INTERNAL2" << endl;
+				  httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+          httpResponse += "Content-Type: " + contentType + "\r\n";
+          httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
+          httpResponse += "\r\n";
+          // Asegúrate de agregar un carácter nulo al final de la cadena
+          httpResponse.push_back('\0');
+				  send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+			  }
 			}
 		}
 	}
@@ -268,14 +322,94 @@ void Request::getMethod( void )
 	close(clientFd);
 }
 
-std::string replaceAlias(const std::string& file, const std::map<std::string, std::string>& alias) {
-    std::string result = file;
-    
-    for (std::map<std::string, std::string>::const_iterator it = alias.begin(); it != alias.end(); ++it) {
+void Request::postMethod( void )
+{
+	std::cout << "ENTRO AL METODO POST" << std::endl;
+	std::string httpResponse;
+	std::string allowed_methods = "GET POST"; // Métodos permitidos
+    if (!checkMethod("POST")) {
+        httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
+        httpResponse += "Allow: " + allowed_methods + "\r\n";
+        httpResponse += "\r\n";
+        std::cout << "Error: Método no permitido" << std::endl;
+        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        return;
+    } else {
+		std::string msgString(header);
+	    size_t bodyStart = msgString.find("\r\n\r\n");
+		std::string postBody = msgString.substr(bodyStart + 4);
+	    if (postBody.empty()) {
+	        std::cout << "HTTP/1.1 204 No Content\r\n" << std::endl;
+	        httpResponse = "HTTP/1.1 204 No Content\r\n";
+	        httpResponse += "\r\n";
+	        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	        return;
+	    }
+	    std::cout << "Body: " << postBody << std::endl;
+		std::ifstream verificarArchivo((locationRoot.getRoot() + route).c_str());
+    	bool archivoExiste = verificarArchivo.good();
+    	verificarArchivo.close();
+
+	    std::ofstream archivo((locationRoot.getRoot() + route).c_str(), std::ios::app);
+	    if (archivo.is_open()) {
+        	if (archivoExiste) {
+            	archivo << postBody << std::endl;
+            	std::cout << "Contenido escrito exitosamente al final del archivo." << std::endl;
+            	std::cout << "HTTP/1.1 200 OK\r\n" << std::endl;
+              httpResponse = "HTTP/1.1 200 OK\r\n";
+	            httpResponse += "\r\n";
+	            send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        	} else {
+            	archivo << postBody << std::endl;
+            	std::cout << "Contenido escrito exitosamente en el archivo nuevo." << std::endl;
+            	std::cout << "HTTP/1.1 201 Created\r\n" << std::endl;
+              httpResponse = "HTTP/1.1 201 CREATED\r\n";
+	            httpResponse += "\r\n";
+	            send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        	}
+	    } else {
+	        std::cerr << "HTTP/1.1 500 Internal Server Error\n" << std::endl;
+	        httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+	        httpResponse += "\r\n";
+	        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	    }
+	}
+}
+
+void Request::deleteMethod( void )
+{
+  std::string allowed_methods = "GET POST"; // Métodos permitidos
+	std::cout << "DELETEMETHOD" << std::endl;
+	std::string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+  if (!checkMethod("DELETE")) {
+        httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
+        httpResponse += "Allow: " + allowed_methods + "\r\n";
+        httpResponse += "\r\n";
+        std::cout << "Error: Método no permitido" << std::endl;
+        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        return;
+  }
+  else
+  {
+    // Intentar eliminar el archivo
+    if (std::remove((locationRoot.getRoot() + route).c_str()) != 0)
+		  httpResponse = "HTTP/1.1 404 Not Found\r\n";
+	  else
+		  httpResponse = "HTTP/1.1 200 OK\r\n";
+  }
+	send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	std::cout << "TERMINO" << std::endl;
+	close(clientFd);
+}
+
+
+std::string Request::replaceAlias(const std::string& path) {
+    std::string result = path;
+    for (std::map<std::string, Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
         const std::string& aliasPath = it->first;
-        const std::string& replacement = it->second;
+        const std::string& replacement = it->second.getAlias();
         
-        size_t pos = result.find(aliasPath);
+        size_t pos = path.find(aliasPath);
         
         // Si se encuentra el alias, reemplazarlo
         while (pos != std::string::npos) {
@@ -287,13 +421,29 @@ std::string replaceAlias(const std::string& file, const std::map<std::string, st
     return result;
 }
 
-string adjustRoute(const std::string &locationRoot, std::string &route) {
+/*string adjustRoute(const std::string &locationRoot, std::string &route) {
     // Verificar si locationRoot termina en "/" y route comienza con "/"
     if (!locationRoot.empty() && locationRoot[locationRoot.length() - 1] == '/' && !route.empty() && route[0] == '/') {
         // Eliminar la barra diagonal de inicio de route
         route = route.substr(1);
     }
     return route;
+}*/
+std::string adjustRoute(const std::string &locationRoot, std::string &route) {
+  size_t pos = 0;
+  while ((pos = route.find("//", pos)) != std::string::npos) {
+      // Reemplaza la secuencia "//" con una sola "/"
+      route.replace(pos, 2, "/");
+  }
+  // Verificar si locationRoot termina en "/" y route comienza con "/"
+  if (!locationRoot.empty() && locationRoot.back() == '/' && !route.empty() && route.front() == '/') {
+      // Eliminar la barra diagonal de inicio de route
+      route.erase(0, 1);
+  }
+  // Eliminar barras diagonales duplicadas
+  
+  
+  return route;
 }
 
 void  Request::serverToClient(const string &_header, size_t fd) {
@@ -304,20 +454,24 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   std::istringstream ss(header);
 	std::map<std::string, std::string> alias;
   //alias["micuenta"] = "Extra";
+  //alias["micuenta2"] = "Extra2";
 	
 	ss >> method >> route;
   cout << "locationRoot: " << locationRoot.getRoot() << endl;
   cout << "route: " << route << endl;
   cout << method << endl;
-	route = replaceAlias(route, alias);
+	route = replaceAlias(route);
   route = adjustRoute(locationRoot.getRoot(), route);
+  cout << "ROUTE FINAL: " << route << endl;
 	if (method == "GET")
 		getMethod();
-	/*else if (method == "POST")
+	else if (method == "POST")
 		postMethod();
 	else if (method == "DELETE")
-		deleteMethod();*/
+		deleteMethod();
 }
+
+
 
 /* void  Request::serverToClient(const string &_header, size_t fd) {
   header = _header;
@@ -335,3 +489,5 @@ void  Request::serverToClient(const string &_header, size_t fd) {
     logger.Log("error al enviar [%d]", fd);
   
 }*/
+
+

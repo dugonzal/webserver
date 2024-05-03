@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 10:06:14 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:32:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@
 # include <sstream>
 # include <cstdio>
 # include <filesystem>
-# include <sstream>
+# include <algorithm>    // std::transform
 
 using std::deque;
 using std::set;
@@ -90,3 +90,6 @@ bool    isDirectory(const string &path);
 bool    isFile(const string &path);
 void    readDirectory(const string &path);
 ifstream  *openFile(const string &fdName);
+
+//template<typename T>
+//string toString(T value);

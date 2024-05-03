@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 10:05:13 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:32:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,3 +122,11 @@ ifstream  *openFile(const string &fdName) {
   }
   return (file);
 }
+
+/*
+template<class T>
+string toString(const T& value) {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
+}*/

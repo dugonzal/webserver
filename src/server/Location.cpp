@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 09:12:57 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:23:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void  Location::setListen(const string &_listen) {
       port = n;
   } else if (pos < 0) {
       port = atoi(_listen.data());
-      host = "0.0.0.0";
+      host = "127.0.0.1";
     if (port < 1 or port > 65535)
       logger.LogThrow("error port out range (",  _listen.data() );
   } else

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 17:37:08 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:13:54 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,8 @@ string checkContentType(const std::string& routeToFile) {
             return it->second;  // Devuelve el tipo de contenido correspondiente si se encuentra la extensión
         }
     }
-    
     // Si no se encuentra la extensión en el mapa o no hay extensión, se asigna 'text/plain'
-    return "text/plain";
+    return "text/html";
 }
 
 string checkAllowedMethods(const std::vector<std::string>& methods) {

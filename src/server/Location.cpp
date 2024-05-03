@@ -6,19 +6,14 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/02 20:23:35 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:49:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Location.hpp"
 
 Location::Location(void): autoIndex(-1), \
-  port(-1), isCgi(false) {
-    methods.push_back("GET"); /* Default allowed methods */
-    methods.push_back("POST");
-    methods.push_back("DELETE");
-    clientBodySize = 1000000; /* 1MB */
-  }
+  port(-1), isCgi(false) { }
 
 Location::~Location(void) { }
 

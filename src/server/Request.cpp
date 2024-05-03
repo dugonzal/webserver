@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 19:03:05 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:15:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 template<class T>
 static string toString(const T& value) {
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
+  stringstream ss;
+  ss << value;
+  return ss.str();
 }
 
 Request::Request(void) { }
@@ -176,16 +176,12 @@ static string generate_autoindex(const std::string& directoryPath, string autoin
 
     autoindex += "<html><head><title>Index of " + directoryPath + "</title></head>\n";
     autoindex += "<body><h1>Index of " + directoryPath + "</h1><hr><ul>\n";
-
     // Lee el contenido del directorio
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
         autoindex += "<li><a href=\"" "http://" + host + ":" +toString(port) + "/" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::toString(locationRoot.getPort()) + "/" + location[route] + "\r\n";
-        
     }
-
     autoindex += "</ul><hr></body></html>\n";
-
     // Cierra el directorio
     closedir(dir);
 
@@ -405,7 +401,6 @@ void Request::deleteMethod( void )
 	cout << "TERMINO" << std::endl;
 	close(clientFd);
 }
-
 
 string Request::replaceAlias(const std::string& path) {
     string result = path;

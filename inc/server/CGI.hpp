@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/29 15:08:11 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:45:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,13 @@ class CGI {
  public:
   CGI(void);
   ~CGI(void);
-  void          setCgi(const string&, const string&);
-  const string  handlerCgi(void);
-  void          clear(void);
 
-  std::string getCgi( void ) const;
+ private:
+  void    readFd(int);
+  void    clear(void);
+
+ public:
+  void    setCgi(const string&, const string&);
+  void    handlerCgi(void);
+  string  getCgi(void) const;
 };

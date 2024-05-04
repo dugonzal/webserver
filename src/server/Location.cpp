@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 19:04:43 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/04 09:44:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ const pair<size_t, string>  Location::getReturn(void) const {
   return(_return);
 }
 
-const map<size_t, string> Location::getErrorPages(void) const {
+const map<size_t, string> &Location::getErrorPages(void) const {
   return(errorPages);
 }
 

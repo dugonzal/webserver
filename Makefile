@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+         #
+#    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/04/26 16:12:42 by Dugonzal         ###   ########.fr        #
+#    Updated: 2024/05/03 20:17:24 by jaizpuru         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			:=	webserv
 
 SHELL			:=	/bin/zsh
 
-CXX				:= c++ -Wall -Werror -Wextra -pedantic -g3 -fsanitize=address -std=c++98
+CXX				:= c++ -Wall -Werror -Wextra -pedantic -g3 -std=c++98
 
 INC_DIR		:= inc/
 INC_FILES += $(addprefix $(P_DIR),$(parser))

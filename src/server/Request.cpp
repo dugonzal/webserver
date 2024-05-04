@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 09:46:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/04 08:56:53 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,22 +406,18 @@ void Request::deleteMethod( void )
 }
 
 string Request::replaceAlias(const std::string& path) {
-    string result = path;
-    for (map<std::string, Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
-        const string& aliasPath = it->first;
-        const string& replacement = it->second.getAlias();
+	string result = path;
+	for (map<std::string, Location>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
+		const string& aliasPath = it->first;
+		const string& replacement = it->second.getAlias();
 
-        size_t pos = path.find(aliasPath);
-        // Si se encuentra el alias, reemplazarlo
-        while (pos != string::npos) {
-            if (replacement != "\0") {
-              result.replace(pos, aliasPath.length(), replacement);
-              pos = result.find(aliasPath, pos + replacement.length());
-            }
-        }
-    }
+		size_t pos = path.find(aliasPath);
+		if (pos != string::npos && !replacement.empty()) { /* If there is any location block with 'path' & 'alias' */
+			result.replace(pos, aliasPath.length(), replacement);
+		}
+	}
     cout << "result = " << result << std::endl;
-    return result;
+	return result;
 }
 
 /*string adjustRoute(const string &locationRoot, std::string &route) {
@@ -449,22 +445,23 @@ string adjustRoute(const std::string &locationRoot, std::string &route) {
 }
 
 void  Request::serverToClient(const string &_header, size_t fd) {
-  header = _header;
-  parserData();
-  cout << fd << header << endl;
-  clientFd = fd;
-  istringstream ss(header);
+	header = _header;
+	parserData();
+	cout << fd << header << endl;
+	clientFd = fd;
+	istringstream ss(header);
 	map<std::string, std::string> alias;
-  //alias["micuenta"] = "Extra";
-  //alias["micuenta2"] = "Extra2";
-	
+	//alias["micuenta"] = "Extra";
+	//alias["micuenta2"] = "Extra2";
+
 	ss >> method >> route;
-  cout << "locationRoot: " << locationRoot.getRoot() << endl;
-  cout << "route: " << route << endl;
-  cout << method << endl;
+	cout << "locationRoot: " << locationRoot.getRoot() << endl;
+	cout << "route: " << route << endl;
+	cout << method << endl;
 	route = replaceAlias(route);
-  route = adjustRoute(locationRoot.getRoot(), route);
-  cout << "ROUTE FINAL: " << route << endl;
+	std::cout << "Passes here " << std::endl;
+	route = adjustRoute(locationRoot.getRoot(), route);
+	cout << "ROUTE FINAL: " << route << endl;
 	if (method == "GET")
 		getMethod();
 	else if (method == "POST")

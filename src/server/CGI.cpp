@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: dugonzal <dugonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 13:51:38 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:07:18 by dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void  CGI::readFd(const string &fd) {
 const vector<string>& CGI::getCgi(void) const { return result; }
 
 void  CGI::handlerCgi(void) {
-  result.clear();
   int tmp;
   int pid;
 
@@ -75,19 +74,18 @@ void  CGI::handlerCgi(void) {
   }
   close(out);
   close(err);
-  if (out < 0)
-      return (logger.Log("error: CGI: could not open file for reading"));
   if (tmp > -1) {
     err = open("cgi.out", O_RDONLY);
     readFd("cgi.out");
     close(out);
+    remove("cgi.err");
   } else {
-    err = open("cgi.out", O_RDONLY);
+    err = open("cgi.err", O_RDONLY);
     readFd("cgi.err");
+    remove("cgi.out");
     close(err);
   }
-  for (size_t it = 0; it < result.size(); it++)
-    cout << result[it] << endl;
+  result.clear();
 }
 
 void CGI::clear(void) {

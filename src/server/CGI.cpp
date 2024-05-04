@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 12:28:47 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/04 13:51:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@ void  CGI::setCgi(const string &_path, const string &_fileName) {
   fileName = (char*)_fileName.data();
 }
 
-void  CGI::readFd(int fd) {
-  std::string buffer;
-  std::ifstream readFile("cgi.out");
-  
+void  CGI::readFd(const string &fd) {
+  string buffer;
+  ifstream readFile(fd.data());
+
   while (getline(readFile, buffer, '\n')) {
     result.push_back(buffer);
   }
-
-  close(fd);
+  remove(fd.data());
 }
 
 const vector<string>& CGI::getCgi(void) const { return result; }
@@ -67,9 +66,8 @@ void  CGI::handlerCgi(void) {
     if (dup2(out, STDOUT_FILENO) < 0 || dup2(out, STDERR_FILENO) < 0)
       exit(EXIT_FAILURE);
     if (execve(*tmp, (char *const *)(tmp), NULL) == -1) {
-        logger.Log("error cgi");
+        logger.Log("error cgi -42");
     }
-    logger.Log("error cgi -42");
     exit(-42);
   }
   if (waitpid(pid, &tmp, 0) < 0) {
@@ -77,18 +75,19 @@ void  CGI::handlerCgi(void) {
   }
   close(out);
   close(err);
-  out = open("cgi.out", O_RDONLY);
   if (out < 0)
       return (logger.Log("error: CGI: could not open file for reading"));
   if (tmp > -1) {
-    readFd(out);
+    err = open("cgi.out", O_RDONLY);
+    readFd("cgi.out");
+    close(out);
   } else {
-    readFd(err);
+    err = open("cgi.out", O_RDONLY);
+    readFd("cgi.err");
+    close(err);
   }
-  remove("cgi.out");
-  remove("cgi.err");
   for (size_t it = 0; it < result.size(); it++)
-    std::cout << result[it] << std::endl;
+    cout << result[it] << endl;
 }
 
 void CGI::clear(void) {

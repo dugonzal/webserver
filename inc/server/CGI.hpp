@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 12:10:22 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/04 13:47:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class CGI {
   ~CGI(void);
 
  private:
-  void    readFd(int);
+  void    readFd(const string&);
   void    clear(void);
 
  public:

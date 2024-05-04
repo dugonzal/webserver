@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 12:27:43 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/04 13:51:01 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,6 @@ void  Request::parserData(void) {
     cgi.handlerCgi();
     logger.Log("hay que lanzar cgi para esta location");
   }
-  // ejemplo iker
-  for (map<size_t, string>::const_iterator it = locationRoot.getErrorPages().begin(); it != locationRoot.getErrorPages().end(); it++)
-    cout << it->first << "   " << it->second << endl;
 }
 
 //FUNCIONES IKER

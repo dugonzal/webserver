@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 19:45:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:10:22 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 class CGI {
  private:
-  string    result;
+  vector<string>    result;
   ifstream  file;
   string    path;
   string    fileName;
@@ -39,5 +39,5 @@ class CGI {
  public:
   void    setCgi(const string&, const string&);
   void    handlerCgi(void);
-  string  getCgi(void) const;
+  const vector<string>&  getCgi(void) const;
 };

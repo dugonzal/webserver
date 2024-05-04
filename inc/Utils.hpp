@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 17:32:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:11:22 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ bool    isDirectory(const string &path);
 bool    isFile(const string &path);
 void    readDirectory(const string &path);
 ifstream  *openFile(const string &fdName);
+std::string convertHTML( const std::vector<string>& cgiOutput );
 
 //template<typename T>
 //string toString(T value);

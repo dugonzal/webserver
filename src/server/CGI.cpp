@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 19:51:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:28:47 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@ void  CGI::setCgi(const string &_path, const string &_fileName) {
 }
 
 void  CGI::readFd(int fd) {
-  char  buffer[1024];
-  int   bytesRead;
-
-  while ((bytesRead = read(fd, buffer, sizeof(buffer))) > 0) {
-    buffer[bytesRead] = '\0';
-    result.append(buffer);
+  std::string buffer;
+  std::ifstream readFile("cgi.out");
+  
+  while (getline(readFile, buffer, '\n')) {
+    result.push_back(buffer);
   }
+
   close(fd);
 }
 
-string CGI::getCgi(void) const { return result; }
+const vector<string>& CGI::getCgi(void) const { return result; }
 
 void  CGI::handlerCgi(void) {
   result.clear();
@@ -62,11 +62,11 @@ void  CGI::handlerCgi(void) {
   if (pid < 0)
     return(logger.Log("error fork"));
   if (!pid) {
-    const char *tmp[3] = { path.data(), fileName.data(), tmp[2] };
+    const char *tmp[3] = { path.data(), fileName.data(), NULL };
 
     if (dup2(out, STDOUT_FILENO) < 0 || dup2(out, STDERR_FILENO) < 0)
       exit(EXIT_FAILURE);
-    if (execve(*tmp, (char *const *)(tmp), NULL) < 0) {
+    if (execve(*tmp, (char *const *)(tmp), NULL) == -1) {
         logger.Log("error cgi");
     }
     logger.Log("error cgi -42");
@@ -86,8 +86,9 @@ void  CGI::handlerCgi(void) {
     readFd(err);
   }
   remove("cgi.out");
-  remove("err.out");
-  cout << result << endl;
+  remove("cgi.err");
+  for (size_t it = 0; it < result.size(); it++)
+    std::cout << result[it] << std::endl;
 }
 
 void CGI::clear(void) {

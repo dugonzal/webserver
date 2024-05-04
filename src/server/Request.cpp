@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 08:56:53 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:27:43 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,10 +238,21 @@ void Request::getMethod( void )
 			else
 			{
         cout << "INTERNAL" << endl;
-				httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-        httpResponse += "Content-Type: text/html\r\n";
-        httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
-        httpResponse += "\r\n";
+				if (isCgi) {
+          httpResponse = "HTTP/1.1 200 OK\r\n";
+          httpResponse += "Content-Type: text/html\r\n";
+          httpResponse += "Content-Length: ";
+          httpResponse += toString(convertHTML(cgi.getCgi()).size());
+          httpResponse += "\r\n";  // Longitud del contenido (en este caso, 0)
+          httpResponse += "\r\n";
+          httpResponse += convertHTML(cgi.getCgi());
+        }
+        else {
+          httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+          httpResponse += "Content-Type: text/html\r\n";
+          httpResponse += "Content-Length: 0\r\n ";  // Longitud del contenido (en este caso, 0)
+          httpResponse += "\r\n";
+        }
         // Asegúrate de agregar un carácter nulo al final de la cadena
         httpResponse.push_back('\0');
 				send(clientFd, httpResponse.data(), httpResponse.size(), 0);
@@ -271,7 +282,7 @@ void Request::getMethod( void )
         httpResponse += autoindex;
         autoDirectory = route;
         send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      } else if (archivo.is_open()){
+      } else if (archivo.is_open()) {
 				cout << "y" << std::endl;
 				oss << archivo.rdbuf();
 				string httpResponse;

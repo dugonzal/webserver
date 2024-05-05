@@ -50,9 +50,6 @@ ${NAME}: ${OBJ} ${I}
 	${CXX} ${OBJ} -o ${NAME}
 	printf "compile done ->: [$@]\n"
 
-#	make -C tests
-#./webserv | cat -e > logs/parser_data.log
-
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	mkdir -p ${OBJ_DIR}
 	mkdir -p ${OBJ_DIR}${P_DIR}
@@ -61,23 +58,9 @@ ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
 	printf "compile ->: {$?}\n"
 
 clean:
-#		make clean -C ./tests
-		rm -rf ${NAME}
+	rm -rf ${NAME}
 
 fclean: clean
-#		make fclean -C ./tests
-		rm -rf	${OBJ_DIR}
+	rm -rf	${OBJ_DIR}
 
 re: fclean all
-
-serv:
-	sudo python3 -m http.server 80853
-
-init:
-	sudo python main.py
-
-cleanPorts:
-	sudo lsof -i | grep 'webserv' | awk '{print}' | sudo xargs kill -9
-
-val:
-	valgrind ./${NAME}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/05 15:02:10 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/04 09:44:39 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,6 @@ void  Location::setReturn(const string &return_) {
   if (_return.first < 100 or _return.first > 505)
     logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
   _return.second = lastWord(return_);
-  /*if (_return.second.substr(0, 7).compare("http://") \
-    and _return.second.substr(0, 8).compare("https://"))
-    logger.LogThrow("tiene que empezar por http [%s]", return_.data());
-  */if (_return.second[_return.second.size() - 1] != '/')
-    _return.second.append("/");
 }
 
 void  Location::setMethods(const string &_methods) {

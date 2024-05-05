@@ -39,7 +39,7 @@ void  Request::setLocation(const map<string, Location> &tmp) {
 
 void  Request::setHostAndPort(const string &_host, size_t _port) {
   host = _host;
-  port = _port; 
+  port = _port;
 }
 
 bool  Request::setMethod(const string &_method) {
@@ -379,7 +379,6 @@ void Request::getMethod( void )
           if (route == "/")
             route = "";
           autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
-          // Respuesta 200 OK con el autoindex
           httpResponse = "HTTP/1.1 200 OK\r\n";
           httpResponse += "Content-Type: " + contentType + "\r\n";
           httpResponse += "Content-Length: " + std::to_string(autoindex.size()) + "\r\n";
@@ -398,7 +397,6 @@ void Request::getMethod( void )
             string filePath = adjustRoute(locationRoot.getRoot(), it->second);
             std::cout << "FILE404PATH = " << locationRoot.getRoot() + filePath << endl;
             std::ifstream archivo(locationRoot.getRoot() + filePath);
-            std::string httpResponse = "";
             if (archivo.is_open()) {
               std::ostringstream oss;
               oss << archivo.rdbuf();

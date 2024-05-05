@@ -288,7 +288,7 @@ void Request::getMethod( void )
     std::string directoryPath = locationRoot.getRoot() + route;
     std::cout << "DIRECTORY PATH= " << directoryPath << endl;
     std::cout << "ESTO= " << !isDirectory(directoryPath) << endl;
-
+    cout << locationRoot.getReturn().second << endl;
 		if (!locationRoot.getReturn().second.empty())
 		{
 			if (isAbsolutePath(locationRoot.getReturn().second))

@@ -13,7 +13,7 @@
 # include "../../inc/server/Location.hpp"
 
 Location::Location(void): autoIndex(-1), \
-  port(-1), isCgi(false) { }
+  port(-1), clientBodySize(-1), isCgi(false) { }
 
 Location::~Location(void) { }
 
@@ -91,10 +91,10 @@ void  Location::setReturn(const string &return_) {
   if (_return.first < 100 or _return.first > 505)
     logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
   _return.second = lastWord(return_);
-  if (_return.second.substr(0, 7).compare("http://") \
+  /*if (_return.second.substr(0, 7).compare("http://") \
     and _return.second.substr(0, 8).compare("https://"))
     logger.LogThrow("tiene que empezar por http [%s]", return_.data());
-  if (_return.second[_return.second.size() - 1] != '/')
+  */if (_return.second[_return.second.size() - 1] != '/')
     _return.second.append("/");
 }
 
@@ -164,6 +164,8 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   stringstream size;
   int ret;
 
+  if (clientBodySize != -1)
+    logger.LogThrow("clientBodySize");
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
     if (isdigit(_clientBodySize.c_str()[i]))
       num << _clientBodySize.c_str()[i];

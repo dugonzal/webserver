@@ -136,3 +136,19 @@
 [INFO] Sun May  5 15:33:45 2024 | close fd [35]
 [INFO] Sun May  5 15:33:45 2024 | close fd [11]
 [INFO] Sun May  5 15:33:45 2024 | Server conquered! Keep coding, stay safe. 🙂🙂🙂
+[INFO] Sun May  5 15:50:58 2024 | socket listen created, [35]
+[INFO] Sun May  5 15:50:58 2024 | |--Inicio de servidor--|
+[INFO] Sun May  5 15:51:03 2024 | new cliente [11] 
+[INFO] Sun May  5 15:51:03 2024 | new cliente [36] 
+[INFO] Sun May  5 15:51:05 2024 | close client: [11]
+[INFO] Sun May  5 15:51:06 2024 | new cliente [34] 
+[INFO] Sun May  5 15:51:06 2024 | close client: [36]
+[INFO] Sun May  5 15:51:19 2024 | new cliente [36] 
+[INFO] Sun May  5 15:51:19 2024 | close client: [34]
+[INFO] Sun May  5 15:51:31 2024 | new cliente [34] 
+[INFO] Sun May  5 15:51:45 2024 | close client: [36]
+[INFO] Sun May  5 15:51:52 2024 | new cliente [36] 
+[INFO] Sun May  5 15:52:33 2024 | close fd [35]
+[INFO] Sun May  5 15:52:33 2024 | close fd [34]
+[INFO] Sun May  5 15:52:33 2024 | close fd [36]
+[INFO] Sun May  5 15:52:33 2024 | Server conquered! Keep coding, stay safe. 🙂🙂🙂

@@ -29,6 +29,32 @@ Request &Request::operator=(const Request &copy) {
   return (*this);
 }
 
+static std::string adjustRoute(const std::string &locationRoot, std::string &route) {
+  size_t pos = 0;
+  while ((pos = route.find("//", pos)) != std::string::npos) {
+      // Reemplaza la secuencia "//" con una sola "/"
+      route.replace(pos, 2, "/");
+  }
+  // Verificar si locationRoot termina en "/" y route comienza con "/"
+  if (!locationRoot.empty() && locationRoot.back() == '/' && !route.empty() && route.front() == '/') {
+      // Eliminar la barra diagonal de inicio de route
+      route.erase(0, 1);
+  }
+  // Eliminar barras diagonales duplicadas
+
+
+  return route;
+}
+
+static string adjustRoute(string route) {
+  size_t pos = 0;
+  while ((pos = route.find("//", pos)) != std::string::npos) {
+      // Reemplaza la secuencia "//" con una sola "/"
+      route.replace(pos, 2, "/");
+  }
+  return route;
+}
+
 void Request::setHeader(const char *_header) {
   header = _header;
 }
@@ -70,7 +96,7 @@ void  Request::setLocation(void) {
 }
 
 bool  Request::setRouteAndVersion(const string &tmp) {
-  route = firstWord(tmp);
+  route = adjustRoute(firstWord(tmp));
   version = lastWord(tmp);
   if (version.compare("HTTP/1.1"))
     return (true);
@@ -183,22 +209,7 @@ std::string generate_autoindex(const std::string& directoryPath, string autoinde
     return autoindex;
 }
 
-std::string adjustRoute(const std::string &locationRoot, std::string &route) {
-  size_t pos = 0;
-  while ((pos = route.find("//", pos)) != std::string::npos) {
-      // Reemplaza la secuencia "//" con una sola "/"
-      route.replace(pos, 2, "/");
-  }
-  // Verificar si locationRoot termina en "/" y route comienza con "/"
-  if (!locationRoot.empty() && locationRoot.back() == '/' && !route.empty() && route.front() == '/') {
-      // Eliminar la barra diagonal de inicio de route
-      route.erase(0, 1);
-  }
-  // Eliminar barras diagonales duplicadas
 
-
-  return route;
-}
 
 std::string personalizeErrorPage(std::map<size_t, std::string> errorPages, size_t errorCode, const std::string rootPath, string httpResponse)
 {

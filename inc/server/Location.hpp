@@ -50,7 +50,7 @@ class Location {
     void                        setErrorPages(const string&);
     void                        setListen(const string&);
     void                        setServerName(const string&);
-    void                        setClientBodySize(const string&);   
+    void                        setClientBodySize(const string&);
     void                        setAlias(const string&);
     Location                    clone(void) const;
     const string                getRoot(void) const;
@@ -61,12 +61,12 @@ class Location {
     const string                getCgiext(void) const;
     const vector<string>        getmethods(void) const;
     const pair<size_t, string>  getReturn(void) const;
-    const map<size_t, string>   &getErrorPages(void) const;
+    map<size_t, string>         &getErrorPages(void);
     const string                getHost(void) const;
     int                         getPort(void) const;
     const string                getServerName(void) const;
     bool                        getIsCgi(void) const;
-    const string                &getAlias(void) const;  
+    const string                &getAlias(void) const;
     void                        clear(void);
     //FUNCION IKER
     long               getClientBodySize(void) const;

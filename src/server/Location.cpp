@@ -213,7 +213,7 @@ const pair<size_t, string>  Location::getReturn(void) const {
   return(_return);
 }
 
-const map<size_t, string> &Location::getErrorPages(void) const {
+map<size_t, string> &Location::getErrorPages(void) {
   return(errorPages);
 }
 
@@ -254,7 +254,7 @@ ostream &operator<<(ostream &os, const Location &copy) {
   << copy.getCgiPath() << endl <<  endl << "methods: " \
   << copy.getmethods().size() << endl << "return: " \
   << copy.getReturn().second << endl << "errorPages: " \
-  << copy.getErrorPages().size() << endl << "isCgi: " \
+<< "isCgi: " \
   << copy.getIsCgi() << endl << "alias: " << copy.getAlias() << endl;
   return (os);
 }

@@ -44,10 +44,10 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 
 .SILENT:
 
-all: ${NAME} 
+all: ${NAME}
 
 ${NAME}: ${OBJ} ${I}
-	${CXX} ${OBJ} -o ${NAME} && ./$@
+	${CXX} ${OBJ} -o ${NAME}
 	printf "compile done ->: [$@]\n"
 
 #	make -C tests

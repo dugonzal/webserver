@@ -184,12 +184,13 @@ void  Location::setAlias(const string &_alias) {
   alias = _alias;
 }
 
-// hay que setear default posiblemente
 Location  Location::clone(void) const {
   if (!path.compare("root") and port < 1)
-      throw(runtime_error("errror tiene que haber port"));
+    throw(runtime_error("errror tiene que haber port"));
   else if (!path.compare("root") and !alias.empty())
-      throw(runtime_error("error no aceptamos un alias en el general"));
+    throw(runtime_error("error no aceptamos un alias en el general"));
+  else if ((isCgi and (index.empty() and !cgiPath.empty())) or (isCgi and !index.empty() and cgiPath.empty()))
+    throw(runtime_error("error si hay index hay cgi"));
   return (*this);
 }
 

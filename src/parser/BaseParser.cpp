@@ -204,7 +204,7 @@ size_t  BaseParser::serverError(size_t i) {
     } else if (!firstWord(data[i]).compare("include")) {
       logger.LogThrow("include circular");
     } else if (!firstWord(data[i]).compare("cgi_path") \
-      || !firstWord(data[i]).compare("cgi_ext")) {
+      || !firstWord(data[i]).compare("index")) {
         logger.LogThrow("defined in global scope ",  data[i].data());
     } else if (data[i].find("location") != string::npos \
       && data[i].find("{") != string::npos) {

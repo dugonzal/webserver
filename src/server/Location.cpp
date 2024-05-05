@@ -157,22 +157,18 @@ void  Location::setServerName(const string &_serverName) {
 void Location::setClientBodySize(const string& _clientBodySize) {
   stringstream num;
   stringstream size;
-  int ret;
 
   if (clientBodySize != -1)
-    logger.LogThrow("clientBodySize");
+    logger.LogThrow("clientBodySize exists [%s]", _clientBodySize.data());
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
     if (isdigit(_clientBodySize.c_str()[i]))
       num << _clientBodySize.c_str()[i];
     else
       size << _clientBodySize.c_str()[i];
   }
-  ret = atoi(num.str().c_str());
-  if (!size.str().compare("m"))
-    ret *= 1000000;
-  else if (!size.str().compare("k"))
-    ret *= 1000;
-  clientBodySize = ret;
+  if (_clientBodySize.size() > 11)
+    logger.LogThrow("clientBodySize error [%s]", _clientBodySize.data());
+  clientBodySize = atoi(num.str().c_str());
 }
 
 void  Location::setAlias(const string &_alias) {

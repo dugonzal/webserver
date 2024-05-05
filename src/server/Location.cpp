@@ -13,7 +13,7 @@
 # include "../../inc/server/Location.hpp"
 
 Location::Location(void): autoIndex(-1), \
-  port(-1), isCgi(false), clientBodySize(-1) { }
+  port(-1), clientBodySize(-1), isCgi(false) { }
 
 Location::~Location(void) { }
 

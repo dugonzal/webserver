@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/05 15:19:48 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/05 16:56:40 by dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -677,13 +677,13 @@ std::string Request::replaceAlias(const std::string& path) {
     return (remplacement);
   return (path);
 }
-
 void  Request::serverToClient(const string &_header, size_t fd) {
+  header.clear();
   header = _header;
   parserData();
   clientFd = fd;
   std::istringstream ss(header);
-	std::map<std::string, std::string> alias;
+ std::map<std::string, std::string> alias;
 
 	ss >> method >> route;
 	route = replaceAlias(route);

@@ -28,11 +28,10 @@ Server &Server::operator=(const Server &copy) {
 
 
 void  Server::setLocationRequest(void) {
+  request.setHostAndPort(host, port);
   request.setLocation(location);
 }
 
 void  Server::handlerClient(size_t fd, const char *header) {
-  setLocationRequest();
-  request.setHostAndPort(host, port);
   request.serverToClient(header, fd);
 }

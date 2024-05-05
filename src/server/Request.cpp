@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/05 13:25:42 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:19:48 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ int  Request::checkMethod(const string &_method) {
       return (1);
     }
   }
+
   return (0);
 }
 
@@ -164,7 +165,13 @@ std::string generate_autoindex(const std::string& directoryPath, string autoinde
     // Lee el contenido del directorio
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
-        autoindex += "<li><a href=\"" "http://" + host + ":" +std::to_string(port) + "/" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
+      if (!route.empty()) {
+        if (*route.begin() == '/')
+          autoindex += "<li><a href=\"" "http://" + host + ":" +std::to_string(port) + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
+        else
+          autoindex += "<li><a href=\"" "http://" + host + ":" +std::to_string(port) + "/" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
+      } else
+        autoindex += "<li><a href=\"" "http://" + host + ":" +std::to_string(port) + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
 
     }
 
@@ -435,6 +442,8 @@ void Request::getMethod( void )
 				std::cout << "y" << std::endl;
 				oss << archivo.rdbuf();
 				std::string httpResponse;
+        if (locationRoot.getClientBodySize() == -1)
+          locationRoot.setClientBodySize("1m");
         cout << static_cast<long>(oss.str().size()) << endl;
         cout << locationRoot.getClientBodySize() << endl;
 				if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))//OJOOO

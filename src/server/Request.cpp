@@ -90,16 +90,6 @@ void  Request::parserData(void) {
   if (setMethod(trim(firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
   }
-  if (isCgi) {
-    string tmp;
-    if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
-      tmp = locationRoot.getRoot();
-      tmp.append("/");
-    }
-    cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
-    cgi.handlerCgi();
-    logger.Log("hay que lanzar cgi para esta location");
-  }
 }
 
 //FUNCIONES IKER
@@ -760,7 +750,27 @@ void  Request::serverToClient(const string &_header, size_t fd) {
 	route = replaceAlias(route);
   route = adjustRoute(locationRoot.getRoot(), route);
   cout << "ROUTE FINAL: " << route << endl;
-	if (method == "GET")
+  cout << version << endl;
+	if (version != "HTTP/1.1") {
+    cout << version << endl;
+    std::string httpResponse = "HTTP/1.1 505 HTTP Version Not Supported\r\n";
+    httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+    std::cout << "505 Internal Server Error" << std::endl;
+    if (locationRoot.getErrorPages().find(505) != locationRoot.getErrorPages().end()) {
+      httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 505, locationRoot.getRoot(), httpResponse);
+      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+    }
+    else
+    {
+      // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
+      httpResponse += "Content-Type: text/html\r\n";
+      httpResponse += "Content-Length: 0\r\n";
+      httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+      httpResponse += "\r\n";
+      httpResponse.push_back('\0');
+      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+    }
+  } else if (method == "GET")
 		getMethod();
 	else if (method == "POST")
 		postMethod();
@@ -787,24 +797,3 @@ void  Request::serverToClient(const string &_header, size_t fd) {
     }
   }
 }
-
-
-
-/* void  Request::serverToClient(const string &_header, size_t fd) {
-  header = _header;
-  parserData();
-  string response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
-  if (::send(fd, response.data(), response.size(), 0) < 0)
-     logger.Log("error al enviar [%d]", fd);
-  std::string redirect_response = "HTTP/1.1 301 Moved Permanently\r\n";
-  redirect_response += "Location:" + locationRoot.getReturn().second  + "\r\n"; // Cambia la URL según sea necesario
-  redirect_response += "Connection: close\r\n\r\n";
-  std::string redirect_response = "HTTP/1.1 301 Moved Permanently\r\n";
-   redirect_response += "Location: http:0.0.0.0:3008/nueva_pagina\r\n";
-   redirect_response += "Connection: close\r\n\r\n";
-  if (::send(fd, redirect_response.data(), redirect_response.size(), 0) < 0)
-    logger.Log("error al enviar [%d]", fd);
-
-}*/
-
-

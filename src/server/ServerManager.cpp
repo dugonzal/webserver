@@ -132,10 +132,12 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
 }
 
 void  ServerManager::handlerPoll(void) {
+  int max = 1024;
   initPoll();
   logger.Log("|--Inicio de servidor--|");
   while (42) {
-    if (poll(fds.data(), fds.size(), -1) < 0) {
+    max = poll(fds.data(), fds.size(), -1);
+    if (max < 0) {
       logger.Log("error poll");
       Signals::setSignals(SIGQUIT);
     }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dugonzal <dugonzal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 16:07:18 by dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:18:33 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void  CGI::handlerCgi(void) {
 
   int err = open("cgi.err", O_CREAT | O_TRUNC | O_WRONLY, 0666);
   int out = open("cgi.out", O_CREAT | O_TRUNC | O_WRONLY, 0666);
+  result.clear();
   if (err < 0 || out < 0) {
     return(logger.Log("error open file cgi"));
   }
@@ -85,7 +86,6 @@ void  CGI::handlerCgi(void) {
     remove("cgi.out");
     close(err);
   }
-  result.clear();
 }
 
 void CGI::clear(void) {

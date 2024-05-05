@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/24 20:27:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:23:38 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void  Server::setLocationRequest(void) {
 
 void  Server::handlerClient(size_t fd, const char *header) {
   setLocationRequest();
+  request.setHostAndPort(host, port);
   request.serverToClient(header, fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inunez-g <inunez-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 21:15:44 by inunez-g         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:25:42 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void  Request::setLocation(const map<string, Location> &tmp) {
 
 void  Request::setHostAndPort(const string &_host, size_t _port) {
   host = _host;
-  port = _port;
+  port = _port; 
 }
 
 bool  Request::setMethod(const string &_method) {
@@ -89,16 +89,6 @@ void  Request::parserData(void) {
   // set method
   if (setMethod(trim(firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
-  }
-  if (isCgi) {
-    string tmp;
-    if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
-      tmp = locationRoot.getRoot();
-      tmp.append("/");
-    }
-    cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
-    cgi.handlerCgi();
-    logger.Log("hay que lanzar cgi para esta location");
   }
 }
 
@@ -361,7 +351,26 @@ void Request::getMethod( void )
       std::cout << "HOST: " << host << endl;
       std::cout << "PORT: " << port << endl;
       std::cout << "AUTOINDEX: " << locationRoot.getAutoIndex() << std::endl;
-			if (isDirectory(directoryPath)) {
+      if (isCgi) {
+        string tmp;
+        if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
+          tmp = locationRoot.getRoot();
+          tmp.append("/");
+        }
+        cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
+        cgi.handlerCgi();
+        logger.Log("hay que lanzar cgi para esta location");
+        httpResponse = "HTTP/1.1 200 OK\r\n";
+        httpResponse += "Content-Type: " + contentType + "\r\n";
+        std::stringstream ss;
+        ss << convertHTML(cgi.getCgi()).size();
+        httpResponse += "Content-Length: " + ss.str() + "\r\n";
+        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+        httpResponse += "\r\n";
+        httpResponse += convertHTML(cgi.getCgi());
+        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+      }
+			else if (isDirectory(directoryPath)) {
         if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1)
         {
           cout << "AUTOINDEX" << endl;

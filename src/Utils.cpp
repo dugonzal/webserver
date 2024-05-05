@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 12:31:50 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:16:17 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ ifstream  *openFile(const string &fdName) {
 
 std::string convertHTML( const std::vector<string>& cgiOutput ) {
   std::string htmlCode;
-  htmlCode += "<html><head></head>\n\r</body>\n";
+  htmlCode += "<html><head></head>\n\r<body>\n";
   for (size_t it = 0; it < cgiOutput.size(); it++) {
     std::cout << "\r\r<div>" << cgiOutput[it] << "</div>\n" << std::endl;
     htmlCode += "\r\r<div>" + cgiOutput[it] + "</div>\n";

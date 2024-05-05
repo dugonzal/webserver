@@ -13,7 +13,7 @@
 # include "../../inc/server/Location.hpp"
 
 Location::Location(void): autoIndex(-1), \
-  port(-1), isCgi(false) { }
+  port(-1), isCgi(false), clientBodySize(-1) { }
 
 Location::~Location(void) { }
 
@@ -164,6 +164,8 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   stringstream size;
   int ret;
 
+  if (clientBodySize != -1)
+    logger.LogThrow("clientBodySize");
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
     if (isdigit(_clientBodySize.c_str()[i]))
       num << _clientBodySize.c_str()[i];

@@ -12,7 +12,7 @@
 
 NAME			:=	webserv
 
-SHELL			:=	/bin/zsh
+SHELL			:=	/bin/sh
 
 CXX				:= c++ -Wall -Werror -Wextra -pedantic -std=c++98 -O3
 

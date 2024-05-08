@@ -6,15 +6,15 @@
 #    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/05/03 20:17:24 by jaizpuru         ###   ########.fr        #
+#    Updated: 2024/05/08 08:32:11 by jaizpuru         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			:=	webserv
 
-SHELL			:=	/bin/zsh
+SHELL			:=	/bin/sh
 
-CXX				:= c++ -Wall -Werror -Wextra -pedantic -g3 -std=c++98
+CXX				:= c++ -Wall -Werror -Wextra -pedantic -std=c++98 -O3
 
 INC_DIR		:= inc/
 INC_FILES += $(addprefix $(P_DIR),$(parser))

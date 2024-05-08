@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/26 09:36:25 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:06:15 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void  ServerManager::handlerPoll(void) {
       Signals::setSignals(SIGQUIT);
     }
     addClient();
+    usleep(4242);
     for (size_t i = nServers; i < fds.size(); i++) {
       if (fds[i].revents & POLLIN)
         if (selectServerForClient(fds[i].fd, i))

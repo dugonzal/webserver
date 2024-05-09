@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 21:37:04 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/09 23:57:53 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <string>
 
 template <typename T>
-std::string toString( T val ) {
+std::string toString(T val) {
   std::stringstream oss;
   oss << val;
   return oss.str();
@@ -40,17 +40,11 @@ Request &Request::operator=(const Request &copy) {
 static std::string adjustRoute(const std::string &locationRoot, std::string &route) {
   size_t pos = 0;
   while ((pos = route.find("//", pos)) != std::string::npos) {
-      // Reemplaza la secuencia "//" con una sola "/"
       route.replace(pos, 2, "/");
   }
-  // Verificar si locationRoot termina en "/" y route comienza con "/"
   if (!locationRoot.empty() && *locationRoot.end() == '/' && !route.empty() && *route.begin() == '/') {
-      // Eliminar la barra diagonal de inicio de route
       route.erase(0, 1);
   }
-  // Eliminar barras diagonales duplicadas
-
-
   return route;
 }
 
@@ -84,11 +78,6 @@ bool  Request::setMethod(const string &_method) {
       return (false);
     }
   }
-
-  if (_method.compare("GET") && _method.compare("DELETE") \
-    && _method.compare("POST")) {
-      return (true);
-  }
   return (true);
 }
 
@@ -106,27 +95,20 @@ void  Request::setLocation(void) {
 bool  Request::setRouteAndVersion(const string &tmp) {
   route = adjustRoute(firstWord(tmp));
   version = lastWord(tmp);
-  if (version.compare("HTTP/1.1"))
-    return (true);
   return(false);
 }
 
 void  Request::parserData(void) {
   int pos = header.find_first_of('\n');
 
-  // set route and version
   if (setRouteAndVersion(trim(lastWord(header.substr(0, pos))))) {
     logger.Log("error version");
   }
-  // set location:
   setLocation();
-  // set method
   if (setMethod(trim(firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
   }
 }
-
-//FUNCIONES IKER
 
 std::string checkContentType(const std::string& routeToFile) {
     // Mapeo de extensiones a tipos de contenido
@@ -204,14 +186,10 @@ std::string generate_autoindex(const std::string& directoryPath, string autoinde
           autoindex += "<li><a href=\"" "http://" + host + ":" +toString(port) + "/" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + toString(locationRoot.getPort()) + "/" + location[route] + "\r\n";
       } else
         autoindex += "<li><a href=\"" "http://" + host + ":" +toString(port) + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + toString(locationRoot.getPort()) + "/" + location[route] + "\r\n";
-
     }
-
     autoindex += "</ul><hr></body></html>\n";
-
     // Cierra el directorio
     closedir(dir);
-
     return autoindex;
 }
 
@@ -754,15 +732,15 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   int end = header.find('\n', pos);
   string coo = header.substr(pos, end - pos);
   vector<string>::iterator it = std::find(listCookie.begin(), listCookie.end(), coo);
+
   if (it != listCookie.end()) {
     cookie = false;
   } else if (it == listCookie.end()) {
     setCookie = generate_random_session_id();
     listCookie.push_back(setCookie);
   }
-  std::istringstream ss(header);
-  std::map<std::string, std::string> alias;
-
+  istringstream ss(header);
+  map<std::string, std::string> alias;
 	ss >> method >> route;
 	route = replaceAlias(route);
   route = adjustRoute(locationRoot.getRoot(), route);

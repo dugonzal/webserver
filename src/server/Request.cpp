@@ -6,12 +6,11 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 23:57:53 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/10 01:11:11 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Request.hpp"
-#include <string>
 
 template <typename T>
 std::string toString(T val) {
@@ -723,25 +722,34 @@ std::string Request::replaceAlias(const std::string& path) {
 
 
 void  Request::serverToClient(const string &_header, size_t fd) {
-  cookie = true;
+  string coo;
   header.clear();
   header = _header;
+  cookie = 1;
   parserData();
   clientFd = fd;
   int pos = header.find("Cookie: session_id=") + 19;
   int end = header.find('\n', pos);
-  string coo = header.substr(pos, end - pos);
-  vector<string>::iterator it = std::find(listCookie.begin(), listCookie.end(), coo);
-
-  if (it != listCookie.end()) {
-    cookie = false;
-  } else if (it == listCookie.end()) {
+  cout << pos << "  " << end <<endl;
+  if (pos > 0) {
+    coo = header.substr(pos, end - pos);
+    vector<string>::const_iterator it = listCookie.begin();
+    while (it != listCookie.end()) {
+      const string tmp = *it;
+      if (!tmp.compare(coo)) {
+        cookie = 0;
+        break;
+      }
+      it++;
+    }
+  }
+  if (cookie) {
+    listCookie.push_back(coo);
     setCookie = generate_random_session_id();
-    listCookie.push_back(setCookie);
   }
   istringstream ss(header);
   map<std::string, std::string> alias;
-	ss >> method >> route;
+  ss >> method >> route;
 	route = replaceAlias(route);
   route = adjustRoute(locationRoot.getRoot(), route);
   if (version != "HTTP/1.1") {

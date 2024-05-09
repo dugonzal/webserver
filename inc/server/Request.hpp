@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 18:31:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/10 01:08:44 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ class Request {
   Response              response;
   CGI                   cgi;
   vector<string>        listCookie;
+
  private:
   map<string, Location> locations;
   Location              locationRoot;
   string                host;
   size_t                port;
-  bool                  cookie;
+  int                   cookie;
   string                setCookie;
 
  private:

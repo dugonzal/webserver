@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 19:11:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/09 21:37:04 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -753,19 +753,13 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   int pos = header.find("Cookie: session_id=") + 19;
   int end = header.find('\n', pos);
   string coo = header.substr(pos, end - pos);
-  for (vector<string>::iterator it = listCookie.begin(); it != listCookie.end(); it++) {
-    cout << *it << endl;
-    if (!it->compare(coo)) {
-      cookie = false;
-      break;
-    }
+  vector<string>::iterator it = std::find(listCookie.begin(), listCookie.end(), coo);
+  if (it != listCookie.end()) {
+    cookie = false;
+  } else if (it == listCookie.end()) {
+    setCookie = generate_random_session_id();
+    listCookie.push_back(setCookie);
   }
-
-  if (cookie == true) {
-   setCookie = generate_random_session_id();
-   listCookie.push_back(setCookie);
-  }
-  cout << setCookie << "  " << cookie << endl;
   std::istringstream ss(header);
   std::map<std::string, std::string> alias;
 

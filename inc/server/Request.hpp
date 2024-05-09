@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 17:15:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:31:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ class Request {
   Logger                logger;
   Response              response;
   CGI                   cgi;
-
+  vector<string>        listCookie;
  private:
   map<string, Location> locations;
   Location              locationRoot;
   string                host;
   size_t                port;
   bool                  cookie;
+  string                setCookie;
 
  private:
   string  method;
@@ -57,7 +58,7 @@ class Request {
   void    setLocation(void);
   void    handlerRequest(void);
   void    parserData(void);
-  void    serverToClient(const string&, size_t, bool);
+  void    serverToClient(const string&, size_t);
 
     // FUNCIONES IKEEEERRRR
   int         checkMethod(const string &_method);

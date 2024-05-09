@@ -6,11 +6,12 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 17:50:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:11:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Request.hpp"
+#include <string>
 
 template <typename T>
 std::string toString( T val ) {
@@ -251,7 +252,7 @@ void Request::getMethod( void )
   {
 		httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
     if (cookie)
-      httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
     httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
     if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
       httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
@@ -272,7 +273,7 @@ void Request::getMethod( void )
 	{
     std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
     if (cookie)
-      httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
     httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
     httpResponse += "Allow: " + allowed_methods + "\r\n";
 		if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
@@ -296,7 +297,7 @@ void Request::getMethod( void )
 			{
         httpResponse = "HTTP/1.1 302 Found\r\n";
         if (cookie)
-          httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
         httpResponse += "Location: " + locationRoot.getReturn().second + "\r\n";
         if (locationRoot.getErrorPages().find(302) != locationRoot.getErrorPages().end()) {
@@ -316,7 +317,7 @@ void Request::getMethod( void )
 
         httpResponse = "HTTP/1.1 301 Moved Permanently\r\n";
         if (cookie)
-          httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
         if (locationRoot.getReturn().second[0] == '/')
           httpResponse += "Location: http://" + host + ":" + toString(port) + locationRoot.getReturn().second + "\r\n";
@@ -335,7 +336,7 @@ void Request::getMethod( void )
 			{
         httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
         if (cookie)
-          httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
         if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
           httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
@@ -368,7 +369,7 @@ void Request::getMethod( void )
         cgi.handlerCgi();
         httpResponse = "HTTP/1.1 200 OK\r\n";
         if (cookie)
-          httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         httpResponse += "Content-Type: " + contentType + "\r\n";
         std::stringstream ss;
         ss << convertHTML(cgi.getCgi()).size();
@@ -387,7 +388,7 @@ void Request::getMethod( void )
           autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
           httpResponse = "HTTP/1.1 200 OK\r\n";
           if (cookie)
-            httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+            httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
           httpResponse += "Content-Type: " + contentType + "\r\n";
           httpResponse += "Content-Length: " + toString(autoindex.size()) + "\r\n";
           httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
@@ -400,7 +401,7 @@ void Request::getMethod( void )
         {
           httpResponse = "HTTP/1.1 404 Not Found\r\n";
           if (cookie)
-            httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+            httpResponse += "Set-Cookie: session_id=" +setCookie + "\r\n";
           if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
             std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
             string filePath = adjustRoute(locationRoot.getRoot(), it->second);
@@ -421,7 +422,7 @@ void Request::getMethod( void )
             {
 				      httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
               if (cookie)
-                httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+                httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
               httpResponse += "Content-Type: " + contentType + "\r\n";
               httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
               httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
@@ -433,7 +434,7 @@ void Request::getMethod( void )
           } else {
 				    httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
             if (cookie)
-              httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+              httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
             httpResponse += "Content-Type: " + contentType + "\r\n";
             httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
             httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
@@ -451,6 +452,8 @@ void Request::getMethod( void )
 				if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))//OJOOO
 				{
           httpResponse = "HTTP/1.1 413 Request Entity Too Large\r\n";
+          if (cookie)
+             httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
           httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
           if (locationRoot.getErrorPages().find(413) != locationRoot.getErrorPages().end()) {
             httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 413, locationRoot.getRoot(), httpResponse);
@@ -468,6 +471,8 @@ void Request::getMethod( void )
 				{
 				  // Respuesta 200 OK
 	    	  httpResponse = "HTTP/1.1 200 OK\r\n";
+          if (cookie)
+            httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
 				  httpResponse += "Content-Type: " + contentType + "\r\n";
 				  httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
           httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
@@ -480,7 +485,7 @@ void Request::getMethod( void )
 			{
         httpResponse = "HTTP/1.1 404 Not Found\r\n";
         if (cookie)
-          httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
           std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
           string filePath = adjustRoute(locationRoot.getRoot(), it->second);
@@ -514,7 +519,7 @@ void Request::getMethod( void )
             {
               httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
               if (cookie)
-                httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+                httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
               httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
               if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
                 httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
@@ -535,7 +540,7 @@ void Request::getMethod( void )
         } else {
 				  httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
           if (cookie)
-            httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+            httpResponse += "Set-Cookie: session_id=" +  setCookie + "\r\n";
           httpResponse += "Content-Type: " + contentType + "\r\n";
           if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
             httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
@@ -563,7 +568,7 @@ void Request::postMethod( void )
   if (!checkMethod("POST")) {
     std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
     if (cookie)
-      httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
     httpResponse += "Allow: " + allowed_methods + "\r\n";
     httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
 	  if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
@@ -592,7 +597,7 @@ void Request::postMethod( void )
         archivo << postBody << std::endl;
         httpResponse = "HTTP/1.1 200 OK\r\n";
         if (cookie)
-          httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
         httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
         httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
@@ -603,7 +608,7 @@ void Request::postMethod( void )
         archivo << postBody << std::endl;
         httpResponse = "HTTP/1.1 201 CREATED\r\n";
         if (cookie)
-          httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
 	      httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
         httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
         httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
@@ -615,7 +620,7 @@ void Request::postMethod( void )
     else {
       httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
       if (cookie)
-        httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+        httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
       httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
       if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
         httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
@@ -639,10 +644,12 @@ void Request::deleteMethod( void )
 {
   string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
 	std::string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+  if (cookie)
+    httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
   if (!checkMethod("DELETE")) {
     std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
     if (cookie)
-      httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
     httpResponse += "Allow: " + allowed_methods + "\r\n";
 	  if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
       httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
@@ -663,7 +670,7 @@ void Request::deleteMethod( void )
     {
 		  httpResponse = "HTTP/1.1 404 Not Found\r\n";
       if (cookie)
-        httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+        httpResponse += "Set-Cookie: session_id=" +setCookie + "\r\n";
       if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
         std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
         string filePath = adjustRoute(locationRoot.getRoot(), it->second);
@@ -698,7 +705,7 @@ void Request::deleteMethod( void )
             httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
             httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
             if (cookie)
-              httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+              httpResponse += "Set-Cookie: session_id=" +setCookie + "\r\n";
             if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
               httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
               send(clientFd, httpResponse.data(), httpResponse.size(), 0);
@@ -720,7 +727,7 @@ void Request::deleteMethod( void )
 	  else
 		  httpResponse = "HTTP/1.1 200 OK\r\n";
       if (cookie)
-        httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+        httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
       httpResponse += "Content-Length: 0\r\n";
       httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
       httpResponse += "\r\n";
@@ -735,14 +742,32 @@ std::string Request::replaceAlias(const std::string& path) {
     return (remplacement);
   return (path);
 }
-void  Request::serverToClient(const string &_header, size_t fd, bool _cookie) {
+
+
+void  Request::serverToClient(const string &_header, size_t fd) {
+  cookie = true;
   header.clear();
   header = _header;
-  cookie = _cookie;
   parserData();
   clientFd = fd;
+  int pos = header.find("Cookie: session_id=") + 19;
+  int end = header.find('\n', pos);
+  string coo = header.substr(pos, end - pos);
+  for (vector<string>::iterator it = listCookie.begin(); it != listCookie.end(); it++) {
+    cout << *it << endl;
+    if (!it->compare(coo)) {
+      cookie = false;
+      break;
+    }
+  }
+
+  if (cookie == true) {
+   setCookie = generate_random_session_id();
+   listCookie.push_back(setCookie);
+  }
+  cout << setCookie << "  " << cookie << endl;
   std::istringstream ss(header);
- std::map<std::string, std::string> alias;
+  std::map<std::string, std::string> alias;
 
 	ss >> method >> route;
 	route = replaceAlias(route);
@@ -751,7 +776,7 @@ void  Request::serverToClient(const string &_header, size_t fd, bool _cookie) {
     std::string httpResponse = "HTTP/1.1 505 HTTP Version Not Supported\r\n";
     httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
     if (cookie)
-      httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
     if (locationRoot.getErrorPages().find(505) != locationRoot.getErrorPages().end()) {
       httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 505, locationRoot.getRoot(), httpResponse);
       send(clientFd, httpResponse.data(), httpResponse.size(), 0);
@@ -776,7 +801,7 @@ void  Request::serverToClient(const string &_header, size_t fd, bool _cookie) {
   {
     std::string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
     if (cookie)
-      httpResponse += "Set-Cookie: session_id=" +generate_random_session_id() + "\r\n";
+      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
     httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
     if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
       httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/08 18:06:15 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:14:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 vector<pollfd>  fds;
 
-ServerManager::ServerManager(void): nServers(0) { }
+ServerManager::ServerManager(void): nServers(0), cookie(false) { }
 
 ServerManager::~ServerManager(void) {
   for (size_t it = 0; it < vServers.size(); it++)
@@ -80,10 +80,12 @@ void  ServerManager::addClient(void) {
         reinterpret_cast<sockaddr *>(&client), &clientLen);
       if (tmp < 0) {
         ::close(tmp);
+        cookie = false;
         break;
       }
       if (fcntl(tmp, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {
         close(tmp);
+        cookie = false;
         break;
       }
       pFd.fd = tmp;
@@ -93,6 +95,7 @@ void  ServerManager::addClient(void) {
       break;
     }
   }
+  cookie = true;
 }
 
 bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
@@ -124,7 +127,7 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
 
   for (size_t i = 0; i < vServers.size(); i++) {
     if (vServers[i]->getHost() == host && vServers[i]->getPort() == port) {
-      vServers[i]->handlerClient(fd, header);
+      vServers[i]->handlerClient(fd, header, cookie);
       break;
     }
   }

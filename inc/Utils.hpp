@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/08 08:33:45 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:20:25 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,5 @@ bool    isDirectory(const string &path);
 bool    isFile(const string &path);
 void    readDirectory(const string &path);
 ifstream  *openFile(const string &fdName);
-std::string convertHTML( const std::vector<string>& cgiOutput );
-
-//template<typename T>
-//string toString(T value);
+string  convertHTML( const vector<string>& cgiOutput );
+string  generate_random_session_id(void); 

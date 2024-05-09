@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/03 17:36:41 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:15:01 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Request {
   Location              locationRoot;
   string                host;
   size_t                port;
+  bool                  cookie;
 
  private:
   string  method;
@@ -56,7 +57,7 @@ class Request {
   void    setLocation(void);
   void    handlerRequest(void);
   void    parserData(void);
-  void    serverToClient(const string&, size_t);
+  void    serverToClient(const string&, size_t, bool);
 
     // FUNCIONES IKEEEERRRR
   int         checkMethod(const string &_method);

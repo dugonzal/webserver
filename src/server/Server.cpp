@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/05 13:23:38 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:12:23 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ void  Server::setLocationRequest(void) {
   request.setLocation(location);
 }
 
-void  Server::handlerClient(size_t fd, const char *header) {
-  request.serverToClient(header, fd);
+void  Server::handlerClient(size_t fd, const char *header, bool cookie) {
+  request.serverToClient(header, fd, cookie);
 }

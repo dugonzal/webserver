@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:55:11 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:12:03 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class Server: public virtual BaseServer {
   ~Server(void);
   Server(const Server&);
   Server  &operator=(const Server&);
-  void    handlerClient(size_t, const char *);
+  void    handlerClient(size_t, const char *, bool);
   void    handlerRequest(const char *);
   void    handlerResponse(size_t);
   void    setLocationRequest(void);

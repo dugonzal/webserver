@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 09:46:20 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/10 10:07:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void  BaseServer::setServerSide(void) {
   assert((serverFd > 2) and (serverFd < 6553));
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
-  std::cout << "Host : " << host.data() << std::endl;
   addr.sin_addr.s_addr = inet_addr(host.data());
 
   if (fcntl(serverFd, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0) {

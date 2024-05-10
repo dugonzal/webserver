@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 17:19:34 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/10 09:41:59 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,16 +123,15 @@ ifstream  *openFile(const string &fdName) {
   return (file);
 }
 
-string convertHTML( const vector<string>& cgiOutput ) {
+string convertHTML(const vector<string>& cgiOutput) {
   string htmlCode;
   htmlCode += "<html><head></head>\n\r<body>\n";
   for (size_t it = 0; it < cgiOutput.size(); it++) {
-    cout << "\r\r<div>" << cgiOutput[it] << "</div>\n" << endl;
     htmlCode += "\r\r<div>" + cgiOutput[it] + "</div>\n";
   }
   htmlCode += "\r</body>\n</html>";
   return htmlCode;
-} 
+}
 
 string generate_random_session_id() {
   stringstream ss;
@@ -140,7 +139,7 @@ string generate_random_session_id() {
   const string alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
   for (int i = 0; i < length; ++i)
-      ss << alphanum[rand() % alphanum.length()]; 
-  
+      ss << alphanum[rand() % alphanum.length()];
+
   return ss.str();
 }

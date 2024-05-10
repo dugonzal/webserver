@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/08 08:34:19 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/10 10:06:47 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ WebServer &WebServer::operator=(const WebServer &copy) {
 }
 
 void  WebServer::setServer(void) {
+  system("clear");
   handlerSetServerWebServer();
   servers.setNServers(nServers);
   servers.setLocations(locations);

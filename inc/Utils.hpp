@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 17:20:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:55:18 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ using std::ostringstream;
 using std::stringstream;
 using std::ios;
 
-extern vector<pollfd> fds;
+extern  vector<pollfd> fds;
+extern  bool flag;
 
 bool    errorFile(ifstream);
 string  trim(const string&);

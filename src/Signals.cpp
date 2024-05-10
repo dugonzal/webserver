@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 19:03:54 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 19:21:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:55:38 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ void Signals::setSignals(int sig) {
         close(it->fd);
     }
     logger.Log("Server conquered! Keep coding, stay safe. 🙂🙂🙂");
-    exit(0);
+    flag = false;
   }
 }

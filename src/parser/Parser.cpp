@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 13:36:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:37:45 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:58:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 Parser::Parser(void) { }
 
-Parser::~Parser(void) { delete [] dataServers; }
+Parser::~Parser(void) {
+  delete [] dataServers;
+}
 
 Parser::Parser(const string &filename): BaseParser(filename) {
   dataServers = new vector<string>[nServers];

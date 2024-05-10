@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/10 01:11:11 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/10 09:34:19 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -730,7 +730,6 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   clientFd = fd;
   int pos = header.find("Cookie: session_id=") + 19;
   int end = header.find('\n', pos);
-  cout << pos << "  " << end <<endl;
   if (pos > 0) {
     coo = header.substr(pos, end - pos);
     vector<string>::const_iterator it = listCookie.begin();

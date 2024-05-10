@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 18:24:36 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/10 09:32:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ void  ServerManager::handlerPoll(void) {
       Signals::setSignals(SIGQUIT);
     }
     addClient();
-    usleep(4242);
     for (size_t i = nServers; i < fds.size(); i++) {
       if (fds[i].revents & POLLIN)
         if (selectServerForClient(fds[i].fd, i))

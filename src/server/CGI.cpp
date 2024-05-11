@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/05 13:18:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:04:42 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ const vector<string>& CGI::getCgi(void) const { return result; }
 
 void  CGI::handlerCgi(void) {
   int tmp;
-  int pid;
+  int pid, sleepPid;
 
   int err = open("cgi.err", O_CREAT | O_TRUNC | O_WRONLY, 0666);
   int out = open("cgi.out", O_CREAT | O_TRUNC | O_WRONLY, 0666);
@@ -57,9 +57,19 @@ void  CGI::handlerCgi(void) {
     return(logger.Log("error open file cgi"));
   }
 
-  pid = fork();
-  if (pid < 0)
+  sleepPid = fork();
+  if (sleepPid < 0)
     return(logger.Log("error fork"));
+  if (!sleepPid) {
+    sleep(4);
+    exit(-1);
+  }
+
+  pid = fork();
+  if (pid < 0) {
+    killProcess(sleepPid);
+    return(logger.Log("error fork"));
+  }
   if (!pid) {
     const char *tmp[3] = { path.data(), fileName.data(), NULL };
 
@@ -70,7 +80,8 @@ void  CGI::handlerCgi(void) {
     }
     exit(-42);
   }
-  if (waitpid(pid, &tmp, 0) < 0) {
+  if (waitpid(0, &tmp, 0) == sleepPid) {
+    killProcess(pid);
     return logger.Log("error waitpid cgi");
   }
   close(out);

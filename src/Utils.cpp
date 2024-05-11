@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 11:26:21 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:00:10 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,4 +142,18 @@ string generate_random_session_id() {
       ss << alphanum[rand() % alphanum.length()];
 
   return ss.str();
+}
+
+void	killProcess( int _pid ) {
+	kill(_pid, SIGTERM);
+
+	bool died = false;
+	for (int loop = 0; !died && loop < 5 /*For example */; ++loop)
+	{
+		int status;
+		sleep(1);
+		if (waitpid(_pid, &status, WNOHANG) == _pid) died = true;
+	}
+
+	if (!died) kill(_pid, SIGKILL);
 }

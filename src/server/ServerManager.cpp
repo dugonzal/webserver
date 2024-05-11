@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 00:56:44 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:06:37 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ void  ServerManager::handlerPoll(void) {
     max = poll(fds.data(), fds.size(), -1);
     if (max < 0) {
       logger.Log("error poll");
-      Signals::setSignals(SIGQUIT);
     }
     addClient();
     for (size_t i = nServers; i < fds.size(); i++) {

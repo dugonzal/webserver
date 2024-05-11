@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/10 09:41:59 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:26:21 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,11 @@ ifstream  *openFile(const string &fdName) {
 
 string convertHTML(const vector<string>& cgiOutput) {
   string htmlCode;
-  htmlCode += "<html><head></head>\n\r<body>\n";
+  htmlCode += "<html>\r<head>\n\r</head>\n\r\r<body>\n";
   for (size_t it = 0; it < cgiOutput.size(); it++) {
-    htmlCode += "\r\r<div>" + cgiOutput[it] + "</div>\n";
+    htmlCode += "\r\r\r<div>" + cgiOutput[it] + "</div>\n";
   }
-  htmlCode += "\r</body>\n</html>";
+  htmlCode += "\r\r</body>\n</html>";
   return htmlCode;
 }
 

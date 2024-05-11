@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/10 09:34:19 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:27:26 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -576,22 +576,56 @@ void Request::postMethod( void )
         if (cookie)
           httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
-        httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	      httpResponse += "\r\n";
-        httpResponse += postBody;
-	      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        if (isCgi) {
+          string tmp;
+          if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
+            tmp = locationRoot.getRoot();
+            tmp.append("/");
+          }
+          cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
+          cgi.handlerCgi();
+          std::stringstream ss;
+          ss << convertHTML(cgi.getCgi()).size();
+          httpResponse += "Content-Length: " + ss.str() + "\r\n";
+          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+          httpResponse += "\r\n";
+          httpResponse += convertHTML(cgi.getCgi());
+          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        }
+        else {
+          httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
+          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+          httpResponse += "\r\n";
+          httpResponse += postBody;
+          send(clientFd, httpResponse.data(), httpResponse.size(), 0); }
       } else {
         archivo << postBody << std::endl;
         httpResponse = "HTTP/1.1 201 CREATED\r\n";
         if (cookie)
           httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
 	      httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
-        httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	      httpResponse += "\r\n";
-        httpResponse += postBody;
-	      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        if (isCgi) {
+          string tmp;
+          if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
+            tmp = locationRoot.getRoot();
+            tmp.append("/");
+          }
+          cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
+          cgi.handlerCgi();
+          std::stringstream ss;
+          ss << convertHTML(cgi.getCgi()).size();
+          httpResponse += "Content-Length: " + ss.str() + "\r\n";
+          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+          httpResponse += "\r\n";
+          httpResponse += convertHTML(cgi.getCgi());
+          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+        }
+        else {
+          httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
+          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+	        httpResponse += "\r\n";
+          httpResponse += postBody;
+	        send(clientFd, httpResponse.data(), httpResponse.size(), 0); }
       }
     }
     else {

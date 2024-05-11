@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 12:00:10 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:52:02 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ string convertHTML(const vector<string>& cgiOutput) {
   return htmlCode;
 }
 
-string generate_random_session_id() {
+string generate_random_session_id(void) {
   stringstream ss;
   int length = 10;
   const string alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

@@ -9,4 +9,5 @@ print("hello world");
 print("hello world");
 print("modificado");
 print("hello world");
-time.sleep(100);
+while (42):
+    time.sleep(100);

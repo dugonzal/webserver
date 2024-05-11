@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 10:52:02 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:55:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ string generate_random_session_id(void) {
   return ss.str();
 }
 
-void	killProcess( int _pid ) {
+void	killProcess(int _pid) {
 	kill(_pid, SIGTERM);
 
 	bool died = false;

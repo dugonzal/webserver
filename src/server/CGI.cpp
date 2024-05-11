@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 12:04:42 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:11:36 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,17 @@ void  CGI::handlerCgi(void) {
     }
     exit(-42);
   }
-  if (waitpid(0, &tmp, 0) == sleepPid) {
+  if (waitpid(0, &tmp, 0 | 1) == sleepPid) {
     killProcess(pid);
+    close(out);
+    close(err);
+    readFd("cgi.out");
+    remove("cgi.err");
     return logger.Log("error waitpid cgi");
   }
   close(out);
   close(err);
+  cout << tmp << endl;
   if (tmp > -1) {
     err = open("cgi.out", O_RDONLY);
     readFd("cgi.out");

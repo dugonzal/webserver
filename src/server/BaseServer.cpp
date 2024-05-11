@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/10 10:07:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:56:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,8 @@ void  BaseServer::setServerSide(void) {
     logger.Log("error: socket bind().");
     throw logic_error("");
   }
-  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) < 0) {
     logger.Log("error: socket SO_REUSEADDR.");
-    throw logic_error("");
-  }
-  if (setsockopt(serverFd, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)) < 0) {
-    logger.Log("error: socket SO_REUSEPORT.");
     throw logic_error("");
   }
   if (bind(serverFd, reinterpret_cast<sockaddr *>(&addr), addrLen) < 0) {

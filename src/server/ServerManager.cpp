@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 12:06:37 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:12:00 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/ServerManager.hpp"
 
-bool            flag;
 vector<pollfd>  fds;
 
 ServerManager::ServerManager(void): nServers(0) { }
@@ -134,11 +133,10 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
 
 void  ServerManager::handlerPoll(void) {
   int max = 1024;
-  flag = true;
 
   initPoll();
   logger.Log("|--Inicio de servidor--|");
-  while (flag) {
+  while (42) {
     max = poll(fds.data(), fds.size(), -1);
     if (max < 0) {
       logger.Log("error poll");

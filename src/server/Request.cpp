@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/14 10:00:14 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:48:01 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,9 +333,12 @@ void Request::getMethod( void )
 		{
       std::stringstream totalPath;
       totalPath << locationRoot.getRoot() << route;
+      //totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
+      //std::cout << "Total Path : " << totalPath.str() << std::endl;
       std::ifstream archivo(totalPath.str().c_str());
 			std::ostringstream oss;
       std::string directoryPath = locationRoot.getRoot() + route;
+      //std::cout << "Directory Path : " << directoryPath << std::endl;
       if (isCgi) {
         string tmp;
         if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
@@ -763,10 +766,10 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   parserData();
   clientFd = fd;
   size_t pos = header.find("session_id=");
-  size_t end = header.find('\n', pos + 11);
-  if (pos != string::npos) {
-    pos += 11;
-    coo = header.substr(pos, end - pos - 1);
+  size_t end = pos + 10 + 11;
+  while (pos != string::npos && header[end]) {
+    pos += 11; // Go to the end of the string
+    coo = header.substr(pos, end - pos);
     vector<string>::const_iterator it = listCookie.begin();
     while (it != listCookie.end()) {
       string tmp = *it;
@@ -776,6 +779,8 @@ void  Request::serverToClient(const string &_header, size_t fd) {
       }
       it++;
     }
+    pos = header.find("session_id=", end);
+    end = pos + 10 + 11;
   }
   if (cookie) {
     setCookie = generate_random_session_id();

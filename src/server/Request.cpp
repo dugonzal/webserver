@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/14 10:48:01 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:28:19 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,13 +332,20 @@ void Request::getMethod( void )
 		else
 		{
       std::stringstream totalPath;
-      totalPath << locationRoot.getRoot() << route;
+      std::string directoryPath;
+      if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) { 
+        totalPath << locationRoot.getRoot() << route;
+        directoryPath = locationRoot.getRoot() + route;
+      }
+      else { /* Inserts index */
+        if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
+          route.append("/");
+        totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
+        directoryPath = locationRoot.getRoot() + route + locationRoot.getIndex();
+      }
       //totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
-      //std::cout << "Total Path : " << totalPath.str() << std::endl;
       std::ifstream archivo(totalPath.str().c_str());
 			std::ostringstream oss;
-      std::string directoryPath = locationRoot.getRoot() + route;
-      //std::cout << "Directory Path : " << directoryPath << std::endl;
       if (isCgi) {
         string tmp;
         if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {

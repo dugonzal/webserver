@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 11:11:36 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:26:24 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void  CGI::handlerCgi(void) {
     return(logger.Log("error fork"));
   if (!sleepPid) {
     sleep(4);
-    exit(-1);
+    exit(-42);
   }
 
   pid = fork();
@@ -90,7 +90,7 @@ void  CGI::handlerCgi(void) {
   }
   close(out);
   close(err);
-  cout << tmp << endl;
+  cout << "Exit Code : " << tmp << endl;
   if (tmp > -1) {
     err = open("cgi.out", O_RDONLY);
     readFd("cgi.out");

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 11:27:26 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:00:14 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -762,13 +762,14 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   cookie = 1;
   parserData();
   clientFd = fd;
-  int pos = header.find("Cookie: session_id=") + 19;
-  int end = header.find('\n', pos);
-  if (pos > 0) {
-    coo = header.substr(pos, end - pos);
+  size_t pos = header.find("session_id=");
+  size_t end = header.find('\n', pos + 11);
+  if (pos != string::npos) {
+    pos += 11;
+    coo = header.substr(pos, end - pos - 1);
     vector<string>::const_iterator it = listCookie.begin();
     while (it != listCookie.end()) {
-      const string tmp = *it;
+      string tmp = *it;
       if (!tmp.compare(coo)) {
         cookie = 0;
         break;
@@ -777,8 +778,8 @@ void  Request::serverToClient(const string &_header, size_t fd) {
     }
   }
   if (cookie) {
-    listCookie.push_back(coo);
     setCookie = generate_random_session_id();
+    listCookie.push_back(setCookie);
   }
   istringstream ss(header);
   map<std::string, std::string> alias;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 18:47:19 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/15 23:26:41 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ class Request {
   void    parserData(void);
   void    serverToClient(const string&, size_t);
 
+  const string  resHttp302(void);  
   void    resHttp500( bool checkErrorPages );
   void    resHttpCGI( const std::string& contentType );
 

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 23:15:01 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/15 23:28:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,25 +251,7 @@ void Request::getMethod( void )
 		if (!locationRoot.getReturn().second.empty())
 		{
 			if (isAbsolutePath(locationRoot.getReturn().second))
-			{
-        httpResponse = "HTTP/1.1 302 Found\r\n";
-        if (cookie)
-          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-        httpResponse += "Location: " + locationRoot.getReturn().second + "\r\n";
-        if (locationRoot.getErrorPages().find(302) != locationRoot.getErrorPages().end()) {
-          httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 302, locationRoot.getRoot(), httpResponse);
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        } else {
-          // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-          httpResponse += "Content-Type: text/html\r\n";
-          httpResponse += "Content-Length: 0\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-          httpResponse += "\r\n";
-          //Response::sendResponse(httpResponse, clientFd);
-          response.sendResponse(httpResponse, clientFd);
-        }
-			}
+        Response::sendResponse(resHttp302(), clientFd);
 			else if (!locationRoot.getReturn().second.empty() && route != locationRoot.getReturn().second)
 			{
 
@@ -716,5 +698,27 @@ void  Request::serverToClient(const string &_header, size_t fd) {
       httpResponse.push_back('\0');
       send(clientFd, httpResponse.data(), httpResponse.size(), 0);
     }
+  }
+}
+
+const string  Request::resHttp302(void) {
+  string httpResponse = "HTTP/1.1 302 Found\r\n";
+  if (cookie)
+    httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+  httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+  httpResponse += "Location: " + locationRoot.getReturn().second + "\r\n";
+  if (locationRoot.getErrorPages().find(302) != locationRoot.getErrorPages().end()) {
+    httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 302, locationRoot.getRoot(), httpResponse);
+    return (httpResponse);
+  //send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+  } else {
+  // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
+  httpResponse += "Content-Type: text/html\r\n";
+  httpResponse += "Content-Length: 0\r\n";
+  httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+  httpResponse += "\r\n";
+  //Response::sendResponse(httpResponse, clientFd);
+  //response.sendResponse(httpResponse, clientFd);
+  return (httpResponse);
   }
 }

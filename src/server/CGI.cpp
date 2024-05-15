@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/14 11:26:24 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:42:15 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,61 +47,65 @@ void  CGI::readFd(const string &fd) {
 const vector<string>& CGI::getCgi(void) const { return result; }
 
 void  CGI::handlerCgi(void) {
-  int tmp;
-  int pid, sleepPid;
+	int retCode;
+	int pid, sleepPid;
 
-  int err = open("cgi.err", O_CREAT | O_TRUNC | O_WRONLY, 0666);
-  int out = open("cgi.out", O_CREAT | O_TRUNC | O_WRONLY, 0666);
-  result.clear();
-  if (err < 0 || out < 0) {
-    return(logger.Log("error open file cgi"));
-  }
+	int err = open("cgi.err", O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	int out = open("cgi.out", O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	result.clear();
+	if (err < 0 || out < 0) {
+		return(logger.Log("error open file cgi"));
+	}
 
-  sleepPid = fork();
-  if (sleepPid < 0)
-    return(logger.Log("error fork"));
-  if (!sleepPid) {
-    sleep(4);
-    exit(-42);
-  }
+	sleepPid = fork();
+	if (sleepPid < 0)
+		return(logger.Log("error fork"));
+	if (!sleepPid) {
+		sleep(4);
+		exit(-42);
+	}
 
-  pid = fork();
-  if (pid < 0) {
-    killProcess(sleepPid);
-    return(logger.Log("error fork"));
-  }
-  if (!pid) {
-    const char *tmp[3] = { path.data(), fileName.data(), NULL };
+	pid = fork();
+	if (pid < 0) {
+		killProcess(sleepPid);
+		return(logger.Log("error fork"));
+	}
+	if (!pid) {
+		const char *tmp[3] = { path.data(), fileName.data(), NULL };
 
-    if (dup2(out, STDOUT_FILENO) < 0 || dup2(out, STDERR_FILENO) < 0)
-      exit(EXIT_FAILURE);
-    if (execve(*tmp, (char *const *)(tmp), NULL) == -1) {
-        logger.Log("error cgi -42");
-    }
-    exit(-42);
-  }
-  if (waitpid(0, &tmp, 0 | 1) == sleepPid) {
-    killProcess(pid);
-    close(out);
-    close(err);
-    readFd("cgi.out");
-    remove("cgi.err");
-    return logger.Log("error waitpid cgi");
-  }
-  close(out);
-  close(err);
-  cout << "Exit Code : " << tmp << endl;
-  if (tmp > -1) {
-    err = open("cgi.out", O_RDONLY);
-    readFd("cgi.out");
-    close(out);
-    remove("cgi.err");
-  } else {
-    err = open("cgi.err", O_RDONLY);
-    readFd("cgi.err");
-    remove("cgi.out");
-    close(err);
-  }
+		if (dup2(out, STDOUT_FILENO) < 0 || dup2(out, STDERR_FILENO) < 0)
+			exit(EXIT_FAILURE);
+		if (execve(*tmp, (char *const *)(tmp), NULL) == -1) {
+			logger.Log("error cgi -42");
+		}
+		exit(-42);
+	}
+	if (waitpid(0, &retCode, 0) == sleepPid) {
+		killProcess(pid);
+		close(out);
+		close(err);
+		readFd("cgi.out");
+		remove("cgi.err");
+		result.push_back("<h1>error: CGI: timeout</h1>");
+		return logger.Log("error waitpid cgi");
+	}
+	killProcess(sleepPid);
+	close(out);
+	close(err);
+	int ret = WEXITSTATUS(retCode);
+	if (WIFEXITED(retCode) && ret > -1) {
+		err = open("cgi.out", O_RDONLY);
+		readFd("cgi.out");
+		close(out);
+		remove("cgi.err");
+		remove("cgi.out");
+	} else {
+		err = open("cgi.err", O_RDONLY);
+		readFd("cgi.err");
+		remove("cgi.out");
+		close(err);
+		remove("cgi.err");
+	}
 }
 
 void CGI::clear(void) {

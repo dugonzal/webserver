@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 23:07:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/15 23:15:01 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,12 +192,11 @@ string generate_autoindex(const string& directoryPath, string autoindex, string 
     return autoindex;
 }
 
-
-
 string personalizeErrorPage(map<size_t, string> errorPages, size_t errorCode, const string rootPath, string httpResponse)
 {
   string filePath = adjustRoute(rootPath, errorPages[errorCode]).c_str();
   stringstream totalPath;
+  
   totalPath << rootPath << filePath;
   ifstream archivo(totalPath.str().c_str());
   if (archivo.is_open()) {
@@ -267,7 +266,8 @@ void Request::getMethod( void )
           httpResponse += "Content-Length: 0\r\n";
           httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
           httpResponse += "\r\n";
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+          //Response::sendResponse(httpResponse, clientFd);
+          response.sendResponse(httpResponse, clientFd);
         }
 			}
 			else if (!locationRoot.getReturn().second.empty() && route != locationRoot.getReturn().second)

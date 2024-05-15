@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 18:47:19 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/15 23:28:06 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@
 # include "../Utils.hpp"
 # include "Response.hpp"
 # include "CGI.hpp"
+
+# define OK 200
+# define CREATED 201
+# define MOVED 301
+# define FOUND 302
+# define NOT_FOUND 404
+# define METHOD_NOT_ALLOWED 405
+# define ENTITY_TOO_LARGE 413
+# define VERSION_NOT_SUPPORTED 505
 
 class Response;
 
@@ -44,7 +53,6 @@ class Request {
 
   ///PRIVATE IKEEEER
   int     clientFd;
-  string  autoDirectory;
 
  public:
   Request(void);
@@ -63,6 +71,7 @@ class Request {
 
   void    resHttp500( bool checkErrorPages );
   void    resHttpCGI( const std::string& contentType );
+  void    restHttpCustom( int httpCode,const std::string& contentType, const std::string& body );
 
     // FUNCIONES IKEEEERRRR
   int         checkMethod(const string &_method);

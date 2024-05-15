@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/25 20:36:03 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:48:44 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,9 +203,6 @@ size_t  BaseParser::serverError(size_t i) {
         logger.LogThrow("server dentro de server");
     } else if (!firstWord(data[i]).compare("include")) {
       logger.LogThrow("include circular");
-    } else if (!firstWord(data[i]).compare("cgi_path") \
-      || !firstWord(data[i]).compare("index")) {
-        logger.LogThrow("defined in global scope ",  data[i].data());
     } else if (data[i].find("location") != string::npos \
       && data[i].find("{") != string::npos) {
         i = skipLocation(i);

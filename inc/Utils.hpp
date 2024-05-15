@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 12:11:22 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:11:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ using std::ostringstream;
 using std::stringstream;
 using std::ios;
 
-extern vector<pollfd> fds;
+extern  vector<pollfd> fds;
 
 bool    errorFile(ifstream);
 string  trim(const string&);
@@ -90,7 +90,6 @@ bool    isDirectory(const string &path);
 bool    isFile(const string &path);
 void    readDirectory(const string &path);
 ifstream  *openFile(const string &fdName);
-std::string convertHTML( const std::vector<string>& cgiOutput );
-
-//template<typename T>
-//string toString(T value);
+string  convertHTML( const vector<string>& cgiOutput );
+string  generate_random_session_id(void);
+void	killProcess( int _pid );

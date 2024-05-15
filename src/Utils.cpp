@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/05 13:16:17 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:55:29 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,21 +123,37 @@ ifstream  *openFile(const string &fdName) {
   return (file);
 }
 
-std::string convertHTML( const std::vector<string>& cgiOutput ) {
-  std::string htmlCode;
-  htmlCode += "<html><head></head>\n\r<body>\n";
+string convertHTML(const vector<string>& cgiOutput) {
+  string htmlCode;
+  htmlCode += "<html>\r<head>\n\r</head>\n\r\r<body>\n";
   for (size_t it = 0; it < cgiOutput.size(); it++) {
-    std::cout << "\r\r<div>" << cgiOutput[it] << "</div>\n" << std::endl;
-    htmlCode += "\r\r<div>" + cgiOutput[it] + "</div>\n";
+    htmlCode += "\r\r\r<div>" + cgiOutput[it] + "</div>\n";
   }
-  htmlCode += "\r</body>\n</html>";
+  htmlCode += "\r\r</body>\n</html>";
   return htmlCode;
-} 
+}
 
-/*
-template<class T>
-string toString(const T& value) {
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
-}*/
+string generate_random_session_id(void) {
+  stringstream ss;
+  int length = 10;
+  const string alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+  for (int i = 0; i < length; ++i)
+      ss << alphanum[rand() % alphanum.length()];
+
+  return ss.str();
+}
+
+void	killProcess(int _pid) {
+	kill(_pid, SIGTERM);
+
+	bool died = false;
+	for (int loop = 0; !died && loop < 5 /*For example */; ++loop)
+	{
+		int status;
+		sleep(1);
+		if (waitpid(_pid, &status, WNOHANG) == _pid) died = true;
+	}
+
+	if (!died) kill(_pid, SIGKILL);
+}

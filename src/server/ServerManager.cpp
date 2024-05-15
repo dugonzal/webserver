@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/08 18:06:15 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/11 18:01:18 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,16 +133,15 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
 
 void  ServerManager::handlerPoll(void) {
   int max = 1024;
+
   initPoll();
   logger.Log("|--Inicio de servidor--|");
   while (42) {
     max = poll(fds.data(), fds.size(), -1);
     if (max < 0) {
       logger.Log("error poll");
-      Signals::setSignals(SIGQUIT);
     }
     addClient();
-    usleep(4242);
     for (size_t i = nServers; i < fds.size(); i++) {
       if (fds[i].revents & POLLIN)
         if (selectServerForClient(fds[i].fd, i))

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/14 11:28:19 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:36:15 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,50 +220,31 @@ std::string personalizeErrorPage(std::map<size_t, std::string> errorPages, size_
 
 void Request::getMethod( void )
 {
-  std::string contentType = checkContentType(route);
+	std::string contentType = checkContentType(route);
 	std::string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
 	std::string httpResponse;
-  size_t bodyStart = header.find("\r\n\r\n");
+	size_t bodyStart = header.find("\r\n\r\n");
 	std::string postBody = header.substr(bodyStart + 4);
-  if (!postBody.empty())
-  {
-		httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-    if (cookie)
-      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-    httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-    if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-      httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    }
-    else
-    {
-      // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-      httpResponse += "Content-Type: text/html\r\n";
-      httpResponse += "Content-Length: 0\r\n";
-      httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-      httpResponse += "\r\n";
-      httpResponse.push_back('\0');
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    }
-  }
+	if (!postBody.empty()) /* Return 500 if any body is given */
+    	resHttp500(true);
 	else if (!checkMethod("GET"))
 	{
-    std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
-    if (cookie)
-      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-    httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-    httpResponse += "Allow: " + allowed_methods + "\r\n";
+		std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
+		if (cookie)
+			httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+		httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+		httpResponse += "Allow: " + allowed_methods + "\r\n";
 		if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
-      httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    } else {
-      // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-      httpResponse += "Content-Type: text/html\r\n";
-      httpResponse += "Content-Length: 0\r\n";
-      httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-      httpResponse += "\r\n";
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    }
+			httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
+			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		} else {
+			// Si no hay una página de error definida, responder con el código de estado 405 predeterminado
+			httpResponse += "Content-Type: text/html\r\n";
+			httpResponse += "Content-Length: 0\r\n";
+			httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+			httpResponse += "\r\n";
+			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		}
 	}
 	else
 	{
@@ -310,24 +291,7 @@ void Request::getMethod( void )
         }
 			}
 			else
-			{
-        httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-        if (cookie)
-          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-        if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-          httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        } else {
-          // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-          httpResponse += "Content-Type: text/html\r\n";
-          httpResponse += "Content-Length: 0\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-          httpResponse += "\r\n";
-          httpResponse.push_back('\0');
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        }
-			}
+        resHttp500(true);
 	  }
 		else
 		{
@@ -343,94 +307,57 @@ void Request::getMethod( void )
         totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
         directoryPath = locationRoot.getRoot() + route + locationRoot.getIndex();
       }
-      //totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
-      std::ifstream archivo(totalPath.str().c_str());
-			std::ostringstream oss;
-      if (isCgi) {
-        string tmp;
-        if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
-          tmp = locationRoot.getRoot();
-          tmp.append("/");
-        }
-        cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
-        cgi.handlerCgi();
-        httpResponse = "HTTP/1.1 200 OK\r\n";
-        if (cookie)
-          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-        httpResponse += "Content-Type: " + contentType + "\r\n";
-        std::stringstream ss;
-        ss << convertHTML(cgi.getCgi()).size();
-        httpResponse += "Content-Length: " + ss.str() + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-        httpResponse += "\r\n";
-        httpResponse += convertHTML(cgi.getCgi());
-        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      }
-			else if (isDirectory(directoryPath)) {
-        if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1)
-        {
-          std::string autoindex;
-          if (route == "/")
-            route = "";
-          autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
-          httpResponse = "HTTP/1.1 200 OK\r\n";
-          if (cookie)
-            httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-          httpResponse += "Content-Type: " + contentType + "\r\n";
-          httpResponse += "Content-Length: " + toString(autoindex.size()) + "\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-          httpResponse += "\r\n";
-          httpResponse += autoindex;
-          autoDirectory = route;
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        }
-        else
-        {
-          httpResponse = "HTTP/1.1 404 Not Found\r\n";
-          if (cookie)
-            httpResponse += "Set-Cookie: session_id=" +setCookie + "\r\n";
-          if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
-            std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
-            string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-            std::stringstream totalPath;
-            totalPath << locationRoot.getRoot() << filePath;
-            std::ifstream archivo(totalPath.str().c_str());
-            if (archivo.is_open()) {
-              std::ostringstream oss;
-              oss << archivo.rdbuf();
-              httpResponse += "Content-Type: " + checkContentType(it->second) + "\r\n";
-              httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
-              httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-              httpResponse += "\r\n";
-              httpResponse += oss.str();
-              send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-            }
-            else
-            {
-				      httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-              if (cookie)
-                httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-              httpResponse += "Content-Type: " + contentType + "\r\n";
-              httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
-              httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-              httpResponse += "\r\n";
-              // Asegúrate de agregar un carácter nulo al final de la cadena
-              httpResponse.push_back('\0');
-				      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-			      }
-          } else {
-				    httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-            if (cookie)
-              httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-            httpResponse += "Content-Type: " + contentType + "\r\n";
-            httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
-            httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-            httpResponse += "\r\n";
-            // Asegúrate de agregar un carácter nulo al final de la cadena
-            httpResponse.push_back('\0');
-				    send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-          }
-        }
+      //totalPath << locationRoot.getRoot() << route; Old ones
+	  //directoryPath = locationRoot.getRoot() + route;
+      	std::ifstream archivo(totalPath.str().c_str());
+		std::ostringstream oss;
+		if (isCgi)
+        	resHttpCGI(contentType);
+		else if (isDirectory(directoryPath)) {
+			if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) /* Autoindex on / Non-defined */
+			{
+				std::string autoindex;
+				if (route == "/")
+					route = "";
+				autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
+				httpResponse = "HTTP/1.1 200 OK\r\n";
+				if (cookie)
+					httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+				httpResponse += "Content-Type: " + contentType + "\r\n";
+				httpResponse += "Content-Length: " + toString(autoindex.size()) + "\r\n";
+				httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+				httpResponse += "\r\n";
+				httpResponse += autoindex;
+				autoDirectory = route;
+				send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+			}
+			else /* Autoindex manually off */
+			{
+				httpResponse = "HTTP/1.1 404 Not Found\r\n";
+				if (cookie)
+				httpResponse += "Set-Cookie: session_id=" +setCookie + "\r\n";
+				if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
+					std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
+					string filePath = adjustRoute(locationRoot.getRoot(), it->second);
+					std::stringstream totalPath;
+					totalPath << locationRoot.getRoot() << filePath;
+					std::ifstream archivo(totalPath.str().c_str());
+					if (archivo.is_open()) {
+						std::ostringstream oss;
+						oss << archivo.rdbuf();
+						httpResponse += "Content-Type: " + checkContentType(it->second) + "\r\n";
+						httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
+						httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+						httpResponse += "\r\n";
+						httpResponse += oss.str();
+						send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+					}
+					else /* File could not be opened */
+						resHttp500(false);
+				}
+				else /* There are no error pages associated with 404 code */
+					resHttp500(false);
+			}
       } else if (archivo.is_open()){
 				oss << archivo.rdbuf();
 				std::string httpResponse;
@@ -503,45 +430,10 @@ void Request::getMethod( void )
               send(clientFd, httpResponse.data(), httpResponse.size(), 0);
             }
             else
-            {
-              httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-              if (cookie)
-                httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-              httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-              if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-                httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
-                send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-              }
-              else
-              {
-                // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-                httpResponse += "Content-Type: text/html\r\n";
-                httpResponse += "Content-Length: 0\r\n";
-                httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-                httpResponse += "\r\n";
-                httpResponse.push_back('\0');
-                send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-              }
-            }
+              resHttp500(true);
           }
         } else {
-				  httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-          if (cookie)
-            httpResponse += "Set-Cookie: session_id=" +  setCookie + "\r\n";
-          httpResponse += "Content-Type: " + contentType + "\r\n";
-          if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-            httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
-            send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-          }
-          else
-          {
-            // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-            httpResponse += "Content-Type: text/html\r\n";
-            httpResponse += "Content-Length: 0\r\n";
-            httpResponse += "\r\n";
-            httpResponse.push_back('\0');
-            send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-          }
+				  resHttp500(true);
         }
       }
     }
@@ -551,113 +443,71 @@ void Request::getMethod( void )
 void Request::postMethod( void )
 {
 	std::string httpResponse;
+	std::string contentType = checkContentType(route);
 	std::string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
-  if (!checkMethod("POST")) {
-    std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
-    if (cookie)
-      httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-    httpResponse += "Allow: " + allowed_methods + "\r\n";
-    httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	  if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
-      httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    } else {
-      // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-      httpResponse += "Content-Type: text/html\r\n";
-      httpResponse += "Content-Length: 0\r\n";
-      httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-      httpResponse += "\r\n";
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    }
-  }
-  else
-  {
-	  std::string msgString(header);
-	  size_t bodyStart = msgString.find("\r\n\r\n");
-	  std::string postBody = msgString.substr(bodyStart + 4);
-	  std::ifstream verificarArchivo((locationRoot.getRoot() + route).c_str());
-  	bool archivoExiste = verificarArchivo.good();
-  	verificarArchivo.close();
-	  std::ofstream archivo((locationRoot.getRoot() + route).c_str(), std::ios::app);
-	  if (archivo.is_open()) {
-      if (archivoExiste) {
-        archivo << postBody << std::endl;
-        httpResponse = "HTTP/1.1 200 OK\r\n";
-        if (cookie)
-          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-        httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
-        if (isCgi) {
-          string tmp;
-          if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
-            tmp = locationRoot.getRoot();
-            tmp.append("/");
-          }
-          cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
-          cgi.handlerCgi();
-          std::stringstream ss;
-          ss << convertHTML(cgi.getCgi()).size();
-          httpResponse += "Content-Length: " + ss.str() + "\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-          httpResponse += "\r\n";
-          httpResponse += convertHTML(cgi.getCgi());
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        }
-        else {
-          httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-          httpResponse += "\r\n";
-          httpResponse += postBody;
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0); }
-      } else {
-        archivo << postBody << std::endl;
-        httpResponse = "HTTP/1.1 201 CREATED\r\n";
-        if (cookie)
-          httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-	      httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
-        if (isCgi) {
-          string tmp;
-          if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
-            tmp = locationRoot.getRoot();
-            tmp.append("/");
-          }
-          cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
-          cgi.handlerCgi();
-          std::stringstream ss;
-          ss << convertHTML(cgi.getCgi()).size();
-          httpResponse += "Content-Length: " + ss.str() + "\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-          httpResponse += "\r\n";
-          httpResponse += convertHTML(cgi.getCgi());
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        }
-        else {
-          httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	        httpResponse += "\r\n";
-          httpResponse += postBody;
-	        send(clientFd, httpResponse.data(), httpResponse.size(), 0); }
-      }
-    }
-    else {
-      httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-      if (cookie)
-        httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-      httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-      if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-        httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
-        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      }
-      else
-      {
-        // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-        httpResponse += "Content-Type: text/html\r\n";
-        httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	      httpResponse += "\r\n";
-        httpResponse += postBody;
-        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      }
-	  }
+	if (!checkMethod("POST")) {
+		std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
+		if (cookie)
+			httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+		httpResponse += "Allow: " + allowed_methods + "\r\n";
+		httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+		if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
+			httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
+			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		} else {
+			// Si no hay una página de error definida, responder con el código de estado 405 predeterminado
+			httpResponse += "Content-Type: text/html\r\n";
+			httpResponse += "Content-Length: 0\r\n";
+			httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+			httpResponse += "\r\n";
+			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		}
+	}
+	else
+	{
+		std::string msgString(header);
+		size_t bodyStart = msgString.find("\r\n\r\n");
+		std::string postBody = msgString.substr(bodyStart + 4);
+		std::ifstream verificarArchivo((locationRoot.getRoot() + route).c_str());
+		bool archivoExiste = verificarArchivo.good();
+		verificarArchivo.close();
+		std::ofstream archivo((locationRoot.getRoot() + route).c_str(), std::ios::app);
+		if (archivo.is_open()) {
+			if (archivoExiste) {
+				if (isCgi)
+					resHttpCGI( contentType );
+				else
+				{
+					httpResponse = "HTTP/1.1 200 OK\r\n";
+					if (cookie)
+						httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+					httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
+					httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
+					httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+					httpResponse += "\r\n";
+					httpResponse += postBody;
+					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+				}
+			}
+			else
+			{
+				if (isCgi)
+					resHttpCGI( contentType );
+				else {
+					httpResponse = "HTTP/1.1 201 CREATED\r\n";
+					if (cookie)
+						httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+					httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
+					httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
+					httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+					httpResponse += "\r\n";
+					httpResponse += postBody;
+					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+				}
+			}
+		}
+		else
+		resHttp500(true);
 	}
 }
 
@@ -722,26 +572,7 @@ void Request::deleteMethod( void )
             send(clientFd, httpResponse.data(), httpResponse.size(), 0);
           }
           else
-          {
-            httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-            httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-            if (cookie)
-              httpResponse += "Set-Cookie: session_id=" +setCookie + "\r\n";
-            if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-              httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
-              send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-            }
-            else
-            {
-              // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-              httpResponse += "Content-Type: text/html\r\n";
-              httpResponse += "Content-Length: 0\r\n";
-              httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-              httpResponse += "\r\n";
-              httpResponse.push_back('\0');
-              send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-            }
-          }
+            resHttp500(true);
         }
       }
     }
@@ -756,6 +587,48 @@ void Request::deleteMethod( void )
   }
 }
 
+void  Request::resHttpCGI( const std::string& contentType ) {
+	string httpResponse;
+  httpResponse.clear();
+	string tmp;
+	if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
+		tmp = locationRoot.getRoot();
+		tmp.append("/");
+	}
+	cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
+	cgi.handlerCgi();
+	httpResponse = "HTTP/1.1 200 OK\r\n";
+	if (cookie)
+		httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+	httpResponse += "Content-Type: " + contentType + "\r\n";
+	std::stringstream ss;
+	ss << convertHTML(cgi.getCgi()).size();
+	httpResponse += "Content-Length: " + ss.str() + "\r\n";
+	httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+	httpResponse += "\r\n";
+	httpResponse += convertHTML(cgi.getCgi());
+	send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+}
+
+void  Request::resHttp500( bool checkErrorPages ) {
+	std::string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+	if (cookie)
+		httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+	if ( checkErrorPages && locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
+		httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
+		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	}
+	else
+	{
+		// Si no hay una página de error definida, responder con el código de estado 405 predeterminado
+		httpResponse += "Content-Type: text/html\r\n";
+		httpResponse += "Content-Length: 0\r\n";
+		httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+		httpResponse += "\r\n";
+		httpResponse.push_back('\0');
+		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+	}
+}
 
 std::string Request::replaceAlias(const std::string& path) {
   string remplacement = locationRoot.getAlias();

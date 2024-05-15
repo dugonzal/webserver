@@ -6,13 +6,14 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/08 08:24:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:36:15 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../inc/server/Request.hpp"
+
 template <typename T>
-std::string toString( T val ) {
+std::string toString(T val) {
   std::stringstream oss;
   oss << val;
   return oss.str();
@@ -40,9 +41,7 @@ static std::string adjustRoute(const std::string &locationRoot, std::string &rou
   while ((pos = route.find("//", pos)) != std::string::npos) {
       route.replace(pos, 2, "/");
   }
-  // Verificar si locationRoot termina en "/" y route comienza con "/"
   if (!locationRoot.empty() && *locationRoot.end() == '/' && !route.empty() && *route.begin() == '/') {
-      // Eliminar la barra diagonal de inicio de route
       route.erase(0, 1);
   }
   return route;
@@ -181,12 +180,11 @@ std::string generate_autoindex(const std::string& directoryPath, string autoinde
     while ((entry = readdir(dir)) != NULL) {
       if (!route.empty()) {
         if (*route.begin() == '/')
-          autoindex += "<li><a href=\"" "http://" + host + ":" +std::to_string(port) + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
+          autoindex += "<li><a href=\"" "http://" + host + ":" +toString(port) + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + toString(locationRoot.getPort()) + "/" + location[route] + "\r\n";
         else
-          autoindex += "<li><a href=\"" "http://" + host + ":" +std::to_string(port) + "/" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + std::to_string(locationRoot.getPort()) + "/" + location[route] + "\r\n";
+          autoindex += "<li><a href=\"" "http://" + host + ":" +toString(port) + "/" + route + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + toString(locationRoot.getPort()) + "/" + location[route] + "\r\n";
       } else
         autoindex += "<li><a href=\"" "http://" + host + ":" +toString(port) + "/" + std::string(entry->d_name) + "\">" + std::string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + toString(locationRoot.getPort()) + "/" + location[route] + "\r\n";
-
     }
     autoindex += "</ul><hr></body></html>\n";
     // Cierra el directorio
@@ -199,13 +197,15 @@ std::string generate_autoindex(const std::string& directoryPath, string autoinde
 std::string personalizeErrorPage(std::map<size_t, std::string> errorPages, size_t errorCode, const std::string rootPath, string httpResponse)
 {
   string filePath = adjustRoute(rootPath, errorPages[errorCode]).c_str();
-  std::ifstream archivo(rootPath + filePath);
+  std::stringstream totalPath;
+  totalPath << rootPath << filePath;
+  std::ifstream archivo(totalPath.str().c_str());
   if (archivo.is_open()) {
     std::ostringstream oss;
     oss << archivo.rdbuf();
 
     httpResponse += "Content-Type: " + checkContentType(errorPages[errorCode].c_str()) + "\r\n";
-    httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+    httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
     httpResponse += "\r\n";
     httpResponse += oss.str();
   }
@@ -278,9 +278,9 @@ void Request::getMethod( void )
           httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
         httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
         if (locationRoot.getReturn().second[0] == '/')
-          httpResponse += "Location: http://" + host + ":" + std::to_string(port) + locationRoot.getReturn().second + "\r\n";
+          httpResponse += "Location: http://" + host + ":" + toString(port) + locationRoot.getReturn().second + "\r\n";
         else
-    		  httpResponse += "Location: http://" + host + ":" + std::to_string(port) + "/" + locationRoot.getReturn().second + "\r\n";
+    		  httpResponse += "Location: http://" + host + ":" + toString(port) + "/" + locationRoot.getReturn().second + "\r\n";
         if (locationRoot.getErrorPages().find(301) != locationRoot.getErrorPages().end()) {
           httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 301, locationRoot.getRoot(), httpResponse);
           send(clientFd, httpResponse.data(), httpResponse.size(), 0);
@@ -296,86 +296,68 @@ void Request::getMethod( void )
 		else
 		{
       std::stringstream totalPath;
-      totalPath << locationRoot.getRoot() << route;
-      std::ifstream archivo(totalPath.str().c_str());
-			std::ostringstream oss;
-      std::string directoryPath = locationRoot.getRoot() + route;
-      if (isCgi) {
-        string tmp;
-        if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
-          tmp = locationRoot.getRoot();
-          tmp.append("/");
-        }
-        cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
-        cgi.handlerCgi();
-        logger.Log("hay que lanzar cgi para esta location");
-        httpResponse = "HTTP/1.1 200 OK\r\n";
-        httpResponse += "Content-Type: " + contentType + "\r\n";
-        std::stringstream ss;
-        ss << convertHTML(cgi.getCgi()).size();
-        httpResponse += "Content-Length: " + ss.str() + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-        httpResponse += "\r\n";
-        httpResponse += convertHTML(cgi.getCgi());
-        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+      std::string directoryPath;
+      if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) { 
+        totalPath << locationRoot.getRoot() << route;
+        directoryPath = locationRoot.getRoot() + route;
       }
-			else if (isDirectory(directoryPath)) {
-        if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1)
-        {
-          std::string autoindex;
-          if (route == "/")
-            route = "";
-          autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
-          httpResponse = "HTTP/1.1 200 OK\r\n";
-          httpResponse += "Content-Type: " + contentType + "\r\n";
-          httpResponse += "Content-Length: " + toString(autoindex.size()) + "\r\n";
-          httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-          httpResponse += "\r\n";
-          httpResponse += autoindex;
-          autoDirectory = route;
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        }
-        else
-        {
-          httpResponse = "HTTP/1.1 404 Not Found\r\n";
-          if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
-            std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
-            string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-            std::stringstream totalPath;
-            totalPath << locationRoot.getRoot() << filePath;
-            std::ifstream archivo(totalPath.str().c_str());
-            if (archivo.is_open()) {
-              std::ostringstream oss;
-              oss << archivo.rdbuf();
-              httpResponse += "Content-Type: " + checkContentType(it->second) + "\r\n";
-              httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
-              httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-              httpResponse += "\r\n";
-              httpResponse += oss.str();
-              send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-            }
-            else
-            {
-				      httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-              httpResponse += "Content-Type: " + contentType + "\r\n";
-              httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
-              httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-              httpResponse += "\r\n";
-              // Asegúrate de agregar un carácter nulo al final de la cadena
-              httpResponse.push_back('\0');
-				      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-			      }
-          } else {
-				    httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-            httpResponse += "Content-Type: " + contentType + "\r\n";
-            httpResponse += "Content-Length: 0\r\n";  // Longitud del contenido (en este caso, 0)
-            httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-            httpResponse += "\r\n";
-            // Asegúrate de agregar un carácter nulo al final de la cadena
-            httpResponse.push_back('\0');
-				    send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-          }
-        }
+      else { /* Inserts index */
+        if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
+          route.append("/");
+        totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
+        directoryPath = locationRoot.getRoot() + route + locationRoot.getIndex();
+      }
+      //totalPath << locationRoot.getRoot() << route; Old ones
+	  //directoryPath = locationRoot.getRoot() + route;
+      	std::ifstream archivo(totalPath.str().c_str());
+		std::ostringstream oss;
+		if (isCgi)
+        	resHttpCGI(contentType);
+		else if (isDirectory(directoryPath)) {
+			if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) /* Autoindex on / Non-defined */
+			{
+				std::string autoindex;
+				if (route == "/")
+					route = "";
+				autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
+				httpResponse = "HTTP/1.1 200 OK\r\n";
+				if (cookie)
+					httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+				httpResponse += "Content-Type: " + contentType + "\r\n";
+				httpResponse += "Content-Length: " + toString(autoindex.size()) + "\r\n";
+				httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+				httpResponse += "\r\n";
+				httpResponse += autoindex;
+				autoDirectory = route;
+				send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+			}
+			else /* Autoindex manually off */
+			{
+				httpResponse = "HTTP/1.1 404 Not Found\r\n";
+				if (cookie)
+				httpResponse += "Set-Cookie: session_id=" +setCookie + "\r\n";
+				if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
+					std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
+					string filePath = adjustRoute(locationRoot.getRoot(), it->second);
+					std::stringstream totalPath;
+					totalPath << locationRoot.getRoot() << filePath;
+					std::ifstream archivo(totalPath.str().c_str());
+					if (archivo.is_open()) {
+						std::ostringstream oss;
+						oss << archivo.rdbuf();
+						httpResponse += "Content-Type: " + checkContentType(it->second) + "\r\n";
+						httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
+						httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+						httpResponse += "\r\n";
+						httpResponse += oss.str();
+						send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+					}
+					else /* File could not be opened */
+						resHttp500(false);
+				}
+				else /* There are no error pages associated with 404 code */
+					resHttp500(false);
+			}
       } else if (archivo.is_open()){
 				oss << archivo.rdbuf();
 				std::string httpResponse;
@@ -406,7 +388,7 @@ void Request::getMethod( void )
           if (cookie)
             httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
 				  httpResponse += "Content-Type: " + contentType + "\r\n";
-				  httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+				  httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
           httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
 				  httpResponse += "\r\n";
 				  httpResponse += oss.str();
@@ -421,12 +403,14 @@ void Request::getMethod( void )
         if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
           std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
           string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-          std::ifstream archivo(locationRoot.getRoot() + filePath);
+          std::stringstream totalPath;
+          totalPath << locationRoot.getRoot() << filePath;
+          std::ifstream archivo(totalPath.str().c_str());
           if (archivo.is_open()) {
             std::ostringstream oss;
             oss << archivo.rdbuf();
             httpResponse += "Content-Type: " + checkContentType(it->second) + "\r\n";
-            httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+            httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
             httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
             httpResponse += "\r\n";
             httpResponse += oss.str();
@@ -439,7 +423,7 @@ void Request::getMethod( void )
               std::ostringstream oss;
               oss << archivo.rdbuf();
               httpResponse += "Content-Type: text/html\r\n";
-              httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+              httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
               httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
               httpResponse += "\r\n";
               httpResponse += oss.str();
@@ -461,70 +445,69 @@ void Request::postMethod( void )
 	std::string httpResponse;
 	std::string contentType = checkContentType(route);
 	std::string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
-  if (!checkMethod("POST")) {
-    std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
-    httpResponse += "Allow: " + allowed_methods + "\r\n";
-    httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	  if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
-      httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    } else {
-      // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-      httpResponse += "Content-Type: text/html\r\n";
-      httpResponse += "Content-Length: 0\r\n";
-      httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-      httpResponse += "\r\n";
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    }
-  }
-  else
-  {
-	  std::string msgString(header);
-	  size_t bodyStart = msgString.find("\r\n\r\n");
-	  std::string postBody = msgString.substr(bodyStart + 4);
-	  std::ifstream verificarArchivo((locationRoot.getRoot() + route).c_str());
-  	bool archivoExiste = verificarArchivo.good();
-  	verificarArchivo.close();
-	  std::ofstream archivo((locationRoot.getRoot() + route).c_str(), std::ios::app);
-	  if (archivo.is_open()) {
-      if (archivoExiste) {
-        archivo << postBody << std::endl;
-        httpResponse = "HTTP/1.1 200 OK\r\n";
-        httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
-        httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	      httpResponse += "\r\n";
-        httpResponse += postBody;
-	      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      } else {
-        archivo << postBody << std::endl;
-        httpResponse = "HTTP/1.1 201 CREATED\r\n";
-	      httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
-        httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	      httpResponse += "\r\n";
-        httpResponse += postBody;
-	      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      }
-    }
-    else {
-      httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-      httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-      if (locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-        httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
-        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      }
-      else
-      {
-        // Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-        httpResponse += "Content-Type: text/html\r\n";
-        httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
-        httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-	      httpResponse += "\r\n";
-        httpResponse += postBody;
-        send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      }
-	  }
+	if (!checkMethod("POST")) {
+		std::string httpResponse = "HTTP/1.1 405 Method Not Allowed\r\n";
+		if (cookie)
+			httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+		httpResponse += "Allow: " + allowed_methods + "\r\n";
+		httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+		if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
+			httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
+			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		} else {
+			// Si no hay una página de error definida, responder con el código de estado 405 predeterminado
+			httpResponse += "Content-Type: text/html\r\n";
+			httpResponse += "Content-Length: 0\r\n";
+			httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+			httpResponse += "\r\n";
+			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		}
+	}
+	else
+	{
+		std::string msgString(header);
+		size_t bodyStart = msgString.find("\r\n\r\n");
+		std::string postBody = msgString.substr(bodyStart + 4);
+		std::ifstream verificarArchivo((locationRoot.getRoot() + route).c_str());
+		bool archivoExiste = verificarArchivo.good();
+		verificarArchivo.close();
+		std::ofstream archivo((locationRoot.getRoot() + route).c_str(), std::ios::app);
+		if (archivo.is_open()) {
+			if (archivoExiste) {
+				if (isCgi)
+					resHttpCGI( contentType );
+				else
+				{
+					httpResponse = "HTTP/1.1 200 OK\r\n";
+					if (cookie)
+						httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+					httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
+					httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
+					httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+					httpResponse += "\r\n";
+					httpResponse += postBody;
+					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+				}
+			}
+			else
+			{
+				if (isCgi)
+					resHttpCGI( contentType );
+				else {
+					httpResponse = "HTTP/1.1 201 CREATED\r\n";
+					if (cookie)
+						httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
+					httpResponse += "Content-Type: " + checkContentType(route) + "\r\n";
+					httpResponse += "Content-Length: " + toString(postBody.size()) + "\r\n";
+					httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
+					httpResponse += "\r\n";
+					httpResponse += postBody;
+					send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+				}
+			}
+		}
+		else
+		resHttp500(true);
 	}
 }
 
@@ -562,12 +545,14 @@ void Request::deleteMethod( void )
       if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
         std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
         string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-        std::ifstream archivo(locationRoot.getRoot() + filePath);
+        std::stringstream totalPath;
+        totalPath << locationRoot.getRoot() << filePath;
+        std::ifstream archivo(totalPath.str().c_str());
         if (archivo.is_open()) {
           std::ostringstream oss;
           oss << archivo.rdbuf();
           httpResponse += "Content-Type: " + checkContentType(it->second) + "\r\n";
-          httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+          httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
           httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
           httpResponse += "\r\n";
           httpResponse += oss.str();
@@ -580,7 +565,7 @@ void Request::deleteMethod( void )
             std::ostringstream oss;
             oss << archivo.rdbuf();
             httpResponse += "Content-Type: text/html\r\n";
-            httpResponse += "Content-Length: " + std::to_string(oss.str().size()) + "\r\n";
+            httpResponse += "Content-Length: " + toString(oss.str().size()) + "\r\n";
             httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
             httpResponse += "\r\n";
             httpResponse += oss.str();

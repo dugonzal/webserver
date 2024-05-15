@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/16 00:05:18 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/16 00:13:00 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ void Request::getMethod( void )
 				    if (route == "/")
 					    route = "";
 				    autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
-            restHttpCustom(200, contentType, autoindex);
+            resHttpCustom(OK, contentType, autoindex);
 			    }
 			    else /* Autoindex manually off */
 			    {
@@ -280,7 +280,7 @@ void Request::getMethod( void )
 					  if (archivo.is_open()) {
 						  std::ostringstream oss;
 					  	oss << archivo.rdbuf();
-              restHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
+              resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
 					  }
 					  else /* File could not be opened */
 						  resHttpErr(false, INTERNAL_ERROR, "text/html", "");
@@ -296,7 +296,7 @@ void Request::getMethod( void )
           if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))//OJOOO
             resHttpErr(true, ENTITY_TOO_LARGE, "text/html", "");
           else
-            restHttpCustom(OK, contentType, oss.str());
+            resHttpCustom(OK, contentType, oss.str());
         }
         else
         {
@@ -309,7 +309,7 @@ void Request::getMethod( void )
             if (archivo.is_open()) {
               std::ostringstream oss;
               oss << archivo.rdbuf();
-              restHttpCustom(404, checkContentType(it->second), oss.str());
+              resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
             }
             else
             {
@@ -317,7 +317,7 @@ void Request::getMethod( void )
               if (archivo.is_open()) {
                 std::ostringstream oss;
                 oss << archivo.rdbuf();
-                restHttpCustom(NOT_FOUND, "text/html", oss.str());
+                resHttpCustom(NOT_FOUND, "text/html", oss.str());
               }
               else
                 resHttpErr(true, INTERNAL_ERROR, "text/html", "");
@@ -351,14 +351,14 @@ void Request::postMethod( void )
 				if (isCgi)
 					resHttpCGI( contentType );
 				else
-          restHttpCustom(200, checkContentType(route), postBody);
+          resHttpCustom(OK, checkContentType(route), postBody);
 			}
 			else
 			{
 				if (isCgi)
 					resHttpCGI( contentType );
 				else
-          restHttpCustom(CREATED, contentType, postBody);
+          resHttpCustom(CREATED, contentType, postBody);
 			}
 		}
 		else
@@ -385,7 +385,7 @@ void Request::deleteMethod( void )
         if (archivo.is_open()) {
           std::ostringstream oss;
           oss << archivo.rdbuf();
-          restHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
+          resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
         }
         else
         {
@@ -393,7 +393,7 @@ void Request::deleteMethod( void )
           if (archivo.is_open()) {
             std::ostringstream oss;
             oss << archivo.rdbuf();
-            restHttpCustom(404, "text/html", oss.str());
+            resHttpCustom(NOT_FOUND, "text/html", oss.str());
           }
           else
             resHttpErr(true, INTERNAL_ERROR, "text/html", "");
@@ -401,11 +401,11 @@ void Request::deleteMethod( void )
       }
     }
 	  else
-		  restHttpCustom(OK, "", "");
+		  resHttpCustom(OK, "", "");
   }
 }
 
-void  Request::restHttpCustom( int httpCode, const std::string& contentType, const std::string& body ) {
+void  Request::resHttpCustom( int httpCode, const std::string& contentType, const std::string& body ) {
   std::string httpResponse;
   switch (httpCode)
   {
@@ -470,7 +470,7 @@ void  Request::resHttpCGI( const std::string& contentType ) {
 	}
 	cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
 	cgi.handlerCgi();
-  restHttpCustom(200, contentType, convertHTML(cgi.getCgi()));
+  resHttpCustom(OK, contentType, convertHTML(cgi.getCgi()));
 }
 
 void  Request::resHttpErr( bool checkErrPg, int _httpCode,const std::string& _contentType, const std::string& _body ) {
@@ -480,7 +480,7 @@ void  Request::resHttpErr( bool checkErrPg, int _httpCode,const std::string& _co
 		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 	}
   else
-    restHttpCustom( _httpCode, _contentType, _body );
+    resHttpCustom( _httpCode, _contentType, _body );
 }
 
 std::string Request::replaceAlias(const std::string& path) {
@@ -533,5 +533,5 @@ void  Request::serverToClient(const string &_header, size_t fd) {
 	else if (method == "DELETE")
 		deleteMethod();
   else
-    resHttpErr(true, 500, "text/html", "");
+    resHttpErr(true, INTERNAL_ERROR, "text/html", "");
 }

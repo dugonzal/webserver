@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 23:29:22 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/16 00:05:18 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,41 +225,20 @@ void Request::getMethod( void )
 	size_t bodyStart = header.find("\r\n\r\n");
 	std::string postBody = header.substr(bodyStart + 4);
 	if (!postBody.empty()) /* Return 500 if any body is given */
-    	resHttp500(true);
+    	resHttpErr(true, INTERNAL_ERROR, "text/html", "");
 	else if (!checkMethod("GET"))
-	{
-		if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
-			httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
-			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-		}
-    else
-      restHttpCustom(405, "text/html", "");
-	}
+    resHttpErr(true, METHOD_NOT_ALLOWED, "text/html", "");
 	else
 	{
     std::string directoryPath = locationRoot.getRoot() + route;
 		if (!locationRoot.getReturn().second.empty())
 		{
 			if (isAbsolutePath(locationRoot.getReturn().second))
-			{
-        if (locationRoot.getErrorPages().find(302) != locationRoot.getErrorPages().end()) {
-          httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 302, locationRoot.getRoot(), httpResponse);
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        }
-        else
-          restHttpCustom(302, "", "");
-			}
+        resHttpErr(true, FOUND, "", "");
 			else if (!locationRoot.getReturn().second.empty() && route != locationRoot.getReturn().second)
-			{
-        if (locationRoot.getErrorPages().find(301) != locationRoot.getErrorPages().end()) {
-          httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 301, locationRoot.getRoot(), httpResponse);
-          send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-        }
-        else
-          restHttpCustom(301, "", "");
-			}
+        resHttpErr(true, MOVED, "", "");
 			else
-        resHttp500(true);
+        resHttpErr(true, INTERNAL_ERROR, "text/html", "");
 	  }
 		else
 		{
@@ -301,13 +280,13 @@ void Request::getMethod( void )
 					  if (archivo.is_open()) {
 						  std::ostringstream oss;
 					  	oss << archivo.rdbuf();
-              restHttpCustom(404, checkContentType(it->second), oss.str());
+              restHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
 					  }
 					  else /* File could not be opened */
-						  resHttp500(false);
+						  resHttpErr(false, INTERNAL_ERROR, "text/html", "");
 				  }
 				  else /* There are no error pages associated with 404 code */
-					  resHttp500(false);
+					  resHttpErr(false, INTERNAL_ERROR, "text/html", "");
 			    }
         } else if (archivo.is_open()){
           oss << archivo.rdbuf();
@@ -315,16 +294,9 @@ void Request::getMethod( void )
           if (locationRoot.getClientBodySize() == -1)
             locationRoot.setClientBodySize("1m");
           if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))//OJOOO
-          {
-            if (locationRoot.getErrorPages().find(413) != locationRoot.getErrorPages().end()) {
-              httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 413, locationRoot.getRoot(), httpResponse);
-              send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-            }
-            else
-              restHttpCustom(413, "text/html", "");
-          }
+            resHttpErr(true, ENTITY_TOO_LARGE, "text/html", "");
           else
-            restHttpCustom(200, contentType, oss.str());
+            restHttpCustom(OK, contentType, oss.str());
         }
         else
         {
@@ -345,14 +317,14 @@ void Request::getMethod( void )
               if (archivo.is_open()) {
                 std::ostringstream oss;
                 oss << archivo.rdbuf();
-                restHttpCustom(404, "text/html", oss.str());
+                restHttpCustom(NOT_FOUND, "text/html", oss.str());
               }
               else
-                resHttp500(true);
+                resHttpErr(true, INTERNAL_ERROR, "text/html", "");
             }
-          } else {
-            resHttp500(true);
           }
+          else
+            resHttpErr(true, INTERNAL_ERROR, "text/html", "");
         }
     }
   }
@@ -363,14 +335,8 @@ void Request::postMethod( void )
 	std::string httpResponse;
 	std::string contentType = checkContentType(route);
 	std::string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
-	if (!checkMethod("POST")) {
-		if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
-			httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
-			send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-		}
-    else
-			restHttpCustom(405, "text/html", "");
-	}
+	if (!checkMethod("POST"))
+		resHttpErr(true, METHOD_NOT_ALLOWED, "text/html", "");
 	else
 	{
 		std::string msgString(header);
@@ -392,25 +358,19 @@ void Request::postMethod( void )
 				if (isCgi)
 					resHttpCGI( contentType );
 				else
-          restHttpCustom(201, contentType, postBody);
+          restHttpCustom(CREATED, contentType, postBody);
 			}
 		}
 		else
-		  resHttp500(true);
+		  resHttpErr(true, INTERNAL_ERROR, "text/html", "");
 	}
 }
 
 void Request::deleteMethod( void )
 {
   std::string httpResponse;
-  if (!checkMethod("DELETE")) {
-    if (locationRoot.getErrorPages().find(405) != locationRoot.getErrorPages().end()) {
-      httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 405, locationRoot.getRoot(), httpResponse);
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    }
-    else
-      restHttpCustom(405, "text/html", "");
-  }
+  if (!checkMethod("DELETE"))
+    resHttpErr(true, METHOD_NOT_ALLOWED, "text/html", "");
   else
   {
     // Intentar eliminar el archivo
@@ -425,7 +385,7 @@ void Request::deleteMethod( void )
         if (archivo.is_open()) {
           std::ostringstream oss;
           oss << archivo.rdbuf();
-          restHttpCustom(404, checkContentType(it->second), oss.str());
+          restHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
         }
         else
         {
@@ -436,12 +396,12 @@ void Request::deleteMethod( void )
             restHttpCustom(404, "text/html", oss.str());
           }
           else
-            resHttp500(true);
+            resHttpErr(true, INTERNAL_ERROR, "text/html", "");
         }
       }
     }
 	  else
-		  restHttpCustom(200, "", "");
+		  restHttpCustom(OK, "", "");
   }
 }
 
@@ -478,6 +438,9 @@ void  Request::restHttpCustom( int httpCode, const std::string& contentType, con
     case ENTITY_TOO_LARGE:
       httpResponse = "HTTP/1.1 413 Request Entity Too Large\r\n";
       break ;
+    case INTERNAL_ERROR:
+      httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
+      break ;
     case VERSION_NOT_SUPPORTED:
       httpResponse = "HTTP/1.1 505 HTTP Version Not Supported\r\n";
       break ;
@@ -510,24 +473,14 @@ void  Request::resHttpCGI( const std::string& contentType ) {
   restHttpCustom(200, contentType, convertHTML(cgi.getCgi()));
 }
 
-void  Request::resHttp500( bool checkErrorPages ) {
-	std::string httpResponse = "HTTP/1.1 500 Internal Server Error\r\n";
-	if (cookie)
-		httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
-	if ( checkErrorPages && locationRoot.getErrorPages().find(500) != locationRoot.getErrorPages().end()) {
-		httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 500, locationRoot.getRoot(), httpResponse);
+void  Request::resHttpErr( bool checkErrPg, int _httpCode,const std::string& _contentType, const std::string& _body ) {
+  std::string httpResponse;
+  if ( checkErrPg && locationRoot.getErrorPages().find(_httpCode) != locationRoot.getErrorPages().end()) {
+		httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), _httpCode, locationRoot.getRoot(), httpResponse);
 		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
 	}
-	else
-	{
-		// Si no hay una página de error definida, responder con el código de estado 405 predeterminado
-		httpResponse += "Content-Type: text/html\r\n";
-		httpResponse += "Content-Length: 0\r\n";
-		httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
-		httpResponse += "\r\n";
-		httpResponse.push_back('\0');
-		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-	}
+  else
+    restHttpCustom( _httpCode, _contentType, _body );
 }
 
 std::string Request::replaceAlias(const std::string& path) {
@@ -572,13 +525,7 @@ void  Request::serverToClient(const string &_header, size_t fd) {
 	route = replaceAlias(route);
   route = adjustRoute(locationRoot.getRoot(), route);
   if (version != "HTTP/1.1") {
-    if (locationRoot.getErrorPages().find(505) != locationRoot.getErrorPages().end()) {
-      std::string httpResponse;
-      httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), 505, locationRoot.getRoot(), httpResponse);
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-    }
-    else
-      restHttpCustom(505, "text/html", "");
+    resHttpErr(true, VERSION_NOT_SUPPORTED, "text/html", "");
   } else if (method == "GET")
 		getMethod();
 	else if (method == "POST")
@@ -586,5 +533,5 @@ void  Request::serverToClient(const string &_header, size_t fd) {
 	else if (method == "DELETE")
 		deleteMethod();
   else
-    resHttp500(true);
+    resHttpErr(true, 500, "text/html", "");
 }

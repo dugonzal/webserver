@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 23:28:06 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/16 00:05:00 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define NOT_FOUND 404
 # define METHOD_NOT_ALLOWED 405
 # define ENTITY_TOO_LARGE 413
+# define INTERNAL_ERROR 500
 # define VERSION_NOT_SUPPORTED 505
 
 class Response;
@@ -65,12 +66,11 @@ class Request {
   bool    setMethod(const string&);
   bool    setRouteAndVersion(const string&);
   void    setLocation(void);
-  void    handlerRequest(void);
   void    parserData(void);
   void    serverToClient(const string&, size_t);
 
-  void    resHttp500( bool checkErrorPages );
   void    resHttpCGI( const std::string& contentType );
+  void    resHttpErr( bool checkErrPg, int _httpCode,const std::string& _contentType, const std::string& _body );
   void    restHttpCustom( int httpCode,const std::string& contentType, const std::string& body );
 
     // FUNCIONES IKEEEERRRR

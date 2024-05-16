@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/16 11:23:22 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:33:07 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,88 +243,88 @@ void Request::getMethod( void )
 		{
       stringstream totalPath;
       string directoryPath;
-      if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) { 
-        totalPath << locationRoot.getRoot() << route;
-        directoryPath = locationRoot.getRoot() + route;
-      }
-      else { /* Inserts index */
-        if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
-          route.append("/");
-        totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
-        directoryPath = locationRoot.getRoot() + route + locationRoot.getIndex();
-      }
-        //totalPath << locationRoot.getRoot() << route; Old ones
-	      //directoryPath = locationRoot.getRoot() + route;
-        std::ifstream archivo(totalPath.str().c_str());
-		    std::ostringstream oss;
-		    if (isCgi)
-          resHttpCGI(contentType);
-		    else if (isDirectory(directoryPath)) {
-			    if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) /* Autoindex on / Non-defined */
-			    {
-				    std::string autoindex;
-				    if (route == "/")
-					    route = "";
-				    autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
-            resHttpCustom(OK, contentType, autoindex);
-			    }
-			    else /* Autoindex manually off */
-			    {
-				    if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
-					  std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
-					  string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-					  std::stringstream totalPath;
-					  totalPath << locationRoot.getRoot() << filePath;
-					  std::ifstream archivo(totalPath.str().c_str());
-					  if (archivo.is_open()) {
-						  std::ostringstream oss;
-					  	oss << archivo.rdbuf();
-              resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
-					  }
-					  else /* File could not be opened */
-						  resHttpErr(false, INTERNAL_ERROR, "text/html", "");
-				  }
-				  else /* There are no error pages associated with 404 code */
-					  resHttpErr(false, INTERNAL_ERROR, "text/html", "");
-			    }
-        } else if (archivo.is_open()){
-          oss << archivo.rdbuf();
-          std::string httpResponse;
-          if (locationRoot.getClientBodySize() == -1)
-            locationRoot.setClientBodySize("1m");
-          if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))//OJOOO
-            resHttpErr(true, ENTITY_TOO_LARGE, "text/html", "");
-          else
-            resHttpCustom(OK, contentType, oss.str());
+      
+      totalPath << locationRoot.getRoot() << route;
+      directoryPath = locationRoot.getRoot() + route;
+      if (locationRoot.getAutoIndex() != 1 && locationRoot.getAutoIndex() != -1) { /* Autoindex off & Directory in route */
+        if (isDirectory(locationRoot.getRoot() + route)) { /* This is the case where index should apply */
+          totalPath.str("");
+          if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
+              route.append("/");
+          totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
+          directoryPath = locationRoot.getRoot() + route + locationRoot.getIndex();
         }
-        else
+      }
+      std::ifstream archivo(totalPath.str().c_str());
+      std::ostringstream oss;
+      if (isCgi)
+        resHttpCGI(contentType);
+      else if (isDirectory(directoryPath)) { /* Directory */
+        if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) /* Autoindex on / Non-defined */
+        {
+          std::string autoindex;
+          if (route == "/")
+            route = "";
+          autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
+          resHttpCustom(OK, contentType, autoindex);
+        }
+        else /* Autoindex manually off */
         {
           if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
-            std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
-            string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-            std::stringstream totalPath;
-            totalPath << locationRoot.getRoot() << filePath;
-            std::ifstream archivo(totalPath.str().c_str());
-            if (archivo.is_open()) {
-              ostringstream oss;
-              oss << archivo.rdbuf();
-              resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
-            }
-            else
-            {
-              std::ifstream archivo("resources/GET/404.html");
-              if (archivo.is_open()) {
-                std::ostringstream oss;
-                oss << archivo.rdbuf();
-                resHttpCustom(NOT_FOUND, "text/html", oss.str());
-              }
-              else
-                resHttpErr(true, INTERNAL_ERROR, "text/html", "");
-            }
+          std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
+          string filePath = adjustRoute(locationRoot.getRoot(), it->second);
+          std::stringstream totalPath;
+          totalPath << locationRoot.getRoot() << filePath;
+          std::ifstream archivo(totalPath.str().c_str());
+          if (archivo.is_open()) {
+            std::ostringstream oss;
+            oss << archivo.rdbuf();
+            resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
           }
           else
-            resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+            resHttpErr(false, INTERNAL_ERROR, "text/html", "");
         }
+        else /* No error pages for 404 code */
+          resHttpErr(false, INTERNAL_ERROR, "text/html", "");
+        }
+      } else if (archivo.is_open()) { /* File */
+        oss << archivo.rdbuf();
+        std::string httpResponse;
+        if (locationRoot.getClientBodySize() == -1)
+          locationRoot.setClientBodySize("1m");
+        if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))
+          resHttpErr(true, ENTITY_TOO_LARGE, "text/html", "");
+        else
+          resHttpCustom(OK, contentType, oss.str());
+      }
+      else /* Not found */
+      {
+        if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
+          std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
+          string filePath = adjustRoute(locationRoot.getRoot(), it->second);
+          std::stringstream totalPath;
+          totalPath << locationRoot.getRoot() << filePath;
+          std::ifstream archivo(totalPath.str().c_str());
+          if (archivo.is_open()) {
+            ostringstream oss;
+            oss << archivo.rdbuf();
+            resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
+          }
+          else
+          {
+            std::ifstream archivo("resources/GET/404.html");
+            if (archivo.is_open()) {
+              std::ostringstream oss;
+              oss << archivo.rdbuf();
+              resHttpCustom(NOT_FOUND, "text/html", oss.str());
+            }
+            else
+              resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+          }
+        }
+        else
+          resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+      }
     }
   }
 }

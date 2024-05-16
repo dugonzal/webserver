@@ -1,4 +1,4 @@
-webserv
-serverLog.log
-obj/
 .vscode/
+webserv
+obj/
+serverLog.log

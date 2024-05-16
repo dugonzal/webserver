@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:46:17 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:53:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/15 23:22:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,5 @@ class Response {
  public:
   Response(void);
   ~Response(void);
-  void  print(void) {
-    cout << "hola mundo" << endl;
-  }
+  static bool sendResponse(const string&, int fd);
 };

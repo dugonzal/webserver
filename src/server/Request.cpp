@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/16 10:44:49 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:23:22 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,13 +420,11 @@ void  Request::resHttpCustom( int httpCode, const std::string& contentType, cons
           httpResponse += "Location: http://" + host + ":" + toString(port) + locationRoot.getReturn().second + "\r\n";
         else
     		  httpResponse += "Location: http://" + host + ":" + toString(port) + "/" + locationRoot.getReturn().second + "\r\n";
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      return ;
+      break ;
     case FOUND:
       httpResponse = "HTTP/1.1 302 Found\r\n";
       httpResponse += "Location: " + locationRoot.getReturn().second + "\r\n";
-      send(clientFd, httpResponse.data(), httpResponse.size(), 0);
-      return ;
+      break ;
     case NOT_FOUND:
       httpResponse = "HTTP/1.1 404 Not Found\r\n";
       break ;
@@ -456,7 +454,7 @@ void  Request::resHttpCustom( int httpCode, const std::string& contentType, cons
   if (!body.empty())
     httpResponse += body;
   httpResponse.push_back('\0');
-  send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+  Response::sendResponse(httpResponse, clientFd);
 }
 
 void  Request::resHttpCGI( const std::string& contentType ) {
@@ -476,7 +474,7 @@ void  Request::resHttpErr( bool checkErrPg, int _httpCode,const std::string& _co
   std::string httpResponse;
   if ( checkErrPg && locationRoot.getErrorPages().find(_httpCode) != locationRoot.getErrorPages().end()) {
 		httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), _httpCode, locationRoot.getRoot(), httpResponse);
-		send(clientFd, httpResponse.data(), httpResponse.size(), 0);
+		Response::sendResponse(httpResponse ,clientFd);
 	}
   else
     resHttpCustom( _httpCode, _contentType, _body );

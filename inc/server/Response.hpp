@@ -22,5 +22,4 @@ class Response {
   Response(void);
   ~Response(void);
   static bool sendResponse(const string&, int fd);
-  //const string  &resHttp302(void);  
 };

@@ -1,8 +1,5 @@
-
 #!/bin/bash
 
-echo "Content-type: text/html"
-echo ""
 echo "<html>"
 echo "<head>"
 echo "<title>Numero Aleatorio</title>"
@@ -42,7 +39,7 @@ if [ $numero_aleatorio -eq 42 ]; then
   else
     echo "<p>Lo siento, no has ganado un premio. Inténtalo de nuevo!</p>"
 fi
-echo "<p><a href=\"/cgi\">Generar otro numero</a></p>"
+echo "<p><a href=\"/juego.bash\">Generar otro numero</a></p>"
 
 echo "</div>"
 echo "</body>"

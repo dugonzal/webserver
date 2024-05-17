@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/16 10:44:49 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/18 00:27:12 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,7 +468,10 @@ void  Request::resHttpCGI( const std::string& contentType ) {
 		tmp.append("/");
 	}
 	cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
-	cgi.handlerCgi();
+  if (method == "POST" && checkQueryPost(header))
+    handleQueryPost(header);
+  else
+    cgi.handlerCgi(false);
   resHttpCustom(OK, contentType, convertHTML(cgi.getCgi()));
 }
 
@@ -533,4 +536,48 @@ void  Request::serverToClient(const string &_header, size_t fd) {
 		deleteMethod();
   else
     resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+}
+
+bool  Request::checkQueryPost( const std::string& msgClient ) {
+  size_t bodyStart = msgClient.find("Content-Length: ");
+  if (bodyStart == string::npos)
+    return false;
+	size_t bodyEnd = msgClient.find("\r\n" ,bodyStart);
+  std::string ret = msgClient.substr(bodyStart + 16, bodyEnd - bodyStart - 16);
+  if (!ret.compare("0"))
+    return false;
+  else
+    return true;
+}
+
+void  Request::handleQueryPost( const std::string& msgClient ) {
+  size_t bodyStart = msgClient.find("\r\n\r\n");
+  std::string body = msgClient.substr(bodyStart + 4);
+
+  std::map<std::string, std::string> query;
+  std::stringstream keyValue;
+  std::stringstream keyRef;
+  bool flag = false;
+  for (size_t it = 0; body[it]; it++) {
+    if (body[it] == '&') {
+      query.insert(pair<string, string>(keyRef.str(), keyValue.str()));
+      keyRef.str("");
+      keyValue.str("");
+      flag = false;
+    }
+    else if (body[it] == '=') {
+      flag = true;
+    }
+    else {
+      if (flag == true)
+        keyValue << body[it];
+      else if (flag == false)
+        keyRef << body[it];
+    }
+  }
+  query.insert(pair<string, string>(keyRef.str(), keyValue.str()));
+  keyRef.str("");
+  keyValue.str("");
+  cgi.setQuery(query);
+  cgi.handlerCgi(true);
 }

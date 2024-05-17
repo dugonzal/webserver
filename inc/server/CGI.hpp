@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 20:00:35 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/17 23:36:28 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ class CGI {
   string    root;
   Logger    logger;
 
+  map<string, string> query;
+
  private:
   CGI(const CGI&);
   CGI &operator=(const CGI&);
@@ -38,6 +40,9 @@ class CGI {
 
  public:
   void    setCgi(const string&, const string&);
-  void    handlerCgi(void);
+  void    handlerCgi( bool isQuery );
   const vector<string>&  getCgi(void) const;
+
+  void    insertQuery( void );
+  void    setQuery( const map<string, string> queryTmp );
 };

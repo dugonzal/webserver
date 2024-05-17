@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/15 22:26:14 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/18 00:12:40 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void  CGI::setCgi(const string &_path, const string &_fileName) {
   fileName = (char*)_fileName.data();
 }
 
+void    CGI::setQuery( const map<string, string> queryTmp ) {
+	query = (queryTmp);
+}
+
 void  CGI::readFd(const string &fd) {
   string buffer;
   ifstream readFile(fd.data());
@@ -46,7 +50,7 @@ void  CGI::readFd(const string &fd) {
 
 const vector<string>& CGI::getCgi(void) const { return result; }
 
-void  CGI::handlerCgi(void) {
+void  CGI::handlerCgi( bool isQuery ) {
 	int retCode;
 	int pid, sleepPid;
 
@@ -72,6 +76,8 @@ void  CGI::handlerCgi(void) {
 	}
 	if (!pid) {
 		const char *tmp[3] = { path.data(), fileName.data(), NULL };
+		if (isQuery == true)
+			insertQuery();
 
 		if (dup2(out, STDOUT_FILENO) < 0 || dup2(out, STDERR_FILENO) < 0)
 			exit(EXIT_FAILURE);
@@ -105,6 +111,35 @@ void  CGI::handlerCgi(void) {
 		remove("cgi.out");
 		close(err);
 		remove("cgi.err");
+	}
+}
+
+void	CGI::insertQuery( void ) {
+	std::ifstream inCgiFile(fileName.c_str());
+
+	if (inCgiFile.is_open())
+		logger.Log("error: CGI: file could not be opened (input)");
+	std::vector<string> cgiFileBuf;
+	std::stringstream	fileBuf;
+	std::map<string, string>::iterator it;
+
+	fileBuf << inCgiFile.rdbuf();
+	for (it = query.begin(); query.end() != it; it++) {
+		cgiFileBuf.push_back(it->first);
+		cgiFileBuf.push_back("=");
+		cgiFileBuf.push_back(it->second);
+	}
+	cgiFileBuf.push_back("\n");
+	cgiFileBuf.push_back(fileBuf.str());
+
+	inCgiFile.close();
+	remove(fileName.c_str());
+	std::ofstream outCgiFile(fileName.c_str());
+	if (outCgiFile.is_open())
+		logger.Log("error: CGI: file could not be opened (output)");
+	std::vector<string>::iterator itFileBuf;
+	for (itFileBuf = cgiFileBuf.begin(); cgiFileBuf.end() != itFileBuf; itFileBuf++) {
+		outCgiFile << *itFileBuf;
 	}
 }
 

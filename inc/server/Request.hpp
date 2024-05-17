@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/16 10:42:47 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/17 23:25:54 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@ class Request {
   void    resHttpCGI( const std::string& contentType );
   void    resHttpErr( bool checkErrPg, int _httpCode,const std::string& _contentType, const std::string& _body );
   void    resHttpCustom( int httpCode,const std::string& contentType, const std::string& body );
+
+  // Query
+  bool    checkQueryPost( const std::string& msgClient );
+  void    handleQueryPost( const std::string& msgClient );
 
     // FUNCIONES IKEEEERRRR
   int         checkMethod(const string &_method);

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 10:55:29 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/18 00:35:01 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,4 +156,13 @@ void	killProcess(int _pid) {
 	}
 
 	if (!died) kill(_pid, SIGKILL);
+}
+
+bool  checkProcess( void ) {
+  if (access("checker", F_OK) == 0)
+    return true;
+  else {
+    open("checker", O_CREAT);
+  }
+  return false;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/17 23:25:54 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/18 11:15:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ class Request {
   string  route;
   string  version;
   bool    isCgi;
-
-  ///PRIVATE IKEEEER
   int     clientFd;
 
  public:
@@ -69,13 +67,13 @@ class Request {
   void    parserData(void);
   void    serverToClient(const string&, size_t);
 
-  void    resHttpCGI( const std::string& contentType );
-  void    resHttpErr( bool checkErrPg, int _httpCode,const std::string& _contentType, const std::string& _body );
-  void    resHttpCustom( int httpCode,const std::string& contentType, const std::string& body );
+  void    resHttpCGI( const string& contentType );
+  void    resHttpErr( bool checkErrPg, int _httpCode,const string& _contentType, const string& _body );
+  void    resHttpCustom( int httpCode,const string& contentType, const string& body );
 
   // Query
-  bool    checkQueryPost( const std::string& msgClient );
-  void    handleQueryPost( const std::string& msgClient );
+  bool    checkQueryPost( const string& msgClient );
+  void    handleQueryPost( const string& msgClient );
 
     // FUNCIONES IKEEEERRRR
   int         checkMethod(const string &_method);

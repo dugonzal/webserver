@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 09:44:39 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:29:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void  Location::setCgiPath(const string &_cgiPath) {
 void  Location::setReturn(const string &return_) {
   if (!_return.second.empty())
     logger.LogThrow("setReturn [%s]", return_.data());
-  _return.first = atoi(firstWord(return_).data());
+  _return.first = atoi(Utils::firstWord(return_).data());
   if (_return.first < 100 or _return.first > 505)
     logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
-  _return.second = lastWord(return_);
+  _return.second = Utils::lastWord(return_);
 }
 
 void  Location::setMethods(const string &_methods) {
@@ -111,13 +111,13 @@ void  Location::setMethods(const string &_methods) {
 }
 
 void  Location::setErrorPages(const string &_errorPages) {
-  size_t n = atoi(firstWord(_errorPages).data());
+  size_t n = atoi(Utils::firstWord(_errorPages).data());
 
   if (n < 100 or n > 505 or errorPages.find(n) != errorPages.end())
     logger.LogThrow("setErrorPages code not allowed [%s]", _errorPages.data());
   else if (errorPages.find(n) != errorPages.end())
     logger.LogThrow("setErrorPages code already exists [%s]", _errorPages.data());
-  errorPages.insert(pair<size_t, string>(n, lastWord(_errorPages)));
+  errorPages.insert(pair<size_t, string>(n, Utils::lastWord(_errorPages)));
 }
 
 void  Location::setListen(const string &_listen) {

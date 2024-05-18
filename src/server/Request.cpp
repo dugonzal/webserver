@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 00:46:12 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:27:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,19 @@ void  Request::setLocation(void) {
 }
 
 bool  Request::setRouteAndVersion(const string &tmp) {
-  route = adjustRoute(firstWord(tmp));
-  version = lastWord(tmp);
+  route = adjustRoute(Utils::firstWord(tmp));
+  version = Utils::lastWord(tmp);
   return(false);
 }
 
 void  Request::parserData(void) {
   int pos = header.find_first_of('\n');
 
-  if (setRouteAndVersion(trim(lastWord(header.substr(0, pos))))) {
+  if (setRouteAndVersion(Utils::trim(Utils::lastWord(header.substr(0, pos))))) {
     logger.Log("error version");
   }
   setLocation();
-  if (setMethod(trim(firstWord(header.substr(0, pos))))) {
+  if (setMethod(Utils::trim(Utils::firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
   }
 }
@@ -219,8 +219,8 @@ string personalizeErrorPage(map<size_t, string> errorPages, size_t errorCode, co
 
 void Request::getMethod( void )
 {
-	std::string contentType = checkContentType(route);
-	std::string httpResponse;
+	string contentType = checkContentType(route);
+	string httpResponse;
 	size_t bodyStart = header.find("\r\n\r\n");
 	string postBody = header.substr(bodyStart + 4);
 	if (!postBody.empty()) /* Return 500 if any body is given */
@@ -247,7 +247,7 @@ void Request::getMethod( void )
       totalPath << locationRoot.getRoot() << route;
       directoryPath = locationRoot.getRoot() + route;
       if (locationRoot.getAutoIndex() != 1 && locationRoot.getAutoIndex() != -1) { /* Autoindex off & Directory in route */
-        if (isDirectory(locationRoot.getRoot() + route)) { /* This is the case where index should apply */
+        if (Utils::isDirectory(locationRoot.getRoot() + route)) { /* This is the case where index should apply */
           totalPath.str("");
           if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
               route.append("/");
@@ -255,14 +255,14 @@ void Request::getMethod( void )
           directoryPath = locationRoot.getRoot() + route + locationRoot.getIndex();
         }
       }
-      std::ifstream archivo(totalPath.str().c_str());
-      std::ostringstream oss;
+      ifstream archivo(totalPath.str().c_str());
+      ostringstream oss;
       if (isCgi)
         resHttpCGI(contentType);
-      else if (isDirectory(directoryPath)) { /* Directory */
+      else if (Utils::isDirectory(directoryPath)) { /* Directory */
         if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) /* Autoindex on / Non-defined */
         {
-          std::string autoindex;
+          string autoindex;
           if (route == "/")
             route = "";
           autoindex = generate_autoindex(directoryPath, autoindex, route, host, port);
@@ -271,13 +271,13 @@ void Request::getMethod( void )
         else /* Autoindex manually off */
         {
           if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
-          std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
+          map<size_t, string>::iterator it = locationRoot.getErrorPages().find(404);
           string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-          std::stringstream totalPath;
+          stringstream totalPath;
           totalPath << locationRoot.getRoot() << filePath;
-          std::ifstream archivo(totalPath.str().c_str());
+          ifstream archivo(totalPath.str().c_str());
           if (archivo.is_open()) {
-            std::ostringstream oss;
+            ostringstream oss;
             oss << archivo.rdbuf();
             resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
           }
@@ -289,7 +289,7 @@ void Request::getMethod( void )
         }
       } else if (archivo.is_open()) { /* File */
         oss << archivo.rdbuf();
-        std::string httpResponse;
+        string httpResponse;
         if (locationRoot.getClientBodySize() == -1)
           locationRoot.setClientBodySize("1m");
         if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))
@@ -300,11 +300,11 @@ void Request::getMethod( void )
       else /* Not found */
       {
         if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
-          std::map<size_t, std::string>::iterator it = locationRoot.getErrorPages().find(404);
+          map<size_t, string>::iterator it = locationRoot.getErrorPages().find(404);
           string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-          std::stringstream totalPath;
+          stringstream totalPath;
           totalPath << locationRoot.getRoot() << filePath;
-          std::ifstream archivo(totalPath.str().c_str());
+          ifstream archivo(totalPath.str().c_str());
           if (archivo.is_open()) {
             ostringstream oss;
             oss << archivo.rdbuf();
@@ -312,9 +312,9 @@ void Request::getMethod( void )
           }
           else
           {
-            std::ifstream archivo("resources/GET/404.html");
+            ifstream archivo("resources/GET/404.html");
             if (archivo.is_open()) {
-              std::ostringstream oss;
+              ostringstream oss;
               oss << archivo.rdbuf();
               resHttpCustom(NOT_FOUND, "text/html", oss.str());
             }
@@ -331,9 +331,9 @@ void Request::getMethod( void )
 
 void Request::postMethod( void )
 {
-	std::string httpResponse;
-	std::string contentType = checkContentType(route);
-	std::string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
+	string httpResponse;
+	string contentType = checkContentType(route);
+	string allowed_methods = checkAllowedMethods(locationRoot.getmethods());
 	if (!checkMethod("POST"))
 		resHttpErr(true, METHOD_NOT_ALLOWED, "text/html", "");
 	else
@@ -367,7 +367,7 @@ void Request::postMethod( void )
 
 void Request::deleteMethod( void )
 {
-  std::string httpResponse;
+  string httpResponse;
   if (!checkMethod("DELETE"))
     resHttpErr(true, METHOD_NOT_ALLOWED, "text/html", "");
   else
@@ -398,14 +398,14 @@ void Request::deleteMethod( void )
             resHttpErr(true, INTERNAL_ERROR, "text/html", "");
         }
       }
-    }
-	  else
+    } 
+    else
 		  resHttpCustom(OK, "", "");
   }
 }
 
-void  Request::resHttpCustom( int httpCode, const std::string& contentType, const std::string& body ) {
-  std::string httpResponse;
+void  Request::resHttpCustom( int httpCode, const string& contentType, const string& body ) {
+  string httpResponse;
   switch (httpCode)
   {
     case OK:
@@ -457,7 +457,7 @@ void  Request::resHttpCustom( int httpCode, const std::string& contentType, cons
   Response::sendResponse(httpResponse, clientFd);
 }
 
-void  Request::resHttpCGI( const std::string& contentType ) {
+void  Request::resHttpCGI( const string& contentType ) {
 	string httpResponse;
   httpResponse.clear();
 	string tmp;
@@ -470,11 +470,11 @@ void  Request::resHttpCGI( const std::string& contentType ) {
     handleQueryPost(header);
   else
     cgi.handlerCgi(false);
-  resHttpCustom(OK, contentType, convertHTML(cgi.getCgi()));
+  resHttpCustom(OK, contentType, Utils::convertHTML(cgi.getCgi()));
 }
 
-void  Request::resHttpErr( bool checkErrPg, int _httpCode,const std::string& _contentType, const std::string& _body ) {
-  std::string httpResponse;
+void  Request::resHttpErr( bool checkErrPg, int _httpCode,const string& _contentType, const string& _body ) {
+  string httpResponse;
   if ( checkErrPg && locationRoot.getErrorPages().find(_httpCode) != locationRoot.getErrorPages().end()) {
 		httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), _httpCode, locationRoot.getRoot(), httpResponse);
 		Response::sendResponse(httpResponse ,clientFd);
@@ -516,7 +516,7 @@ void  Request::serverToClient(const string &_header, size_t fd) {
     end = pos + 10 + 11;
   }
   if (cookie) {
-    setCookie = generate_random_session_id();
+    setCookie = Utils::generate_random_session_id();
     listCookie.push_back(setCookie);
   }
   istringstream ss(header);
@@ -536,25 +536,25 @@ void  Request::serverToClient(const string &_header, size_t fd) {
     resHttpErr(true, INTERNAL_ERROR, "text/html", "");
 }
 
-bool  Request::checkQueryPost( const std::string& msgClient ) {
+bool  Request::checkQueryPost( const string& msgClient ) {
   size_t bodyStart = msgClient.find("Content-Length: ");
   if (bodyStart == string::npos)
     return false;
 	size_t bodyEnd = msgClient.find("\r\n" ,bodyStart);
-  std::string ret = msgClient.substr(bodyStart + 16, bodyEnd - bodyStart - 16);
+  string ret = msgClient.substr(bodyStart + 16, bodyEnd - bodyStart - 16);
   if (!ret.compare("0"))
     return false;
   else
     return true;
 }
 
-void  Request::handleQueryPost( const std::string& msgClient ) {
+void  Request::handleQueryPost( const string& msgClient ) {
   size_t bodyStart = msgClient.find("\r\n\r\n");
-  std::string body = msgClient.substr(bodyStart + 4);
+  string body = msgClient.substr(bodyStart + 4);
 
-  std::map<std::string, std::string> query;
-  std::stringstream keyValue;
-  std::stringstream keyRef;
+  map<string, string> query;
+  stringstream keyValue;
+  stringstream keyRef;
   bool flag = false;
   for (size_t it = 0; body[it]; it++) {
     if (body[it] == '&') {

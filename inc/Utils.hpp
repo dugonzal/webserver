@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/16 21:59:46 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:33:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,22 @@ using std::ios;
 
 extern  vector<pollfd> fds;
 
-bool    errorFile(ifstream);
-string  trim(const string&);
-bool    skipLine(const string&);
-string  readFile(const string& filename);
-string  firstWord(string line);
-string  lastWord(string line);
-size_t  numberWords(const string &line);
-bool    isDirectory(const string &path);
-bool    isFile(const string &path);
-void    readDirectory(const string &path);
-ifstream  *openFile(const string &fdName);
-string  convertHTML( const vector<string>& cgiOutput );
-string  generate_random_session_id(void);
-void	killProcess( int _pid );
-bool  checkProcess( void );
+class Utils {
+ public:
+  static bool     errorFile(ifstream);
+  static string   trim(const string&);
+  static bool     skipLine(const string&);
+  static string   readFile(const string& filename);
+  static string   firstWord(string line);
+  static string   lastWord(string line);
+  static size_t   numberWords(const string &line);
+  static bool     isDirectory(const string &path);
+  static bool     isFile(const string &path);
+  static void     readDirectory(const string &path);
+  static ifstream *openFile(const string &fdName);
+  static string   convertHTML( const vector<string>& cgiOutput );
+  static string   generate_random_session_id(void);
+  static void     killProcess(int _pid);
+  static bool     checkProcess(void);
+  static bool     isW(const char c);
+};

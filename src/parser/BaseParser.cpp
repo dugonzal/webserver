@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 10:48:44 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:37:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,23 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
   ifstream   *file;
   string     buffer;
 
-  if (!(file = openFile(fileName))) {
+  if (Utils::checkProcess() == true)
+      throw(runtime_error("error: webserver: already another process running"));
+  if (!(file = Utils::openFile(fileName))) {
     delete file;
     logger.LogThrow("file not found [%s]", filename.data());
   }
   setWords();
   while (getline(*file, buffer, '\n')) {
-    buffer = trim(buffer);
-    if (skipLine(buffer))
+    buffer = Utils::trim(buffer);
+    if (Utils::skipLine(buffer))
        continue;
-    if (!checkAllowedWords(firstWord(buffer))) {
+    if (!checkAllowedWords(Utils::firstWord(buffer))) {
       delete file;
       logger.LogThrow("Word not allowed: [%s]", buffer.data());
     }
-    if (!firstWord(buffer).compare("include")) {
-      if (readIncludeError(lastWord(buffer))) {
+    if (!Utils::firstWord(buffer).compare("include")) {
+      if (readIncludeError(Utils::lastWord(buffer))) {
         delete file;
         logger.LogThrow("include error file open or word no allowed [%s]", buffer.data());
       }
@@ -107,19 +109,19 @@ void  BaseParser::keyValueCkeck(void) {
         continue;
     if (*end == ';') {
       it->erase(end);
-      if (!lastWord(*it).size()) {
-        logger.LogThrow("missing key or value [%s]", trim(*it).data());
+      if (!Utils::lastWord(*it).size()) {
+        logger.LogThrow("missing key or value [%s]", Utils::trim(*it).data());
       }
-      size_t n = numberWords(*it);
+      size_t n = Utils::numberWords(*it);
       if (n > 2) {
-        string tmp = firstWord(*it);
+        string tmp = Utils::firstWord(*it);
         if ((n == 3 && (!tmp.compare("error_page") \
           || !tmp.compare("return")))) {
           continue;
         } else if (n < 5 && !tmp.compare("allow_methods")) {
           continue;
         } else {
-          logger.LogThrow("too many words [%s]", trim(*it).data());
+          logger.LogThrow("too many words [%s]", Utils::trim(*it).data());
         }
       }
     }
@@ -137,15 +139,15 @@ bool  BaseParser::readInclude(const string &fdFile) {
   ifstream *file;
   string   buffer;
 
-  if (!(file = openFile(fdFile))) {
+  if (!(file = Utils::openFile(fdFile))) {
     delete file;
     return (true);
   }
   while (getline(*file, buffer, '\n')) {
-    buffer = trim(buffer);
-    if (skipLine(buffer))
+    buffer = Utils::trim(buffer);
+    if (Utils::skipLine(buffer))
       continue;
-    if (!checkAllowedWords(firstWord(buffer))) {
+    if (!checkAllowedWords(Utils::firstWord(buffer))) {
       logger.Log("[%s]", buffer.data());
       delete file;
       return (true);
@@ -201,7 +203,7 @@ size_t  BaseParser::serverError(size_t i) {
     if (data[i].find("server") != string::npos \
       && data[i].find("{") != string::npos) {
         logger.LogThrow("server dentro de server");
-    } else if (!firstWord(data[i]).compare("include")) {
+    } else if (!Utils::firstWord(data[i]).compare("include")) {
       logger.LogThrow("include circular");
     } else if (data[i].find("location") != string::npos \
       && data[i].find("{") != string::npos) {
@@ -226,7 +228,7 @@ void  BaseParser::handlerScopeError(void) {
 }
 
 size_t BaseParser::parserScopeLocation(size_t j) const {
-  string  tmp = lastWord(data[j]);
+  string  tmp = Utils::lastWord(data[j]);
   if (tmp[0] != '/')
     throw(runtime_error(string("scope location missing / (") + string(data[j] + ")")));
   else if (data[j].find("{") == string::npos)
@@ -234,13 +236,13 @@ size_t BaseParser::parserScopeLocation(size_t j) const {
   while (++j < data.size()) {
     if (!data[j].compare("}"))
       break;
-    else if (!firstWord(data[j]).compare("server_name"))
+    else if (!Utils::firstWord(data[j]).compare("server_name"))
         throw(runtime_error(string("parser location (") + string(data[j] + ")")));
-    else if (!firstWord(data[j]).compare("server"))
+    else if (!Utils::firstWord(data[j]).compare("server"))
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
-    else if (!firstWord(data[j]).compare("location"))
+    else if (!Utils::firstWord(data[j]).compare("location"))
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
-    else if (!firstWord(data[j]).compare("listen"))
+    else if (!Utils::firstWord(data[j]).compare("listen"))
       throw(runtime_error(string("parser location (") + string(data[j] + ")")));
   }
   return(j);

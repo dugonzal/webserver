@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 12:27:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:42:48 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,8 +246,8 @@ void Request::getMethod( void )
       
       totalPath << locationRoot.getRoot() << route;
       directoryPath = locationRoot.getRoot() + route;
-      if (locationRoot.getAutoIndex() != 1 && locationRoot.getAutoIndex() != -1) { /* Autoindex off & Directory in route */
-        if (Utils::isDirectory(locationRoot.getRoot() + route)) { /* This is the case where index should apply */
+      if (Utils::isDirectory(locationRoot.getRoot() + route)) { /* is Directory & Index specified */
+        if (!locationRoot.getIndex().empty()) { /* This is the case where index should apply */
           totalPath.str("");
           if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
               route.append("/");
@@ -260,7 +260,7 @@ void Request::getMethod( void )
       if (isCgi)
         resHttpCGI(contentType);
       else if (Utils::isDirectory(directoryPath)) { /* Directory */
-        if (locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) /* Autoindex on / Non-defined */
+        if ((locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) && locationRoot.getIndex().empty()) /* Autoindex on / Non-defined */
         {
           string autoindex;
           if (route == "/")
@@ -271,23 +271,23 @@ void Request::getMethod( void )
         else /* Autoindex manually off */
         {
           if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
-          map<size_t, string>::iterator it = locationRoot.getErrorPages().find(404);
-          string filePath = adjustRoute(locationRoot.getRoot(), it->second);
-          stringstream totalPath;
-          totalPath << locationRoot.getRoot() << filePath;
-          ifstream archivo(totalPath.str().c_str());
-          if (archivo.is_open()) {
-            ostringstream oss;
-            oss << archivo.rdbuf();
-            resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
+            map<size_t, string>::iterator it = locationRoot.getErrorPages().find(404);
+            string filePath = adjustRoute(locationRoot.getRoot(), it->second);
+            stringstream totalPath;
+            totalPath << locationRoot.getRoot() << filePath;
+            ifstream archivo(totalPath.str().c_str());
+            if (archivo.is_open()) {
+              ostringstream oss;
+              oss << archivo.rdbuf();
+              resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
+            }
+            else
+              resHttpErr(false, INTERNAL_ERROR, "text/html", "");
           }
-          else
+          else /* No error pages for 404 code */
             resHttpErr(false, INTERNAL_ERROR, "text/html", "");
         }
-        else /* No error pages for 404 code */
-          resHttpErr(false, INTERNAL_ERROR, "text/html", "");
-        }
-      } else if (archivo.is_open()) { /* File */
+      } else if (archivo.is_open()) { /* File OR Index */
         oss << archivo.rdbuf();
         string httpResponse;
         if (locationRoot.getClientBodySize() == -1)

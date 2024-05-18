@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 18:42:48 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:30:11 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,6 +338,10 @@ void Request::postMethod( void )
 		resHttpErr(true, METHOD_NOT_ALLOWED, "text/html", "");
 	else
 	{
+    if (isCgi) {
+      resHttpCGI( contentType );
+      return ;
+    }
 		string msgString(header);
 		size_t bodyStart = msgString.find("\r\n\r\n");
 		string postBody = msgString.substr(bodyStart + 4);
@@ -346,19 +350,10 @@ void Request::postMethod( void )
 		verificarArchivo.close();
 		ofstream archivo((locationRoot.getRoot() + route).c_str(), ios::app);
 		if (archivo.is_open()) {
-			if (archivoExiste) {
-				if (isCgi)
-					resHttpCGI( contentType );
-				else
-          resHttpCustom(OK, checkContentType(route), postBody);
-			}
+			if (archivoExiste)
+				resHttpCustom(OK, checkContentType(route), postBody);
 			else
-			{
-				if (isCgi)
-					resHttpCGI( contentType );
-				else
-          resHttpCustom(CREATED, contentType, postBody);
-			}
+				resHttpCustom(CREATED, contentType, postBody);
 		}
 		else
 		  resHttpErr(true, INTERNAL_ERROR, "text/html", "");

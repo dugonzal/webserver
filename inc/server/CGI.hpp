@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/17 23:36:28 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:05:13 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class CGI {
   ifstream  file;
   string    path;
   string    fileName;
+  string    tempFileName;
   string    root;
   Logger    logger;
 

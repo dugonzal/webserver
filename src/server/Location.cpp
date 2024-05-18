@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 18:33:05 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/18 19:10:30 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ void Location::setClientBodySize(const string& _clientBodySize) {
     clientBodySize *= 1000000;
   else if (!size.str().compare("k"))
     clientBodySize *= 1000;
-  std::cout << "Size : " << clientBodySize << std::endl;
 }
 
 void  Location::setAlias(const string &_alias) {

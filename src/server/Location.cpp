@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 12:29:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/18 18:33:05 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,13 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   if (_clientBodySize.size() > 11)
     logger.LogThrow("clientBodySize error [%s]", _clientBodySize.data());
   clientBodySize = atoi(num.str().c_str());
+  if (size.str().size() > 1)
+    logger.LogThrow("clientBodySize error [%s]: too many characters", _clientBodySize.data());
+  if (!size.str().compare("m"))
+    clientBodySize *= 1000000;
+  else if (!size.str().compare("k"))
+    clientBodySize *= 1000;
+  std::cout << "Size : " << clientBodySize << std::endl;
 }
 
 void  Location::setAlias(const string &_alias) {

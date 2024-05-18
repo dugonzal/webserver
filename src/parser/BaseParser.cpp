@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 12:37:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:38:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
   ifstream   *file;
   string     buffer;
 
-  if (Utils::checkProcess() == true)
-      throw(runtime_error("error: webserver: already another process running"));
   if (!(file = Utils::openFile(fileName))) {
     delete file;
     logger.LogThrow("file not found [%s]", filename.data());

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 11:15:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:30:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 class Response;
 
-class Request {
+class Request: private virtual Utils {
  private:
   string                header;
   Logger                logger;

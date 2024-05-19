@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 19:23:33 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:32:26 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,6 @@ void    CGI::setQuery( const map<string, string> queryTmp ) {
 	query = (queryTmp);
 }
 
-void  CGI::readFd(const string &fd) {
-  string buffer;
-  ifstream readFile(fd.data());
-
-  while (getline(readFile, buffer, '\n')) {
-    result.push_back(buffer);
-  }
-  remove(fd.data());
-}
-
 const vector<string>& CGI::getCgi(void) const { return result; }
 
 void  CGI::handlerCgi( bool isQuery ) {
@@ -73,7 +63,7 @@ void  CGI::handlerCgi( bool isQuery ) {
 
 	pid = fork();
 	if (pid < 0) {
-    Utils::killProcess(sleepPid);
+    killProcess(sleepPid);
 		return(logger.Log("error fork"));
 	}
 	if (!pid) {
@@ -86,30 +76,31 @@ void  CGI::handlerCgi( bool isQuery ) {
 		}
 		exit(-42);
 	}
-	if (waitpid(0, &retCode, 0) == sleepPid) {
-    	Utils::killProcess(pid);
+  if (waitpid(0, &retCode, 0) == sleepPid) {
+    killProcess(pid);
 		close(out);
 		close(err);
-		readFd("cgi.out");
+    readFile("cgi.out");
 		remove("cgi.err");
+		remove("cgi.out");
 		result.push_back("<h1>error: CGI: timeout</h1>");
 		return logger.Log("error waitpid cgi");
 	}
-  	Utils::killProcess(sleepPid);
+  	killProcess(sleepPid);
 	close(out);
 	close(err);
 	int ret = WEXITSTATUS(retCode);
 	if (WIFEXITED(retCode) && ret > -1) {
 		err = open("cgi.out", O_RDONLY);
-		readFd("cgi.out");
+    readFile("cgi.out");
 		close(out);
 		remove("cgi.err");
 		remove("cgi.out");
 	} else {
 		err = open("cgi.err", O_RDONLY);
-		readFd("cgi.err");
-		remove("cgi.out");
+    readFile("cgi.err");
 		close(err);
+		remove("cgi.out");
 		remove("cgi.err");
 	}
 	if (!tempFileName.empty())
@@ -117,16 +108,17 @@ void  CGI::handlerCgi( bool isQuery ) {
 }
 
 void	CGI::insertQuery( void ) {
-	ifstream inCgiFile(fileName.c_str());
+	vector<string>  cgiFileBuf;
+	stringstream    fileBuf;
+	ifstream        inCgiFile(fileName.data());
 
 	if (!inCgiFile.is_open())
 		logger.Log("error: CGI: file could not be opened (input)");
-	vector<string> cgiFileBuf;
-	stringstream	fileBuf;
-	map<string, string>::iterator it;
 
 	fileBuf << inCgiFile.rdbuf();
-	for (it = query.begin(); query.end() != it; it++) {
+	map<string, string>::iterator it;
+
+  for (it = query.begin(); query.end() != it; it++) {
 		cgiFileBuf.push_back(it->first);
 		cgiFileBuf.push_back("=");
 		cgiFileBuf.push_back(it->second);
@@ -135,9 +127,7 @@ void	CGI::insertQuery( void ) {
 	cgiFileBuf.push_back(fileBuf.str());
 
 	inCgiFile.close();
-	tempFileName = fileName;
-	fileName.append(".tmp");
-	//remove(fileName.c_str());
+	tempFileName = fileName.append(".tmp");
 	ofstream outCgiFile(fileName.c_str());
 	if (!outCgiFile.is_open())
 		logger.Log("error: CGI: file could not be opened (output)");

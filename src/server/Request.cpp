@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 19:30:11 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:33:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,19 @@ void  Request::setLocation(void) {
 }
 
 bool  Request::setRouteAndVersion(const string &tmp) {
-  route = adjustRoute(Utils::firstWord(tmp));
-  version = Utils::lastWord(tmp);
+  route = adjustRoute(firstWord(tmp));
+  version = lastWord(tmp);
   return(false);
 }
 
 void  Request::parserData(void) {
   int pos = header.find_first_of('\n');
 
-  if (setRouteAndVersion(Utils::trim(Utils::lastWord(header.substr(0, pos))))) {
+  if (setRouteAndVersion(trim(Utils::lastWord(header.substr(0, pos))))) {
     logger.Log("error version");
   }
   setLocation();
-  if (setMethod(Utils::trim(Utils::firstWord(header.substr(0, pos))))) {
+  if (setMethod(trim(Utils::firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
   }
 }
@@ -246,7 +246,7 @@ void Request::getMethod( void )
       
       totalPath << locationRoot.getRoot() << route;
       directoryPath = locationRoot.getRoot() + route;
-      if (Utils::isDirectory(locationRoot.getRoot() + route)) { /* is Directory & Index specified */
+      if (isDirectory(locationRoot.getRoot() + route)) { /* is Directory & Index specified */
         if (!locationRoot.getIndex().empty()) { /* This is the case where index should apply */
           totalPath.str("");
           if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
@@ -259,7 +259,7 @@ void Request::getMethod( void )
       ostringstream oss;
       if (isCgi)
         resHttpCGI(contentType);
-      else if (Utils::isDirectory(directoryPath)) { /* Directory */
+      else if (isDirectory(directoryPath)) { /* Directory */
         if ((locationRoot.getAutoIndex() == 1 || locationRoot.getAutoIndex() == -1) && locationRoot.getIndex().empty()) /* Autoindex on / Non-defined */
         {
           string autoindex;
@@ -465,7 +465,7 @@ void  Request::resHttpCGI( const string& contentType ) {
     handleQueryPost(header);
   else
     cgi.handlerCgi(false);
-  resHttpCustom(OK, contentType, Utils::convertHTML(cgi.getCgi()));
+  resHttpCustom(OK, contentType, convertHTML(cgi.getCgi()));
 }
 
 void  Request::resHttpErr( bool checkErrPg, int _httpCode,const string& _contentType, const string& _body ) {
@@ -511,7 +511,7 @@ void  Request::serverToClient(const string &_header, size_t fd) {
     end = pos + 10 + 11;
   }
   if (cookie) {
-    setCookie = Utils::generate_random_session_id();
+    setCookie = generate_random_session_id();
     listCookie.push_back(setCookie);
   }
   istringstream ss(header);
@@ -522,10 +522,10 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   if (version != "HTTP/1.1") {
     resHttpErr(true, VERSION_NOT_SUPPORTED, "text/html", "");
   } else if (method == "GET")
-		getMethod();
-	else if (method == "POST")
-		postMethod();
-	else if (method == "DELETE")
+	  getMethod();
+  else if (method == "POST")
+	  postMethod();
+  else if (method == "DELETE")
 		deleteMethod();
   else
     resHttpErr(true, INTERNAL_ERROR, "text/html", "");

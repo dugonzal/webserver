@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 19:10:30 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:32:32 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void  Location::setCgiPath(const string &_cgiPath) {
 void  Location::setReturn(const string &return_) {
   if (!_return.second.empty())
     logger.LogThrow("setReturn [%s]", return_.data());
-  _return.first = atoi(Utils::firstWord(return_).data());
+  _return.first = atoi(firstWord(return_).data());
   if (_return.first < 100 or _return.first > 505)
     logger.LogThrow("setErrorPages code not allowed [%s]", return_.data());
-  _return.second = Utils::lastWord(return_);
+  _return.second = lastWord(return_);
 }
 
 void  Location::setMethods(const string &_methods) {
@@ -111,20 +111,21 @@ void  Location::setMethods(const string &_methods) {
 }
 
 void  Location::setErrorPages(const string &_errorPages) {
-  size_t n = atoi(Utils::firstWord(_errorPages).data());
+  size_t n = atoi(firstWord(_errorPages).data());
 
   if (n < 100 or n > 505 or errorPages.find(n) != errorPages.end())
     logger.LogThrow("setErrorPages code not allowed [%s]", _errorPages.data());
   else if (errorPages.find(n) != errorPages.end())
     logger.LogThrow("setErrorPages code already exists [%s]", _errorPages.data());
-  errorPages.insert(pair<size_t, string>(n, Utils::lastWord(_errorPages)));
+  errorPages.insert(make_pair(n, lastWord(_errorPages)));
 }
 
 void  Location::setListen(const string &_listen) {
-  int pos = _listen.find_first_of(":");
-  int n = 0;
   string  tmp;
-  // habria que comprobar que el host tengo 4 puntos y sean mayores a 0 y < 255
+  
+  int pos = _listen.find_first_of(":");
+  int n   = 0;
+
   if (!host.empty() or port != -1)
     logger.LogThrow("listen exists (", _listen.data());
   else if (pos > 6) {
@@ -161,14 +162,14 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   if (clientBodySize != -1)
     logger.LogThrow("clientBodySize exists [%s]", _clientBodySize.data());
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
-    if (isdigit(_clientBodySize.c_str()[i]))
-      num << _clientBodySize.c_str()[i];
+    if (isdigit(_clientBodySize.data()[i]))
+      num << _clientBodySize.data()[i];
     else
-      size << _clientBodySize.c_str()[i];
+      size << _clientBodySize.data()[i];
   }
   if (_clientBodySize.size() > 11)
     logger.LogThrow("clientBodySize error [%s]", _clientBodySize.data());
-  clientBodySize = atoi(num.str().c_str());
+  clientBodySize = atoi(num.str().data());
   if (size.str().size() > 1)
     logger.LogThrow("clientBodySize error [%s]: too many characters", _clientBodySize.data());
   if (!size.str().compare("m"))
@@ -224,10 +225,8 @@ int Location::getPort(void) const { return (port); }
 const string  Location::getServerName(void) const { return (serverName); }
 
 const string  &Location::getAlias(void) const { return(alias); }
-//FUNCIONES IKER
 
 long Location::getClientBodySize(void) const { return (clientBodySize); }
-
 
 void  Location::clear(void) {
   root.clear();

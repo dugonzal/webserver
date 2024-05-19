@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:55:56 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/04 09:45:00 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:30:16 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "../Utils.hpp"
 # include "../Logger.hpp"
 
-class Location {
+class Location: private virtual Utils {
  private:
     string                root;
     string                path;

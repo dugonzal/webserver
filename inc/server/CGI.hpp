@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 19:05:13 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:29:56 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "../Utils.hpp"
 # include "../Logger.hpp"
 
-class CGI {
+class CGI: private virtual Utils {
  private:
   vector<string>    result;
   ifstream  file;
@@ -36,7 +36,6 @@ class CGI {
   ~CGI(void);
 
  private:
-  void    readFd(const string&);
   void    clear(void);
 
  public:

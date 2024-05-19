@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/09 18:24:14 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:30:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "Server.hpp"
 # include "../Utils.hpp"
 
-class ServerManager {
+class ServerManager: private virtual Utils {
  private:
   size_t                          nServers;
   Server                          server;

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 02:42:53 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/22 17:49:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:35:12 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "../Utils.hpp"
 # include "Location.hpp"
 
-class BaseServer {
+class BaseServer: private virtual Utils {
  protected:
     int                    serverFd; // File Descriptor
     const int              opt; // Special options set for server socket
@@ -46,5 +46,6 @@ class BaseServer {
     Location      getLocation(void) const;
     const string  getHost(void) const;
     int           getPort(void) const;
-  friend ostream  &operator<<(ostream&, const BaseServer&);
+
+ friend ostream  &operator<<(ostream&, const BaseServer&);
 };

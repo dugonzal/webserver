@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:42:46 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/23 20:09:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:31:42 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # include "Utils.hpp"
 
-class Logger {
+class Logger: private virtual Utils {
  private:
   static Logger *ins;
   ofstream      file;

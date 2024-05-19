@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/04/21 16:32:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:31:31 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,10 @@
 
 # include "../parser/Parser.hpp"
 # include "../Signals.hpp"
-# include "Server.hpp"
 # include "../Utils.hpp"
 # include "../server/ServerManager.hpp"
 
-/*
- * voy a usar el vector de servidores para obtener la data puedo crear una pequeña funcoion que parsee y comprueba 
- * la informcaion dentro del scope del servidor, cada server tendra un vector de string buffer 
- * que recibira el scope del buffer una vez que el scope este parceado
- * */
-class WebServer {
+class WebServer: private virtual Utils {
  private:
   mutable ServerManager         servers;
   mutable Parser                parser;
@@ -31,6 +25,7 @@ class WebServer {
   mutable size_t                nServers;
   mutable map<string, Location> *locations;
   Logger                        logger;
+ 
  private:
   WebServer(void);
 

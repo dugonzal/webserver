@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:44:23 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:45:52 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ struct Utils {
   static ifstream *openFile(const string&);
   static string   convertHTML(const vector<string>&);
   static string   generate_random_session_id(size_t = 10);
-  static void     killProcess(int _pid);
+  static void     killProcess(int);
   static bool     checkProcess(void);
   static bool     isW(const char);
 };

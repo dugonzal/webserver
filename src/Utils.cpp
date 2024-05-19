@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 12:39:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:44:46 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,11 @@ string Utils::convertHTML(const vector<string>& cgiOutput) {
   return htmlCode;
 }
 
-string Utils::generate_random_session_id(void) {
-  stringstream ss;
-  int length = 10;
+string Utils::generate_random_session_id(size_t length) {
   const string alphanum = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  stringstream ss;
 
-  for (int i = 0; i < length; ++i)
+  for (size_t i = 0; i < length; ++i)
       ss << alphanum[rand() % alphanum.length()];
 
   return ss.str();

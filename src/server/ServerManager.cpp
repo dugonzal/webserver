@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:34:09 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:42:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ ServerManager &ServerManager::operator=(const ServerManager &copy) {
 bool  ServerManager::removeDuplicateServers(const string& host, int port) {
   for (size_t i = 0; i < vServers.size(); i++) {
     Location loc = vServers[i]->getLocation();
-    if (loc.getHost() == host && loc.getPort() == port) {
+    if (loc.getHost() == host and loc.getPort() == port) {
       logger.Log("host and port exist skiped [%s] [%d]", host.data(), port);
       return (true);
     }
@@ -123,7 +123,7 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
     host = "127.0.0.1";
 
   for (size_t i = 0; i < vServers.size(); i++) {
-    if (vServers[i]->getHost() == host && vServers[i]->getPort() == port) {
+    if (vServers[i]->getHost() == host and vServers[i]->getPort() == port) {
       vServers[i]->handlerClient(fd, header);
       break;
     }

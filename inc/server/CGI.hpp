@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:29:56 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:04:07 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
 
 class CGI: private virtual Utils {
  private:
-  vector<string>    result;
+  char**    environ;
+  string    result;
   ifstream  file;
   string    path;
   string    fileName;
-  string    tempFileName;
   string    root;
   Logger    logger;
 
-  map<string, string> query;
+  string query;
 
  private:
   CGI(const CGI&);
@@ -39,10 +39,8 @@ class CGI: private virtual Utils {
   void    clear(void);
 
  public:
-  void    setCgi(const string&, const string&);
-  void    handlerCgi( bool isQuery );
-  const vector<string>&  getCgi(void) const;
-
-  void    insertQuery( void );
-  void    setQuery( const map<string, string> queryTmp );
+  void    setCgi(const string&, const string&, char** );
+  void	  setQuery( string& _query );
+  void    handlerCgi( void );
+  const string&  getCgi(void) const;
 };

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:30:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:56:53 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Request: private virtual Utils {
   string                setCookie;
 
  private:
+  char    **environ;
   string  method;
   string  route;
   string  version;
@@ -64,6 +65,7 @@ class Request: private virtual Utils {
   bool    setMethod(const string&);
   bool    setRouteAndVersion(const string&);
   void    setLocation(void);
+  void    setEnviroment( char** _environ );
   void    parserData(void);
   void    serverToClient(const string&, size_t);
 

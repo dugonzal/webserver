@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:34 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:45:52 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 13:51:05 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ struct Utils {
   static bool     isFile(const string&);
   static void     readDirectory(const string&);
   static ifstream *openFile(const string&);
-  static string   convertHTML(const vector<string>&);
+  static string   convertHTML(const string& cgiOutput);
   static string   generate_random_session_id(size_t = 10);
   static void     killProcess(int);
   static bool     checkProcess(void);

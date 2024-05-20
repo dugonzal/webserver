@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:31:31 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:59:08 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ class WebServer: private virtual Utils {
   mutable size_t                nServers;
   mutable map<string, Location> *locations;
   Logger                        logger;
+  char**                  environ;
  
  private:
   WebServer(void);
 
  private:
-  void    setServerWebServer(const vector<string>&, size_t);
   void    handlerSetServerWebServer(void);
   void    setLocations(const vector<string>&, size_t); 
   void    insertLocation(Location*, const string&);
 
  public:
-  explicit WebServer(const string&);
+  explicit WebServer(const string&, char** _environ );
   WebServer(const WebServer&);
   WebServer &operator=(const WebServer&);
   ~WebServer(void);

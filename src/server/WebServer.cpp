@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:34:16 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:59:39 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ WebServer::~WebServer(void) {
   delete [] locations;
 }
 
-WebServer::WebServer(const string &filename): parser(filename), signals() {
+WebServer::WebServer(const string &filename, char** _environ ): parser(filename), signals(), environ(_environ) {
   nServers = parser.getNservers();
 }
 
@@ -39,6 +39,7 @@ void  WebServer::setServer(void) {
   handlerSetServerWebServer();
   servers.setNServers(nServers);
   servers.setLocations(locations);
+  servers.setEnviroment(environ);
   servers.startServers();
 }
 

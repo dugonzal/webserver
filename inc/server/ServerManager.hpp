@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:30:37 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:52:24 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class ServerManager: private virtual Utils {
   vector<Server*>                 vServers;
   mutable map<string, Location>   *location;
   Logger                          logger;
+  char**                    environ;
 
  public:
   ServerManager(void);
@@ -32,14 +33,13 @@ class ServerManager: private virtual Utils {
   ServerManager &operator=(const ServerManager&);
 
  public:
-  void  setNServers(size_t);
   void  startServers(void);
-  int   setServerName(const string&);
+  void  setNServers(size_t);
   void  setLocations(map<string, Location>*);
+  void  setEnviroment( char** );
 
  private:
   void  handlerPoll(void);
-  void  addServer(Server);
   void  initPoll(void);
   void  addClient(void);
   bool  removeDuplicateServers(const string&, int port);

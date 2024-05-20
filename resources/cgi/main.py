@@ -1,11 +1,5 @@
-print("hello world");
-print("hello world");
-print("hello world");
-print("hello world");
-print("hello world");
-print("hello world");
-print("hello world");
-print("modificado");
-#print(name);
-print("hello world");
-print("<form action=\"\" method=\"post\">\n\r\r\r<input type=\"submit\" name=\"upvote\" value=\"Upvote\" />")
+print("<form action=\"/cgi/geeks.py\" method=\"post\">")
+print("\r\r\r<input type=\"text\" name=\"your_name\" placeholder=\"Your Name\" /><br>")
+print("\r\r\r<input type=\"text\" name=\"company_name\" placeholder=\"Company Name\" /><br>")
+print("\r\r\r<input type=\"submit\" value=\"Submit\" />")
+print("</form>")

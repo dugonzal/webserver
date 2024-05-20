@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:33:49 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:40:49 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ void  Request::setLocation(const map<string, Location> &tmp) {
 void  Request::setHostAndPort(const string &_host, size_t _port) {
   host = _host;
   port = _port;
+}
+
+void  Request::setEnviroment( char** _environ ) {
+  environ = _environ;
 }
 
 bool  Request::setMethod(const string &_method) {
@@ -224,7 +228,7 @@ void Request::getMethod( void )
 	size_t bodyStart = header.find("\r\n\r\n");
 	string postBody = header.substr(bodyStart + 4);
 	if (!postBody.empty()) /* Return 500 if any body is given */
-    	resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+    	resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
 	else if (!checkMethod("GET"))
     resHttpErr(true, METHOD_NOT_ALLOWED, "text/html", "");
 	else
@@ -237,7 +241,7 @@ void Request::getMethod( void )
 			else if (!locationRoot.getReturn().second.empty() && route != locationRoot.getReturn().second)
         resHttpErr(true, MOVED, "", "");
 			else
-        resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+        resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
 	  }
 		else
 		{
@@ -282,10 +286,10 @@ void Request::getMethod( void )
               resHttpCustom(NOT_FOUND, checkContentType(it->second), oss.str());
             }
             else
-              resHttpErr(false, INTERNAL_ERROR, "text/html", "");
+              resHttpErr(false, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
           }
           else /* No error pages for 404 code */
-            resHttpErr(false, INTERNAL_ERROR, "text/html", "");
+            resHttpErr(false, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
         }
       } else if (archivo.is_open()) { /* File OR Index */
         oss << archivo.rdbuf();
@@ -293,7 +297,7 @@ void Request::getMethod( void )
         if (locationRoot.getClientBodySize() == -1)
           locationRoot.setClientBodySize("1m");
         if (static_cast<long>(oss.str().size()) > (locationRoot.getClientBodySize()))
-          resHttpErr(true, ENTITY_TOO_LARGE, "text/html", "");
+          resHttpErr(true, ENTITY_TOO_LARGE, "text/html", "<h2>Error 413: Request Entity Too Large</h2>");
         else
           resHttpCustom(OK, contentType, oss.str());
       }
@@ -319,11 +323,11 @@ void Request::getMethod( void )
               resHttpCustom(NOT_FOUND, "text/html", oss.str());
             }
             else
-              resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+              resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
           }
         }
         else
-          resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+          resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
       }
     }
   }
@@ -356,7 +360,7 @@ void Request::postMethod( void )
 				resHttpCustom(CREATED, contentType, postBody);
 		}
 		else
-		  resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+		  resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
 	}
 }
 
@@ -390,7 +394,7 @@ void Request::deleteMethod( void )
             resHttpCustom(NOT_FOUND, "text/html", oss.str());
           }
           else
-            resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+            resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
         }
       }
     } 
@@ -460,12 +464,12 @@ void  Request::resHttpCGI( const string& contentType ) {
 		tmp = locationRoot.getRoot();
 		tmp.append("/");
 	}
-	cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
   if (method == "POST" && checkQueryPost(header))
     handleQueryPost(header);
-  else
-    cgi.handlerCgi(false);
-  resHttpCustom(OK, contentType, convertHTML(cgi.getCgi()));
+	cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex(), environ);
+  cgi.handlerCgi();
+  //std::cout << cgi.getCgi() << std::endl;
+  resHttpCustom(OK, contentType, cgi.getCgi());
 }
 
 void  Request::resHttpErr( bool checkErrPg, int _httpCode,const string& _contentType, const string& _body ) {
@@ -528,7 +532,7 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   else if (method == "DELETE")
 		deleteMethod();
   else
-    resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+    resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
 }
 
 bool  Request::checkQueryPost( const string& msgClient ) {
@@ -545,32 +549,21 @@ bool  Request::checkQueryPost( const string& msgClient ) {
 
 void  Request::handleQueryPost( const string& msgClient ) {
   size_t bodyStart = msgClient.find("\r\n\r\n");
-  string body = msgClient.substr(bodyStart + 4);
+  string query = msgClient.substr(bodyStart + 4);
 
-  map<string, string> query;
-  stringstream keyValue;
-  stringstream keyRef;
-  bool flag = false;
-  for (size_t it = 0; body[it]; it++) {
-    if (body[it] == '&') {
-      query.insert(pair<string, string>(keyRef.str(), keyValue.str()));
-      keyRef.str("");
-      keyValue.str("");
-      flag = false;
-    }
-    else if (body[it] == '=') {
-      flag = true;
-    }
-    else {
-      if (flag == true)
-        keyValue << body[it];
-      else if (flag == false)
-        keyRef << body[it];
-    }
+  size_t it;
+  char envLine[100] = "QUERY_STRING=";
+  for (it = 0; environ[it]; it++)
+    ;
+  strcat(envLine, query.c_str());
+  environ[0] = envLine;
+
+  if (setenv("QUERY_STRING", query.c_str(), 1) != 0)
+    logger.Log("error: setenv() did not work");
+  string query_value(getenv("QUERY_STRING"));
+  if (!query_value.empty()) {
+      logger.Log(query_value.c_str());
+  } else {
+      logger.Log("QUERY_STRING environment variable not set");
   }
-  query.insert(pair<string, string>(keyRef.str(), keyValue.str()));
-  keyRef.str("");
-  keyValue.str("");
-  cgi.setQuery(query);
-  cgi.handlerCgi(true);
 }

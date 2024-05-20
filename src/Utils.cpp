@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:44:46 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:08:43 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,17 @@ ifstream  *Utils::openFile(const string &fdName) {
   return (file);
 }
 
-string Utils::convertHTML(const vector<string>& cgiOutput) {
-  string htmlCode;
+string Utils::convertHTML(const string& cgiOutput) {
+  string        htmlCode;
+  stringstream  cgiLine;
   htmlCode += "<html>\r<head>\n\r</head>\n\r\r<body>\n";
-  for (size_t it = 0; it < cgiOutput.size(); it++) {
-    htmlCode += "\r\r\r<div>" + cgiOutput[it] + "</div>\n";
+  for (size_t it = 0; cgiOutput[it]; it++) {
+    if (cgiOutput[it] == '\n') {
+      htmlCode += "\r\r\r<div>" + cgiLine.str() + "</div>\n";
+      cgiLine.str("");
+    }
+    else
+      cgiLine << cgiOutput[it];
   }
   htmlCode += "\r\r</body>\n</html>";
   return htmlCode;

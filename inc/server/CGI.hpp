@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:39:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 12:04:07 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:52:46 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 class CGI: private virtual Utils {
  private:
-  char**    environ;
   string    result;
   ifstream  file;
   string    path;
@@ -39,7 +38,7 @@ class CGI: private virtual Utils {
   void    clear(void);
 
  public:
-  void    setCgi(const string&, const string&, char** );
+  void    setCgi(const string&, const string&);
   void	  setQuery( string& _query );
   void    handlerCgi( void );
   const string&  getCgi(void) const;

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 12:19:12 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:54:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ CGI &CGI::operator=(const CGI &copy) {
   return(*this);
 }
 
-void  CGI::setCgi(const string &_path, const string &_fileName, char** _environ ) {
+void  CGI::setCgi(const string &_path, const string &_fileName) {
   path = (char *)_path.data();
   fileName = (char*)_fileName.data();
-  environ = _environ;
 }
 
 void	CGI::setQuery( string& _query ) {
@@ -66,6 +65,7 @@ void  CGI::handlerCgi( void ) {
 		return(logger.Log("error fork"));
 	}
 	if (!pid) {
+    extern char **environ;
 		const char *tmp[3] = { path.data(), fileName.data(), NULL };
 
 		if (dup2(out, STDOUT_FILENO) < 0 || dup2(out, STDERR_FILENO) < 0)

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 11:53:34 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:54:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void  ServerManager::startServers(void) {
     if (removeDuplicateServers(tmp.getHost(), tmp.getPort()))
       continue;
     Server *ptr = new Server();
-    ptr->setEnviroment(environ);
     ptr->setLocations(location[n]);
     ptr->setLocationRequest();
     ptr->setServerSide();
@@ -155,8 +154,4 @@ void  ServerManager::setNServers(size_t _amount) { nServers = _amount; }
 
 void  ServerManager::setLocations(map<string, Location> *_location) {
   location = _location;
-}
-
-void  ServerManager::setEnviroment( char** _environ ) {
-  environ = _environ;
 }

@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 11:56:53 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:50:27 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ class Request: private virtual Utils {
   bool    setMethod(const string&);
   bool    setRouteAndVersion(const string&);
   void    setLocation(void);
-  void    setEnviroment( char** _environ );
+  void    setEnviroment(char**);
   void    parserData(void);
   void    serverToClient(const string&, size_t);
 
-  void    resHttpCGI( const string& contentType );
+  void    resHttpCGI( const string&);
   void    resHttpErr( bool checkErrPg, int _httpCode,const string& _contentType, const string& _body );
   void    resHttpCustom( int httpCode,const string& contentType, const string& body );
 

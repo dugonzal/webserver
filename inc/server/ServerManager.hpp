@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 11:52:24 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:52:30 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ class ServerManager: private virtual Utils {
   vector<Server*>                 vServers;
   mutable map<string, Location>   *location;
   Logger                          logger;
-  char**                    environ;
 
  public:
   ServerManager(void);
@@ -36,7 +35,6 @@ class ServerManager: private virtual Utils {
   void  startServers(void);
   void  setNServers(size_t);
   void  setLocations(map<string, Location>*);
-  void  setEnviroment( char** );
 
  private:
   void  handlerPoll(void);

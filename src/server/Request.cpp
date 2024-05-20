@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 12:40:49 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:55:25 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -466,7 +466,7 @@ void  Request::resHttpCGI( const string& contentType ) {
 	}
   if (method == "POST" && checkQueryPost(header))
     handleQueryPost(header);
-	cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex(), environ);
+	cgi.setCgi(locationRoot.getCgiPath(), tmp + locationRoot.getIndex());
   cgi.handlerCgi();
   //std::cout << cgi.getCgi() << std::endl;
   resHttpCustom(OK, contentType, cgi.getCgi());

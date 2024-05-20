@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:03:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 11:54:44 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:52:09 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,4 @@ class Server: public virtual BaseServer {
   Server  &operator=(const Server&);
   void    handlerClient(size_t, const char *);
   void    setLocationRequest(void);
-  void    setEnviroment( char** _environ );
 };

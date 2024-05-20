@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 11:59:08 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:51:15 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class WebServer: private virtual Utils {
   void    insertLocation(Location*, const string&);
 
  public:
-  explicit WebServer(const string&, char** _environ );
+  explicit WebServer(const string&);
   WebServer(const WebServer&);
   WebServer &operator=(const WebServer&);
   ~WebServer(void);

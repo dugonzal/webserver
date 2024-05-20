@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:55:25 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:15:45 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,6 @@ void  Request::setLocation(const map<string, Location> &tmp) {
 void  Request::setHostAndPort(const string &_host, size_t _port) {
   host = _host;
   port = _port;
-}
-
-void  Request::setEnviroment( char** _environ ) {
-  environ = _environ;
 }
 
 bool  Request::setMethod(const string &_method) {
@@ -551,19 +547,10 @@ void  Request::handleQueryPost( const string& msgClient ) {
   size_t bodyStart = msgClient.find("\r\n\r\n");
   string query = msgClient.substr(bodyStart + 4);
 
-  size_t it;
-  char envLine[100] = "QUERY_STRING=";
-  for (it = 0; environ[it]; it++)
-    ;
-  strcat(envLine, query.c_str());
-  environ[0] = envLine;
-
   if (setenv("QUERY_STRING", query.c_str(), 1) != 0)
     logger.Log("error: setenv() did not work");
   string query_value(getenv("QUERY_STRING"));
-  if (!query_value.empty()) {
-      logger.Log(query_value.c_str());
-  } else {
+  if (query_value.empty()) {
       logger.Log("QUERY_STRING environment variable not set");
   }
 }

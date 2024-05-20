@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:49:19 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:50:27 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:02:35 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ class Request: private virtual Utils {
   string                setCookie;
 
  private:
-  char    **environ;
   string  method;
   string  route;
   string  version;

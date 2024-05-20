@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:34:47 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:51:15 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:14:00 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ class WebServer: private virtual Utils {
   mutable size_t                nServers;
   mutable map<string, Location> *locations;
   Logger                        logger;
-  char**                  environ;
  
  private:
   WebServer(void);

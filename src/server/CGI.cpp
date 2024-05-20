@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:54:06 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:14:09 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void  CGI::handlerCgi( void ) {
 		return(logger.Log("error fork"));
 	}
 	if (!pid) {
-    extern char **environ;
+    	extern char **environ;
 		const char *tmp[3] = { path.data(), fileName.data(), NULL };
 
 		if (dup2(out, STDOUT_FILENO) < 0 || dup2(out, STDERR_FILENO) < 0)

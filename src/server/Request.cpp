@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 17:15:45 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:27:56 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,15 +345,18 @@ void Request::postMethod( void )
 		string msgString(header);
 		size_t bodyStart = msgString.find("\r\n\r\n");
 		string postBody = msgString.substr(bodyStart + 4);
-		ifstream verificarArchivo((locationRoot.getRoot() + route).c_str());
-		bool archivoExiste = verificarArchivo.good();
+		ofstream verificarArchivo((locationRoot.getRoot() + route).c_str());
+    if (!verificarArchivo.is_open())
+      resHttpErr(true, INTERNAL_ERROR, "text/html", "");
+		verificarArchivo << postBody;
+    bool archivoExiste = verificarArchivo.good();
 		verificarArchivo.close();
 		ofstream archivo((locationRoot.getRoot() + route).c_str(), ios::app);
 		if (archivo.is_open()) {
 			if (archivoExiste)
-				resHttpCustom(OK, checkContentType(route), postBody);
+				resHttpCustom(OK, checkContentType(route), "");
 			else
-				resHttpCustom(CREATED, contentType, postBody);
+				resHttpCustom(CREATED, contentType, "");
 		}
 		else
 		  resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
@@ -449,7 +452,8 @@ void  Request::resHttpCustom( int httpCode, const string& contentType, const str
   if (!body.empty())
     httpResponse += body;
   httpResponse.push_back('\0');
-  Response::sendResponse(httpResponse, clientFd);
+  if (Response::sendResponse(httpResponse, clientFd))
+    logger.Log("error: send() failed");
 }
 
 void  Request::resHttpCGI( const string& contentType ) {

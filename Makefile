@@ -6,7 +6,7 @@
 #    By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 02:17:20 by Dugonzal          #+#    #+#              #
-#    Updated: 2024/05/20 16:55:00 by jaizpuru         ###   ########.fr        #
+#    Updated: 2024/05/26 12:25:01 by jaizpuru         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ INC_FILES += Signals Utils
 INC 			:= $(addprefix $(I), $(INC_FILES))
 
 SRC_DIR		:= src/
-
 OBJ_DIR		:= obj/
+DIRS = $(addprefix $(OBJ_DIR),$(P_DIR)) $(addprefix $(OBJ_DIR),$(S_DIR))
 
 P_DIR			:= parser/
 parser		:= BaseParser Parser
@@ -46,16 +46,18 @@ OBJ				:= $(addprefix ${OBJ_DIR}, $(addsuffix .o, ${SRC_FILES}))
 
 all: ${NAME}
 
-${NAME}: ${OBJ} ${I}
+${NAME}: $(DIRS) ${OBJ}
 	${CXX} ${OBJ} -o ${NAME}
 	printf "compile done ->: [$@]\n"
 
 ${OBJ_DIR}%.o: ${SRC_DIR}%.cpp
+	${CXX} -c $? -o $@
+	printf "compile ->: {$?}\n"
+
+${DIRS} :
 	mkdir -p ${OBJ_DIR}
 	mkdir -p ${OBJ_DIR}${P_DIR}
 	mkdir -p ${OBJ_DIR}${S_DIR}
-	${CXX} -c $? -o $@
-	printf "compile ->: {$?}\n"
 
 clean:
 	rm -rf ${NAME}

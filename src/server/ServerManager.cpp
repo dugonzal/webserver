@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:54:21 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/26 13:02:56 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void ServerManager::initPoll(void) {
 
 void  ServerManager::addClient(void) {
   for (size_t i = 0; i < nServers; i++) {
-    if (fds[i].revents & POLLIN) {
+    if (fds[i].revents & POLLIN) { /* Check if file descriptor can be read */
       struct sockaddr client;
       struct pollfd   pFd;
       socklen_t clientLen = sizeof(client);
@@ -97,6 +97,7 @@ void  ServerManager::addClient(void) {
 
 bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
   char header[1025];
+
 
   int r = ::recv(fd, header, 1024, 0);
   if (r < 0) {
@@ -130,6 +131,20 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
   }
   return (false);
 }
+ /**
+  * @brief Tests to check error cases with non-blocking sockets
+  * 
+  *  If we try to use accept() with sockets set to non-blocking &
+  *   no connections are available, we will get an error due to 
+  *   this behaviour.
+  * 
+  */
+void  ServerManager::errBlocking( void ) {
+  int tmp = accept(fds[0].fd, NULL, NULL);
+    std::cout << "Returning Value of accept() : " << tmp << std::endl;
+    if (errno == EAGAIN) // Check library to see error code
+      std::cout << "Errno value is : " << errno << std::endl;
+}
 
 void  ServerManager::handlerPoll(void) {
   int max = 1024;
@@ -137,6 +152,7 @@ void  ServerManager::handlerPoll(void) {
   initPoll();
   logger.Log("|--Inicio de servidor--|");
   while (42) {
+    // errBlocking();
     max = poll(fds.data(), fds.size(), -1);
     if (max < 0) {
       logger.Log("error poll");

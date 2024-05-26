@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:20:36 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:52:30 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/05/26 12:45:59 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,5 @@ class ServerManager: private virtual Utils {
   void  addClient(void);
   bool  removeDuplicateServers(const string&, int port);
   bool  selectServerForClient(size_t, size_t);
+  void  errBlocking( void );
 };

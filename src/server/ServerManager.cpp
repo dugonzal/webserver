@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/26 13:02:56 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:47:52 by jaizpuru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,18 @@ bool  ServerManager::selectServerForClient(size_t fd, size_t i) {
   }
   header[r] = 0;
   string tmp(header);
-  int pos = tmp.find("Host") + 6;
-  int end = tmp.find('\n', pos);
+  size_t pos = tmp.find("Host");
+  if (pos == string::npos) {
+    ::close(fd);
+    fds.erase(fds.begin() + i);
+    logger.Log("error: bad header");
+    return (true);
+  }
+  pos += 6;
+  size_t end = tmp.find('\n', pos);
   string addr = tmp.substr(pos, end - pos);
 
-  int idx = addr.find(":");
+  size_t idx = addr.find(":");
   int port = atoi(addr.substr(idx + 1).data());
   string host = addr.substr(0, idx);
   if (!host.compare("localhost"))

@@ -1,12 +1,10 @@
 <h1 align="center">
-	🌐 Servidor HTTP en C++98
+	🌐  Web Server HTTP en C++98
 </h1>
-
-###### _HTTP Web Server written in C++98 according to the RFC 7230-7235 standard_
 
 <p align="center">
 	<b><i>
-    **webserv** es un proyecto desarrollado en la escuela de programación [42](https://42urduliz.com/). Permite comprender el funcionamiento de un servidor HTTP y cómo se comunican los clientes y los servidores en la web.
+	Web Server es un proyecto desarrollado en la escuela 42. Permite comprender el funcionamiento de un servidor HTTP y cómo se comunican los clientes y los servidores en la red.
 
   </i></b><br>
 </p>
@@ -27,7 +25,7 @@
 # webserv
 
 <p align="center">
-  <img src="./assets/How-Server-Work.png" alt="How a server works" width="1000"/>
+  <img src="img/matrix.jpg" alt="Matrix interconectada ¡¡Nodos!!" width="1000"/>
 </p>
 
 
@@ -84,33 +82,52 @@ git clone https://github.com/dugonzal/webserver && cd webserver
 make && ./webserver || ./webserver [archivo de configuracion]
 ```
 ##  **Palabras reservadas en la key del archivó de configuracion**
-```bash
+```json
   "server", "location", "include", "server_name",
   "listen", "index", "return", "alias", "root",
   "autoindex", "client_max_body_size" "error_page",
-  "cgi_path", "allow_methods", "}", "};"
+  "cgi_path", "allow_methods"
 ```
 ## Ejemplo simple de archivo de configuracion
-```bash
+```nginx
 server  {
-listen	localhost:3007;
+listen	localhost:4242;
 root	/dir;
 index	index.html;
+client_max_body_size 42;
 allow_methods	GET;
 };
 ```
 
 ## Ejemplo completo de archivo de configuracion
-```bash
+```nginx
 server  {
 
-listen	localhost:3007;
+listen	localhost:4242;
 autoindex	on;
 server_name	tetaedro;
 root	resources;
 allow_methods	GET POST;
-client_max_body_size 1000000;
+client_max_body_size 4242;
+# archivo de configuracion incluido
 include ./conf/location.conf;
+location / {
+	index	main.py;
+	alias	./resources;
+	cgi_path	./cgi-bin;
+	resources	./resources;
+	autoindex	on;
+	allow_methods	GET POST;
+	error_page	4242 errorPages.html;
+}
+location /redirect {
+	index	index.html;
+	allow_methods	GET;
+	root	./resources;
+	client_max_body_size 42;
+	# hace una redireccion
+	return	301 http://www.42urduliz.com;
+}
 error_page 403 /error.html;
 error_page 404 /error.html;
 error_page 405 /error.html;
@@ -120,7 +137,7 @@ error_page 500 /error.html;
 
  **pruebas de estres**
   - [Load Testing Web Servers with Siege](https://www.linode.com/docs/guides/load-testing-with-siege/)
-```bash
+```cpp
 echo "example"
 siege -c 255 -t 1M http://0.0.0.0:3007
 ```

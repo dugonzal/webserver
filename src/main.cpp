@@ -17,6 +17,7 @@ int main(int ac, const char **av) {
       av[1] = "conf/default.conf";
   try {
     WebServer  webserver(*(++av));
+
     webserver.setServer();
   } catch (exception &e) {
     cout << e.what() << endl;

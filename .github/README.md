@@ -141,3 +141,7 @@ error_page 500 /error.html;
 echo "example"
 siege -c 255 -t 1M http://0.0.0.0:3007
 ```
+<video width="640" height="480" controls>
+  <source src="video/siegeTest.mp4" type="video/mp4">
+  Tu navegador no soporta la etiqueta de video.
+</video>

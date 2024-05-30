@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal Dugonzal@student.42urduliz.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 12:04:49 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:54:55 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:25:13 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Server::~Server(void) { }
 Server::Server(const Server &copy): BaseServer(copy) { }
 
 Server &Server::operator=(const Server &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     BaseServer::operator=(copy);
     request = copy.request;
   }

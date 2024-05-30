@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 19:03:54 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/11 12:11:22 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:17:40 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void Signals::setSignals(int sig) {
   cout << endl;
   if (sig == SIGQUIT || sig == SIGINT) {
     for (vector<pollfd>::const_iterator it = fds.begin(); \
-      it != fds.end(); it++) {
+      it not_eq fds.end(); it++) {
         logger.Log("close fd [%d]", it->fd);
         close(it->fd);
     }

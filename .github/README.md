@@ -1,11 +1,10 @@
 <h1 align="center">
-	🌐  Web Server HTTP en C++98
+	🌐  Web Server HTTP/1.1 en C++98
 </h1>
 
 <p align="center">
 	<b><i>
 	Web Server es un proyecto desarrollado en la escuela 42. Permite comprender el funcionamiento de un servidor HTTP y cómo se comunican los clientes y los servidores en la red.
-
   </i></b><br>
 </p>
 
@@ -21,14 +20,12 @@
 ---
 [HTTP/1.1 RFC 9112!](https://www.rfc-editor.org/rfc/rfc9112.html)
 
-# webserv
-
 <p align="center">
   <img src="img/matrix.jpg" alt="Matrix interconectada ¡¡Nodos!!" width="1000"/>
 </p>
 
 
-## HTTP
+## HTTP/1.1
 
 **HTTP (Protocolo de Transferencia de Hipertexto)** es un protocolo utilizado para transferir hipertexto en la World Wide Web. Facilita la comunicación entre clientes (como navegadores web) y servidores (donde se almacenan y sirven los recursos web).
 
@@ -37,7 +34,7 @@
 - **Navegador**: Aplicación utilizada para acceder y navegar entre documentos HTML.
 - **Agente de usuario**: Aplicación que actúa en nombre del usuario, típicamente un navegador.
 - **TCP (Protocolo de Control de Transmisión)**: Protocolo de internet utilizado para la comunicación en la web.
-- **IP (Protocolo de Internet)**: Protocolo utilizado para transferir datos entre computadoras en una red.
+- **IP (Protocolo de Internet)**: Es un protocolo fundamental que se utiliza para enrutar y transferir datos entre dispositivos en una red. 
 - **URL (Localizador de recursos uniforme)**: Dirección que apunta a un recurso en la web.
 - **DNS (Servidor de nombres de dominio)**: Cataloga todas las URL de nombres de dominio y las direcciona a las direcciones IP de los servidores.
 - **Sesión**: Comunicación persistente entre un cliente y un servidor.
@@ -64,7 +61,7 @@ Los métodos HTTP especifican la acción que el remitente desea realizar en el r
 
 ## Funciones
 
-Este proyecto incluye implementaciones de funciones clave para crear un servidor web.
+Este proyecto incluye implementaciones de funciones clave para crear un servidor http/1.1.
 
 - **Socket()**: Crea un socket.
 - **Poll()**: permite monitorear múltiples descriptores de archivos para detectar eventos de entrada/salida sin bloquear el proceso.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal Dugonzal@student.42urduliz.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:48:39 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/25 13:27:56 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:24:49 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ Request::Request(void) { }
 Request::~Request(void) { }
 
 Request::Request(const Request &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     header = copy.header;
   }
 }
 
 Request &Request::operator=(const Request &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     header = copy.header;
   }
   return (*this);
@@ -38,7 +38,7 @@ Request &Request::operator=(const Request &copy) {
 
 static string adjustRoute(const string &locationRoot, string &route) {
   size_t pos = 0;
-  while ((pos = route.find("//", pos)) != string::npos) {
+  while ((pos = route.find("//", pos)) not_eq string::npos) {
       route.replace(pos, 2, "/");
   }
   if (!locationRoot.empty() && *locationRoot.end() == '/' && !route.empty() && *route.begin() == '/') {
@@ -49,7 +49,7 @@ static string adjustRoute(const string &locationRoot, string &route) {
 
 static string adjustRoute(string route) {
   size_t pos = 0;
-  while ((pos = route.find("//", pos)) != string::npos) {
+  while ((pos = route.find("//", pos)) not_eq string::npos) {
       // Reemplaza la secuencia "//" con una sola "/"
       route.replace(pos, 2, "/");
   }
@@ -82,7 +82,7 @@ bool  Request::setMethod(const string &_method) {
 
 void  Request::setLocation(void) {
   map<string, Location>::iterator it = locations.find(route);
-  if (it != locations.end()) {
+  if (it not_eq locations.end()) {
     locationRoot = it->second;
     isCgi =  it->second.getIsCgi();
   } else {
@@ -97,7 +97,7 @@ bool  Request::setRouteAndVersion(const string &tmp) {
   return(false);
 }
 
-void  Request::parserData(void) {
+bool  Request::parserData(void) {
   int pos = header.find_first_of('\n');
 
   if (setRouteAndVersion(trim(Utils::lastWord(header.substr(0, pos))))) {
@@ -106,7 +106,9 @@ void  Request::parserData(void) {
   setLocation();
   if (setMethod(trim(Utils::firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
+    return true;
   }
+  return false;
 }
 
 string checkContentType(const string& routeToFile) {
@@ -124,12 +126,12 @@ string checkContentType(const string& routeToFile) {
     // Obtener la extensión del archivo
     string extension;
     size_t puntoPos = routeToFile.find_last_of('.');
-    if (puntoPos != string::npos) {
+    if (puntoPos not_eq string::npos) {
         extension = routeToFile.substr(puntoPos);
         // Convertir la extensión a minúsculas para comparar
         transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
         map<string, string>::iterator it = extensionsMap.find(extension);
-        if (it != extensionsMap.end()) {
+        if (it not_eq extensionsMap.end()) {
             return it->second;  // Devuelve el tipo de contenido correspondiente si se encuentra la extensión
         }
     }
@@ -141,7 +143,7 @@ string checkContentType(const string& routeToFile) {
 string checkAllowedMethods(const vector<string>& methods) {
     string result;
     for (size_t i = 0; i < methods.size(); ++i) {
-        if (i != 0) {
+        if (i not_eq 0) {
             result += " ";  // Agrega un espacio antes de cada método excepto el primero
         }
         result += methods[i];
@@ -177,7 +179,7 @@ string generate_autoindex(const string& directoryPath, string autoindex, string 
 
     // Lee el contenido del directorio
     struct dirent* entry;
-    while ((entry = readdir(dir)) != NULL) {
+    while ((entry = readdir(dir)) not_eq NULL) {
       if (!route.empty()) {
         if (*route.begin() == '/')
           autoindex += "<li><a href=\"" "http://" + host + ":" +toString(port) + route + "/" + string(entry->d_name) + "\">" + string(entry->d_name) + "</a></li>\n"; // http://" + host + ":" + toString(locationRoot.getPort()) + "/" + location[route] + "\r\n";
@@ -234,7 +236,7 @@ void Request::getMethod( void )
 		{
 			if (isAbsolutePath(locationRoot.getReturn().second))
         resHttpErr(true, FOUND, "", "");
-			else if (!locationRoot.getReturn().second.empty() && route != locationRoot.getReturn().second)
+			else if (!locationRoot.getReturn().second.empty() && route not_eq locationRoot.getReturn().second)
         resHttpErr(true, MOVED, "", "");
 			else
         resHttpErr(true, INTERNAL_ERROR, "text/html", "<h2>Error 500: Internal Server Error</h2>");
@@ -249,7 +251,7 @@ void Request::getMethod( void )
       if (isDirectory(locationRoot.getRoot() + route)) { /* is Directory & Index specified */
         if (!locationRoot.getIndex().empty()) { /* This is the case where index should apply */
           totalPath.str("");
-          if (route[route.size() - 1] != '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
+          if (route[route.size() - 1] not_eq '/' && locationRoot.getIndex()[locationRoot.getIndex().size() - 1] != '/')
               route.append("/");
           totalPath << locationRoot.getRoot() << route << locationRoot.getIndex();
           directoryPath = locationRoot.getRoot() + route + locationRoot.getIndex();
@@ -270,7 +272,7 @@ void Request::getMethod( void )
         }
         else /* Autoindex manually off */
         {
-          if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
+          if (locationRoot.getErrorPages().find(404) not_eq locationRoot.getErrorPages().end()) {
             map<size_t, string>::iterator it = locationRoot.getErrorPages().find(404);
             string filePath = adjustRoute(locationRoot.getRoot(), it->second);
             stringstream totalPath;
@@ -299,7 +301,7 @@ void Request::getMethod( void )
       }
       else /* Not found */
       {
-        if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
+        if (locationRoot.getErrorPages().find(404) not_eq locationRoot.getErrorPages().end()) {
           map<size_t, string>::iterator it = locationRoot.getErrorPages().find(404);
           string filePath = adjustRoute(locationRoot.getRoot(), it->second);
           stringstream totalPath;
@@ -371,9 +373,9 @@ void Request::deleteMethod( void )
   else
   {
     // Intentar eliminar el archivo
-    if (remove((locationRoot.getRoot() + route).c_str()) != 0)
+    if (remove((locationRoot.getRoot() + route).c_str()) not_eq 0)
     {
-      if (locationRoot.getErrorPages().find(404) != locationRoot.getErrorPages().end()) {
+      if (locationRoot.getErrorPages().find(404) not_eq locationRoot.getErrorPages().end()) {
         map<size_t, string>::iterator it = locationRoot.getErrorPages().find(404);
         string filePath = adjustRoute(locationRoot.getRoot(), it->second);
         stringstream totalPath;
@@ -446,7 +448,7 @@ void  Request::resHttpCustom( int httpCode, const string& contentType, const str
     httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
   if (!contentType.empty())
     httpResponse += "Content-Type: " + contentType + "\r\n";
-  httpResponse += "Content-Length: " + toString(body.size()) + "\r\n";
+  httpResponse += "Content-Length: " + toString(body.size() + 1) + "\r\n";
   httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
   httpResponse += "\r\n";
   if (!body.empty())
@@ -460,7 +462,7 @@ void  Request::resHttpCGI( const string& contentType ) {
 	string httpResponse;
   httpResponse.clear();
 	string tmp;
-	if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] != '/') {
+	if (locationRoot.getRoot()[locationRoot.getRoot().size() - 1] not_eq '/') {
 		tmp = locationRoot.getRoot();
 		tmp.append("/");
 	}
@@ -474,7 +476,7 @@ void  Request::resHttpCGI( const string& contentType ) {
 
 void  Request::resHttpErr( bool checkErrPg, int _httpCode,const string& _contentType, const string& _body ) {
   string httpResponse;
-  if ( checkErrPg && locationRoot.getErrorPages().find(_httpCode) != locationRoot.getErrorPages().end()) {
+  if ( checkErrPg && locationRoot.getErrorPages().find(_httpCode) not_eq locationRoot.getErrorPages().end()) {
 		httpResponse = personalizeErrorPage(locationRoot.getErrorPages(), _httpCode, locationRoot.getRoot(), httpResponse);
 		Response::sendResponse(httpResponse ,clientFd);
 	}
@@ -495,15 +497,19 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   header.clear();
   header = _header;
   cookie = 1;
-  parserData();
   clientFd = fd;
+  if (parserData() == true) {
+    resHttpCustom(405, "text/html", "<h2>Error 405: Method Not Allowed</h2>");
+    close(fd);
+    return ;
+  }
   size_t pos = header.find("session_id=");
   size_t end = pos + 10 + 11;
-  while (pos != string::npos && header[end]) {
+  while (pos not_eq string::npos && header[end]) {
     pos += 11; // Go to the end of the string
     coo = header.substr(pos, end - pos);
     vector<string>::const_iterator it = listCookie.begin();
-    while (it != listCookie.end()) {
+    while (it not_eq listCookie.end()) {
       string tmp = *it;
       if (!tmp.compare(coo)) {
         cookie = 0;
@@ -523,7 +529,7 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   ss >> method >> route;
 	route = replaceAlias(route);
   route = adjustRoute(locationRoot.getRoot(), route);
-  if (version != "HTTP/1.1") {
+  if (version not_eq "HTTP/1.1") {
     resHttpErr(true, VERSION_NOT_SUPPORTED, "text/html", "");
   } else if (method == "GET")
 	  getMethod();
@@ -551,7 +557,7 @@ void  Request::handleQueryPost( const string& msgClient ) {
   size_t bodyStart = msgClient.find("\r\n\r\n");
   string query = msgClient.substr(bodyStart + 4);
 
-  if (setenv("QUERY_STRING", query.c_str(), 1) != 0)
+  if (setenv("QUERY_STRING", query.c_str(), 1) not_eq 0)
     logger.Log("error: setenv() did not work");
   string query_value(getenv("QUERY_STRING"));
   if (query_value.empty()) {

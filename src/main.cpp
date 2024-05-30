@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal Dugonzal@student.42urduliz.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 00:55:09 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:51:02 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:20:35 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../inc/server/WebServer.hpp"
+#include "../inc/server/WebServer.hpp"
 
 int main(int ac, const char **av) {
-  if (ac != 2)
-      av[1] = "conf/default.conf";
+  if (ac not_eq 2)
+    av[1] = "conf/default.conf";
   try {
-    WebServer  webserver(*(++av));
+    WebServer webserver(*(++av));
 
     webserver.setServer();
   } catch (exception &e) {

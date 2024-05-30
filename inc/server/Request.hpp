@@ -65,7 +65,7 @@ class Request: private virtual Utils {
   bool    setRouteAndVersion(const string&);
   void    setLocation(void);
   void    setEnviroment(char**);
-  void    parserData(void);
+  bool    parserData(void);
   void    serverToClient(const string&, size_t);
 
   void    resHttpCGI( const string&);

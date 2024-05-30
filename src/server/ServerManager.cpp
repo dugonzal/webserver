@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerManager.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal Dugonzal@student.42urduliz.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:28:41 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/27 15:47:52 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:25:43 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ ServerManager::ServerManager(const ServerManager &copy): \
   server(copy.server) { }
 
 ServerManager &ServerManager::operator=(const ServerManager &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     server = copy.server;
     nServers = copy.nServers;
   }

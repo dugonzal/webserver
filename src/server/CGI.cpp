@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: Dugonzal Dugonzal@student.42urduliz.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:44:23 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 17:14:09 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:24:21 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ CGI::CGI(const CGI &copy): result(copy.result), \
   path(copy.path), fileName(copy.fileName), root(copy.root) { }
 
 CGI &CGI::operator=(const CGI &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     result = copy.result;
     path = copy.path;
     fileName = copy.fileName;

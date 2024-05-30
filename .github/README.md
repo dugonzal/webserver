@@ -11,9 +11,8 @@
 
 <p align="center">
 	<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/dugonzal/webserver" />
-	<img alt="Number of lines of code" src="https://img.shields.io/tokei/lines/github/dugonzal/webserver" />
 	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/dugonzal/webserver">
-	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/dugonzal/werbserver?color=green" />
+	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/dugonzal/webserver?color=green" />
 	<img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/dugonzal/webserver" />
 	<img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/dugonzal/webserver" />
 	<img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed/dugonzal/webserver" />

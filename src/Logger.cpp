@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 11:46:12 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/14 11:27:30 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:17:44 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ Logger::Logger(const string &name): file(name.data(), ios::out | ios::app) { }
 Logger::~Logger(void) { file.close(); }
 
 Logger::Logger(const Logger &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     fileName = copy.fileName;
   }
 }
 
 Logger &Logger::operator=(const Logger &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     fileName = copy.fileName;
   }
   return(*this);

@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:29:03 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/16 19:06:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:17:50 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ BaseServer::BaseServer(const BaseServer &copy): \
   serverFd(copy.serverFd), opt(copy.opt), addrLen(copy.addrLen) { }
 
 BaseServer &BaseServer::operator=(const BaseServer &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     addr = copy.addr;
     addrLen = copy.addrLen;
     serverFd = copy.serverFd;

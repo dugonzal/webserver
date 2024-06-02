@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 09:52:57 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 10:32:32 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:17:58 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ Location::Location(const Location &copy): \
               alias(copy.alias) { }
 
 Location &Location::operator=(const Location &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     root = copy.root;
     path = copy.path;
     index = copy.index;
@@ -65,7 +65,7 @@ void  Location::setIndex(const string &_index) {
 }
 
 void  Location::setAutoIndex(const string &_autoIndex) {
-  if (autoIndex != -1)
+  if (autoIndex not_eq -1)
     logger.LogThrow("setAutoIndex [%s]", _autoIndex.data());
   else if (!_autoIndex.compare("true") or !_autoIndex.compare("on") \
     or !_autoIndex.compare("TRUE") or !_autoIndex.compare("ON"))
@@ -113,9 +113,9 @@ void  Location::setMethods(const string &_methods) {
 void  Location::setErrorPages(const string &_errorPages) {
   size_t n = atoi(firstWord(_errorPages).data());
 
-  if (n < 100 or n > 505 or errorPages.find(n) != errorPages.end())
+  if (n < 100 or n > 505 or errorPages.find(n) not_eq errorPages.end())
     logger.LogThrow("setErrorPages code not allowed [%s]", _errorPages.data());
-  else if (errorPages.find(n) != errorPages.end())
+  else if (errorPages.find(n) not_eq errorPages.end())
     logger.LogThrow("setErrorPages code already exists [%s]", _errorPages.data());
   errorPages.insert(make_pair(n, lastWord(_errorPages)));
 }
@@ -126,7 +126,7 @@ void  Location::setListen(const string &_listen) {
   int pos = _listen.find_first_of(":");
   int n   = 0;
 
-  if (!host.empty() or port != -1)
+  if (!host.empty() or port not_eq -1)
     logger.LogThrow("listen exists (", _listen.data());
   else if (pos > 6) {
     tmp  = _listen.substr(0, pos);
@@ -159,7 +159,7 @@ void Location::setClientBodySize(const string& _clientBodySize) {
   stringstream num;
   stringstream size;
 
-  if (clientBodySize != -1)
+  if (clientBodySize not_eq -1)
     logger.LogThrow("clientBodySize exists [%s]", _clientBodySize.data());
   for (size_t i = 0; i < _clientBodySize.size(); i++) {
     if (isdigit(_clientBodySize.data()[i]))

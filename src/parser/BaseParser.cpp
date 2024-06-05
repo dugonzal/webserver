@@ -6,7 +6,7 @@
 /*   By: Dugonzal <dugonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:36:48 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/18 12:38:50 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:18:05 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ BaseParser::BaseParser(const BaseParser &copy): \
   fileName(copy.fileName), nServers(copy.nServers), data(copy.data) { }
 
 BaseParser &BaseParser::operator=(const BaseParser &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     fileName = copy.fileName;
     nServers = copy.nServers;
     data = copy.data;
@@ -48,7 +48,7 @@ void  BaseParser::setWords(void) {
 }
 
 bool  BaseParser::checkAllowedWords(const string &line) const {
-  if (words.find(line) != words.end())
+  if (words.find(line) not_eq words.end())
     return (true);
   return (false);
 }
@@ -89,9 +89,9 @@ BaseParser::BaseParser(const string &filename): fileName(filename) {
 
 void  BaseParser::deleteServerEmpty(void) {
   for (size_t i = 0; i < data.size(); i++) {
-    if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos) {
-        if (data[i + 1].find("};") != string::npos) {
+    if (data[i].find("server") not_eq string::npos \
+      && data[i].find("{") not_eq string::npos) {
+        if (data[i + 1].find("};") not_eq string::npos) {
           data.erase(data.begin() + i, data.begin() + i + 2);
           i--;
         }
@@ -100,10 +100,10 @@ void  BaseParser::deleteServerEmpty(void) {
 }
 
 void  BaseParser::keyValueCkeck(void) {
-  for (vector<string>::iterator it = data.begin(); it != data.end(); it++) {
+  for (vector<string>::iterator it = data.begin(); it not_eq data.end(); it++) {
     string::iterator end = it->end() - 1;
-    if (it->find("{") != string::npos \
-      || it->find("}") != string::npos)
+    if (it->find("{") not_eq string::npos \
+      || it->find("}") not_eq string::npos)
         continue;
     if (*end == ';') {
       it->erase(end);
@@ -173,13 +173,13 @@ void  BaseParser::setNservers(void) {
 
   nServers = 0;
   for (size_t i = 0; i < data.size(); i++) {
-    if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos)
+    if (data[i].find("server") not_eq string::npos \
+      && data[i].find("{") not_eq string::npos)
         nServers++;
     else if (!data[i].compare("};"))
       endServer++;
   }
-  if (nServers != endServer)
+  if (nServers not_eq endServer)
     logger.LogThrow("scope server ");
   else
     handlerScopeError();
@@ -198,13 +198,13 @@ size_t  BaseParser::skipLocation(size_t i) {
 
 size_t  BaseParser::serverError(size_t i) {
   while (++i < data.size()) {
-    if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos) {
+    if (data[i].find("server") not_eq string::npos \
+      && data[i].find("{") not_eq string::npos) {
         logger.LogThrow("server dentro de server");
     } else if (!Utils::firstWord(data[i]).compare("include")) {
       logger.LogThrow("include circular");
-    } else if (data[i].find("location") != string::npos \
-      && data[i].find("{") != string::npos) {
+    } else if (data[i].find("location") not_eq string::npos \
+      && data[i].find("{") not_eq string::npos) {
         i = skipLocation(i);
         continue;
     } else if (!data[i].compare("};")) {
@@ -216,8 +216,8 @@ size_t  BaseParser::serverError(size_t i) {
 
 void  BaseParser::handlerScopeError(void) {
   for (size_t i = 0; i < data.size(); i++) {
-    if (data[i].find("server") != string::npos \
-      && data[i].find("{") != string::npos) {
+    if (data[i].find("server") not_eq string::npos \
+      && data[i].find("{") not_eq string::npos) {
         i = serverError(i);
      } else {
       logger.LogThrow("fuera del scope del server [%s]", data[i].data());
@@ -227,7 +227,7 @@ void  BaseParser::handlerScopeError(void) {
 
 size_t BaseParser::parserScopeLocation(size_t j) const {
   string  tmp = Utils::lastWord(data[j]);
-  if (tmp[0] != '/')
+  if (tmp[0] not_eq '/')
     throw(runtime_error(string("scope location missing / (") + string(data[j] + ")")));
   else if (data[j].find("{") == string::npos)
       throw(runtime_error("scope location"));
@@ -248,10 +248,10 @@ size_t BaseParser::parserScopeLocation(size_t j) const {
 
 void  BaseParser::checkSemicolon(void) const {
   for (size_t i = 0; i < data.size(); i++) {
-    if (data[i].find("{") != string::npos \
+    if (data[i].find("{") not_eq string::npos \
       || !data[i].compare("}"))
         continue;
-    else if (data[i][data[i].size() - 1] != ';')
+    else if (data[i][data[i].size() - 1] not_eq ';')
       throw(runtime_error("no termina en semicolon"));
   }
 }
@@ -259,13 +259,13 @@ void  BaseParser::checkSemicolon(void) const {
 void  BaseParser::handlerScopeLocation(void) {
   int lo = 0, end = 0;
   for (size_t i = 0; i < data.size(); i++) {
-    if (data[i].find("location") != string::npos \
-      && data[i].find("{") != string::npos && ++lo)
+    if (data[i].find("location") not_eq string::npos \
+      && data[i].find("{") not_eq string::npos && ++lo)
         parserScopeLocation(i);
     else if ((!data[i].compare("}")))
         end++;
   }
-  if (lo != end) {
+  if (lo not_eq end) {
     logger.LogThrow("Location scope not properly closed: Check brace matching.");
   }
 }

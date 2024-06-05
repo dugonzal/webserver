@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:49:08 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/19 20:08:43 by jaizpuru         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:16:06 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void  Utils::readDirectory(const string &path) {
     cerr << "error es impty file" << endl;
     return;
   }
-  if ((dir = opendir(path.data())) != NULL) {
-    while ((ent = readdir(dir)) != NULL)
+  if ((dir = opendir(path.data())) not_eq NULL) {
+    while ((ent = readdir(dir)) not_eq NULL)
       cout << ent->d_name << endl;
   }
   closedir(dir);

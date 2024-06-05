@@ -6,7 +6,7 @@
 /*   By: jaizpuru <jaizpuru@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:36:45 by Dugonzal          #+#    #+#             */
-/*   Updated: 2024/05/20 15:51:42 by Dugonzal         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:17:37 by Dugonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ WebServer::WebServer(const WebServer &copy): \
   servers(copy.servers), parser(copy.parser), signals(copy.signals) { }
 
 WebServer &WebServer::operator=(const WebServer &copy) {
-  if (this != &copy) {
+  if (this not_eq &copy) {
     servers = copy.servers;
     parser = copy.parser;
     signals = copy.signals;
@@ -71,8 +71,8 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
   Location tmp;
 
   for (size_t i = 0; i < line.size(); i++) {
-    if (line[i].find("location") != string::npos \
-      && line[i].find("{") != string::npos) {
+    if (line[i].find("location") not_eq string::npos \
+      && line[i].find("{") not_eq string::npos) {
         while (++i < line.size())
           if (!line[i].compare("}"))
             break;
@@ -84,8 +84,8 @@ void  WebServer::setLocations(const vector<string> &line, size_t n) {
   locations[n].insert(make_pair(tmp.getPath(), tmp.clone()));
   tmp.clear();
   for (size_t i = 0; i < line.size(); i++) {
-    if (line[i].find("location") != string::npos && line[i].find("{") != string::npos) {
-      if (locations[n].find(firstWord(lastWord(line[i]))) != locations[n].end())
+    if (line[i].find("location") not_eq string::npos && line[i].find("{") not_eq string::npos) {
+      if (locations[n].find(firstWord(lastWord(line[i]))) not_eq locations[n].end())
         logger.LogThrow("error: location already exists. ", line[i].data());
       tmp.setPath(firstWord(lastWord(line[i])));
       while (++i < line.size()) {

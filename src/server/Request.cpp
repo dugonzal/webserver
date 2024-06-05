@@ -97,7 +97,7 @@ bool  Request::setRouteAndVersion(const string &tmp) {
   return(false);
 }
 
-void  Request::parserData(void) {
+bool  Request::parserData(void) {
   int pos = header.find_first_of('\n');
 
   if (setRouteAndVersion(trim(Utils::lastWord(header.substr(0, pos))))) {
@@ -106,7 +106,9 @@ void  Request::parserData(void) {
   setLocation();
   if (setMethod(trim(Utils::firstWord(header.substr(0, pos))))) {
     logger.Log("error method no allowed");
+    return true;
   }
+  return false;
 }
 
 string checkContentType(const string& routeToFile) {
@@ -446,7 +448,7 @@ void  Request::resHttpCustom( int httpCode, const string& contentType, const str
     httpResponse += "Set-Cookie: session_id=" + setCookie + "\r\n";
   if (!contentType.empty())
     httpResponse += "Content-Type: " + contentType + "\r\n";
-  httpResponse += "Content-Length: " + toString(body.size()) + "\r\n";
+  httpResponse += "Content-Length: " + toString(body.size() + 1) + "\r\n";
   httpResponse += "Server: " + locationRoot.getServerName() + "\r\n";
   httpResponse += "\r\n";
   if (!body.empty())
@@ -495,8 +497,12 @@ void  Request::serverToClient(const string &_header, size_t fd) {
   header.clear();
   header = _header;
   cookie = 1;
-  parserData();
   clientFd = fd;
+  if (parserData() == true) {
+    resHttpCustom(405, "text/html", "<h2>Error 405: Method Not Allowed</h2>");
+    close(fd);
+    return ;
+  }
   size_t pos = header.find("session_id=");
   size_t end = pos + 10 + 11;
   while (pos != string::npos && header[end]) {

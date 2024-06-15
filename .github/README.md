@@ -34,7 +34,7 @@
 - **Navegador**: Aplicación utilizada para acceder y navegar entre documentos HTML.
 - **Agente de usuario**: Aplicación que actúa en nombre del usuario, típicamente un navegador.
 - **TCP (Protocolo de Control de Transmisión)**: Protocolo de internet utilizado para la comunicación en la web.
-- **IP (Protocolo de Internet)**: Protocolo utilizado para transferir datos entre computadoras en una red.
+- **IP (Protocolo de Internet)**: Es un protocolo fundamental que se utiliza para enrutar y transferir datos entre dispositivos en una red. 
 - **URL (Localizador de recursos uniforme)**: Dirección que apunta a un recurso en la web.
 - **DNS (Servidor de nombres de dominio)**: Cataloga todas las URL de nombres de dominio y las direcciona a las direcciones IP de los servidores.
 - **Sesión**: Comunicación persistente entre un cliente y un servidor.

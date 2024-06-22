@@ -10,17 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# pragma once
+#pragma once
 
-# include "Utils.hpp"
-
-# include "Logger.hpp"
+#include "Logger.hpp"
+#include "Utils.hpp"
 
 class Logger;
 
 class Signals {
- public:
-    Signals(void);
-    ~Signals(void);
-    static void setSignals(int);
+public:
+  Signals(void);
+  ~Signals(void);
+  static void setSignals(int);
 };

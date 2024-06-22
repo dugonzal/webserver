@@ -135,9 +135,5 @@ error_page 500 /error.html;
   - [Load Testing Web Servers with Siege](https://www.linode.com/docs/guides/load-testing-with-siege/)
 ```cpp
 echo "example"
-siege -c 255 -t 1M http://0.0.0.0:3007
+siege -c 255 -t 1M http://0.0.0.0:4242
 ```
-<video width="640" height="480" controls>
-  <source src="video/siegeTest.mp4" type="video/mp4">
-  Tu navegador no soporta la etiqueta de video.
-</video>
